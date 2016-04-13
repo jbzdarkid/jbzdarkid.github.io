@@ -1,10 +1,19 @@
 language: python
 python:
-  - "2.7"
+  - '2.7'
 install:
   - pip install feedgen
 script:
   - python scraper.py
+  - git config user.name "Travis CI"
+  - git config user.email "<>"
   - git add feed.rss
-  - git commit --author "Travis.ci <>" -m "Automated build"
-  - git push
+  - git commit -m "Automated build"
+  - git push --force --quiet "https://${GH_TOKEN}@github.com/jbzdarkid/jbzdarkid.github.io" master:origin > /dev/null 2>&1
+deploy:
+  provider: releases
+  api_key:
+    secure: seha7YPtQgx4OfjoweeE7ekvjssmjTiG27qHGlcPer97wCaZ/71we7/kB0GUD6BbfmBa43EClw7SCMsD/l3RGD+Ov0WcNxtXKiV6xwCc9+xc/DMOT3nVKrXccWKO1KB1pa+EkQmUo2iCpbuXMLNOBAcYxoii8HGLzFd32qnRAxg37Pac6Uj30UHpjXdffayvKvBjNOcLL3RbQMHakzpvK4+ZjG15ZngVpkOmmxYj3tYXJJc+SFIuBBwHXuB/nnNQ8XJsK/RIX9nEEBQl3hJDADVkNMzwimxkrHVB7hEVSIOazhy59Ss6pThp8Pv5u/OPhUs2YWsWltP2dqM0MpDHVeqNVqcjQT0tbISTw/hL50T1jrVPfT17YXUXmNilw5FobwPetr5TTNx9Vps8wO9k6HPSp82J9Md/olir5MQFrWZhBQRGDlXViREdgQCSil2esc3WzIAerO2C57PO9eGkwKQzzz4FLSSumwfrVD/o+w9L+xyAu7iOZPNTQSd54e7PgbzoH61ExLC2yLOiQqfmkSnQ2p2rcMuPGXid8nkie8wV0c9yc15WPat4agL2bySofiYbJ1FC5wJCg/ihDU9nNgruhWrC87qpcwFWOIHQnaENazsV1Mu7b6immr2HjAgutC81YMjq4WGyWW+SumhbxLx2iyObXntOys0V9P58iUg=
+  file: feed.rss
+  on:
+    repo: jbzdarkid/jbzdarkid.github.io
