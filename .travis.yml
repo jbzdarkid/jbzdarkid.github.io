@@ -6,5 +6,5 @@ install:
 script:
   - python scraper.py
   - git add feed.rss
-  - git commit -m "Automated build via travis.ci"
+  - git commit --author "Travis.ci <>" -m "Automated build"
   - git push
