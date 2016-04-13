@@ -3,4 +3,8 @@ python:
   - "2.7"
 install:
   - pip install feedgen
-script: python scraper.py
+script:
+  - python scraper.py
+  - git add feed.rss
+  - git commit -m "Automated build via travis.ci"
+  - git push
