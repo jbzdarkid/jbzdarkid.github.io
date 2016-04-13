@@ -26,6 +26,6 @@ for match in finditer('<a class="ForumTopic.*?href="(.*?)(#post-\d*|)".*?<span c
 	url = 'http://us.battle.net'+match.group(1)
 	subpage = urlopen(url).read()
 	submatch = search('class="TopicPost-bodyContent" data-topic-post-body-content="true">(.*?)</div>', subpage, DOTALL)
-	fe.description(description=submatch.group(1))
+	fe.description(description=''.join(c for c in submatch.group(1) if ord(c) < 128))
 
 fg.rss_file('feed.rss')
