@@ -8,6 +8,8 @@ mkdir out;
 # run our compile script, discussed above
 python scraper.py
 
+ls
+
 # go to the out directory and create a *new* Git repo
 cd out
 git init
