@@ -13,7 +13,6 @@ script:
   - git config user.email "<>"
   - git config push.default simple
   - git add feed.rss
-  - echo "https://${GH_TOKEN}@github.com/jbzdarkid/jbzdarkid.github.io.git"
   - git push "https://${GH_TOKEN}@github.com/jbzdarkid/jbzdarkid.github.io.git" master:master
 
 env:
