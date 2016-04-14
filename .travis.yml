@@ -8,7 +8,7 @@ notifications:
 install: pip install feedgen
 script:
   - python scraper.py
-  - bash ls
+  - ls
   - bash ./deploy.sh
 env:
   global:

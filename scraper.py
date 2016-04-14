@@ -3,6 +3,9 @@ from urllib2 import urlopen
 from re import finditer, search, DOTALL
 from feedgen.feed import FeedGenerator
 
+f = open('feed.rss', 'wb')
+f.close()
+
 fg = FeedGenerator()
 fg.id('http://us.battle.net/forums/en/overwatch/21446648/')
 fg.title('Overwatch Beta Patches')
