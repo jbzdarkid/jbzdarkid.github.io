@@ -27,6 +27,5 @@ for match in finditer('<a class="ForumTopic.*?href="(.*?)(#post-\d*|)".*?<span c
 	subpage = urlopen(url).read()
 	submatch = search('class="TopicPost-bodyContent" data-topic-post-body-content="true">(.*?)</div>', subpage, DOTALL)
 	fe.description(description=''.join(c for c in submatch.group(1) if ord(c) < 128))
-	print fe.title(), fe.author(), fe.description()[:100]
 
 fg.rss_file('feed.rss')
