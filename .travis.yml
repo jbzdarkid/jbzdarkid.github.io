@@ -12,7 +12,7 @@ script:
   - git config user.name "Travis CI"
   - git config user.email "<>"
   - git add feed.rss
-  - git push "https://${GH_TOKEN}@github.com/jbzdarkid/jbzdarkid.github.io.git" master:origin> /dev/null 2>&1
+  - git push "https://${GH_TOKEN}@github.com/jbzdarkid/jbzdarkid.github.io.git"
 
 env:
   global:
