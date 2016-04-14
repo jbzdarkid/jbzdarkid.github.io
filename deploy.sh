@@ -15,6 +15,7 @@ git config user.email "<>"
 
 # The first and only commit to this new Git repo contains all the
 # files present with the commit message "Deploy to GitHub Pages".
+mv ../feed.rss .
 git add feed.rss
 git commit -m "Deploy to GitHub Pages"
 
