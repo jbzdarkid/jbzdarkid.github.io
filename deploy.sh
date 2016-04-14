@@ -5,11 +5,6 @@ set -e # exit with nonzero exit code if anything fails
 rm -rf out || exit 0;
 mkdir out;
 
-# run our compile script, discussed above
-python scraper.py
-
-ls
-
 # go to the out directory and create a *new* Git repo
 cd out
 git init

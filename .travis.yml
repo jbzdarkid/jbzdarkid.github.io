@@ -6,7 +6,10 @@ notifications:
     on_success: never
     on_failure: change
 install: pip install feedgen
-script: bash ./deploy.sh
+script:
+  - python scraper.py
+  - bash ls
+  - bash ./deploy.sh
 env:
   global:
     GH_REF: github.com/jbzdarkid/jbzdarkid.github.io.git
