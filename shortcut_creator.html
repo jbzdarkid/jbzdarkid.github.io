@@ -18,14 +18,16 @@
   </head>
   <body>
     First, type in the URL for your shortcut:
-    <input style='width: 100%' type='url' id='linkInput' placeholder='http://www.google.com' onchange='updateLink()'><br>
+    <input style='width: 100%' type='url' id='linkInput' placeholder='http://www.google.com' onchange='updateLink()'>
+    <p></p>
     Then, give your shortcut a name:
-    <input style='width: 100%' type='text' id='titleInput' placeholder='Google' onchange='updateTitle()'><br>
+    <input style='width: 100%' type='text' id='titleInput' placeholder='Google' onchange='updateTitle()'>
+    <p></p>
     Next, give your shortcut a picture:
     <label>
       <input type='file' id='imageInput' onchange='updateImage()' style='display:none'>
-      <div style='border: 1px solid black; border-radius: 5px'>Choose file</div>
-      <img id='imagePreview' style='float: right; height:64px'>
+<!--       <div style='border: 1px solid black; border-radius: 5px; cursor: pointer;'>Choose file</div> -->
+      <img id='imagePreview' style='border: 1px solid black; border-radius: 5px; height:64px' alt='Choose file'>
     </label><br>
     Finally, tap <img src='Bookmark-icon.png'> and then <img src='Save_home-icon.png'> to save the shortcut.
 
