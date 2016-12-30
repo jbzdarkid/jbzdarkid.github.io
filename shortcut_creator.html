@@ -5,22 +5,45 @@
     <title id='title'>Shortcut</title>
   </head>
   <body>
-    Shortcut name: <input type='text' id='titleInput' placeholder='Shortcut' onchange='setTitle()'>
-    Shortcut address: <input type='url' id='linkInput' placeholder='http://www.jbzdarkid.github.io/shortcut_creator' onchange='setLink()'>
+    Shortcut name: <input type='text' id='titleInput' placeholder='Shortcut' onchange='update()'>
+    Shortcut address: <input type='url' id='linkInput' placeholder='http://www.jbzdarkid.github.io/shortcut_creator' onchange='update()'>
+    Icon: <input type='file' id='imageInput' onchange='loadImage()'><img id='imagePreview' height='64px'>
     
     <script type='text/javascript'>
-      function setTitle() {
-        var newTitle = document.getElementById('titleInput').value;
-        document.getElementById('title').value = newTitle;
+      function getJsonFromUrl() { // http://stackoverflow.com/a/8486188/2105321
+        var query = location.search.substr(1);
+        var result = {};
+        query.split("&").forEach(function(part) {
+          var item = part.split("=");
+          result[item[0]] = decodeURIComponent(item[1]);
+        });
+        return result;
       }
       
-      function setLink() {
-        var newLink = document.getElementById('linkInput').value;
-        document.getElementById('link').href = newLink;
-      }
+      params = getJsonFromUrl();
+      document.getElementById('
+      document.getElementById('title').innerHTML = newTitle;
 
       if (window.navigator.standalone) { // If opened via shortcut
-        window.location.href = 'http://www.target.com';
+        window.location.href = url;
+      }
+
+      var img = document.getElementById('imagePreview');
+      var imgEncoded = 'https://www.google.com/images/branding/product/ico/googleg_lodp.ico';
+      var reader = new FileReader();
+      reader.addEventListener('load', function() {
+        img.src = reader.result;
+      }, false);
+
+      function loadImage() {
+        var image = document.getElementById('imageInput').files[0];
+        reader.readAsDataURL(file);
+      }
+      
+      function update() {
+        var title = document.getElementById('titleInput').value;
+        var url = document.getElementById('linkInput').value;
+        document.location = 'http://www.jbzdarkid.github.io/?title='+title+'&target='+target+'&image='+imageEncoded;
       }
     </script>
   </body>
