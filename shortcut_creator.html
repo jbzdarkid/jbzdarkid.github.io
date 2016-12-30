@@ -6,10 +6,10 @@
         text-align: center;
       }
       body {
-        font-size: 2em;
+        font-size: 4em;
       }
       input {
-        font-size: 0.6em;
+        font-size: 2em;
         width: 40%;
       }
       .bottom {
@@ -23,16 +23,22 @@
     <title id='title'>Shortcut Creator</title>
   </head>
   <body>
-    First, type in the URL for your shortcut: <input type='url' id='linkInput' placeholder='http://www.google.com' onchange='updateLink()'>
+    First, type in the URL for your shortcut:
     <p>
-    Then, give your shortcut a name: <input type='text' id='titleInput' placeholder='Google' onchange='updateTitle()'>
+    <input type='url' id='linkInput' placeholder='http://www.google.com' onchange='updateLink()'>
     <p>
-    Next, give your shortcut a picture: <input type='file' id='imageInput' onchange='updateImage()'>
+    Then, give your shortcut a name:
+    <p>
+    <input type='text' id='titleInput' placeholder='Google' onchange='updateTitle()'>
+    <p>
+    Next, give your shortcut a picture:
+    <p>  
+    <input type='file' id='imageInput' onchange='updateImage()'>
     <img id='imagePreview' style='float: right; height:64px'>
     <p class='bottom'>
     Finally, tap <img src='Bookmark-icon.png'> and then <img src='Save_home-icon.png'> to save the shortcut.
-    <script type='text/javascript'>
 
+    <script type='text/javascript'>
       if (window.navigator.standalone) { // If opened via shortcut
         window.location.href = window.location.hash.substring(1);
       }
@@ -47,11 +53,9 @@
       function updateImage() {
         reader.readAsDataURL(document.getElementById('imageInput').files[0]);
       }
-      
       function updateTitle() {
         document.getElementById('title').innerHTML = document.getElementById('titleInput').value;
       }
-      
       function updateLink() {
         window.location.href = 'http://www.jbzdarkid.github.io#' + document.getElementById('linkInput').value;
       }
