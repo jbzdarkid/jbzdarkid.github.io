@@ -1,12 +1,24 @@
 <html>
   <head>
     <meta name='apple-mobile-web-app-capable' content='yes'>
-    <link rel='apple-touch-icon' href='http://www.darkid.webs.com/25x25.png'>
-    <title>Shortcut Name</title>
+    <link id='link' rel='apple-touch-icon' href='http://www.darkid.webs.com/25x25.png'>
+    <title id='title'>Shortcut</title>
   </head>
   <body>
+    Shortcut name: <input type='text' id='titleInput' placeholder='Shortcut' onchange='setTitle()'>
+    Shortcut address: <input type='url' id='linkInput' placeholder='http://www.jbzdarkid.github.io/shortcut_creator' onchange='setLink()'>
+    
     <script type='text/javascript'>
-      console.log(document.head);
+      function setTitle() {
+        var newTitle = document.getElementById('titleInput').value;
+        document.getElementById('title').value = newTitle;
+      }
+      
+      function setLink() {
+        var newLink = document.getElementById('linkInput').value;
+        document.getElementById('link').href = newLink;
+      }
+
       if (window.navigator.standalone) { // If opened via shortcut
         window.location.href = 'http://www.target.com';
       }
