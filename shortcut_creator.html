@@ -27,15 +27,15 @@
     Next, give your shortcut a picture:<br>
     <label>
       <input type='file' id='imageInput' onchange='updateImage()' style='display:none'>
-      <img id='imagePreview' style='border: 2px solid black' alt=' Choose file '>
+      <img id='imagePreview' style='border: 2px solid black' alt='&nbsp; Choose file &nbsp;'>
     </label>
     <p></p>
     Finally, tap <img src='Bookmark-icon.png'> and then <img src='Save_home-icon.png'> to save the shortcut.
 
     <script type='text/javascript'>
       if (window.navigator.standalone) { // If opened via shortcut
+        document.body = '';
         window.location.href = window.location.hash.substring(1);
-        setTimeout(window.close, 500);
       }
 
       var img = document.getElementById('imagePreview');
