@@ -12,15 +12,6 @@
         font-size: 1.5em;
         width: 100%;
       }
-      .upload input {
-        border: 1px solid black;
-        border-radius: 2px;
-      }
-      .bottom {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-      }
     </style>
     <meta name='apple-mobile-web-app-capable' content='yes'>
     <link id='link' rel='apple-touch-icon' href='Bookmark-icon.png'>
@@ -36,11 +27,11 @@
     <input type='text' id='titleInput' placeholder='Google' onchange='updateTitle()'>
     <p>
     Next, give your shortcut a picture:
-    <p>  
+    <p style='border: 1px solid black; border-radius: 2px;'>
     <input type='file' id='imageInput' onchange='updateImage()' style='display:none'>
-    <div class='upload'>Choose file</div>
+    Choose file
     <img id='imagePreview' style='float: right; height:64px'>
-    <p class='bottom'>
+    <p>
     Finally, tap <img src='Bookmark-icon.png'> and then <img src='Save_home-icon.png'> to save the shortcut.
 
     <script type='text/javascript'>
