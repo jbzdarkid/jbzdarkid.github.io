@@ -4,13 +4,12 @@
       * {
         vertical-align: middle;
         text-align: center;
-      }
-      body {
         font-size: 3em;
       }
       input {
         font-size: 1.5em;
       }
+      
     </style>
     <meta name='apple-mobile-web-app-capable' content='yes'>
     <link id='link' rel='apple-touch-icon' href='Bookmark-icon.png'>
@@ -26,9 +25,9 @@
     Next, give your shortcut a picture:<br>
     <label>
       <input type='file' id='imageInput' onchange='updateImage()' style='display:none'>
-<!--       <div style='border: 1px solid black; border-radius: 5px; cursor: pointer;'>Choose file</div> -->
-      <img id='imagePreview' style='border: 1px solid black; border-radius: 5px' alt='Choose file'>
-    </label><br>
+      <img id='imagePreview' style='padding: 10px; border: 1px solid black; border-radius: 5px' alt='Choose file'>
+    </label>
+    <p></p>
     Finally, tap <img src='Bookmark-icon.png'> and then <img src='Save_home-icon.png'> to save the shortcut.
 
     <script type='text/javascript'>
