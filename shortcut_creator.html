@@ -1,16 +1,21 @@
 <html>
   <head>
+    <style>
+      body {
+        text-size: 2em;
+      }
+    </style>
     <meta name='apple-mobile-web-app-capable' content='yes'>
     <link id='link' rel='apple-touch-icon' href='https://www.google.com/images/branding/product/ico/googleg_lodp.ico'>
     <title id='title'>Google</title>
   </head>
   <body>
-    First, type in the URL for your shortcut: <input type='url' id='linkInput' placeholder='http://www.google.com' onchange='updateLink()'><br>
-    
-    Then, give your shortcut a name: <input type='text' id='titleInput' placeholder='Google' onchange='updateTitle()'><br>
-
+    First, type in the URL for your shortcut: <input type='url' id='linkInput' placeholder='http://www.google.com' onchange='updateLink()'>
+    <p>
+    Then, give your shortcut a name: <input type='text' id='titleInput' placeholder='Google' onchange='updateTitle()'>
+    <p>
     Next, give your shortcut a picture: <input type='file' id='imageInput' onchange='updateImage()'><img id='imagePreview' height='64px'>
-    
+    <p>
     Finally, tap <img src="Bookmark-icon.png"> and then <img src="Save_home-icon.png"> to save the shortcut.
     <script type='text/javascript'>
 
@@ -34,7 +39,7 @@
       }
       
       function updateLink() {
-        window.location.params = document.getElementById('linkInput').value;
+        window.location = 'http://www.jbzdarkid.github.io?' + document.getElementById('linkInput').value;
       }
     </script>
   </body>
