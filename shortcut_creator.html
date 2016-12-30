@@ -41,21 +41,13 @@
       var imagePreview = document.getElementById('imagePreview');
       var reader = new FileReader();
       reader.addEventListener('load', function() {
-        console.log(imagePreview);
-        console.log(imagePreview.height);
-        imagePreview.height = '64px';
-        console.log(imagePreview);
-        console.log(imagePreview.height);
+//         imagePreview.height = '64px';
         imagePreview.src = reader.result;
-        console.log(imagePreview);
-        console.log(imagePreview.height);
         document.getElementById('link').href = reader.result;
       }, false);
 
       function updateImage() {
         reader.readAsDataURL(document.getElementById('imageInput').files[0]);
-        console.log(imagePreview);
-        console.log(imagePreview.height);
       }
       function updateTitle() {
         document.getElementById('title').innerHTML = document.getElementById('titleInput').value;
