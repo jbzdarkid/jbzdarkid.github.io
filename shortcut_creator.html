@@ -46,11 +46,10 @@
         var canvas = document.createElement('canvas');
         var ctx = canvas.getContext('2d');
         // Cropped to square and scaled down to 64x64
-        console.log(image);
         ctx.drawImage(image, (image.width - size)/2, (image.height - size)/2, size, size, 0, 0, 64, 64);
-        console.log(image);
+        image.src = canvas.toDataURL('image/png')
         image.style = '';
-        document.getElementById('link').href = canvas.toDataURL('image/png');;
+        document.getElementById('link').href = canvas.toDataURL('image/png');
       }, false);
 
       function updateImage() {
