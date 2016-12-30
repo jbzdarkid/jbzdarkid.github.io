@@ -12,6 +12,10 @@
         font-size: 2em;
         width: 40%;
       }
+      .upload {
+        border: 1px solid black;
+        border-radius: 2px;
+      }
       .bottom {
         position: fixed;
         bottom: 0;
@@ -33,7 +37,8 @@
     <p>
     Next, give your shortcut a picture:
     <p>  
-    <input type='file' id='imageInput' onchange='updateImage()'>
+    <input type='file' id='imageInput' onchange='updateImage()' style='display:none'>
+    <div class='upload'>Choose file</div>
     <img id='imagePreview' style='float: right; height:64px'>
     <p class='bottom'>
     Finally, tap <img src='Bookmark-icon.png'> and then <img src='Save_home-icon.png'> to save the shortcut.
