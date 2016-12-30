@@ -44,11 +44,13 @@
         image.src = reader.result;
         var size = Math.min(image.width, image.height);
         var canvas = document.createElement('canvas');
+        canvas.width = '128px';
+        canvas.height = '128px';
         var ctx = canvas.getContext('2d');
         // Cropped to square and scaled down to 64x64
         ctx.drawImage(image, (image.width - size)/2, (image.height - size)/2, size, size, 0, 0, 128, 128);
-        image.style = 'height: 128px; width: 128px';
         image.src = canvas.toDataURL('image/png')
+        image.style = ''; // Hide the border
         document.getElementById('link').href = canvas.toDataURL('image/png');
       }, false);
 
