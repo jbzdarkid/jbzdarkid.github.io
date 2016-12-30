@@ -13,6 +13,10 @@
       img {
         vertical-align: middle;
       }
+      .bottom {
+        position: fixed;
+        bottom: 0;
+      }
     </style>
     <meta name='apple-mobile-web-app-capable' content='yes'>
     <link id='link' rel='apple-touch-icon' href='Bookmark-icon.png'>
@@ -25,7 +29,7 @@
     <p>
     Next, give your shortcut a picture: <input type='file' id='imageInput' width='200px' onchange='updateImage()'>
     <img id='imagePreview' style='float: right; height:64px'>
-    <p><p><p>
+    <p class='bottom'>
     Finally, tap <img src='Bookmark-icon.png'> and then <img src='Save_home-icon.png'> to save the shortcut.
     <script type='text/javascript'>
 
