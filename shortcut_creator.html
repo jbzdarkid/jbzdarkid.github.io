@@ -23,8 +23,7 @@
       }, false);
 
       function updateImage() {
-        var image = document.getElementById('imageInput').files[0];
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(document.getElementById('imageInput').files[0]);
       }
       
       function updateTitle() {
