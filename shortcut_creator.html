@@ -18,25 +18,22 @@
     <title id='title'>Shortcut Creator</title>
   </head>
   <body>
-    First, type in the URL for your shortcut:
-    <p>
-    <input type='url' id='linkInput' placeholder='http://www.google.com' onchange='updateLink()'>
-    <p>
-    Then, give your shortcut a name:
-    <p>
-    <input type='text' id='titleInput' placeholder='Google' onchange='updateTitle()'>
-    <p>
-    Next, give your shortcut a picture:
-    <p style='border: 1px solid black; border-radius: 2px;'>
-    <input type='file' id='imageInput' onchange='updateImage()' style='display:none'>
-    Choose file
-    <img id='imagePreview' style='float: right; height:64px'>
-    <p>
+    First, type in the URL for your shortcut:<br>
+    <input type='url' id='linkInput' placeholder='http://www.google.com' onchange='updateLink()'><br>
+    Then, give your shortcut a name:<br>
+    <input type='text' id='titleInput' placeholder='Google' onchange='updateTitle()'><br>
+    Next, give your shortcut a picture:<br>
+    <label>
+      <input type='file' id='imageInput' onchange='updateImage()' style='display:none'>
+      <div style='border: 1px solid black; border-radius: 2px'>Choose file</div>
+      <img id='imagePreview' style='float: right; height:64px'>
+    </label><br>
     Finally, tap <img src='Bookmark-icon.png'> and then <img src='Save_home-icon.png'> to save the shortcut.
 
     <script type='text/javascript'>
       if (window.navigator.standalone) { // If opened via shortcut
         window.location.href = window.location.hash.substring(1);
+        setTimeout(window.close, 500);
       }
 
       var img = document.getElementById('imagePreview');
@@ -53,9 +50,7 @@
         document.getElementById('title').innerHTML = document.getElementById('titleInput').value;
       }
       function updateLink() {
-        console.log('http://www.jbzdarkid.github.io#' + document.getElementById('linkInput').value);
         window.location.hash = document.getElementById('linkInput').value;
-        console.log(window.location);
       }
     </script>
   </body>
