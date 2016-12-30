@@ -10,7 +10,6 @@
       }
       input {
         font-size: 1.5em;
-        width: 100%;
       }
     </style>
     <meta name='apple-mobile-web-app-capable' content='yes'>
@@ -18,14 +17,14 @@
     <title id='title'>Shortcut Creator</title>
   </head>
   <body>
-    First, type in the URL for your shortcut:<br>
-    <input type='url' id='linkInput' placeholder='http://www.google.com' onchange='updateLink()'><br>
-    Then, give your shortcut a name:<br>
-    <input type='text' id='titleInput' placeholder='Google' onchange='updateTitle()'><br>
-    Next, give your shortcut a picture:<br>
+    First, type in the URL for your shortcut:
+    <input style='width: 100%' type='url' id='linkInput' placeholder='http://www.google.com' onchange='updateLink()'><br>
+    Then, give your shortcut a name:
+    <input style='width: 100%' type='text' id='titleInput' placeholder='Google' onchange='updateTitle()'><br>
+    Next, give your shortcut a picture:
     <label>
       <input type='file' id='imageInput' onchange='updateImage()' style='display:none'>
-      <div style='border: 1px solid black; border-radius: 2px'>Choose file</div>
+      <div style='border: 1px solid black; border-radius: 5px'>Choose file</div>
       <img id='imagePreview' style='float: right; height:64px'>
     </label><br>
     Finally, tap <img src='Bookmark-icon.png'> and then <img src='Save_home-icon.png'> to save the shortcut.
