@@ -53,7 +53,9 @@
         document.getElementById('title').innerHTML = document.getElementById('titleInput').value;
       }
       function updateLink() {
-        window.location.href = 'http://www.jbzdarkid.github.io#' + document.getElementById('linkInput').value;
+        console.log('http://www.jbzdarkid.github.io#' + document.getElementById('linkInput').value);
+        window.location.hash = document.getElementById('linkInput').value;
+        console.log(window.location);
       }
     </script>
   </body>
