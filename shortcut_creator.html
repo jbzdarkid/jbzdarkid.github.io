@@ -1,27 +1,15 @@
 <html>
   <head>
-    <title>iPhone Custom bookmark tool</title>
+    <meta name='apple-mobile-web-app-capable' content='yes'>
+    <link rel='apple-touch-icon' href='http://www.darkid.webs.com/25x25.png'>
+    <title>Shortcut Name</title>
   </head>
   <body>
-    <script type="text/javascript">
-      var title = "Shortcut Name"
-      var url = "http://www.google.com"
-      var image = "http://www.darkid.webs.com/25x25.png"
-      window.location.href = "data:text/html;base64," + btoa(""+
-"<html>" +
-  "<head>" +
-    "<meta name='apple-mobile-web-app-capable' content='yes'>" +
-    "<link rel='apple-touch-icon' href='" + image + "'>" +
-    "<title>" + title + "</title>" +
-  "</head>" +
-  "<body>" +
-    "<a id='link' href='" + url + "'></a>" +
-    "<script type='text/javascript'>" +
-      "if(window.navigator.standalone)" +
-        "document.getElementById('link').dispatchEvent(new Event('click'))" +
-    "</scr" + "ipt>" +
-  "</body>" +
-"</html>")
+    <script type='text/javascript'>
+      console.log(document.head);
+      if (window.navigator.standalone) { // If opened via shortcut
+        window.location.href = 'http://www.target.com';
+      }
     </script>
   </body>
 </html>
