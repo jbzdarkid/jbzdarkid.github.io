@@ -41,8 +41,8 @@
       var imagePreview = document.getElementById('imagePreview');
       var reader = new FileReader();
       reader.addEventListener('load', function() {
-//         imagePreview.height = '64px';
         imagePreview.src = reader.result;
+        imagePreview.style = '';
         document.getElementById('link').href = reader.result;
       }, false);
 
