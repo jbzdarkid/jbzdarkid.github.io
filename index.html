@@ -55,6 +55,9 @@
         image.src = canvas.toDataURL('image/png');
         document.getElementById('link').href = canvas.toDataURL('image/png');
         document.write(document.getElementById('link'));
+        document.write(document.getElementById('link').id);
+        document.write(document.getElementById('link').rel);
+        document.write(document.getElementById('link').href);
       });
 
       function updateImage() {
