@@ -40,15 +40,18 @@
 
       var image = document.getElementById('imagePreview');
       var reader = new FileReader();
+      var FINAL_WIDTH = 128;
       reader.addEventListener('load', function() {
+        console.log(reader.result);
         image.src = reader.result;
+        console.log(image);
         var size = Math.min(image.width, image.height);
         var canvas = document.createElement('canvas');
-        canvas.width = '128';
-        canvas.height = '128';
+        canvas.width = FINAL_WIDTH.toString();
+        canvas.height = FINAL_WIDTH.toString();
         var ctx = canvas.getContext('2D');
-        // Cropped to square and scaled down to 128x128
-        ctx.drawImage(image, (image.width - size)/2, (image.height - size)/2, size, size, 0, 0, 128, 128);
+        // Cropped to square and scaled down to FINAL_WIDTH * FINAL_WIDTH
+        ctx.drawImage(image, (image.width - size)/2, (image.height - size)/2, size, size, 0, 0, FINAL_WIDTH, FINAL_WIDTH);
         image.src = canvas.toDataURL('image/png')
         document.getElementById('link').href = canvas.toDataURL('image/png');
       }, false);
