@@ -54,10 +54,10 @@
         // ctx.drawImage(image, (image.width - size)/2, (image.height - size)/2, size, size, 0, 0, final_size, final_size);
         image.src = canvas.toDataURL('image/png');
         document.getElementById('link').href = canvas.toDataURL('image/png');
-        document.write(document.getElementById('link'));
-        document.write(document.getElementById('link').id);
-        document.write(document.getElementById('link').rel);
-        document.write(document.getElementById('link').href);
+        document.writeln(document.getElementById('link'));
+        document.writeln(document.getElementById('link').id);
+        document.writeln(document.getElementById('link').rel);
+        document.writeln(document.getElementById('link').href);
       });
 
       function updateImage() {
