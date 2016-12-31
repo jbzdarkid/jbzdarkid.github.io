@@ -43,18 +43,23 @@
       var reader = new FileReader();
       var FINAL_WIDTH = 128;
       reader.addEventListener('load', function() {
+        document.write(46);
         image.src = reader.result;
+        document.write(48);
         var size = Math.min(image.width, image.height);
+        document.write(50);
         var canvas = document.createElement('canvas');
-        document.write(canvas);
+        document.write(52);
         canvas.width = FINAL_WIDTH.toString();
         canvas.height = FINAL_WIDTH.toString();
+        document.write(55);
         var ctx = canvas.getContext('2d');
-        document.write(ctx);
+        document.write(57);
         // Cropped to square and scaled down to FINAL_WIDTH * FINAL_WIDTH
         ctx.drawImage(image, (image.width - size)/2, (image.height - size)/2, size, size, 0, 0, FINAL_WIDTH, FINAL_WIDTH);
+        document.write(60);
         image.src = canvas.toDataURL('image/png')
-        document.write(image);
+        document.write(62);
         document.getElementById('link').href = canvas.toDataURL('image/png');
       });
 
