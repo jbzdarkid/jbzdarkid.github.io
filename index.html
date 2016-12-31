@@ -44,7 +44,7 @@
         image.src = reader.result;
         var size = Math.min(image.width, image.height);
         var final_width = Math.min(size, 128); // 128x128 or smaller
-        document.write(size+'\n');
+        document.write(image.width+' '+image.height+' '+size+' '+final_width+' ');
         
         var canvas = document.createElement('canvas');
         canvas.width = final_width.toString();
