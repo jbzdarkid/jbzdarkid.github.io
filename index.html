@@ -46,11 +46,10 @@
         var canvas = document.createElement('canvas');
         canvas.width = '128';
         canvas.height = '128';
-        var ctx = canvas.getContext('2d');
-        // Cropped to square and scaled down to 64x64
+        var ctx = canvas.getContext('2D');
+        // Cropped to square and scaled down to 128x128
         ctx.drawImage(image, (image.width - size)/2, (image.height - size)/2, size, size, 0, 0, 128, 128);
         image.src = canvas.toDataURL('image/png')
-        image.style = ''; // Hide the border
         document.getElementById('link').href = canvas.toDataURL('image/png');
       }, false);
 
