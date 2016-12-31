@@ -49,7 +49,7 @@
         var canvas = document.createElement('canvas');
         canvas.width = FINAL_WIDTH.toString();
         canvas.height = FINAL_WIDTH.toString();
-        var ctx = canvas.getContext('2D');
+        var ctx = canvas.getContext('2d');
         // Cropped to square and scaled down to FINAL_WIDTH * FINAL_WIDTH
         ctx.drawImage(image, (image.width - size)/2, (image.height - size)/2, size, size, 0, 0, FINAL_WIDTH, FINAL_WIDTH);
         image.src = canvas.toDataURL('image/png')
