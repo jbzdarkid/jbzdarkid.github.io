@@ -13,8 +13,9 @@
       }
       
     </style>
-    <meta name='apple-mobile-web-app-capable' content='yes'>
-    <link id='link' rel='apple-touch-icon' href='Bookmark-icon.png'>
+    <meta name='apple-mobile-web-app-capable' content='yes'> <!-- Can be loaded as a shortcut -->
+    <link id='link' rel='apple-touch-icon' href='Bookmark-icon.png'> <!-- Sets the shortcut icon -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title id='title'>Shortcut Creator</title>
   </head>
   <body>
@@ -42,19 +43,20 @@
       var reader = new FileReader();
       var FINAL_WIDTH = 128;
       reader.addEventListener('load', function() {
-        console.log(reader.result);
         image.src = reader.result;
-        console.log(image);
         var size = Math.min(image.width, image.height);
         var canvas = document.createElement('canvas');
+        document.write(canvas);
         canvas.width = FINAL_WIDTH.toString();
         canvas.height = FINAL_WIDTH.toString();
         var ctx = canvas.getContext('2d');
+        document.write(ctx);
         // Cropped to square and scaled down to FINAL_WIDTH * FINAL_WIDTH
         ctx.drawImage(image, (image.width - size)/2, (image.height - size)/2, size, size, 0, 0, FINAL_WIDTH, FINAL_WIDTH);
         image.src = canvas.toDataURL('image/png')
+        document.write(image);
         document.getElementById('link').href = canvas.toDataURL('image/png');
-      }, false);
+      });
 
       function updateImage() {
         reader.readAsDataURL(document.getElementById('imageInput').files[0]);
