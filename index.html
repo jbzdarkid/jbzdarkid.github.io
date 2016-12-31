@@ -43,22 +43,16 @@
       reader.addEventListener('load', function() {
         image.src = reader.result;
         var size = Math.min(image.width, image.height);
-        var final_size = Math.min(size, 16); // 128x128 or smaller
-        
+        var final_size = Math.min(size, 64); // 64x64 or smaller. Memory issues can occur at larger sizes.
         var canvas = document.createElement('canvas');
         canvas.width = final_size.toString();
         canvas.height = final_size.toString();
         var ctx = canvas.getContext('2d');
         // Cropped to square and scaled down if needed
-        ctx.drawImage(image, 0, 0, final_size, final_size);
-        return;
-        // ctx.drawImage(image, (image.width - size)/2, (image.height - size)/2, size, size, 0, 0, final_size, final_size);
-        document.write(canvas.toDataURL('image/png').length);
+        ctx.drawImage(image, (image.width - size)/2, (image.height - size)/2, size, size, 0, 0, final_size, final_size);
         image.src = canvas.toDataURL('image/png');
-        document.write(image.src.length);
         document.getElementById('link').href = canvas.toDataURL('image/png');
-        var test = document.getElementById('link');
-
+        document.write(image.src.length);
       });
 
       function updateImage() {
