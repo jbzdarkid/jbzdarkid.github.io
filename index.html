@@ -54,7 +54,7 @@
         // Cropped to square and scaled down if needed
         ctx.drawImage(image, (image.width - size)/2, (image.height - size)/2, size, size, 0, 0, final_width, final_width);
         image.src = canvas.toDataURL('image/png');
-        document.write(image.src.length);
+        document.write(image.src);
         document.getElementById('link').href = canvas.toDataURL('image/png');
       });
 
