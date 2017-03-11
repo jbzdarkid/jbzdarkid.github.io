@@ -3,4 +3,5 @@ notifications:
   email:
     on_success: never
     on_failure: change
+before_install: pip install selenium
 script: python witness/email.py
