@@ -1,7 +1,7 @@
 from selenium.webdriver import PhantomJS
 from json import load
 from os import getcwd, environ
-from smtplib import SMTP
+import smtplib
 
 driver = PhantomJS()
 driver.set_window_size(1280, 720)
@@ -19,7 +19,7 @@ msg['Date'] = 'blah'
 msg['Subject'] = 'Witness puzzle for blah'
 msg.attach(MIMEImage(open('temp.png', 'rb').read()))
 
-server = SMTP('smtp.gmail.com', 587)
+server = smtplib.SMTP('smtp.gmail.com', 587)
 server.ehlo()
 server.starttls()
 server.login(environ['USERNAME'], environ['PASSWORD'])
