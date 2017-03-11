@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/2000/xhtml">
+  <head>
+    <style>
+      @font-face {
+        font-family: Constantia;
+        src: url('Constantia.ttf');
+      }
+      * {font-family: Constantia}
+      html, body {width: 100%}
+      table {
+        position: relative;
+        top: 10%;
+        margin: auto;
+      }
+    </style>
+    <link rel="stylesheet" type="text/css" href="style1.css" id="stylesheet">
+    <!-- document.getElementById("stylesheet").href = 'style2.css' -->
+    <script type="text/javascript" src="utilities.js"></script>
+    <script type="text/javascript" src="generate.js"></script>
+    <script type="text/javascript" src="solve.js"></script>
+    <script type="text/javascript" src="validate.js"></script>
+    <script type="text/javascript" src="display.js"></script>
+    <script type="text/javascript" src="trace.js"></script>
+    <title>Random puzzles or something</title>
+  </head>
+  <body>
+
+  <div style="text-align: center; font-size: 30">The Witness</div>
+  <div style="text-align: center; font-size: 20">random puzzles</div>
+  <div style="text-align: center;">
+    <button id="generate" onclick="generatePuzzle(9, 9)">Generate new puzzle</button>
+  </div>
+
+  <table id="puzzle" cellspacing="0" cellpadding="0"></table>
+
+  </body>
+</html>

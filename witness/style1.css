@@ -1,0 +1,45 @@
+.line {
+  background: gray;
+  height: 100%;
+  width: 100%;
+}
+.start {
+  position: relative;
+  height: 250%;
+  width: 250%;
+  left: -75%;
+  z-index: 10;
+  border-radius: 50px;
+}
+.end-left {
+  position: relative;
+  width: 200%;
+  left: -100%;
+  z-index: 10;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+.end-right {
+  position: relative;
+  width: 200%;
+  left: 0%;
+  z-index: 10;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+.end-top {
+  position: relative;
+  height: 200%;
+  top: -50%;
+  z-index: 10;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+.end-bottom {
+  position: relative;
+  height: 200%;
+  top: 50%;
+  z-index: 10;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
