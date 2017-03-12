@@ -4,7 +4,7 @@
     <link rel="stylesheet" type="text/css" href="style1.css" id="stylesheet">
   </head>
   <body>
-  <table id="meta"></table>
+  <table id="meta" cellspacing="0" cellpadding="0"></table>
   <script type="text/javascript">
     var table = document.getElementById('meta')
     for (var x=0; x<5; x++) {
@@ -14,6 +14,7 @@
         cell.style.width = '100px'
         cell.style.height = '100px'
         cell.className = 'untraced'
+        cell.style.background = 'black'
         cell.id = 'meta'+'_'+x+'_'+y
         if (x == 0 && y == 0) {
           var div = document.createElement('div')
@@ -25,6 +26,14 @@
       }
     }
     document.getElementById('meta_0_0').appendChild(div)
+    document.getElementById('meta_1_1').className = ''
+    document.getElementById('meta_1_3').className = ''
+    document.getElementById('meta_3_1').className = ''
+    document.getElementById('meta_3_3').className = ''
+    document.getElementById('meta_1_1').style.background = 'white'
+    document.getElementById('meta_1_3').style.background = 'white'
+    document.getElementById('meta_3_1').style.background = 'white'
+    document.getElementById('meta_3_3').style.background = 'white'
   </script>
   </body>
 </html>

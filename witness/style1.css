@@ -1,5 +1,5 @@
-.untraced {background: #000000;}
-.traced {background: #6D4D4A;}
+.untraced {}
+.traced {fill: #6D4D4A;}
 .line {
   background: gray;
   height: 100%;
