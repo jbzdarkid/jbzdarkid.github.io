@@ -17,6 +17,17 @@ function _copy(puzzle) {
   }
 }
 
+function _newGrid(width, height) {
+  var grid = []
+  for (var i=0; i<width; i++) {
+    grid[i] = []
+    for (var j=0; j<height; j++) {
+      grid[i][j] = 0
+    }
+  }
+  return grid
+}
+
 var POLY_DICT = {
   '1.0.0': [{'x':0, 'y':0}],
   '2.0.0': [{'x':0, 'y':0}, {'x':0, 'y':2}],
