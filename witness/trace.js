@@ -1,12 +1,13 @@
 var data
 function trace(elem) {
   var parent = elem.parentNode
+  console.log(parent)
   data = {
     'table':parent.id.split('_')[0],
     'x':parseInt(parent.id.split('_')[1]),
     'y':parseInt(parent.id.split('_')[2]),
-    'subx':parseInt(parent.style.width)/2,
-    'suby':parseInt(parent.style.height)/2,
+    'subx':parseInt(window.getComputedStyle(parent).width)/2,
+    'suby':parseInt(window.getComputedStyle(parent).height)/2,
     }
   elem.parentNode.className = 'traced'
 
@@ -25,10 +26,10 @@ function lockChange() {
     console.log('Cursor release requested')
     document.removeEventListener("mousemove", onMouseMove, false)
     // This isn't really an array, it live updates during iteration
-    var traced_elems = document.getElementsByClassName('traced')
-    while (traced_elems.length > 0) {
-      traced_elems[0].className = 'untraced'
-    }
+    // var traced_elems = document.getElementsByClassName('traced')
+    // while (traced_elems.length > 0) {
+    //   traced_elems[0].className = traced_elems[0].className.replace('traced (left|right|up|down)', 'untraced')
+    // }
   } else {
     console.log('Cursor lock requested')
     document.addEventListener("mousemove", onMouseMove, false)
@@ -36,15 +37,13 @@ function lockChange() {
 }
 
 function onMouseMove(e) {
-  var sens = 0.5
+  var sens = 0.3
   // Caution: reversed
   data.subx += sens*(e.movementY || e.mozMovementY || e.webkitMovementY || 0)
   data.suby += sens*(e.movementX || e.mozMovementX || e.webkitMovementX || 0)
-
   elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
-  var width = parseInt(elem.style.width)
-  var height = parseInt(elem.style.height)
-
+  var width = parseInt(window.getComputedStyle(elem).width)
+  var height = parseInt(window.getComputedStyle(elem).height)
 
   if (elem.className != 'traced') {
     try {
@@ -56,94 +55,96 @@ function onMouseMove(e) {
     var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
     var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
     circ.style.r = '50px'
-    // rect.style.rx = '100px'
-    if (elem.className == 'traced right') {
+    if (elem.className.includes('traced right')) {
       rect.style.height = height
       rect.style.width = data.suby
-      circ.style.cx = data.suby
-      circ.style.cy = height/2
-    } else if (elem.className == 'traced left') {
+      // circ.style.cx = data.suby
+      // circ.style.cy = height/2
+    } else if (elem.className.includes('traced left')) {
       rect.style.height = height
       rect.style.width = width - data.suby
       rect.setAttribute('transform', 'translate('+data.suby+', 0)')
-      circ.style.cx = data.suby
-      circ.style.cy = height/2
-    } else if (elem.className == 'traced up') {
+      // circ.style.cx = data.suby
+      // circ.style.cy = height/2
+    } else if (elem.className.includes('traced down')) {
       rect.style.height = data.subx
       rect.style.width = width
-      circ.style.cx = (width/2)
-      circ.style.cy = data.subx
-    } else if (elem.className == 'traced down') {
+      // circ.style.cx = width/2
+      // circ.style.cy = data.subx
+    } else if (elem.className.includes('traced up')) {
       rect.style.height = height - data.subx
       rect.style.width = width
       rect.setAttribute('transform', 'translate(0, '+data.subx+')')
-      circ.style.cx = (width/2)
-      circ.style.cy = data.subx
+      // circ.style.cx = width/2
+      // circ.style.cy = data.subx
     }
     svg.appendChild(rect)
-    svg.appendChild(circ)
+    // svg.appendChild(circ)
     elem.appendChild(svg)
   }
-
   if (data.subx < 0) {
+    console.log('Went up over boundary', data.subx)
     var new_elem = document.getElementById(data.table+'_'+(data.x-1)+'_'+data.y)
     if (new_elem != null) {
-      if (new_elem.className == 'untraced') {
+      if (new_elem.className.includes('untraced')) {
         data.x--
-        data.subx += width
-        new_elem.className = 'traced down'
-      } else if (elem.className == 'traced up') {
+        data.subx += parseInt(window.getComputedStyle(new_elem).height)
+        new_elem.className = new_elem.className.replace('untraced', 'traced up')
+      } else if (elem.className.includes('traced down')) {
         data.x--
-        data.subx += width
-        elem.className = 'untraced'
+        data.subx += parseInt(window.getComputedStyle(new_elem).height)
+        elem.className = elem.className.replace('traced down', 'untraced')
       } else {
         data.subx = 0
       }
     }
-  } else if (data.subx > width) {
+  } else if (data.subx > parseInt(window.getComputedStyle(elem).height)) {
     var new_elem = document.getElementById(data.table+'_'+(data.x+1)+'_'+data.y)
+    console.log('90', new_elem)
     if (new_elem != null) {
-      if (new_elem.className == 'untraced') {
+      if (new_elem.className.includes('untraced')) {
         data.x++
-        data.subx -= width
-        new_elem.className = 'traced up'
-      } else if (elem.className == 'traced down') {
+        data.subx -= parseInt(window.getComputedStyle(elem).height)
+        new_elem.className = new_elem.className.replace('untraced', 'traced down')
+        console.log(data.subx)
+      } else if (elem.className.includes('traced up')) {
         data.x++
-        data.subx -= width
-        elem.className = 'untraced'
+        data.subx -= parseInt(window.getComputedStyle(elem).height)
+        console.log(data.subx)
+        elem.className = elem.className.replace('traced up', 'untraced')
       } else {
-        data.subx = width
+        data.subx = parseInt(window.getComputedStyle(elem).height)
       }
     }
   }
   if (data.suby < 0) {
     var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y-1))
     if (new_elem != null) {
-      if (new_elem.className == 'untraced') {
+      if (new_elem.className.includes('untraced')) {
         data.y--
-        data.suby += height
-        new_elem.className = 'traced left'
-      } else if (elem.className == 'traced right') {
+        data.suby += parseInt(window.getComputedStyle(new_elem).width)
+        new_elem.className = new_elem.className.replace('untraced', 'traced left')
+      } else if (elem.className.includes('traced right')) {
         data.y--
-        data.suby += height
-        elem.className = 'untraced'
+        data.suby += parseInt(window.getComputedStyle(new_elem).width)
+        elem.className = elem.className.replace('traced right', 'untraced')
       } else {
         data.suby = 0
       }
     }
-  } else if (data.suby > height) {
+  } else if (data.suby > parseInt(window.getComputedStyle(elem).width)) {
     var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y+1))
     if (new_elem != null) {
-      if (new_elem.className == 'untraced') {
+      if (new_elem.className.includes('untraced')) {
         data.y++
-        data.suby -= height
-        new_elem.className = 'traced right'
-      } else if (elem.className == 'traced left') {
+        data.suby -= parseInt(window.getComputedStyle(elem).width)
+        new_elem.className = new_elem.className.replace('untraced', 'traced right')
+      } else if (elem.className.includes('traced left')) {
         data.y++
-        data.suby -= height
-        elem.className = 'untraced'
+        data.suby -= parseInt(window.getComputedStyle(elem).width)
+        elem.className = elem.className.replace('traced left', 'untraced')
       } else {
-        data.suby = height
+        data.suby = parseInt(window.getComputedStyle(elem).width)
       }
     }
   }

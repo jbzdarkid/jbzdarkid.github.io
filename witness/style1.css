@@ -1,5 +1,25 @@
 .untraced {}
 .traced {fill: #6D4D4A;}
+.center {
+  height: 50px;
+  width: 50px;
+  background: #000000;
+}
+.corner {
+  height: 22px;
+  width: 22px;
+  background: #404040;
+}
+.verti {
+  height: 50px;
+  width: 22px;
+  background: #404040;
+}
+.horiz {
+  height: 22px;
+  width: 50px;
+  background: #404040;
+}
 .line {
   background: gray;
   height: 100%;

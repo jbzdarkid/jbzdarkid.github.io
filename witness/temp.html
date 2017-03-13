@@ -1,12 +1,23 @@
 <html xmlns="http://www.w3.org/2000/xhtml">
   <head>
+    <script type="text/javascript" src="utilities.js"></script>
+    <script type="text/javascript" src="display.js"></script>
     <script type="text/javascript" src="trace.js"></script>
     <link rel="stylesheet" type="text/css" href="style1.css" id="stylesheet">
   </head>
   <body>
-  <table id="meta" cellspacing="0" cellpadding="0"></table>
+  <table id="meta" cellspacing="150px">
+    <tr>
+      <td>
+        <table id="test0" cellspacing="0" cellpadding="0"></table>
+      </td><td>
+        <table id="test1" cellspacing="0" cellpadding="0"></table>
+      </td>
+    </tr>
+  </table>
+
   <script type="text/javascript">
-    var table = document.getElementById('meta')
+    var table = document.getElementById('test0')
     for (var x=0; x<5; x++) {
       var row = table.insertRow(x)
       for (var y=0; y<5; y++) {
@@ -15,25 +26,31 @@
         cell.style.height = '100px'
         cell.className = 'untraced'
         cell.style.background = 'black'
-        cell.id = 'meta'+'_'+x+'_'+y
-        if (x == 0 && y == 0) {
-          var div = document.createElement('div')
-          div.style.height = '100%'
-          div.style.width = '100%'
-          div.onclick = function() {trace(this)}
-          cell.appendChild(div)
-        }
+        cell.id = 'test0'+'_'+x+'_'+y
       }
     }
-    document.getElementById('meta_0_0').appendChild(div)
-    document.getElementById('meta_1_1').className = ''
-    document.getElementById('meta_1_3').className = ''
-    document.getElementById('meta_3_1').className = ''
-    document.getElementById('meta_3_3').className = ''
-    document.getElementById('meta_1_1').style.background = 'white'
-    document.getElementById('meta_1_3').style.background = 'white'
-    document.getElementById('meta_3_1').style.background = 'white'
-    document.getElementById('meta_3_3').style.background = 'white'
+    var div = document.createElement('div')
+    div.style.height = '100%'
+    div.style.width = '100%'
+    div.onclick = function() {trace(this)}
+    document.getElementById('test0_0_0').appendChild(div)
+    document.getElementById('test0_1_1').className = ''
+    document.getElementById('test0_1_3').className = ''
+    document.getElementById('test0_3_1').className = ''
+    document.getElementById('test0_3_3').className = ''
+    document.getElementById('test0_1_1').style.background = 'white'
+    document.getElementById('test0_1_3').style.background = 'white'
+    document.getElementById('test0_3_1').style.background = 'white'
+    document.getElementById('test0_3_3').style.background = 'white'
+
+    var grid = _newGrid(5, 5)
+    var puzzle = {'grid':grid,'start':{'x':4,'y':0},'end':{'x':0,'y':4},'dots':[]}
+    draw(puzzle, 'test1')
+    var div = document.createElement('div')
+    div.style.height = '100%'
+    div.style.width = '100%'
+    div.onclick = function() {trace(this)}
+    document.getElementById('test1_0_0').appendChild(div)
   </script>
   </body>
 </html>

@@ -8,12 +8,14 @@ function draw(puzzle, target='puzzle') {
     var row = table.insertRow(x)
     for (var y=0; y<puzzle.grid[x].length; y++) {
       var cell = row.insertCell(y)
-      cell.height = x%2 == 0 ? 22 : 50
-      cell.width  = y%2 == 0 ? 22 : 50
-      if (x%2 == 1 && y%2 == 1) {
-        cell.style.background = '#000000'
-      } else {
-        cell.style.background = '#404040'
+      if (x%2 == 0 && y%2 == 0) {
+        cell.className = 'corner untraced'
+      } else if (x%2 == 0 && y%2 == 1) {
+        cell.className = 'horiz untraced'
+      } else if (x%2 == 1 && y%2 == 0) {
+        cell.className = 'verti untraced'
+      } else if (x%2 == 1 && y%2 == 1) {
+        cell.className = 'center'
       }
       if (x == 0 && y == 0) {
         cell.style.borderTopLeftRadius = '10px'
