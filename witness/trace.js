@@ -9,7 +9,7 @@ function trace(elem) {
     'subx':parseInt(window.getComputedStyle(parent).width)/2,
     'suby':parseInt(window.getComputedStyle(parent).height)/2,
     }
-  elem.parentNode.className = 'traced'
+  parent.className = parent.className.replace('untraced', 'traced')
 
   if (document.pointerLockElement == null) {
     elem.requestPointerLock()
@@ -36,116 +36,151 @@ function lockChange() {
   }
 }
 
+function _draw(elem, subx, suby) {
+  var width = parseInt(window.getComputedStyle(elem).width)
+  var height = parseInt(window.getComputedStyle(elem).height)
+  var svg = elem.getElementsByTagName('svg')[0]
+  if (svg == undefined) {
+    svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    svg.setAttribute('viewBox', '0 0 '+width+' '+height)
+    svg.style.zIndex = 10
+    svg.className = 'traced'
+  }
+  var rect = svg.getElementsByTagName('rect')[0]
+  if (rect == undefined) {
+    rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+  }
+  var circ = svg.getElementsByTagName('circle')[0]
+  if (circ == undefined) {
+    circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+    circ.style.r = 11
+    circ.style.fill = '#A69191'
+    circ.style.stroke = 'black'
+    circ.style.strokeOpacity = '0.3'
+  }
+  if (elem.className.includes('traced right')) {
+    rect.style.height = height
+    rect.style.width = suby
+    circ.style.cx = suby
+    circ.style.cy = height/2
+  } else if (elem.className.includes('traced left')) {
+    rect.style.height = height
+    rect.style.width = width - suby
+    rect.setAttribute('transform', 'translate('+suby+', 0)')
+    circ.style.cx = suby
+    circ.style.cy = height/2
+  } else if (elem.className.includes('traced down')) {
+    rect.style.height = subx
+    rect.style.width = width
+    circ.style.cx = width/2
+    circ.style.cy = subx
+  } else if (elem.className.includes('traced up')) {
+    rect.style.height = height - subx
+    rect.style.width = width
+    rect.setAttribute('transform', 'translate(0, '+subx+')')
+    circ.style.cx = width/2
+    circ.style.cy = subx
+  }
+  svg.appendChild(rect)
+  svg.appendChild(circ)
+  elem.appendChild(svg)
+}
+
 function onMouseMove(e) {
   var sens = 0.3
   // Caution: reversed
   data.subx += sens*(e.movementY || e.mozMovementY || e.webkitMovementY || 0)
   data.suby += sens*(e.movementX || e.mozMovementX || e.webkitMovementX || 0)
-  elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
+  var elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
 
-  if (elem.className != 'traced') {
-    try {
-      elem.childNodes[0].remove()
-    } catch (e) {}
-    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-    svg.setAttribute('viewBox', '0 0 '+width+' '+height)
-    svg.className = 'traced'
-    var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-    var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-    circ.style.r = '50px'
-    if (elem.className.includes('traced right')) {
-      rect.style.height = height
-      rect.style.width = data.suby
-      // circ.style.cx = data.suby
-      // circ.style.cy = height/2
-    } else if (elem.className.includes('traced left')) {
-      rect.style.height = height
-      rect.style.width = width - data.suby
-      rect.setAttribute('transform', 'translate('+data.suby+', 0)')
-      // circ.style.cx = data.suby
-      // circ.style.cy = height/2
-    } else if (elem.className.includes('traced down')) {
-      rect.style.height = data.subx
-      rect.style.width = width
-      // circ.style.cx = width/2
-      // circ.style.cy = data.subx
-    } else if (elem.className.includes('traced up')) {
-      rect.style.height = height - data.subx
-      rect.style.width = width
-      rect.setAttribute('transform', 'translate(0, '+data.subx+')')
-      // circ.style.cx = width/2
-      // circ.style.cy = data.subx
-    }
-    svg.appendChild(rect)
-    // svg.appendChild(circ)
-    elem.appendChild(svg)
-  }
-  if (data.subx < 0) {
-    console.log('Went up over boundary', data.subx)
+  _draw(elem, data.subx, data.suby)
+
+  if (data.subx < 11) { // Moving up
     var new_elem = document.getElementById(data.table+'_'+(data.x-1)+'_'+data.y)
     if (new_elem != null) {
-      if (new_elem.className.includes('untraced')) {
+      var new_height = parseInt(window.getComputedStyle(new_elem).height)
+      if (new_elem.className.includes('untraced')) { // Trace new path
+        console.log('Traced new path up')
         data.x--
-        data.subx += parseInt(window.getComputedStyle(new_elem).height)
+        data.subx += new_height
         new_elem.className = new_elem.className.replace('untraced', 'traced up')
-      } else if (elem.className.includes('traced down')) {
+        _draw(new_elem, data.subx, data.suby)
+      } else if (elem.className.includes('traced down')) { // Retrace path
         data.x--
-        data.subx += parseInt(window.getComputedStyle(new_elem).height)
+        data.subx += new_height
         elem.className = elem.className.replace('traced down', 'untraced')
-      } else {
-        data.subx = 0
+        _draw(new_elem, data.subx, data.suby)
+      } else { // Ran into another line
+        data.subx = 12
       }
+    } else { // Ran into the edge
+      data.subx = 12
     }
-  } else if (data.subx > parseInt(window.getComputedStyle(elem).height)) {
+  } else if (data.subx > height-11) { // Moving down
     var new_elem = document.getElementById(data.table+'_'+(data.x+1)+'_'+data.y)
-    console.log('90', new_elem)
     if (new_elem != null) {
-      if (new_elem.className.includes('untraced')) {
+      if (new_elem.className.includes('untraced')) { // Traced new path
+        console.log('Traced new path down')
         data.x++
-        data.subx -= parseInt(window.getComputedStyle(elem).height)
+        data.subx -= height
         new_elem.className = new_elem.className.replace('untraced', 'traced down')
-        console.log(data.subx)
-      } else if (elem.className.includes('traced up')) {
+        _draw(new_elem, data.subx, data.suby)
+      } else if (elem.className.includes('traced up')) { // Retraced path
         data.x++
-        data.subx -= parseInt(window.getComputedStyle(elem).height)
-        console.log(data.subx)
+        data.subx -= height
         elem.className = elem.className.replace('traced up', 'untraced')
-      } else {
-        data.subx = parseInt(window.getComputedStyle(elem).height)
+        _draw(elem, data.subx, data.suby)
+      } else { // Ran into another line
+        data.subx = height-12
       }
+    } else { // Ran into the edge
+      data.subx = height-12
     }
   }
-  if (data.suby < 0) {
+  if (data.suby < 11) { // Moving left
     var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y-1))
     if (new_elem != null) {
-      if (new_elem.className.includes('untraced')) {
+      var new_width = parseInt(window.getComputedStyle(new_elem).width)
+      if (new_elem.className.includes('untraced')) { // Traced new path
         data.y--
-        data.suby += parseInt(window.getComputedStyle(new_elem).width)
+        data.suby += new_width
         new_elem.className = new_elem.className.replace('untraced', 'traced left')
-      } else if (elem.className.includes('traced right')) {
+        _draw(new_elem, data.subx, data.suby)
+      } else if (elem.className.includes('traced right')) { // Retraced path
         data.y--
-        data.suby += parseInt(window.getComputedStyle(new_elem).width)
+        data.suby += new_width
         elem.className = elem.className.replace('traced right', 'untraced')
-      } else {
-        data.suby = 0
+        _draw(new_elem, data.subx, data.suby)
+      } else { // Ran into another line
+        data.suby = 12
       }
+    } else { // Ran into the edge
+      data.suby = 12
     }
-  } else if (data.suby > parseInt(window.getComputedStyle(elem).width)) {
+  } else if (data.suby > width-11) { // Moving right
     var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y+1))
     if (new_elem != null) {
-      if (new_elem.className.includes('untraced')) {
+      if (new_elem.className.includes('untraced')) { // Traced new path
+        console.log('Traced right')
         data.y++
-        data.suby -= parseInt(window.getComputedStyle(elem).width)
+        data.suby -= width
         new_elem.className = new_elem.className.replace('untraced', 'traced right')
-      } else if (elem.className.includes('traced left')) {
+        _draw(new_elem, data.subx, data.suby)
+      } else if (elem.className.includes('traced left')) { // Retraced path
+        console.log('Reraced right')
         data.y++
-        data.suby -= parseInt(window.getComputedStyle(elem).width)
+        data.suby -= width
         elem.className = elem.className.replace('traced left', 'untraced')
-      } else {
-        data.suby = parseInt(window.getComputedStyle(elem).width)
+        _draw(new_elem, data.subx, data.suby)
+      } else { // Ran into another line
+        console.log('Collided right')
+        data.suby = width-12
       }
+    } else { // Ran into the edge
+      console.log('Collided right')
+      data.suby = width-12
     }
   }
 }
