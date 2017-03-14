@@ -53,6 +53,7 @@ function draw(puzzle, target='puzzle') {
         }
       }
       if (x == puzzle.start.x && y == puzzle.start.y) {
+        cell.className = 'start untraced'
         div.className = 'start line'
         div.onclick = function() {trace(this)}
       } else if (x == puzzle.end.x && y == puzzle.end.y) {
@@ -144,7 +145,7 @@ function draw(puzzle, target='puzzle') {
         }
         div.appendChild(svg)
       }
-      cell.appendChild(div)
+      // cell.appendChild(div)
     }
   }
   for (var dot of puzzle.dots) {

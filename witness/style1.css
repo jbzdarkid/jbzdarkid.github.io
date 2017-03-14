@@ -26,13 +26,16 @@
   width: 100%;
 }
 .start {
-  position: relative;
+  background: #666666;
+  height: 22px;
+  width: 22px;
+/*   position: relative;
   height: 250%;
   width: 250%;
   left: -75%;
   z-index: 10;
   border-radius: 50px;
-}
+ */}
 .end-left {
   position: relative;
   width: 200%;
