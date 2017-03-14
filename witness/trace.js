@@ -36,7 +36,7 @@ function lockChange() {
   }
 }
 
-function _draw(elem, subx, suby) {
+function _draw(elem, subx, suby, draw_rect) {
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
   var svg = elem.getElementsByTagName('svg')[0]
@@ -49,6 +49,7 @@ function _draw(elem, subx, suby) {
   var rect = svg.getElementsByTagName('rect')[0]
   if (rect == undefined) {
     rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+    rect.style.fill = '#6D4D4A'
   }
   var circ = svg.getElementsByTagName('circle')[0]
   if (circ == undefined) {
@@ -58,30 +59,28 @@ function _draw(elem, subx, suby) {
     circ.style.stroke = 'black'
     circ.style.strokeOpacity = '0.3'
   }
-  if (elem.className.includes('traced right')) {
-    rect.style.height = height
-    rect.style.width = suby
-    circ.style.cx = suby
-    circ.style.cy = height/2
-  } else if (elem.className.includes('traced left')) {
-    rect.style.height = height
-    rect.style.width = width - suby
-    rect.setAttribute('transform', 'translate('+suby+', 0)')
-    circ.style.cx = suby
-    circ.style.cy = height/2
-  } else if (elem.className.includes('traced down')) {
-    rect.style.height = subx
-    rect.style.width = width
-    circ.style.cx = width/2
-    circ.style.cy = subx
-  } else if (elem.className.includes('traced up')) {
-    rect.style.height = height - subx
-    rect.style.width = width
-    rect.setAttribute('transform', 'translate(0, '+subx+')')
-    circ.style.cx = width/2
-    circ.style.cy = subx
+  circ.style.cx = suby
+  circ.style.cy = subx
+  if (draw_rect) {
+    rect.style.height = 0
+    rect.style.width = 0
+    if (elem.className.includes('traced right')) {
+      rect.style.height = height
+      rect.style.width = suby
+    } else if (elem.className.includes('traced left')) {
+      rect.style.height = height
+      rect.style.width = width - suby
+      rect.setAttribute('transform', 'translate('+suby+', 0)')
+    } else if (elem.className.includes('traced down')) {
+      rect.style.height = subx
+      rect.style.width = width
+    } else if (elem.className.includes('traced up')) {
+      rect.style.height = height - subx
+      rect.style.width = width
+      rect.setAttribute('transform', 'translate(0, '+subx+')')
+    }
+    svg.appendChild(rect)
   }
-  svg.appendChild(rect)
   svg.appendChild(circ)
   elem.appendChild(svg)
 }
