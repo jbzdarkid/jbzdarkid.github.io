@@ -47,8 +47,13 @@
     var puzzle = {'grid':grid,'start':{'x':0,'y':0},'end':{'x':4,'y':4},'dots':[]}
     draw(puzzle, 'test1')
     var div = document.createElement('div')
-    div.style.height = '100%'
-    div.style.width = '100%'
+    div.style.position = 'absolute'
+    div.style.width = '44px'
+    div.style.height = '44px'
+    div.style.top = '-11px'
+    div.style.left = '-11px'
+    div.style.borderRadius = '50px'
+    div.className = 'corner'
     div.onclick = function() {trace(this)}
     document.getElementById('test1_0_0').appendChild(div)
   </script>
