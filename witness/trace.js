@@ -145,13 +145,11 @@ function onMouseMove(e) {
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
 
-  // FIXME: Can I just use this for all collision detection? If so, eliminates the need for dx?
-  // Calculates the distance to the edge in each direction
   if (elem.className.includes('corner')) {
+    // Calculates the distance to the edge in each direction
     var dist_x = (data.subx < width/2) ? data.subx : width - data.subx
     var dist_y = (data.suby < height/2) ? data.suby : height - data.suby
-    // Reduce the larger distance to 0
-    if (dist_x > dist_y) { // FIXME: Reverse?
+    if (dist_x > dist_y) { // Reduce the larger distance to the edge
       if (data.subx - 11 < 0) data.subx = 11
       if (data.subx + 11 > width) data.subx = width - 11
     } else {
