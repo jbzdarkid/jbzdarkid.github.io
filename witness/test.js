@@ -4,7 +4,7 @@ var tests = [
     grid[1][1] = {'type':'nega', 'color':'white'}
     grid[1][3] = {'type':'square', 'color':'red'}
     grid[1][5] = {'type':'square', 'color':'blue'}
-    return {'grid':grid,'start':{'x':2,'y':0},'end':{'x':2,'y':6},'dots':[]}
+    return grid
   }, function() {
     var grid = _newGrid(7, 7)
     grid[1][5] = {'type':'nega', 'color':'white'}
@@ -12,7 +12,7 @@ var tests = [
     grid[1][1] = {'type':'square', 'color':'red'}
     grid[1][3] = {'type':'square', 'color':'blue'}
     grid[5][3] = {'type':'poly', 'shape':'1.0.0', 'color':'yellow'}
-    return {'grid':grid,'start':{'x':6,'y':0},'end':{'x':0,'y':0},'dots':[]}
+    return grid
   }, function () {
     var grid = _newGrid(7, 7)
     grid[1][1] = {'type':'nega', 'color':'white'}
@@ -20,7 +20,7 @@ var tests = [
     grid[3][1] = {'type':'square', 'color':'red'}
     grid[3][3] = {'type':'square', 'color':'blue'}
     grid[3][5] = {'type':'square', 'color':'blue'}
-    return {'grid':grid,'start':{'x':6,'y':0},'end':{'x':6,'y':6},'dots':[]}
+    return grid
   }, function () {
     var grid = _newGrid(7, 7)
     grid[1][1] = {'type':'nega', 'color':'white'}
@@ -28,54 +28,54 @@ var tests = [
     grid[3][1] = {'type':'square', 'color':'red'}
     grid[3][3] = {'type':'square', 'color':'blue'}
     grid[3][5] = {'type':'square', 'color':'blue'}
-    return {'grid':grid,'start':{'x':6,'y':0},'end':{'x':6,'y':6},'dots':[{'x':2,'y':2}]}
+    return grid
   }, function () {
     var grid = _newGrid(7, 7)
     grid[1][1] = {'type':'poly', 'shape':'1.0.0', 'color':'yellow'}
     grid[1][3] = {'type':'poly', 'shape':'2.0.0', 'color':'yellow'}
-    return {'grid':grid,'start':{'x':6,'y':0},'end':{'x':6,'y':6},'dots':[]}
+    return grid
   }, function () {
     var grid = _newGrid(7, 7)
     grid[1][5] = {'type':'poly', 'shape':'3.0.0', 'color':'yellow'}
     grid[3][3] = {'type':'poly', 'shape':'3.1.1', 'color':'yellow'}
-    return {'grid':grid,'start':{'x':6,'y':0},'end':{'x':6,'y':6},'dots':[]}
+    return grid
   }, function () {
     var grid = _newGrid(7, 7)
     grid[1][1] = {'type':'nega', 'color':'white'}
     grid[1][3] = {'type':'poly', 'shape':'3.1.2', 'color':'yellow'}
     grid[3][1] = {'type':'poly', 'shape':'3.1.3', 'color':'yellow'}
-    return {'grid':grid,'start':{'x':6,'y':0},'end':{'x':6,'y':6},'dots':[]}
+    return grid
   }, function () {
     var grid = _newGrid(5, 5)
     grid[1][1] = {'type':'star', 'color':'red'}
     grid[1][3] = {'type':'star', 'color':'blue'}
     grid[3][1] = {'type':'star', 'color':'red'}
     grid[3][3] = {'type':'star', 'color':'blue'}
-    return {'grid':grid,'start':{'x':4,'y':2},'end':{'x':0,'y':2},'dots':[]}
+    return grid
   }, function () {
     var grid = _newGrid(5, 5)
     grid[1][1] = {'type':'star', 'color':'red'}
     grid[1][3] = {'type':'square', 'color':'red'}
     grid[3][1] = {'type':'square', 'color':'red'}
     grid[3][3] = {'type':'star', 'color':'red'}
-    return {'grid':grid,'start':{'x':4,'y':2},'end':{'x':0,'y':2},'dots':[]}
+    return grid
   }, function () {
     var grid = _newGrid(5, 5)
     grid[1][1] = {'type':'star', 'color':'red'}
     grid[1][3] = {'type':'poly', 'shape':'2.0.0', 'color':'red'}
-    return {'grid':grid,'start':{'x':0,'y':0},'end':{'x':4,'y':4},'dots':[]}
+    return grid
   }, function() {
     var grid = _newGrid(5, 7)
     grid[1][1] = {'type':'poly', 'shape':'3.0.0', 'color':'yellow'}
     grid[3][1] = {'type':'poly', 'shape':'3.0.0', 'color':'yellow'}
-    return {'grid':grid,'start':{'x':2,'y':2},'end':{'x':0,'y':6},'dots':[]}
+    return grid
   }, function() {
     var grid = _newGrid(5, 5)
     grid[1][1] = {'type':'square', 'color':'red'}
     grid[1][3] = {'type':'square', 'color':'blue'}
     grid[3][1] = {'type':'square', 'color':'blue'}
     grid[3][3] = {'type':'square', 'color':'red'}
-    return {'grid':grid,'start':{'x':0,'y':0},'end':{'x':4,'y':4},'dots':[]}
+    return grid
   }
 ]
 
@@ -84,13 +84,13 @@ function loadTests() {
   for (var i=0; i<tests.length; i++) {
     try {
       var solutions = []
-      var puzzle = tests[i]()
+      var puzzle = {'grid':tests[i]()}
+      puzzle['start'] = {'x':puzzle.grid.length-1, 'y':0}
+      puzzle['end'] = {'x':0, 'y':puzzle.grid[0].length-1}
+      console.log(puzzle)
+      puzzle['dots'] = []
       solve(puzzle, puzzle.start, solutions)
-      if (solutions.length > 0) {
-        draw(solutions[0], 'test'+i)
-      } else {
-        draw(puzzle, 'test'+i)
-      }
+      draw(puzzle, 'test'+i)
     } catch (e) {
       document.getElementById('test'+i).innerHTML = e.stack
       continue

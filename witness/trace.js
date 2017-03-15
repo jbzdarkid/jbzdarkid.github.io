@@ -16,10 +16,10 @@ function trace(elem) {
     for (var cell of document.getElementsByTagName('td')) {
       cell.className = cell.className.split('-')[0]
     }
-    var svgs = document.getElementsByTagName('svg')
-    while (svgs.length > 0) {
-      svgs[0].remove()
-    }
+      // var svgs = document.getElementsByTagName('svg')
+      // while (svgs.length > 0) {
+      //   svgs[0].remove()
+      // }
 
     elem.requestPointerLock()
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
@@ -60,6 +60,7 @@ function lockChange() {
 function _draw(elem, subx, suby, draw_rect) {
   if (elem == null) return
   if (elem.className.includes('start')) return
+  if (!elem.className.includes('trace')) return
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
   var svg = elem.getElementsByTagName('svg')[0]
@@ -143,7 +144,8 @@ function onMouseMove(e) {
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
 
-  if (elem.className.includes('corner')) {
+  // Collision detection
+  if (elem.className.includes('corner')) { // Corner collision
     // Calculates the distance to the edge in each direction
     var dist_x = (data.subx < width/2) ? data.subx : width - data.subx
     var dist_y = (data.suby < height/2) ? data.suby : height - data.suby
@@ -155,8 +157,7 @@ function onMouseMove(e) {
       if (data.suby + 11 > height) data.suby = height - 11
     }
   }
-
-  // Collision detection
+  // Generic collision
   if (data.subx - 11 < 0) {
     var new_elem = document.getElementById(data.table+'_'+(data.x-1)+'_'+data.y)
     if (new_elem == null) {
