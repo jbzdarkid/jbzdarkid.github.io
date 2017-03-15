@@ -31,35 +31,11 @@
   height: 22px;
   width: 22px;
 }
-.end-left {
+.end {
+  background: #404040;
   position: relative;
-  width: 200%;
-  left: -100%;
-  z-index: 10;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-}
-.end-right {
-  position: relative;
-  width: 200%;
-  left: 0%;
-  z-index: 10;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-}
-.end-top {
-  position: relative;
-  height: 200%;
-  top: -50%;
-  z-index: 10;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-}
-.end-bottom {
-  position: relative;
-  height: 200%;
-  top: 50%;
-  z-index: 10;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+  height: 22px;
+  width: 22px;
+  border-top-right-radius: 11px;
+  border-bottom-right-radius: 11px;
 }

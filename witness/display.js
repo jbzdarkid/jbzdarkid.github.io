@@ -18,41 +18,20 @@ function draw(puzzle, target='puzzle') {
         cell.className = 'center'
       }
       if (x == 0 && y == 0) {
-        cell.style.borderTopLeftRadius = '10px'
+        cell.style.borderTopLeftRadius = '11px'
       } else if (x == 0 && y == puzzle.grid[x].length-1) {
-        cell.style.borderTopRightRadius = '10px'
+        cell.style.borderTopRightRadius = '11px'
       } else if (x == puzzle.grid.length-1 && y == 0) {
-        cell.style.borderBottomLeftRadius = '10px'
+        cell.style.borderBottomLeftRadius = '11px'
       } else if (x == puzzle.grid.length-1 && y == puzzle.grid[x].length-1) {
-        cell.style.borderBottomRightRadius = '10px'
+        cell.style.borderBottomRightRadius = '11px'
       }
       cell.align = 'center'
       cell.id = target+'_'+y+'_'+x
 
-      var div = document.createElement('div')
-      div.align = 'center'
-      if (puzzle.grid[x][y] > 0) {
-        div.className = 'line'
-        if (puzzle.grid[x][y] == 2) {
-          if (x > 0 && puzzle.grid[x-1][y] == 1) {
-            if (y > 0 && puzzle.grid[x][y-1] == 1) {
-              div.style.borderBottomRightRadius = '10px'
-            }
-            if (y < puzzle.grid[x].length-1 && puzzle.grid[x][y+1] == 1) {
-              div.style.borderBottomLeftRadius = '10px'
-            }
-          }
-          if (x < puzzle.grid.length-1 && puzzle.grid[x+1][y] == 1) {
-            if (y > 0 && puzzle.grid[x][y-1] == 1) {
-              div.style.borderTopRightRadius = '10px'
-            }
-            if (y < puzzle.grid[x].length-1 && puzzle.grid[x][y+1] == 1) {
-              div.style.borderTopLeftRadius = '10px'
-            }
-          }
-        }
-      }
       if (x == puzzle.start.x && y == puzzle.start.y) {
+        var div = document.createElement('div')
+        div.align = 'center'
         cell.className = 'start trace'
         var div = document.createElement('div')
         div.style.position = 'absolute'
@@ -65,35 +44,10 @@ function draw(puzzle, target='puzzle') {
         div.onclick = function() {trace(this)}
         cell.appendChild(div)
       } else if (x == puzzle.end.x && y == puzzle.end.y) {
-        if (y == 0) {
-          div.className = 'end end-left line'
-          if (x > 0 && puzzle.grid[x-1][y] == 1) {
-            div.style.borderBottomRightRadius = '20px'
-          } else if (x < puzzle.grid.length-1 && puzzle.grid[x+1][y] == 1) {
-            div.style.borderTopRightRadius = '20px'
-          }
-        } else if (y == puzzle.grid[x].length-1) {
-          div.className = 'end end-right line'
-          if (x > 0 && puzzle.grid[x-1][y] == 1) {
-            div.style.borderBottomLeftRadius = '20px'
-          } else if (x < puzzle.grid.length-1 && puzzle.grid[x+1][y] == 1) {
-            div.style.borderTopLeftRadius = '20px'
-          }
-        } else if (x == 0) {
-          div.className = 'end end-top line'
-          if (y > 0 && puzzle.grid[x][y-1] == 1) {
-            div.style.borderBottomRightRadius = '20px'
-          } else if (y < puzzle.grid[x].length-1 && puzzle.grid[x][y+1] == 1) {
-            div.style.borderBottomLeftRadius = '20px'
-          }
-        } else if (x == puzzle.grid.length-1) {
-          div.className = 'end end-bottom line'
-          if (y > 0 && puzzle.grid[x][y-1] == 1) {
-            div.style.borderTopRightRadius = '20px'
-          } else if (y < puzzle.grid[x].length-1 && puzzle.grid[x][y+1] == 1) {
-            div.style.borderTopLeftRadius = '20px'
-          }
-        }
+        cell.style.borderRadius = 0
+        var end = row.insertCell(row.length)
+        end.className = 'end trace'
+        end.id = target+'_'+(y+1)+'_'+x
       } else if (puzzle.grid[x][y].type == 'square') {
         var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('viewBox', '0 0 50 50')
@@ -104,7 +58,7 @@ function draw(puzzle, target='puzzle') {
         rect.style.rx = '5px'
         rect.style.fill = puzzle.grid[x][y].color
         svg.appendChild(rect)
-        div.appendChild(svg)
+        cell.appendChild(svg)
       } else if (puzzle.grid[x][y].type == 'star') {
         // FIXME: Stars are actually canted in slightly
         var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -117,7 +71,7 @@ function draw(puzzle, target='puzzle') {
           rect.style.fill = puzzle.grid[x][y].color
           svg.appendChild(rect)
         }
-        div.appendChild(svg)
+        cell.appendChild(svg)
       } else if (puzzle.grid[x][y].type == 'poly') {
         var bounds = {'xmin':0, 'xmax':0, 'ymin':0, 'ymax':0}
         for (var pos of POLY_DICT[puzzle.grid[x][y].shape]) {
@@ -134,12 +88,12 @@ function draw(puzzle, target='puzzle') {
         for (var pos of POLY_DICT[puzzle.grid[x][y].shape]) {
           var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
           rect.setAttribute('transform', 'translate('+(yoffset+pos.y*7)+', '+(xoffset+pos.x*7)+')')
-          rect.style.height = '10px'
-          rect.style.width = '10px'
+          rect.style.height = '11px'
+          rect.style.width = '11px'
           rect.style.fill = puzzle.grid[x][y].color
           svg.appendChild(rect)
         }
-        div.appendChild(svg)
+        cell.appendChild(svg)
       } else if (puzzle.grid[x][y].type == 'nega') {
         var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('viewBox', '0 0 50 50')
@@ -151,14 +105,12 @@ function draw(puzzle, target='puzzle') {
           rect.style.fill = puzzle.grid[x][y].color
           svg.appendChild(rect)
         }
-        div.appendChild(svg)
+        cell.appendChild(svg)
       }
-      // cell.appendChild(div)
     }
   }
   for (var dot of puzzle.dots) {
     var cell = document.getElementById(target+'_'+dot.y+'_'+dot.x)
-    var div = cell.childNodes[0]
 
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('viewBox', '0 0 50 50')
@@ -166,12 +118,9 @@ function draw(puzzle, target='puzzle') {
     svg.style.height = '20px'
     var hex = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
     hex.setAttribute('points', '11 19, 22 0, 11 -19, -11 -19, -22 0, -11 19')
-    // hex.setAttribute('points', '11 19, 22 0, 11 -19, -11 -19, -22 0, -11 19')
-    hex.setAttribute('transform', 'translate(25, 25)')
+    hex.setAttribute('transform', 'translate(27, 27)')
     hex.style.color = 'black'
     svg.appendChild(hex)
-    div.appendChild(svg)
-    // div.innerHTML = '\u2b22'
-    // div.style.fontSize = '16px'
+    cell.appendChild(svg)
   }
 }
