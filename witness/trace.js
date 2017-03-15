@@ -141,7 +141,7 @@ function onMouseMove(e) {
   var dy = e.movementY || e.mozMovementY || e.webkitMovementY || 0
   data.subx += dx*sens
   data.suby += dy*sens
-  var elem = document.getElementById(data.table+'_'+data.y+'_'+data.x)
+  var elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
 
@@ -160,14 +160,14 @@ function onMouseMove(e) {
 
   // Collision detection
   if (dx < 0 && data.subx - 11 < 0) {
-    var new_elem = document.getElementById(data.table+'_'+data.y+'_'+(data.x-1))
+    var new_elem = document.getElementById(data.table+'_'+(data.x-1)+'_'+data.y)
     if (new_elem == null) {
       data.subx = 11
     } else if (!(new_elem.className.endsWith('trace') ||elem.className.endsWith('trace-r'))) {
       data.subx = 11
     }
   } else if (dx > 0 && data.subx + 11 > width) {
-    var new_elem = document.getElementById(data.table+'_'+data.y+'_'+(data.x+1))
+    var new_elem = document.getElementById(data.table+'_'+(data.x+1)+'_'+data.y)
     if (new_elem == null) {
       data.subx = width - 11
     } else if (!(new_elem.className.endsWith('trace') ||elem.className.endsWith('trace-l'))) {
@@ -175,14 +175,14 @@ function onMouseMove(e) {
     }
   }
   if (dy < 0 && data.suby - 11 < 0) {
-    var new_elem = document.getElementById(data.table+'_'+(data.y-1)+'_'+data.x)
+    var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y-1))
     if (new_elem == null) {
       data.suby = 11
     } else if (!(new_elem.className.endsWith('trace') ||elem.className.endsWith('trace-d'))) {
       data.suby = 11
     }
   } else if (dy > 0 && data.suby + 11 > height) {
-    var new_elem = document.getElementById(data.table+'_'+(data.y+1)+'_'+data.x)
+    var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y+1))
     if (new_elem == null) {
       data.suby = height - 11
     } else if (!(new_elem.className.endsWith('trace') ||elem.className.endsWith('trace-u'))) {
@@ -193,7 +193,7 @@ function onMouseMove(e) {
   // Redraw all elements near the cursor
   for (var x=-1; x<=1; x++) {
     for (var y=-1; y<=1; y++) {
-      var temp_elem = document.getElementById(data.table+'_'+(data.y+y)+'_'+(data.x+x))
+      var temp_elem = document.getElementById(data.table+'_'+(data.x+x)+'_'+(data.y+y))
       if (temp_elem == null) continue
       var temp_width = width
       var temp_height = height
@@ -213,7 +213,7 @@ function onMouseMove(e) {
 
   // Generic movement
   if (data.subx < 0) { // Moving left
-    var new_elem = document.getElementById(data.table+'_'+data.y+'_'+(data.x-1))
+    var new_elem = document.getElementById(data.table+'_'+(data.x-1)+'_'+data.y)
     if (new_elem != null) {
       var new_width = parseInt(window.getComputedStyle(new_elem).width)
       if (new_elem.className.endsWith('trace')) { // Traced new path
@@ -229,7 +229,7 @@ function onMouseMove(e) {
       }
     }
   } else if (data.subx > width) { // Moving right
-    var new_elem = document.getElementById(data.table+'_'+data.y+'_'+(data.x+1))
+    var new_elem = document.getElementById(data.table+'_'+(data.x+1)+'_'+data.y)
     if (new_elem != null) {
       if (new_elem.className.endsWith('trace')) { // Traced new path
         data.x++
@@ -245,7 +245,7 @@ function onMouseMove(e) {
     }
   }
   if (data.suby < 0) { // Moving up
-    var new_elem = document.getElementById(data.table+'_'+(data.y-1)+'_'+data.x)
+    var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y-1))
     if (new_elem != null) {
       var new_height = parseInt(window.getComputedStyle(new_elem).height)
       if (new_elem.className.endsWith('trace')) { // Trace new path
@@ -261,7 +261,7 @@ function onMouseMove(e) {
       }
     }
   } else if (data.suby > height) { // Moving down
-    var new_elem = document.getElementById(data.table+'_'+(data.y+1)+'_'+data.x)
+    var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y+1))
     if (new_elem != null) {
       if (new_elem.className.endsWith('trace')) { // Traced new path
         data.y++

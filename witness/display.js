@@ -27,7 +27,7 @@ function draw(puzzle, target='puzzle') {
         cell.style.borderBottomRightRadius = '10px'
       }
       cell.align = 'center'
-      cell.id = target+'_'+x+'_'+y
+      cell.id = target+'_'+y+'_'+x
 
       var div = document.createElement('div')
       div.align = 'center'
@@ -157,7 +157,7 @@ function draw(puzzle, target='puzzle') {
     }
   }
   for (var dot of puzzle.dots) {
-    var cell = document.getElementById(target+'_'+dot.x+'_'+dot.y)
+    var cell = document.getElementById(target+'_'+dot.y+'_'+dot.x)
     var div = cell.childNodes[0]
 
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
