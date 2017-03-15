@@ -1,18 +1,44 @@
 var data
 function trace(elem) {
   var parent = elem.parentNode
-  console.log(parent)
+  var width = parseInt(window.getComputedStyle(parent).width)
+  var height = parseInt(window.getComputedStyle(parent).height)
   data = {
     'table':parent.id.split('_')[0],
     'x':parseInt(parent.id.split('_')[1]),
     'y':parseInt(parent.id.split('_')[2]),
-    'subx':parseInt(window.getComputedStyle(parent).width),
-    'suby':parseInt(window.getComputedStyle(parent).height),
+    'subx':width/2,
+    'suby':height/2,
     }
-  parent.className = parent.className.replace('untraced', 'traced')
 
   if (document.pointerLockElement == null) {
+    // These aren't really arrays, they live update during iteration
+    for (var cell of document.getElementsByTagName('td')) {
+      cell.className = cell.className.split('-')[0]
+    }
+    var svgs = document.getElementsByTagName('svg')
+    while (svgs.length > 0) {
+      svgs[0].remove()
+    }
+
     elem.requestPointerLock()
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    svg.setAttribute('viewBox', '0 0 '+width+' '+height)
+    svg.style.zIndex = 10
+    var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+    circ.style.cx = '11px'
+    circ.style.cy = '11px'
+    circ.style.border = '0px'
+    circ.style.fill = '#6D4D4A'
+    var anim = document.createElementNS('http://www.w3.org/2000/svg', 'animate')
+    anim.setAttribute('attributeName', 'r')
+    anim.setAttribute('from', '0')
+    anim.setAttribute('to', '11')
+    anim.setAttribute('dur', '0.2s')
+    setTimeout(function () {circ.style.r = '11px'}, 201)
+    circ.appendChild(anim)
+    svg.appendChild(circ)
+    elem.appendChild(svg)
   } else {
     document.exitPointerLock()
   }
@@ -25,11 +51,6 @@ function lockChange() {
   if (document.pointerLockElement == null) {
     console.log('Cursor release requested')
     document.removeEventListener("mousemove", onMouseMove, false)
-    // This isn't really an array, it live updates during iteration
-    // var traced_elems = document.getElementsByClassName('traced')
-    // while (traced_elems.length > 0) {
-    //   traced_elems[0].className = traced_elems[0].className.replace('traced (left|right|up|down)', 'untraced')
-    // }
   } else {
     console.log('Cursor lock requested')
     document.addEventListener("mousemove", onMouseMove, false)
@@ -38,6 +59,7 @@ function lockChange() {
 
 function _draw(elem, subx, suby, draw_rect) {
   if (elem == null) return
+  if (elem.className.includes('start')) return
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
   var svg = elem.getElementsByTagName('svg')[0]
@@ -45,7 +67,6 @@ function _draw(elem, subx, suby, draw_rect) {
     svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     svg.setAttribute('viewBox', '0 0 '+width+' '+height)
     svg.style.zIndex = 10
-    svg.className = 'traced'
   }
   var rect = svg.getElementsByTagName('rect')[0]
   if (rect == undefined) {
@@ -65,20 +86,48 @@ function _draw(elem, subx, suby, draw_rect) {
   if (draw_rect) {
     rect.style.height = 0
     rect.style.width = 0
-    if (elem.className.includes('traced right')) {
+    rect.style.rx = 0
+    rect.setAttribute('transform', '')
+
+    var enter_dir = elem.className.split('-')[1]
+    var exit_dir = elem.className.split('-')[2]
+    if (enter_dir == null) {
+      // Never entered this segment, do nothing
+    } else if (exit_dir == null) {
+      // Still in this segment, draw a partial
+      if (enter_dir == 'r') {
+        rect.style.height = height
+        rect.style.width = suby
+      } else if (enter_dir == 'l') {
+        rect.style.height = height
+        rect.style.width = width - suby
+        rect.setAttribute('transform', 'translate('+suby+', 0)')
+      } else if (enter_dir == 'd') {
+        rect.style.height = subx
+        rect.style.width = width
+      } else if (enter_dir == 'u') {
+        rect.style.height = height - subx
+        rect.style.width = width
+        rect.setAttribute('transform', 'translate(0, '+subx+')')
+      }
+    } else if (enter_dir == exit_dir) {
+      // Passed through in a straight line, fill the entirety
       rect.style.height = height
-      rect.style.width = suby
-    } else if (elem.className.includes('traced left')) {
-      rect.style.height = height
-      rect.style.width = width - suby
-      rect.setAttribute('transform', 'translate('+suby+', 0)')
-    } else if (elem.className.includes('traced down')) {
-      rect.style.height = subx
       rect.style.width = width
-    } else if (elem.className.includes('traced up')) {
-      rect.style.height = height - subx
-      rect.style.width = width
-      rect.setAttribute('transform', 'translate(0, '+subx+')')
+    } else {
+      // Passed through in a corner, create as such
+      rect.style.rx = height
+      rect.style.height = height*2
+      rect.style.width = width*2
+      var x_trans = 0
+      var y_trans = 0
+      if (enter_dir == 'r' || exit_dir == 'l') {
+        x_trans = -height
+      }
+      if (enter_dir == 'd' || exit_dir == 'u') {
+        y_trans = -width
+      }
+      rect.setAttribute('transform', 'translate('+x_trans+', '+y_trans+')')
     }
     svg.appendChild(rect)
   }
@@ -97,8 +146,18 @@ function onMouseMove(e) {
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
 
+  // The *ahem* corner case
   if (elem.className.includes('corner')) {
-    // Do something special for corners
+    var abs_x = (data.subx < height/2) ? data.subx : height - data.subx
+    var abs_y = (data.suby < width/2) ? data.suby : width - data.suby
+    // Only take action on the more active direction
+    if (abs_x > abs_y) {
+      if (data.subx - 11 < 0) data.subx = 11
+      if (data.subx + 11 > height) data.subx = height - 11
+    } else {
+      if (data.suby - 11 < 0) data.suby = 11
+      if (data.suby + 11 > width) data.suby = width - 11
+    }
   }
 
   // Collision detection
@@ -106,14 +165,14 @@ function onMouseMove(e) {
     var new_elem = document.getElementById(data.table+'_'+(data.x-1)+'_'+data.y)
     if (new_elem == null) {
       data.subx = 11
-    } else if (!(new_elem.className.includes('untraced') ||elem.className.includes('traced down'))) {
+    } else if (!(new_elem.className.endsWith('trace') ||elem.className.endsWith('trace-d'))) {
       data.subx = 11
     }
   } else if (dx > 0 && data.subx + 11 > height) {
     var new_elem = document.getElementById(data.table+'_'+(data.x+1)+'_'+data.y)
     if (new_elem == null) {
       data.subx = height - 11
-    } else if (!(new_elem.className.includes('untraced') ||elem.className.includes('traced up'))) {
+    } else if (!(new_elem.className.endsWith('trace') ||elem.className.endsWith('trace-u'))) {
       data.subx = height - 11
     }
   }
@@ -121,14 +180,14 @@ function onMouseMove(e) {
     var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y-1))
     if (new_elem == null) {
       data.suby = 11
-    } else if (!(new_elem.className.includes('untraced') ||elem.className.includes('traced right'))) {
+    } else if (!(new_elem.className.endsWith('trace') ||elem.className.endsWith('trace-r'))) {
       data.suby = 11
     }
   } else if (dy > 0 && data.suby + 11 > width) {
     var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y+1))
     if (new_elem == null) {
       data.suby = width - 11
-    } else if (!(new_elem.className.includes('untraced') ||elem.className.includes('traced left'))) {
+    } else if (!(new_elem.className.endsWith('trace') ||elem.className.endsWith('trace-l'))) {
       data.suby = width - 11
     }
   }
@@ -154,32 +213,37 @@ function onMouseMove(e) {
     }
   }
 
+  // FIXME: Something like traced-up-right (for a corner) and traced-down-down (for an edge)
   // Generic movement
   if (data.subx < 0) { // Moving up
     var new_elem = document.getElementById(data.table+'_'+(data.x-1)+'_'+data.y)
     if (new_elem != null) {
       var new_height = parseInt(window.getComputedStyle(new_elem).height)
-      if (new_elem.className.includes('untraced')) { // Trace new path
+      if (new_elem.className.endsWith('trace')) { // Trace new path
         data.x--
         data.subx += new_height
-        new_elem.className = new_elem.className.replace('untraced', 'traced up')
-      } else if (elem.className.includes('traced down')) { // Retrace path
+        elem.className += '-u'
+        new_elem.className += '-u'
+      } else if (elem.className.endsWith('-d')) { // Retrace path
         data.x--
         data.subx += new_height
-        elem.className = elem.className.replace('traced down', 'untraced')
+        elem.className = elem.className.substring(0, elem.className.length-2)
+        new_elem.className = new_elem.className.substring(0, new_elem.className.length-2)
       }
     }
   } else if (data.subx > height) { // Moving down
     var new_elem = document.getElementById(data.table+'_'+(data.x+1)+'_'+data.y)
     if (new_elem != null) {
-      if (new_elem.className.includes('untraced')) { // Traced new path
+      if (new_elem.className.endsWith('trace')) { // Traced new path
         data.x++
         data.subx -= height
-        new_elem.className = new_elem.className.replace('untraced', 'traced down')
-      } else if (elem.className.includes('traced up')) { // Retraced path
+        elem.className += '-d'
+        new_elem.className += '-d'
+      } else if (elem.className.endsWith('-u')) { // Retraced path
         data.x++
         data.subx -= height
-        elem.className = elem.className.replace('traced up', 'untraced')
+        elem.className = elem.className.substring(0, elem.className.length-2)
+        new_elem.className = new_elem.className.substring(0, new_elem.className.length-2)
       }
     }
   }
@@ -187,29 +251,32 @@ function onMouseMove(e) {
     var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y-1))
     if (new_elem != null) {
       var new_width = parseInt(window.getComputedStyle(new_elem).width)
-      if (new_elem.className.includes('untraced')) { // Traced new path
+      if (new_elem.className.endsWith('trace')) { // Traced new path
         data.y--
         data.suby += new_width
-        new_elem.className = new_elem.className.replace('untraced', 'traced left')
-      } else if (elem.className.includes('traced right')) { // Retraced path
+        elem.className += '-l'
+        new_elem.className += '-l'
+      } else if (elem.className.endsWith('-r')) { // Retraced path
         data.y--
         data.suby += new_width
-        elem.className = elem.className.replace('traced right', 'untraced')
+        elem.className = elem.className.substring(0, elem.className.length-2)
+        new_elem.className = new_elem.className.substring(0, new_elem.className.length-2)
       }
     }
   } else if (data.suby > width) { // Moving right
     var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y+1))
     if (new_elem != null) {
-      if (new_elem.className.includes('untraced')) { // Traced new path
-        console.log('Traced right')
+      if (new_elem.className.endsWith('trace')) { // Traced new path
         data.y++
         data.suby -= width
-        new_elem.className = new_elem.className.replace('untraced', 'traced right')
-      } else if (elem.className.includes('traced left')) { // Retraced path
+        elem.className += '-r'
+        new_elem.className += '-r'
+      } else if (elem.className.endsWith('-l')) { // Retraced path
         data.y++
         data.suby -= width
-        elem.className = elem.className.replace('traced left', 'untraced')
+        elem.className = elem.className.substring(0, elem.className.length-2)
+        new_elem.className = new_elem.className.substring(0, new_elem.className.length-2)
       }
     }
   }
-\}
+}

@@ -9,11 +9,11 @@ function draw(puzzle, target='puzzle') {
     for (var y=0; y<puzzle.grid[x].length; y++) {
       var cell = row.insertCell(y)
       if (x%2 == 0 && y%2 == 0) {
-        cell.className = 'corner untraced'
+        cell.className = 'corner trace'
       } else if (x%2 == 0 && y%2 == 1) {
-        cell.className = 'horiz untraced'
+        cell.className = 'horiz trace'
       } else if (x%2 == 1 && y%2 == 0) {
-        cell.className = 'verti untraced'
+        cell.className = 'verti trace'
       } else if (x%2 == 1 && y%2 == 1) {
         cell.className = 'center'
       }
@@ -53,9 +53,17 @@ function draw(puzzle, target='puzzle') {
         }
       }
       if (x == puzzle.start.x && y == puzzle.start.y) {
-        cell.className = 'start untraced'
-        div.className = 'start line'
+        cell.className = 'start trace'
+        var div = document.createElement('div')
+        div.style.position = 'absolute'
+        div.style.width = '44px'
+        div.style.height = '44px'
+        div.style.top = '-11px'
+        div.style.left = '-11px'
+        div.style.borderRadius = '50px'
+        div.className = 'corner'
         div.onclick = function() {trace(this)}
+        cell.appendChild(div)
       } else if (x == puzzle.end.x && y == puzzle.end.y) {
         if (y == 0) {
           div.className = 'end end-left line'
