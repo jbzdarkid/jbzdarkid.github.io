@@ -137,10 +137,8 @@ function _draw(elem, subx, suby, draw_rect) {
 
 function onMouseMove(e) {
   var sens = 0.3
-  var dx = e.movementX || e.mozMovementX || e.webkitMovementX || 0
-  var dy = e.movementY || e.mozMovementY || e.webkitMovementY || 0
-  data.subx += dx*sens
-  data.suby += dy*sens
+  data.subx += sens*(e.movementX || e.mozMovementX || e.webkitMovementX || 0)
+  data.suby += sens*(e.movementY || e.mozMovementY || e.webkitMovementY || 0)
   var elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
@@ -159,14 +157,14 @@ function onMouseMove(e) {
   }
 
   // Collision detection
-  if (dx < 0 && data.subx - 11 < 0) {
+  if (data.subx - 11 < 0) {
     var new_elem = document.getElementById(data.table+'_'+(data.x-1)+'_'+data.y)
     if (new_elem == null) {
       data.subx = 11
     } else if (!(new_elem.className.endsWith('trace') ||elem.className.endsWith('trace-r'))) {
       data.subx = 11
     }
-  } else if (dx > 0 && data.subx + 11 > width) {
+  } else if (data.subx + 11 > width) {
     var new_elem = document.getElementById(data.table+'_'+(data.x+1)+'_'+data.y)
     if (new_elem == null) {
       data.subx = width - 11
@@ -174,14 +172,14 @@ function onMouseMove(e) {
       data.subx = width - 11
     }
   }
-  if (dy < 0 && data.suby - 11 < 0) {
+  if (data.suby - 11 < 0) {
     var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y-1))
     if (new_elem == null) {
       data.suby = 11
     } else if (!(new_elem.className.endsWith('trace') ||elem.className.endsWith('trace-d'))) {
       data.suby = 11
     }
-  } else if (dy > 0 && data.suby + 11 > height) {
+  } else if (data.suby + 11 > height) {
     var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y+1))
     if (new_elem == null) {
       data.suby = height - 11
