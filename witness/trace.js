@@ -5,11 +5,11 @@ function trace(elem) {
   var height = parseInt(window.getComputedStyle(parent).height)
   data = {
     'table':parent.id.split('_')[0],
-    'x':parseInt(parent.id.split('_')[2]),
-    'y':parseInt(parent.id.split('_')[1]),
+    'x':parseInt(parent.id.split('_')[1]),
+    'y':parseInt(parent.id.split('_')[2]),
     'subx':width/2,
     'suby':height/2,
-    }
+  }
 
   if (document.pointerLockElement == null) {
     // These aren't really arrays, they live update during iteration
