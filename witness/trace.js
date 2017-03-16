@@ -1,17 +1,18 @@
 var data
 function trace(elem) {
-  var parent = elem.parentNode
-  var width = parseInt(window.getComputedStyle(parent).width)
-  var height = parseInt(window.getComputedStyle(parent).height)
-  data = {
-    'table':parent.id.split('_')[0],
-    'x':parseInt(parent.id.split('_')[1]),
-    'y':parseInt(parent.id.split('_')[2]),
-    'subx':width/2,
-    'suby':height/2,
-  }
-
   if (document.pointerLockElement == null) {
+    var parent = elem.parentNode
+    var width = parseInt(window.getComputedStyle(parent).width)
+    var height = parseInt(window.getComputedStyle(parent).height)
+    data = {
+      'table':parent.id.split('_')[0],
+      'x':parseInt(parent.id.split('_')[1]),
+      'y':parseInt(parent.id.split('_')[2]),
+      'subx':width/2,
+      'suby':height/2,
+    }
+
+    var table = document.getElementById(data.table)
     // These aren't really arrays, they live update during iteration
     for (var cell of document.getElementsByTagName('td')) {
       cell.className = cell.className.split('-')[0]
