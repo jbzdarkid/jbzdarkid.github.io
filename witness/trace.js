@@ -45,6 +45,37 @@ function trace(elem) {
     svg.appendChild(circ)
     elem.appendChild(svg)
   } else {
+    var table = document.getElementById(data.table)
+    var puzzle = JSON.parse(table.getAttribute('json'))
+    var curr_elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
+    if (curr_elem.className.includes('end')) {
+      for (var elem of table.getElementsByTagName('td')) {
+        // FIXME: Reversed?
+        var x = elem.id.split('_')[2]
+        var y = elem.id.split('_')[1]
+        if (elem.className.includes('trace-')) {
+          if (elem.className.includes('end')) {
+            puzzle.grid[x][y-1]--
+          } else if (elem.className.includes('corner')) {
+            puzzle.grid[x][y] = 2
+          } else {
+            puzzle.grid[x][y] = 1
+          }
+        }
+      }
+      console.log(puzzle)
+      var valid = isValid(puzzle)
+      console.log(valid)
+      if (valid == 2) {
+        for (var line of table.getElementsByClassName('line')) {
+          line.style.fill = '#EEEEEE'
+        }
+      } else {
+        for (var line of table.getElementsByClassName('line')) {
+          line.style.fill = '#111111'
+        }
+      }
+    }
     document.exitPointerLock()
   }
 }

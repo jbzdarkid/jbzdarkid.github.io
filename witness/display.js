@@ -3,6 +3,7 @@ function draw(puzzle, target='puzzle') {
   while (table.rows.length > 0) {
     table.deleteRow(0)
   }
+  table.setAttribute('json', JSON.stringify(puzzle))
 
   for (var x=0; x<puzzle.grid.length; x++) {
     var row = table.insertRow(x)
