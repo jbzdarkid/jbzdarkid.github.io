@@ -1,4 +1,5 @@
 function draw(puzzle, target='puzzle') {
+  console.log('Drawing', puzzle)
   var table = document.getElementById(target)
   while (table.rows.length > 0) {
     table.deleteRow(0)

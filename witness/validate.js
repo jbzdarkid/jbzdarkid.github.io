@@ -81,13 +81,14 @@ function isValid(puzzle) {
     }
   }
   // All checks passed
-  console.log('Grid valid')
+  console.log('Puzzle', puzzle, 'is valid')
   return 2
 }
 
 // Checks if a region (series of cells) is valid.
 // Since the path must be complete at this point, returns only true or false
 function _regionCheck(grid, region) {
+  console.log('Validating region of length', region.length)
   // FIXME: Handled by for loop?
   var hasNega = false
   for (var i=0; i<region.length; i++) {
@@ -121,7 +122,7 @@ function _regionCheck(grid, region) {
           continue nextCombination
         }
       }
-      // console.log('Valid negation: ', combination)
+      console.log('Valid negation: ', combination)
       return true
     }
     console.log('Unable to find valid negation but symbols exist')
