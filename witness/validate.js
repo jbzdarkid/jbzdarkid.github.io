@@ -185,7 +185,10 @@ function _regionCheck(grid, region) {
     }
     for (var cell of region) {
       new_grid[cell.x][cell.y] = 1
-      if (cell.x <= first.x && cell.y < first.y) {
+      if (cell.x < first.x) {
+        first = {'x':cell.x, 'y':cell.y}
+      }
+      if (cell.x == first.x && cell.y < first.y) {
         first = {'x':cell.x, 'y':cell.y}
       }
     }
