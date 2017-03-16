@@ -40,7 +40,7 @@ function trace(elem) {
     anim.setAttribute('from', '0')
     anim.setAttribute('to', '11')
     anim.setAttribute('dur', '0.2s')
-    setTimeout(function () {circ.style.r = '11px'}, 201)
+    anim.setAttribute('fill', 'freeze') // Hold the final frame of animation
     circ.appendChild(anim)
     svg.appendChild(circ)
     elem.appendChild(svg)
