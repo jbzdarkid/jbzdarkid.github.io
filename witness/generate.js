@@ -130,6 +130,6 @@ function generatePuzzle(width, height) {
     }
   }
   document.getElementById('generate').innerHTML = 'Seed: '+puzzleSeed
-  // draw(puzzle)
-  draw(solutions[0])
+  draw(puzzle)
+  // draw(solutions[0])
 }
