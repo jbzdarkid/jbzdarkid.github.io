@@ -63,10 +63,7 @@ function trace(elem) {
           }
         }
       }
-      console.log(puzzle)
-      var valid = isValid(puzzle)
-      console.log(valid)
-      if (valid == 2) {
+      if (isValid(puzzle) == 2) {
         for (var line of table.getElementsByClassName('line')) {
           line.style.fill = '#EEEEEE'
         }

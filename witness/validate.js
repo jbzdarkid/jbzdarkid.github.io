@@ -228,7 +228,7 @@ function _combinations(grid, region) {
       var cell = grid[pos.x][pos.y]
       if (cell != 0) {
         // Negate the item
-        // FIXME: This is where duplication occurs. Rewrite & solve?
+        // FIXME: This is where duplication occurs.
         var new_region = region.slice()
         new_region.splice(i, 1)
         grid[pos.x][pos.y] = 0
