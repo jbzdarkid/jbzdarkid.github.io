@@ -1,5 +1,11 @@
-.untraced {}
-.traced {}
+.line {
+  fill: #6D4D4A;
+}
+.circle {
+  fill: #A69191;
+  stroke: black;
+  stroke-opacity: 0.3;
+}
 .center {
   height: 50px;
   width: 50px;

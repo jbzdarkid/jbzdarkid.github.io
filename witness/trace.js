@@ -34,7 +34,7 @@ function trace(elem) {
     circ.style.cx = '11px'
     circ.style.cy = '11px'
     circ.style.border = '0px'
-    circ.style.fill = '#6D4D4A'
+    circ.setAttribute('class', 'line')
     var anim = document.createElementNS('http://www.w3.org/2000/svg', 'animate')
     anim.setAttribute('attributeName', 'r')
     anim.setAttribute('from', '0')
@@ -77,15 +77,12 @@ function _draw(elem, subx, suby, draw_rect) {
   var rect = svg.getElementsByTagName('rect')[0]
   if (rect == undefined) {
     rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-    rect.style.fill = '#6D4D4A'
   }
   var circ = svg.getElementsByTagName('circle')[0]
   if (circ == undefined) {
     circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
     circ.style.r = 11
-    circ.style.fill = '#A69191'
-    circ.style.stroke = 'black'
-    circ.style.strokeOpacity = '0.3'
+    circ.setAttribute('class', 'circle')
   }
   circ.style.cx = subx
   circ.style.cy = suby
@@ -93,6 +90,7 @@ function _draw(elem, subx, suby, draw_rect) {
     rect.style.height = 0
     rect.style.width = 0
     rect.style.rx = 0
+    rect.setAttribute('class', 'line')
     rect.setAttribute('transform', '')
 
     var enter_dir = elem.className.split('-')[1]
