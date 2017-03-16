@@ -14,13 +14,17 @@ function trace(elem) {
 
     var table = document.getElementById(data.table)
     // These aren't really arrays, they live update during iteration
-    for (var cell of document.getElementsByTagName('td')) {
+    for (var cell of table.getElementsByTagName('td')) {
       cell.className = cell.className.split('-')[0]
     }
-      // var svgs = document.getElementsByTagName('svg')
-      // while (svgs.length > 0) {
-      //   svgs[0].remove()
-      // }
+    var lines = table.getElementsByClassName('line')
+    while (lines.length > 0) {
+      lines[0].remove()
+    }
+    var circles = table.getElementsByClassName('circle')
+    while (circles.length > 0) {
+      circles[0].remove()
+    }
 
     elem.requestPointerLock()
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
