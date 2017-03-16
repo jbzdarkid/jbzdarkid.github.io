@@ -77,9 +77,23 @@ var tests = [
     grid[3][3] = {'type':'square', 'color':'red'}
     return grid
   }, function() {
-    return [[2,1,2,1,2,1,2,1,1],[1,0,0,0,0,0,0,{"type":"nega","color":"white"},0],[2,0,2,1,2,1,2,0,0],[1,0,1,{"type":"square","color":"red"},0,0,1,0,0],[2,0,2,1,2,0,2,0,0],[1,{"type":"poly","shape":"3.1.3","color":"yellow"},0,{"type":"square","color":"blue"},1,{"type":"poly","shape":"3.0.0","color":"yellow"},1,0,0],[2,1,2,1,2,0,2,0,0],[0,{"type":"square","color":"red"},0,0,0,{"type":"poly","shape":"3.1.0","color":"yellow"},1,{"type":"star","color":"blue"},0],[1,1,2,1,2,1,2,0,0]]
+    var grid = _newGrid(9, 9)
+    grid[1][7] = {"type":"nega","color":"white"}
+    grid[3][3] = {"type":"square","color":"red"}
+    grid[5][1] = {"type":"poly","shape":"3.1.3","color":"yellow"}
+    grid[5][3] = {"type":"square","color":"blue"}
+    grid[5][5] = {"type":"poly","shape":"3.0.0","color":"yellow"}
+    grid[7][1] = {"type":"square","color":"red"}
+    grid[7][5] = {"type":"poly","shape":"3.1.0","color":"yellow"}
+    grid[7][7] = {"type":"star","color":"blue"}
+    return grid
   }, function() {
-    return [[0,0,2,1,2,1,2,1,1],[0,{"type":"poly","shape":"3.0.0","color":"yellow"},1,0,0,0,0,0,0],[0,0,2,0,2,1,2,0,0],[0,{"type":"poly","shape":"3.0.1","color":"yellow"},1,0,1,0,1,0,0],[0,0,2,0,2,0,2,1,2],[0,0,1,0,1,0,0,0,1],[0,0,2,1,2,0,2,1,2],[0,{"type":"poly","shape":"3.1.2","color":"yellow"},0,0,0,0,1,{"type":"square","color":"red"},0],[1,1,2,1,2,1,2,0,0]]
+    var grid = _newGrid(9, 9)
+    grid[1][1] = {"type":"poly","shape":"3.0.0","color":"yellow"}
+    grid[3][1] = {"type":"poly","shape":"3.0.1","color":"yellow"}
+    grid[7][1] = {"type":"poly","shape":"3.1.2","color":"yellow"}
+    grid[7][7] = {"type":"square","color":"red"}
+    return grid
   }
 ]
 
