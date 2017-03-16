@@ -27,15 +27,24 @@ function trace(elem) {
     }
 
     elem.requestPointerLock()
-    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    var svg = elem.getElementsByTagName('svg')[0]
+    if (svg == undefined) {
+      var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    }
     svg.setAttribute('viewBox', '0 0 '+width+' '+height)
     svg.style.zIndex = 10
-    var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+    var circ = svg.getElementsByTagName('circle')[0]
+    if (circ == undefined) {
+      var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+    }
     circ.style.cx = '11px'
     circ.style.cy = '11px'
     circ.style.border = '0px'
     circ.setAttribute('class', 'line')
-    var anim = document.createElementNS('http://www.w3.org/2000/svg', 'animate')
+    var anim = circ.getElementsByTagName('animate')[0]
+    if (anim == undefined) {
+      var anim = document.createElementNS('http://www.w3.org/2000/svg', 'animate')
+    }
     anim.setAttribute('attributeName', 'r')
     anim.setAttribute('from', '0')
     anim.setAttribute('to', '11')
