@@ -30,6 +30,7 @@ function _randomize(width, height) {
   }
 
   // Both start and end must be on corners
+  /*
   var start = {'x':2*_randint(width/2), 'y':2*_randint(height/2)}
   var end = {}
   switch (_randint(4)) {
@@ -50,18 +51,21 @@ function _randomize(width, height) {
       end.y = height-1
       break;
   }
+  */
+  var start = {'x':width-1, 'y':0}
+  var end = {'x':0, 'y':height-1}
 
   // Dots must be on edges or corners
   var dots = []
-  var numDots = _randint(width/2)
-  for (var i=0; i<numDots; i++) {
-    var x = _randint(width)
-    if (x%2 == 0) {
-      dots.push({'x':x, 'y':_randint(height)})
-    } else {
-      dots.push({'x':x, 'y':2*_randint(width/2)})
-    }
-  }
+  // var numDots = _randint(width/2)
+  // for (var i=0; i<numDots; i++) {
+  //   var x = _randint(width)
+  //   if (x%2 == 0) {
+  //     dots.push({'x':x, 'y':_randint(height)})
+  //   } else {
+  //     dots.push({'x':x, 'y':2*_randint(width/2)})
+  //   }
+  // }
 
   var distribution = {
     'square': 10,
