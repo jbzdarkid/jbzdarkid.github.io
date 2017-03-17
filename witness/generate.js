@@ -139,7 +139,7 @@ function generatePuzzle(width, height) {
       }
     }
   }
-  location.hash = seed
+  location.hash = puzzleSeed
   var mailer = document.getElementById('mailto')
   mailer.href = "mailto:jbzdarkid@gmail.com?subject=The Witness Random Puzzles&body=Puzzle id " + location.hash
   draw(puzzle)
