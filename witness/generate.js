@@ -107,15 +107,14 @@ function _randomize(width, height) {
 
 // When the page is done loading, generate a puzzle
 window.onload = function () {
+  seed = parseInt(location.hash.substring(1))
+  if (!seed) {
+    seed = Math.floor(Math.random() * (1 << 30))
+  }
   document.getElementById('generate').onclick()
 }
 
 function generatePuzzle(width, height) {
-  if (location.hash != '') {
-    seed = parseInt(location.hash.substring(1))
-  } else {
-    seed = Math.floor(Math.random() * (1 << 30))
-  }
   var solutions
   while (true) {
     solutions = []
@@ -127,10 +126,18 @@ function generatePuzzle(width, height) {
     } else if (solutions.length == 1) {
       break // Unique solution, valid puzzle
     } else {
+      var targetSolution = solutions.splice(_randint(solutions.length), 1)
+      // for (var cell of targetSolution) {
+      //   for (var solution of solutions) {
+      //
+      //   }
+      // }
+      console.log(solutions.length)
+      console.log(solutions)
       break // Multiple solutions, force only one via dots & breaks
     }
   }
-  document.getElementById('generate').innerHTML = 'Seed: '+puzzleSeed
+  location.hash = seed
   draw(puzzle)
   // draw(solutions[0])
 }
