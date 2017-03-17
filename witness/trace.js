@@ -70,11 +70,11 @@ function trace(elem) {
       }
       if (isValid(puzzle) == 2) {
         for (var line of table.getElementsByClassName('line')) {
-          line.setAttribute('fill', '#EEEEEE')
+          line.style.fill = '#EEEEEE'
         }
       } else {
         for (var line of table.getElementsByClassName('line')) {
-          line.setAttribute('fill', '#111111')
+          line.style.fill = '#111111'
         }
       }
     }
