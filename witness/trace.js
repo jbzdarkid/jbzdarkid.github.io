@@ -173,7 +173,7 @@ function _draw(elem, subx, suby, draw_rect) {
 }
 
 function onMouseMove(e) {
-  var sens = 0.3
+  var sens = document.getElementById('sens').value
   data.subx += sens*(e.movementX || e.mozMovementX || e.webkitMovementX || 0)
   data.suby += sens*(e.movementY || e.mozMovementY || e.webkitMovementY || 0)
   var elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
