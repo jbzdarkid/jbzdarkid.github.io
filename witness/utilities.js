@@ -13,7 +13,8 @@ function _copy(puzzle) {
     'grid':_copyGrid(puzzle.grid),
     'start':{'x':puzzle.start.x, 'y':puzzle.start.y},
     'end':{'x':puzzle.end.x, 'y':puzzle.end.y},
-    'dots':puzzle.dots.slice()
+    'dots':puzzle.dots.slice(),
+    'gaps':puzzle.gaps.slice()
   }
 }
 

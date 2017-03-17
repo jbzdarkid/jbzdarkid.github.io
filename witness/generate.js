@@ -67,6 +67,7 @@ function _randomize(width, height) {
   //     dots.push({'x':x, 'y':2*_randint(width/2)})
   //   }
   // }
+  var gaps = []
 
   var distribution = {
     'square': 10,
@@ -102,7 +103,7 @@ function _randomize(width, height) {
       }
     }
   }
-  return {'grid':grid, 'start':start, 'end':end, 'dots':dots}
+  return {'grid':grid, 'start':start, 'end':end, 'dots':dots, 'gaps':gaps}
 }
 
 // When the page is done loading, generate a puzzle
