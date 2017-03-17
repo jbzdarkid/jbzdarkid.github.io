@@ -70,10 +70,10 @@ function _randomize(width, height) {
   var gaps = []
 
   var distribution = {
-    'square': 10,
-    'star': 10,
-    'poly': 10,
-    'nega': 2,
+    'square': 30,
+    'star': 35,
+    'poly': 30,
+    'nega': 5,
   }
   function _randObject(type) {
     var obj = {'type':type}
@@ -90,17 +90,21 @@ function _randomize(width, height) {
     }
     return obj
   }
-
+  var positions = []
   for (var x=1; x<width; x+=2) {
     for (var y=1; y<height; y+=2) {
-      var rand = _randint(100)
-      for (var type in distribution) {
-        if (rand < distribution[type]) {
-          grid[x][y] = _randObject(type)
-          break
-        }
-        rand -= distribution[type]
+      positions.push({'x':x, 'y':y})
+    }
+  }
+  for (var i=0; i<7; i++) {
+    var rand = _randint(100)
+    for (var type in distribution) {
+      if (rand < distribution[type]) {
+        var position = positions.splice(_randint(positions.length), 1)[0]
+        grid[position.x][position.y] = _randObject(type)
+        break
       }
+      rand -= distribution[type]
     }
   }
   return {'grid':grid, 'start':start, 'end':end, 'dots':dots, 'gaps':gaps}
@@ -117,11 +121,14 @@ window.onload = function () {
 
 function generatePuzzle(width, height) {
   var solutions = []
-  while (solutions.length == 0) {
+  // Require a puzzle with not too many solutions
+  while (solutions.length == 0 || solutions.length > 100) {
+    solutions = []
     var puzzleSeed = seed
     var puzzle = _randomize(width, height)
     solve(puzzle, puzzle.start, solutions)
   }
+  /*
   var targetSolution = solutions.splice(_randint(solutions.length), 1)[0]
   solutionLoop: for (var solution of solutions) {
     // If the solution is already distinguished by the gaps, continue
@@ -139,6 +146,7 @@ function generatePuzzle(width, height) {
       }
     }
   }
+  */
   location.hash = puzzleSeed
   var mailer = document.getElementById('mailto')
   mailer.href = "mailto:jbzdarkid@gmail.com?subject=The Witness Random Puzzles&body=Puzzle id " + location.hash
