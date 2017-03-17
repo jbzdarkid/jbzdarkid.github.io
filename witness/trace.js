@@ -37,9 +37,9 @@ function trace(elem) {
     if (circ == undefined) {
       var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
     }
-    circ.style.cx = '11px'
-    circ.style.cy = '11px'
-    circ.style.border = '0px'
+    circ.setAttribute('cx', '11px')
+    circ.setAttribute('cy', '11px')
+    circ.setAttribute('border', '0px')
     circ.setAttribute('class', 'line')
     var anim = circ.getElementsByTagName('animate')[0]
     if (anim == undefined) {
@@ -70,11 +70,11 @@ function trace(elem) {
       }
       if (isValid(puzzle) == 2) {
         for (var line of table.getElementsByClassName('line')) {
-          line.style.fill = '#EEEEEE'
+          line.setAttribute('fill', '#EEEEEE')
         }
       } else {
         for (var line of table.getElementsByClassName('line')) {
-          line.style.fill = '#111111'
+          line.setAttribute('fill', '#111111')
         }
       }
     }

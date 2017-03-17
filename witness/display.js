@@ -55,10 +55,11 @@ function draw(puzzle, target='puzzle') {
         svg.setAttribute('viewBox', '0 0 50 50')
         var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
         rect.setAttribute('transform', 'translate(12.5, 12.5)')
-        rect.style.height = '25px'
-        rect.style.width = '25px'
-        rect.style.rx = '5px'
-        rect.style.fill = puzzle.grid[x][y].color
+        rect.setAttribute('height', '25px')
+        rect.setAttribute('width', '25px')
+        rect.setAttribute('rx', '5px')
+        rect.setAttribute('ry', '5px')
+        rect.setAttribute('fill', puzzle.grid[x][y].color)
         svg.appendChild(rect)
         cell.appendChild(svg)
       } else if (puzzle.grid[x][y].type == 'star') {
@@ -68,9 +69,9 @@ function draw(puzzle, target='puzzle') {
         for (var rot of [0, 45]) {
           var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
           rect.setAttribute('transform', 'translate(15, 15) rotate('+rot+', 10, 10)')
-          rect.style.height = '20px'
-          rect.style.width = '20px'
-          rect.style.fill = puzzle.grid[x][y].color
+          rect.setAttribute('height', '20px')
+          rect.setAttribute('width', '20px')
+          rect.setAttribute('fill', puzzle.grid[x][y].color)
           svg.appendChild(rect)
         }
         cell.appendChild(svg)
@@ -90,9 +91,9 @@ function draw(puzzle, target='puzzle') {
         for (var pos of POLY_DICT[puzzle.grid[x][y].shape]) {
           var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
           rect.setAttribute('transform', 'translate('+(yoffset+pos.y*7)+', '+(xoffset+pos.x*7)+')')
-          rect.style.height = '11px'
-          rect.style.width = '11px'
-          rect.style.fill = puzzle.grid[x][y].color
+          rect.setAttribute('height', '11px')
+          rect.setAttribute('width', '11px')
+          rect.setAttribute('fill', puzzle.grid[x][y].color)
           svg.appendChild(rect)
         }
         cell.appendChild(svg)
@@ -102,9 +103,9 @@ function draw(puzzle, target='puzzle') {
         for (var rot of [60, 180, 300]) {
           var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
           rect.setAttribute('transform', 'translate(22, 27) rotate('+rot+', 3, 0)')
-          rect.style.height = '12px'
-          rect.style.width = '6px'
-          rect.style.fill = puzzle.grid[x][y].color
+          rect.setAttribute('height', '12px')
+          rect.setAttribute('width', '6px')
+          rect.setAttribute('fill', puzzle.grid[x][y].color)
           svg.appendChild(rect)
         }
         cell.appendChild(svg)
