@@ -116,26 +116,27 @@ window.onload = function () {
 }
 
 function generatePuzzle(width, height) {
-  var solutions
-  while (true) {
-    solutions = []
+  var solutions = []
+  while (solutions.length == 0) {
     var puzzleSeed = seed
     var puzzle = _randomize(width, height)
     solve(puzzle, puzzle.start, solutions)
-    if (solutions.length == 0) {
-      continue
-    } else if (solutions.length == 1) {
-      break // Unique solution, valid puzzle
-    } else {
-      var targetSolution = solutions.splice(_randint(solutions.length), 1)
-      // for (var cell of targetSolution) {
-      //   for (var solution of solutions) {
-      //
-      //   }
-      // }
-      console.log(solutions.length)
-      console.log(solutions)
-      break // Multiple solutions, force only one via dots & breaks
+  }
+  var targetSolution = solutions.splice(_randint(solutions.length), 1)[0]
+  solutionLoop: for (var solution of solutions) {
+    // If the solution is already distinguished by the gaps, continue
+    for (var gap of puzzle.gaps) {
+      if (solution.grid[gap.x][gap.y]) continue solutionLoop
+    }
+    // Else, find a new gap to separate them
+    for (var x=0; x<solution.grid.length; x++) {
+      for (var y=0; y<solution.grid[x].length; y++) {
+        if (x%2 == y%2) continue // Don't put gaps in corners or cells
+        if (solution.grid[x][y] && !targetSolution.grid[x][y]) {
+          puzzle.gaps.push({'x':x, 'y':y})
+          continue solutionLoop
+        }
+      }
     }
   }
   location.hash = seed
