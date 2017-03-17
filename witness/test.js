@@ -28,7 +28,7 @@ var tests = [
     grid[3][1] = {'type':'square', 'color':'red'}
     grid[3][3] = {'type':'square', 'color':'blue'}
     grid[3][5] = {'type':'square', 'color':'blue'}
-    return {'grid':grid}
+    return {'grid':grid, 'dots':[{'x':2, 'y':2}]}
   }, function () {
     var grid = _newGrid(7, 7)
     grid[1][1] = {'type':'poly', 'shape':'1.0.0', 'color':'yellow'}
