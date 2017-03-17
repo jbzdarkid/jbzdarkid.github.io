@@ -120,9 +120,9 @@ function loadTests() {
       if (puzzle['gaps'] == undefined) {
         puzzle['gaps'] = []
       }
-      console.log(puzzle)
       solve(puzzle, puzzle.start, solutions)
-      console.log(solutions.length) // FIXME: Display somewhere?
+      console.log('Solved', puzzle)
+      console.log('Found', solutions.length, 'solutions') // FIXME: Display somewhere?
       draw(puzzle, 'test'+i)
     } catch (e) {
       document.getElementById('test'+i).innerHTML = e.stack

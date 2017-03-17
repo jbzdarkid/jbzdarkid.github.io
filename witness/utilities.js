@@ -98,7 +98,6 @@ function _getRegions(grid) {
     }
   }
 
-  console.log('Computed region map, colors:')
-  console.log(colors)
+  console.log('Computed region map, colors:', colors)
   return regions
 }
