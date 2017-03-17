@@ -123,4 +123,17 @@ function draw(puzzle, target='puzzle') {
     svg.appendChild(hex)
     cell.appendChild(svg)
   }
+  for (var gap of puzzle.gaps) {
+    var cell = document.getElementById(target+'_'+gap.y+'_'+gap.x)
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    var width = parseInt(window.getComputedStyle(cell).width)
+    var height = parseInt(window.getComputedStyle(cell).height)
+    svg.setAttribute('viewBox', '0 0 '+width+' '+height)
+    var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    poly.setAttribute('points', '-11 -11, -11 11, 11 11, 11 -11')
+    poly.setAttribute('transform', 'translate('+(width/2)+', '+(height/2)+')')
+    poly.style.color = 'black'
+    svg.appendChild(poly)
+    cell.appendChild(svg)
+  }
 }
