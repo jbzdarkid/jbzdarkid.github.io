@@ -16,59 +16,20 @@ function isValid(puzzle) {
     console.log('Start and end points not distinct')
     return 1
   }
+  if (!puzzle.grid[puzzle.start.x][puzzle.start.y]) {
+    console.log('Start point not filled')
+    return 1
+  }
+  if (!puzzle.grid[puzzle.end.x][puzzle.end.y]) {
+    // console.log('End point not filled')
+    return 0
+  }
 
-  // Check that all corners are either unused (0) or traversed (2)
-  // Except for the start and end, which must be half-used (1)
-  for (var x=0; x<puzzle.grid.length; x+=2) {
-    for (var y=0; y<puzzle.grid[x].length; y+=2) {
-      if (x == puzzle.start.x && y == puzzle.start.y) {
-        if (puzzle.grid[x][y] > 1) {
-          console.log('Start overfull')
-          return 1
-        } else if (puzzle.grid[x][y] == 0) {
-          // console.log('Start underfull')
-          return 0
-        }
-      } else if (x == puzzle.end.x && y == puzzle.end.y) {
-        if (puzzle.grid[x][y] > 1) {
-          console.log('End overfull')
-          return 1
-        } else if (puzzle.grid[x][y] == 0) {
-          // console.log('End underfull')
-          return 0
-        }
-      } else if (puzzle.grid[x][y] > 2) {
-        console.log('Corner grid['+x+']['+y+'] overfull')
-        return 1
-      } else if (puzzle.grid[x][y] == 1) {
-        // console.log('Corner grid['+x+']['+y+'] underfull')
-        return 0
-      }
-    }
-  }
-  // Check that all horizontal edges are unused (0) or traversed (1)
-  for (var x=0; x<puzzle.grid.length; x+=2) {
-    for (var y=1; y<puzzle.grid[x].length; y+=2) {
-      if (puzzle.grid[x][y] > 1) {
-        console.log('Horizontal edge grid['+x+']['+y+'] overfull')
-        return 1
-      }
-    }
-  }
-  // Check that all vertical edges are unused (0) or traversed (1)
-  for (var x=1; x<puzzle.grid.length; x+=2) {
-    for (var y=0; y<puzzle.grid[x].length; y+=2) {
-      if (puzzle.grid[x][y] > 1) {
-        console.log('Vertical edge grid['+x+']['+y+'] overfull')
-        return 1
-      }
-    }
-  }
   // Check that all dots are covered
   // FIXME: I'm not currently checking for invalid dot placements.
   // FIXME: Code in such a way that this works with negation?
   for (var dot of puzzle.dots) {
-    if (puzzle.grid[dot.x][dot.y] == 0) {
+    if (!puzzle.grid[dot.x][dot.y]) {
       // console.log('Dot at grid['+dot.x+']['+dot.y+'] is not covered')
       return 0
     }

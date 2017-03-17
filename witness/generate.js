@@ -25,7 +25,7 @@ function _randomize(width, height) {
   for (var i=0; i<width; i++) {
     grid[i] = []
     for (var j=0; j<height; j++) {
-      grid[i][j] = 0
+      grid[i][j] = false
     }
   }
 
@@ -53,6 +53,7 @@ function _randomize(width, height) {
   }
   */
   var start = {'x':width-1, 'y':0}
+  grid[start.x][start.y] = true
   var end = {'x':0, 'y':height-1}
 
   // Dots must be on edges or corners

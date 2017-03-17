@@ -63,12 +63,8 @@ function trace(elem) {
         var x = elem.id.split('_')[2]
         var y = elem.id.split('_')[1]
         if (elem.className.includes('trace-')) {
-          if (elem.className.includes('end')) {
-            puzzle.grid[x][y-1]--
-          } else if (elem.className.includes('corner')) {
-            puzzle.grid[x][y] = 2
-          } else {
-            puzzle.grid[x][y] = 1
+          if (!elem.className.includes('end')) {
+            puzzle.grid[x][y] = true
           }
         }
       }

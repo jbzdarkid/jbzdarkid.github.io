@@ -105,6 +105,7 @@ function loadTests() {
       var puzzle = {'grid':tests[i]()}
       puzzle['start'] = {'x':puzzle.grid.length-1, 'y':0}
       puzzle['end'] = {'x':0, 'y':puzzle.grid[0].length-1}
+        puzzle.grid[puzzle.start.x][puzzle.start.y] = true
       console.log(puzzle)
       puzzle['dots'] = []
       solve(puzzle, puzzle.start, solutions)
