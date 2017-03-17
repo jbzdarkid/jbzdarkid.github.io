@@ -1,4 +1,4 @@
-// Puzzle = {grid, start, end, dots}
+// Puzzle = {grid, start, end, dots, gaps}
 // Determines if the current grid state is solvable.
 // Returns 0 if the grid is potentially solvable, but not currently solved
 // Returns 1 if the grid is unsolvable
@@ -32,6 +32,12 @@ function isValid(puzzle) {
     if (!puzzle.grid[dot.x][dot.y]) {
       // console.log('Dot at grid['+dot.x+']['+dot.y+'] is not covered')
       return 0
+    }
+  }
+  for (var gap of puzzle.gaps) {
+    if (puzzle.grid[gap.x][gap.y]) {
+      console.log('Gap at grid['+gap.x+']['+gap.y+'] is covered')
+      return 1
     }
   }
   // Check that individual regions are valid

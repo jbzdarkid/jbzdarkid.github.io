@@ -102,13 +102,23 @@ function loadTests() {
   for (var i=0; i<tests.length; i++) {
     try {
       var solutions = []
-      var puzzle = {'grid':tests[i]()}
-      puzzle['start'] = {'x':puzzle.grid.length-1, 'y':0}
-      puzzle['end'] = {'x':0, 'y':puzzle.grid[0].length-1}
+      var puzzle = tests[i]()
+      if (puzzle['start'] == undefined) {
+        puzzle['start'] = {'x':puzzle.grid.length-1, 'y':0}
         puzzle.grid[puzzle.start.x][puzzle.start.y] = true
+      }
+      if (puzzle['end'] == undefined) {
+        puzzle['end'] = {'x':0, 'y':puzzle.grid[0].length-1}
+      }
+      if (puzzle['dots'] == undefined) {
+        puzzle['dots'] = []
+      }
+      if (puzzle['gaps'] == undefined) {
+        puzzle['gaps'] = []
+      }
       console.log(puzzle)
-      puzzle['dots'] = []
       solve(puzzle, puzzle.start, solutions)
+      console.log(solutions.length) // FIXME: Display somewhere?
       draw(puzzle, 'test'+i)
     } catch (e) {
       document.getElementById('test'+i).innerHTML = e.stack
