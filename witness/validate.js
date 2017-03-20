@@ -8,16 +8,16 @@ function isValid(puzzle) {
   // Check that start and end are well defined, with the end on an edge and the start distinct from the end
   if (puzzle.end.x != 0 && puzzle.end.x != puzzle.grid.length-1) {
     if (puzzle.end.y != 0 && puzzle.end.y != puzzle.grid[puzzle.end.x].length-1) {
-      console.log('End point not on an edge')
+      // console.log('End point not on an edge')
       return 1
     }
   }
   if (puzzle.start.x == puzzle.end.x && puzzle.start.y == puzzle.end.y) {
-    console.log('Start and end points not distinct')
+    // console.log('Start and end points not distinct')
     return 1
   }
   if (!puzzle.grid[puzzle.start.x][puzzle.start.y]) {
-    console.log('Start point not filled')
+    // console.log('Start point not filled')
     return 1
   }
   if (!puzzle.grid[puzzle.end.x][puzzle.end.y]) {
@@ -36,19 +36,19 @@ function isValid(puzzle) {
   }
   for (var gap of puzzle.gaps) {
     if (puzzle.grid[gap.x][gap.y]) {
-      console.log('Gap at grid['+gap.x+']['+gap.y+'] is covered')
+      // console.log('Gap at grid['+gap.x+']['+gap.y+'] is covered')
       return 1
     }
   }
   // Check that individual regions are valid
   for (var region of _getRegions(puzzle.grid)) {
     if (!_regionCheck(puzzle.grid, region)) {
-      console.log('Region', region, 'unsolvable')
+      // console.log('Region', region, 'unsolvable')
       return 1
     }
   }
   // All checks passed
-  console.log('Puzzle', puzzle, 'is valid')
+  // console.info('Puzzle', puzzle, 'is valid')
   return 2
 }
 
@@ -58,8 +58,7 @@ function _regionCheck(grid, region) {
   // console.log('Validating region of length', region.length)
   // FIXME: Handle better (via for loop?)
   var hasNega = false
-  for (var i=0; i<region.length; i++) {
-    var pos = region[i]
+  for (var pos of region) {
     var cell = grid[pos.x][pos.y]
     if (cell != 0 && cell.type == 'nega') {
       hasNega = true
@@ -89,10 +88,10 @@ function _regionCheck(grid, region) {
           continue nextCombination
         }
       }
-      console.log('Valid negation: ', combination)
+      // console.info('Valid negation: ', combination)
       return true
     }
-    console.log('Unable to find valid negation but symbols exist')
+    // console.log('Unable to find valid negation but symbols exist')
     return false
   }
 
@@ -121,7 +120,7 @@ function _regionCheck(grid, region) {
       // Squares can only be in a region with same colored squares
       for (var j=i+1; j<colorKeys.length; j++) {
         if (colors[colorKeys[j]]['squares'] > 0) {
-          console.log('Found a '+colorKeys[i]+' and '+colorKeys[j]+' square in the same region')
+          // console.log('Found a '+colorKeys[i]+' and '+colorKeys[j]+' square in the same region')
           return false
         }
       }
@@ -130,7 +129,7 @@ function _regionCheck(grid, region) {
       // Stars must be in a region with exactly one other element of their color
       var count = objects['squares']+objects['stars']+objects['other']
       if (count != 2) {
-        console.log('Found a '+colorKeys[i]+' star in a region with '+count+' total '+colorKeys[i]+' objects')
+        // console.log('Found a '+colorKeys[i]+' star in a region with '+count+' total '+colorKeys[i]+' objects')
         return false
       }
     }
@@ -161,10 +160,11 @@ function _regionCheck(grid, region) {
       }
     }
     if (!_polyFit(polys, new_grid, first)) {
-      console.log('Region does not match polyomino shapes', polys)
+      // console.log('Region does not match polyomino shapes', polys)
       return false
     }
   }
+  // console.info('Region valid', region)
   return true
 }
 
@@ -227,13 +227,13 @@ function _combinations(grid, region) {
 // FIXME: Think about how Blue polys are going to work. Probably best bet is to place them into the shape?
 function _polyFit(polys, grid, first) {
   if (first == undefined && polys.length == 0) {
-    console.log('All polys placed, and grid full')
+    // console.log('All polys placed, and grid full')
     return true
   } else if (first == undefined && polys.length > 0) {
-    console.log('Polys remaining but grid full')
+    // console.log('Polys remaining but grid full')
     return false
   } else if (first != undefined && polys.length == 0) {
-    console.log('All polys placed, but grid not full')
+    // console.log('All polys placed, but grid not full')
     return false
   }
   nextPoly: for (var i=0; i<polys.length; i++) {

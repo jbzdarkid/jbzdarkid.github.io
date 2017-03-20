@@ -30,5 +30,6 @@ function solve(puzzle, pos, solutions) {
     }
   } else if (ret == 2) { // Solution found
     solutions.push(puzzle)
+    // console.info('Found solution', puzzle)
   }
 }

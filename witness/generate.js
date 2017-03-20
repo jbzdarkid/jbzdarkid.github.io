@@ -127,6 +127,7 @@ function generatePuzzle(width, height) {
     var puzzleSeed = seed
     var puzzle = _randomize(width, height)
     solve(puzzle, puzzle.start, solutions)
+    console.info('Solved', puzzle, 'found', solutions.length, 'solutions')
   }
   /*
   var targetSolution = solutions.splice(_randint(solutions.length), 1)[0]
