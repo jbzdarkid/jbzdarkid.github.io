@@ -7,6 +7,13 @@ function _copyGrid(grid) {
   return new_grid
 }
 
+// Define .includes() for firefox
+if (!String.prototype.includes) {
+  String.prototype.includes = function() {
+    return String.prototype.indexOf.apply(this, arguments) !== -1
+  }
+}
+
 // Returns a new copy of a puzzle, since javascript is pass-by-reference.
 function _copy(puzzle) {
   return {

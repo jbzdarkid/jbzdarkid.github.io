@@ -1,6 +1,6 @@
 var data
 function trace(elem) {
-  if (document.pointerLockElement == null) {
+  if (document.pointerLockElement == null && document.mozPointerLockElement == null) {
     var parent = elem.parentNode
     var width = parseInt(window.getComputedStyle(parent).width)
     var height = parseInt(window.getComputedStyle(parent).height)
@@ -26,6 +26,7 @@ function trace(elem) {
       circles[0].remove()
     }
 
+    elem.requestPointerLock = elem.requestPointerLock || elem.mozRequestPointerLock
     elem.requestPointerLock()
     var svg = elem.getElementsByTagName('svg')[0]
     if (svg == undefined) {
@@ -78,6 +79,7 @@ function trace(elem) {
         }
       }
     }
+    document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock
     document.exitPointerLock()
   }
 }
@@ -86,7 +88,7 @@ document.addEventListener('pointerlockchange', lockChange, false)
 document.addEventListener('mozpointerlockchange', lockChange, false)
 document.addEventListener('webkitpointerlockchange', lockChange, false)
 function lockChange() {
-  if (document.pointerLockElement == null) {
+  if (document.pointerLockElement == null && document.mozPointerLockElement == null) {
     console.log('Cursor release requested')
     document.removeEventListener("mousemove", onMouseMove, false)
   } else {
