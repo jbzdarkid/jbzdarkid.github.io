@@ -97,7 +97,9 @@ var tests = [
   }*/
   function() {
     var grid = _newGrid(5, 3)
-    return {'grid':grid, 'gaps':[{'x':1, 'y':2}]}
+    var gaps = [{'x':0, 'y':1}, {'x':2, 'y':1}, {'x':4, 'y':1}]
+    var dots = [{'x':1, 'y':0}, {'x':1, 'y':2}, {'x':3, 'y':0}, {'x':3, 'y':2}]
+    return {'grid':grid, 'dots':dots, 'gaps':gaps}
   }
 ]
 
