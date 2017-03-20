@@ -116,10 +116,12 @@ function draw(puzzle, target='puzzle') {
     var cell = document.getElementById(target+'_'+dot.y+'_'+dot.x)
 
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('viewBox', '0 0 22 22')
+    var width = parseInt(window.getComputedStyle(cell).width)
+    var height = parseInt(window.getComputedStyle(cell).height)
+    svg.setAttribute('viewBox', '0 0 '+width+' '+height)
     var hex = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
     hex.setAttribute('points', '5.2 9, 10.4 0, 5.2 -9, -5.2 -9, -10.4 0, -5.2 9')
-    hex.setAttribute('transform', 'translate(11, 11)')
+    hex.setAttribute('transform', 'translate('+width/2+', '+height/2+')')
     hex.style.color = 'black'
     svg.appendChild(hex)
     cell.appendChild(svg)
