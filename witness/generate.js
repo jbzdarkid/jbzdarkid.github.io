@@ -78,13 +78,13 @@ function _randomize(width, height) {
   function _randObject(type) {
     var obj = {'type':type}
     if (type == 'square') {
-      obj.color = ['red', 'blue', 'green', 'orange'][_randint(2)]
+      obj.color = ['red', 'blue', 'green', 'orange'][_randint(3)]
     } else if (type == 'star') {
-      obj.color = ['red', 'blue', 'green', 'orange'][_randint(2)]
+      obj.color = ['red', 'blue', 'green', 'orange'][_randint(3)]
     } else if (type == 'poly') {
       var polys = Object.keys(POLY_DICT)
       obj.shape = polys[_randint(polys.length)]
-      obj.color = ['yellow', 'yellow', 'red', 'blue'][_randint(2)]
+      obj.color = ['yellow', 'yellow', 'red', 'blue'][_randint(3)]
     } else if (type == 'nega') {
       obj.color = 'white'
     }
@@ -96,7 +96,7 @@ function _randomize(width, height) {
       positions.push({'x':x, 'y':y})
     }
   }
-  for (var i=0; i<7; i++) {
+  for (var i=0; i<8; i++) {
     var rand = _randint(100)
     for (var type in distribution) {
       if (rand < distribution[type]) {
