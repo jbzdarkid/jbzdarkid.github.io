@@ -68,7 +68,7 @@ var tests = [
     var grid = _newGrid(5, 7)
     grid[1][1] = {'type':'poly', 'shape':'3.0.0', 'color':'yellow'}
     grid[3][1] = {'type':'poly', 'shape':'3.0.0', 'color':'yellow'}
-    return {'grid':grid}
+    return {'grid':grid, 'start':{'x':2, 'y':2}}
   }, function() {
     var grid = _newGrid(5, 5)
     grid[1][1] = {'type':'square', 'color':'red'}
@@ -76,29 +76,11 @@ var tests = [
     grid[3][1] = {'type':'square', 'color':'blue'}
     grid[3][3] = {'type':'square', 'color':'red'}
     return {'grid':grid}
-  },/* function() {
-    var grid = _newGrid(9, 9)
-    grid[1][7] = {'type':'nega','color':'white'}
-    grid[3][3] = {'type':'square','color':'red'}
-    grid[5][1] = {'type':'poly','shape':'3.1.3','color':'yellow'}
-    grid[5][3] = {'type':'square','color':'blue'}
-    grid[5][5] = {'type':'poly','shape':'3.0.0','color':'yellow'}
-    grid[7][1] = {'type':'square','color':'red'}
-    grid[7][5] = {'type':'poly','shape':'3.1.0','color':'yellow'}
-    grid[7][7] = {'type':'star','color':'blue'}
-    return grid
-  }, function() {
-    var grid = _newGrid(9, 9)
-    grid[1][1] = {'type':'poly','shape':'3.0.0','color':'yellow'}
-    grid[3][1] = {'type':'poly','shape':'3.0.1','color':'yellow'}
-    grid[7][1] = {'type':'poly','shape':'3.1.2','color':'yellow'}
-    grid[7][7] = {'type':'square','color':'red'}
-    return grid
-  }*/
+  },
   function() {
-    var grid = _newGrid(5, 3)
-    var gaps = [{'x':0, 'y':1}, {'x':2, 'y':1}, {'x':4, 'y':1}]
-    var dots = [{'x':1, 'y':0}, {'x':1, 'y':2}, {'x':3, 'y':0}, {'x':3, 'y':2}]
+    var grid = _newGrid(5, 5)
+    var dots = [{'x':0, 'y':1}, {'x':0, 'y':3}, {'x':1, 'y':0}, {'x':3, 'y':0}]
+    var gaps = [{'x':1, 'y':2}, {'x':2, 'y':1}, {'x':2, 'y':3}, {'x':3, 'y':2}]
     return {'grid':grid, 'dots':dots, 'gaps':gaps}
   }
 ]
@@ -122,8 +104,8 @@ function loadTests() {
       if (puzzle['gaps'] == undefined) {
         puzzle['gaps'] = []
       }
+      console.log('Solving', puzzle)
       solve(puzzle, puzzle.start, solutions)
-      console.log('Solved', puzzle)
       console.log('Found', solutions.length, 'solutions') // FIXME: Display somewhere?
       draw(puzzle, 'test'+i)
     } catch (e) {
