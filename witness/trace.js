@@ -33,7 +33,6 @@ function trace(elem) {
       var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     }
     svg.setAttribute('viewBox', '0 0 '+width+' '+height)
-    svg.style.zIndex = 10
     var circ = svg.getElementsByTagName('circle')[0]
     if (circ == undefined) {
       var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
@@ -86,7 +85,6 @@ function trace(elem) {
 
 document.addEventListener('pointerlockchange', lockChange, false)
 document.addEventListener('mozpointerlockchange', lockChange, false)
-document.addEventListener('webkitpointerlockchange', lockChange, false)
 function lockChange() {
   if (document.pointerLockElement == null && document.mozPointerLockElement == null) {
     console.log('Cursor release requested')
@@ -107,7 +105,6 @@ function _draw(elem, subx, suby, draw_rect) {
   if (svg == undefined) {
     svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     svg.setAttribute('viewBox', '0 0 '+width+' '+height)
-    svg.style.zIndex = 10
   }
   var rect = svg.getElementsByTagName('rect')[0]
   if (rect == undefined) {
@@ -116,15 +113,16 @@ function _draw(elem, subx, suby, draw_rect) {
   var circ = svg.getElementsByTagName('circle')[0]
   if (circ == undefined) {
     circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-    circ.style.r = 11
+    circ.setAttribute('r', '11px')
     circ.setAttribute('class', 'circle')
   }
-  circ.style.cx = subx
-  circ.style.cy = suby
+  circ.setAttribute('cx', subx)
+  circ.setAttribute('cy', suby)
   if (draw_rect) {
-    rect.style.height = 0
-    rect.style.width = 0
-    rect.style.rx = 0
+    rect.setAttribute('height', '0px')
+    rect.setAttribute('width', '0px')
+    rect.setAttribute('rx', '0px')
+    rect.setAttribute('ry', '0px')
     rect.setAttribute('class', 'line')
     rect.setAttribute('transform', '')
 
@@ -135,29 +133,31 @@ function _draw(elem, subx, suby, draw_rect) {
     } else if (exit_dir == null) {
       // Still in this segment, draw a partial
       if (enter_dir == 'r') {
-        rect.style.width = subx
-        rect.style.height = height
+        console.log(subx, suby)
+        rect.setAttribute('width', subx)
+        rect.setAttribute('height', height)
       } else if (enter_dir == 'l') {
-        rect.style.width = width - subx
-        rect.style.height = height
+        rect.setAttribute('width', width - subx)
+        rect.setAttribute('height', height)
         rect.setAttribute('transform', 'translate('+subx+', 0)')
       } else if (enter_dir == 'd') {
-        rect.style.width = width
-        rect.style.height = suby
+        rect.setAttribute('width', width)
+        rect.setAttribute('height', suby)
       } else if (enter_dir == 'u') {
-        rect.style.width = width
-        rect.style.height = height - suby
+        rect.setAttribute('width', width)
+        rect.setAttribute('height', height - suby)
         rect.setAttribute('transform', 'translate(0, '+suby+')')
       }
     } else if (enter_dir == exit_dir) {
       // Passed through in a straight line, fill the entirety
-      rect.style.width = width
-      rect.style.height = height
+      rect.setAttribute('width', width)
+      rect.setAttribute('height', height)
     } else {
       // Passed through in a corner, create as such
-      rect.style.rx = width
-      rect.style.width = width*2
-      rect.style.height = height*2
+      rect.setAttribute('width', width*2)
+      rect.setAttribute('height', height*2)
+      rect.setAttribute('rx', width)
+      rect.setAttribute('ry', height)
       var x_trans = 0
       var y_trans = 0
       if (enter_dir == 'd' || exit_dir == 'u') {
@@ -176,13 +176,46 @@ function _draw(elem, subx, suby, draw_rect) {
 
 function onMouseMove(e) {
   var sens = document.getElementById('sens').value
-  data.subx += sens*(e.movementX || e.mozMovementX || e.webkitMovementX || 0)
-  data.suby += sens*(e.movementY || e.mozMovementY || e.webkitMovementY || 0)
+  data.subx += sens*(e.movementX || e.mozMovementX || 0)
+  data.suby += sens*(e.movementY || e.mozMovementY || 0)
   var elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
 
-  // Collision detection
+  _collision(data)
+
+  // Redraw all elements near the cursor
+  for (var x=-1; x<=1; x++) {
+    for (var y=-1; y<=1; y++) {
+      var temp_elem = document.getElementById(data.table+'_'+(data.x+x)+'_'+(data.y+y))
+      if (temp_elem == null) continue
+      var temp_width = width
+      var temp_height = height
+      if (x == -1) {
+        temp_width = parseInt(window.getComputedStyle(temp_elem).width)
+      }
+      if (y == -1) {
+        temp_height = parseInt(window.getComputedStyle(temp_elem).height)
+      }
+      if (x == 0 || y == 0) {
+        _draw(temp_elem, data.subx - x * temp_width, data.suby - y * temp_height, true)
+      } else {
+        _draw(temp_elem, data.subx - x * temp_width, data.suby - y * temp_height, false)
+      }
+    }
+  }
+
+  _move(data)
+}
+
+// Collision detection. If the cursor moves into an edge or into a cell,
+// then its position is reset to be exactly touching the edge.
+// Corners are handled separately to prevent runover into cells
+function _collision(data) {
+  var elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
+  var width = parseInt(window.getComputedStyle(elem).width)
+  var height = parseInt(window.getComputedStyle(elem).height)
+
   if (elem.className.includes('corner')) { // Corner collision
     // Calculates the distance to the edge in each direction
     var dist_x = (data.subx < width/2) ? data.subx : width - data.subx
@@ -195,6 +228,7 @@ function onMouseMove(e) {
       if (data.suby + 11 > height) data.suby = height - 11
     }
   }
+
   // Generic collision
   if (data.subx - 11 < 0) {
     var new_elem = document.getElementById(data.table+'_'+(data.x-1)+'_'+data.y)
@@ -226,29 +260,22 @@ function onMouseMove(e) {
       data.suby = height - 11
     }
   }
+}
 
-  // Redraw all elements near the cursor
-  for (var x=-1; x<=1; x++) {
-    for (var y=-1; y<=1; y++) {
-      var temp_elem = document.getElementById(data.table+'_'+(data.x+x)+'_'+(data.y+y))
-      if (temp_elem == null) continue
-      var temp_width = width
-      var temp_height = height
-      if (x == -1) {
-        temp_width = parseInt(window.getComputedStyle(temp_elem).width)
-      }
-      if (y == -1) {
-        temp_height = parseInt(window.getComputedStyle(temp_elem).height)
-      }
-      if (x == 0 || y == 0) {
-        _draw(temp_elem, data.subx - x * temp_width, data.suby - y * temp_height, true)
-      } else {
-        _draw(temp_elem, data.subx - x * temp_width, data.suby - y * temp_height, false)
-      }
-    }
-  }
+// This handles moving the cursor. Since the puzzle is actually a grid, in order
+// to have smooth transitions I keep track of which element the cursor is
+// currently over, along with a subposition to determine where in the cell it is
+// This function handles reaching the edge of a shape, and also sets the class
+// name for traversed cells. The naming scheme is trace-X-Y where X is the
+// direction the cell was entered from, and Y is the direction that the cell
+// was exited from. Thus, tracing to the right leads to class 'trace-r-r' If the
+// cursor is currently in a cell, it will have only one direction, eg 'trace-r'
+// and if the cell is not traced (but can be) then it will have class 'trace'
+function _move(data) {
+  var elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
+  var width = parseInt(window.getComputedStyle(elem).width)
+  var height = parseInt(window.getComputedStyle(elem).height)
 
-  // Generic movement
   if (data.subx < 0) { // Moving left
     var new_elem = document.getElementById(data.table+'_'+(data.x-1)+'_'+data.y)
     if (new_elem != null) {

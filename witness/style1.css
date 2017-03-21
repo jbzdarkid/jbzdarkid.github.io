@@ -26,11 +26,6 @@
   width: 50px;
   background: #404040;
 }
-.line {
-  background: gray;
-  height: 100%;
-  width: 100%;
-}
 .start {
   background: #666666;
   position: relative;

@@ -49,7 +49,7 @@ function draw(puzzle, target='puzzle') {
         cell.style.borderRadius = 0
         var end = row.insertCell(row.length)
         end.className = 'end trace'
-        end.id = target+'_'+(y+1)+'_'+x
+        end.id = target+'_'+(y+1)+'_'+x // FIXME: A dirty hack
       } else if (puzzle.grid[x][y].type == 'square') {
         var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('viewBox', '0 0 50 50')
@@ -114,7 +114,6 @@ function draw(puzzle, target='puzzle') {
   }
   for (var dot of puzzle.dots) {
     var cell = document.getElementById(target+'_'+dot.y+'_'+dot.x)
-
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     var width = parseInt(window.getComputedStyle(cell).width)
     var height = parseInt(window.getComputedStyle(cell).height)
@@ -122,7 +121,7 @@ function draw(puzzle, target='puzzle') {
     var hex = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
     hex.setAttribute('points', '5.2 9, 10.4 0, 5.2 -9, -5.2 -9, -10.4 0, -5.2 9')
     hex.setAttribute('transform', 'translate('+width/2+', '+height/2+')')
-    hex.style.color = 'black'
+    hex.setAttribute('fill', 'black')
     svg.appendChild(hex)
     cell.appendChild(svg)
   }
@@ -135,7 +134,7 @@ function draw(puzzle, target='puzzle') {
     var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
     poly.setAttribute('points', '-11 -11, -11 11, 11 11, 11 -11')
     poly.setAttribute('transform', 'translate('+(width/2)+', '+(height/2)+')')
-    poly.style.color = 'black'
+    poly.setAttribute('fill', 'black')
     svg.appendChild(poly)
     cell.appendChild(svg)
   }
