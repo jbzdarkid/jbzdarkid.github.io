@@ -127,6 +127,7 @@ function draw(puzzle, target='puzzle') {
   }
   for (var gap of puzzle.gaps) {
     var cell = document.getElementById(target+'_'+gap.y+'_'+gap.x)
+    cell.className = 'break '+cell.className
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     var width = parseInt(window.getComputedStyle(cell).width)
     var height = parseInt(window.getComputedStyle(cell).height)

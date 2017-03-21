@@ -95,89 +95,14 @@ function lockChange() {
   }
 }
 
-function _draw(elem, subx, suby, draw_rect) {
-  if (elem == null) return
-  if (elem.className.includes('start')) return
-  if (!elem.className.includes('trace')) return
-  var width = parseInt(window.getComputedStyle(elem).width)
-  var height = parseInt(window.getComputedStyle(elem).height)
-  var svg = elem.getElementsByTagName('svg')[0]
-  if (svg == undefined) {
-    svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-    svg.setAttribute('viewBox', '0 0 '+width+' '+height)
-  }
-  var rect = svg.getElementsByTagName('rect')[0]
-  if (rect == undefined) {
-    rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-  }
-  var circ = svg.getElementsByTagName('circle')[0]
-  if (circ == undefined) {
-    circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-    circ.setAttribute('r', '11px')
-    circ.setAttribute('class', 'circle')
-  }
-  circ.setAttribute('cx', subx)
-  circ.setAttribute('cy', suby)
-  if (draw_rect) {
-    rect.setAttribute('height', '0px')
-    rect.setAttribute('width', '0px')
-    rect.setAttribute('rx', '0px')
-    rect.setAttribute('ry', '0px')
-    rect.setAttribute('class', 'line')
-    rect.setAttribute('transform', '')
-
-    var enter_dir = elem.className.split('-')[1]
-    var exit_dir = elem.className.split('-')[2]
-    if (enter_dir == null) {
-      // Never entered this segment, do nothing
-    } else if (exit_dir == null) {
-      // Still in this segment, draw a partial
-      if (enter_dir == 'r') {
-        console.log(subx, suby)
-        rect.setAttribute('width', subx)
-        rect.setAttribute('height', height)
-      } else if (enter_dir == 'l') {
-        rect.setAttribute('width', width - subx)
-        rect.setAttribute('height', height)
-        rect.setAttribute('transform', 'translate('+subx+', 0)')
-      } else if (enter_dir == 'd') {
-        rect.setAttribute('width', width)
-        rect.setAttribute('height', suby)
-      } else if (enter_dir == 'u') {
-        rect.setAttribute('width', width)
-        rect.setAttribute('height', height - suby)
-        rect.setAttribute('transform', 'translate(0, '+suby+')')
-      }
-    } else if (enter_dir == exit_dir) {
-      // Passed through in a straight line, fill the entirety
-      rect.setAttribute('width', width)
-      rect.setAttribute('height', height)
-    } else {
-      // Passed through in a corner, create as such
-      rect.setAttribute('width', width*2)
-      rect.setAttribute('height', height*2)
-      rect.setAttribute('rx', width)
-      rect.setAttribute('ry', height)
-      var x_trans = 0
-      var y_trans = 0
-      if (enter_dir == 'd' || exit_dir == 'u') {
-        x_trans = -width
-      }
-      if (enter_dir == 'r' || exit_dir == 'l') {
-        y_trans = -height
-      }
-      rect.setAttribute('transform', 'translate('+y_trans+', '+x_trans+')')
-    }
-    svg.appendChild(rect)
-  }
-  svg.appendChild(circ)
-  elem.appendChild(svg)
-}
-
 function onMouseMove(e) {
   var sens = document.getElementById('sens').value
-  data.subx += sens*(e.movementX || e.mozMovementX || 0)
-  data.suby += sens*(e.movementY || e.mozMovementY || 0)
+  var dx = (e.movementX || e.mozMovementX || 0)
+  var dy = (e.movementY || e.mozMovementY || 0)
+  data.subx += sens*dx
+  data.suby += sens*dy
+  // data.subx += sens*Math.sign(dx)*Math.sqrt(Math.abs(dx))
+  // data.suby += sens*Math.sign(dy)*Math.sqrt(Math.abs(dy))
   var elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
@@ -229,6 +154,19 @@ function _collision(data) {
     }
   }
 
+  // Break collision
+  if (elem.className.includes('break')) {
+    if (elem.className.endsWith('trace-r') && data.subx + 2.5 > 0) {
+      data.subx = 2.5
+    } else if (elem.className.endsWith('trace-l') && data.subx - 2.5 < width) {
+      data.subx = width - 2.5
+    } else if (elem.className.endsWith('trace-d') && data.suby + 2.5 > 0) {
+      data.suby = 2.5
+    } else if (elem.className.endsWith('trace-u') && data.suby + 2.5 < height) {
+      data.suby = height - 2.5
+    }
+  }
+
   // Generic collision
   if (data.subx - 11 < 0) {
     var new_elem = document.getElementById(data.table+'_'+(data.x-1)+'_'+data.y)
@@ -260,6 +198,87 @@ function _collision(data) {
       data.suby = height - 11
     }
   }
+}
+
+// This function draws elements as the cursor passes near them.
+// In particular, it still draws valid when the cursor is outside the region,
+// by setting draw_rect = false
+function _draw(elem, subx, suby, draw_rect) {
+  if (elem == null) return
+  if (elem.className.includes('start')) return
+  if (!elem.className.includes('trace')) return
+  var width = parseInt(window.getComputedStyle(elem).width)
+  var height = parseInt(window.getComputedStyle(elem).height)
+  var svg = elem.getElementsByTagName('svg')[0]
+  if (svg == undefined) {
+    svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    svg.setAttribute('viewBox', '0 0 '+width+' '+height)
+  }
+  var rect = svg.getElementsByTagName('rect')[0]
+  if (rect == undefined) {
+    rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+  }
+  var circ = svg.getElementsByTagName('circle')[0]
+  if (circ == undefined) {
+    circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+    circ.setAttribute('r', '11px')
+    circ.setAttribute('class', 'circle')
+  }
+  circ.setAttribute('cx', subx)
+  circ.setAttribute('cy', suby)
+  if (draw_rect) {
+    rect.setAttribute('height', '0px')
+    rect.setAttribute('width', '0px')
+    rect.setAttribute('rx', '0px')
+    rect.setAttribute('ry', '0px')
+    rect.setAttribute('class', 'line')
+    rect.setAttribute('transform', '')
+
+    var enter_dir = elem.className.split('-')[1]
+    var exit_dir = elem.className.split('-')[2]
+    if (enter_dir == null) {
+      // Never entered this segment, do nothing
+    } else if (exit_dir == null) {
+      // Still in this segment, draw a partial
+      if (enter_dir == 'r') {
+        rect.setAttribute('width', subx)
+        rect.setAttribute('height', height)
+      } else if (enter_dir == 'l') {
+        rect.setAttribute('width', width - subx)
+        rect.setAttribute('height', height)
+        rect.setAttribute('transform', 'translate('+subx+', 0)')
+      } else if (enter_dir == 'd') {
+        rect.setAttribute('width', width)
+        rect.setAttribute('height', suby)
+      } else if (enter_dir == 'u') {
+        rect.setAttribute('width', width)
+        rect.setAttribute('height', height - suby)
+        rect.setAttribute('transform', 'translate(0, '+suby+')')
+      }
+    } else if (enter_dir == exit_dir) {
+      // Passed through in a straight line, fill the entirety
+      rect.setAttribute('width', width)
+      rect.setAttribute('height', height)
+    } else { // FIXME: Here's where we fix the transition bug
+      // Passed through in a corner, create as such
+      rect.setAttribute('width', width*2)
+      rect.setAttribute('height', height*2)
+      rect.setAttribute('rx', width)
+      rect.setAttribute('ry', height)
+      var x_trans = 0
+      var y_trans = 0
+      if (enter_dir == 'd' || exit_dir == 'u') {
+        x_trans = -width
+      }
+      if (enter_dir == 'r' || exit_dir == 'l') {
+        y_trans = -height
+      }
+      rect.setAttribute('transform', 'translate('+y_trans+', '+x_trans+')')
+    }
+    svg.appendChild(rect)
+  }
+  svg.appendChild(circ)
+  elem.appendChild(svg)
 }
 
 // This handles moving the cursor. Since the puzzle is actually a grid, in order
