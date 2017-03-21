@@ -12,6 +12,10 @@ function isValid(puzzle) {
       return 1
     }
   }
+  if (puzzle.start.x%2 != 0 && puzzle.start.y%2 != 0) {
+    // console.log('Puzzle start not in a corner')
+    return 1
+  }
   if (puzzle.start.x == puzzle.end.x && puzzle.start.y == puzzle.end.y) {
     // console.log('Start and end points not distinct')
     return 1
