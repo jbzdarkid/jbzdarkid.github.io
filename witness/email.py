@@ -13,7 +13,7 @@ driver.save_screenshot('temp.png')
 sha = SHA256.new()
 sha.update(environ['PASSWORD'])
 key = sha.hexdigest()[:AES.block_size*2]
-text = open('emails.txt', 'rb').read()
+text = open('witness/emails.txt', 'rb').read()
 iv = text[:AES.block_size]
 cipher = text[AES.block_size:]
 aes = AES.new(key, AES.MODE_CBC, iv)
