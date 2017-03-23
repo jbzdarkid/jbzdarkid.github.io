@@ -2,7 +2,7 @@ from selenium.webdriver import PhantomJS
 from os import getcwd, environ
 from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
-from smtplib import SMTP
+import smtplib
 
 driver = PhantomJS()
 driver.set_window_size(1280, 720)
@@ -20,7 +20,7 @@ aes = AES.new(key, AES.MODE_CBC, iv)
 plain = aes.decrypt(cipher)
 
 FROM = environ['USERNAME']
-server = SMTP('smtp.gmail.com', 587)
+server = smtplib.SMTP('smtp.gmail.com', 587)
 server.ehlo()
 server.starttls()
 server.login(environ['USERNAME'], environ['PASSWORD'])
