@@ -122,11 +122,7 @@ function onMouseMove(e) {
       if (y == -1) {
         temp_height = parseInt(window.getComputedStyle(temp_elem).height)
       }
-      if (x == 0 || y == 0) {
-        _draw(temp_elem, data.subx - x * temp_width, data.suby - y * temp_height, true)
-      } else {
-        _draw(temp_elem, data.subx - x * temp_width, data.suby - y * temp_height, false)
-      }
+      _draw(temp_elem, data.subx - x * temp_width, data.suby - y * temp_height)
     }
   }
 
@@ -200,10 +196,9 @@ function _collision(data) {
   }
 }
 
-// This function draws elements as the cursor passes near them.
-// In particular, it still draws valid when the cursor is outside the region,
-// by setting draw_rect = false
-function _draw(elem, subx, suby, draw_rect) {
+// This function draws elements as the cursor passes near them. It draws
+// differently if the cursor is currently in the cell or not
+function _draw(elem, subx, suby) {
   if (elem == null) return
   if (elem.className.includes('start')) return
   if (!elem.className.includes('trace')) return
@@ -214,69 +209,113 @@ function _draw(elem, subx, suby, draw_rect) {
     svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     svg.setAttribute('viewBox', '0 0 '+width+' '+height)
   }
-  var rect = svg.getElementsByTagName('rect')[0]
-  if (rect == undefined) {
-    rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+  while (svg.getElementsByTagName('circle').length > 0) {
+    svg.getElementsByTagName('circle')[0].remove()
   }
-  var circ = svg.getElementsByTagName('circle')[0]
-  if (circ == undefined) {
-    circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-    circ.setAttribute('r', '11px')
-    circ.setAttribute('class', 'circle')
-  }
+  var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+  circ.setAttribute('r', '11px')
+  circ.setAttribute('class', 'circle')
   circ.setAttribute('cx', subx)
   circ.setAttribute('cy', suby)
-  if (draw_rect) {
-    rect.setAttribute('height', '0px')
-    rect.setAttribute('width', '0px')
-    rect.setAttribute('rx', '0px')
-    rect.setAttribute('ry', '0px')
-    rect.setAttribute('class', 'line')
-    rect.setAttribute('transform', '')
-
-    var enter_dir = elem.className.split('-')[1]
-    var exit_dir = elem.className.split('-')[2]
-    if (enter_dir == null) {
-      // Never entered this segment, do nothing
-    } else if (exit_dir == null) {
-      // Still in this segment, draw a partial
-      if (enter_dir == 'r') {
-        rect.setAttribute('width', subx)
-        rect.setAttribute('height', height)
-      } else if (enter_dir == 'l') {
-        rect.setAttribute('width', width - subx)
-        rect.setAttribute('height', height)
-        rect.setAttribute('transform', 'translate('+subx+', 0)')
-      } else if (enter_dir == 'd') {
-        rect.setAttribute('width', width)
-        rect.setAttribute('height', suby)
-      } else if (enter_dir == 'u') {
-        rect.setAttribute('width', width)
-        rect.setAttribute('height', height - suby)
-        rect.setAttribute('transform', 'translate(0, '+suby+')')
-      }
-    } else if (enter_dir == exit_dir) {
-      // Passed through in a straight line, fill the entirety
-      rect.setAttribute('width', width)
-      rect.setAttribute('height', height)
-    } else { // FIXME: Here's where we fix the transition bug
-      // Passed through in a corner, create as such
-      rect.setAttribute('width', width*2)
-      rect.setAttribute('height', height*2)
-      rect.setAttribute('rx', width)
-      rect.setAttribute('ry', height)
-      var x_trans = 0
-      var y_trans = 0
-      if (enter_dir == 'd' || exit_dir == 'u') {
-        x_trans = -width
-      }
-      if (enter_dir == 'r' || exit_dir == 'l') {
-        y_trans = -height
-      }
-      rect.setAttribute('transform', 'translate('+y_trans+', '+x_trans+')')
-    }
-    svg.appendChild(rect)
+  while (svg.getElementsByTagName('rect').length > 0) {
+    svg.getElementsByTagName('rect')[0].remove()
   }
+  var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+  rect.setAttribute('height', '0px')
+  rect.setAttribute('width', '0px')
+  rect.setAttribute('rx', '0px')
+  rect.setAttribute('ry', '0px')
+  rect.setAttribute('class', 'line')
+  rect.setAttribute('transform', '')
+  var circ2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+  circ2.setAttribute('r', '11px')
+  circ2.setAttribute('cx', width/2)
+  circ2.setAttribute('cy', height/2)
+  circ2.setAttribute('class', 'line')
+  var rect2 = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+  rect2.setAttribute('class', 'line')
+
+  var enter_dir = elem.className.split('-')[1]
+  var exit_dir = elem.className.split('-')[2]
+  if (enter_dir == null) {
+    // Haven't entered the cell, draw nothing
+  } else if (exit_dir == null) { // Still in the cell
+    if (enter_dir == 'r') {
+      rect.setAttribute('width', subx)
+      rect.setAttribute('height', height)
+    } else if (enter_dir == 'l') {
+      rect.setAttribute('width', width - subx)
+      rect.setAttribute('height', height)
+      rect.setAttribute('transform', 'translate('+subx+', 0)')
+    } else if (enter_dir == 'd') {
+      rect.setAttribute('width', width)
+      rect.setAttribute('height', suby)
+    } else if (enter_dir == 'u') {
+      rect.setAttribute('width', width)
+      rect.setAttribute('height', height - suby)
+      rect.setAttribute('transform', 'translate(0, '+suby+')')
+    }
+    if (enter_dir == 'l' && subx <= width/2) {
+      svg.appendChild(circ2)
+    } else if (enter_dir == 'r' && subx >= width/2) {
+      svg.appendChild(circ2)
+    } else if (enter_dir == 'u' && suby <= height/2) {
+      svg.appendChild(circ2)
+    } else if (enter_dir == 'd' && suby >= height/2) {
+      svg.appendChild(circ2)
+    }
+    if (enter_dir != 'l' && subx > width/2) {
+      rect2.setAttribute('width', subx - width/2)
+      rect2.setAttribute('height', height)
+      rect2.setAttribute('transform', 'translate('+width/2+', 0)')
+    } else if (enter_dir != 'r' && subx < width/2) {
+      rect2.setAttribute('width', width/2 - subx)
+      rect2.setAttribute('height', height)
+      rect2.setAttribute('transform', 'translate('+subx+', 0)')
+    } else if (enter_dir != 'u' && suby > height/2) {
+      rect2.setAttribute('width', width)
+      rect2.setAttribute('height', suby - height/2)
+      rect2.setAttribute('transform', 'translate(0, '+height/2+')')
+    } else if (enter_dir != 'd' && suby < height/2) {
+      rect2.setAttribute('width', width)
+      rect2.setAttribute('height', height/2 - suby)
+      rect2.setAttribute('transform', 'translate(0, '+suby+')')
+    }
+  } else { // Entered and exited the cell.
+    if (enter_dir == 'r') {
+      rect.setAttribute('width', width/2)
+      rect.setAttribute('height', height)
+    } else if (enter_dir == 'l') {
+      rect.setAttribute('width', width/2)
+      rect.setAttribute('height', height)
+      rect.setAttribute('transform', 'translate('+(width/2)+', 0)')
+    } else if (enter_dir == 'd') {
+      rect.setAttribute('width', width)
+      rect.setAttribute('height', height/2)
+    } else if (enter_dir == 'u') {
+      rect.setAttribute('width', width)
+      rect.setAttribute('height', height/2)
+      rect.setAttribute('transform', 'translate(0, '+(height/2)+')')
+    }
+    svg.appendChild(circ2)
+    if (exit_dir == 'r') {
+      rect2.setAttribute('width', width/2)
+      rect2.setAttribute('height', height)
+      rect2.setAttribute('transform', 'translate('+width/2+', 0)')
+    } else if (exit_dir == 'l') {
+      rect2.setAttribute('width', width/2)
+      rect2.setAttribute('height', height)
+    } else if (exit_dir == 'd') {
+      rect2.setAttribute('width', width)
+      rect2.setAttribute('height', height/2)
+      rect2.setAttribute('transform', 'translate(0, '+height/2+')')
+    } else if (exit_dir == 'u') {
+      rect2.setAttribute('width', width)
+      rect2.setAttribute('height', height/2)
+    }
+  }
+  svg.appendChild(rect)
+  svg.appendChild(rect2)
   svg.appendChild(circ)
   elem.appendChild(svg)
 }
