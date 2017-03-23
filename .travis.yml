@@ -3,7 +3,9 @@ notifications:
   email:
     on_success: never
     on_failure: change
-before_install: pip install selenium
+before_install:
+  - pip install selenium
+  - pip install pycrypto
 script: python witness/email.py
 env:
   global:
