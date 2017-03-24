@@ -31,6 +31,7 @@ server.login(FROM, environ['PASSWORD'])
 
 for TO in plain.split('\n'):
 	TO = TO.strip()
+	TO = '%s <%s>' % (TO, TO) # Gmail requires emails like: Bob <bob@gmail.com>
 	msg = MIMEMultipart()
 	msg['From'] = FROM
 	msg['To'] = TO
