@@ -1,8 +1,11 @@
-from selenium.webdriver import PhantomJS
-from os import getcwd, environ
 from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
-import smtplib
+from datetime import datetime
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from os import getcwd, environ
+from selenium.webdriver import PhantomJS
+from smtplib import SMTP
 
 driver = PhantomJS()
 driver.set_window_size(1280, 720)
@@ -20,18 +23,19 @@ aes = AES.new(key, AES.MODE_CBC, iv)
 plain = aes.decrypt(cipher)
 
 FROM = 'random.witness.puzzles@gmail.com'
-server = smtplib.SMTP('smtp.gmail.com', 587)
+DATE = datetime.today().strftime('%A, %B %d, %Y')
+server = SMTP('smtp.gmail.com', 587)
 server.ehlo()
 server.starttls()
 server.login(FROM, environ['PASSWORD'])
 
-for to in plain.split('\n'):
-	to = to.strip()
+for TO in plain.split('\n'):
+	TO = TO.strip()
 	msg = MimeMultipart()
 	msg['From'] = FROM
-	msg['To'] = ', '.join(TO)
-	msg['Date'] = 'blah'
-	msg['Subject'] = 'Witness puzzle for blah'
+	msg['To'] = TO
+	msg['Date'] = DATE
+	msg['Subject'] = 'Witness puzzle for %s' % DATE
 	msg.attach(MIMEImage(open('temp.png', 'rb').read()))
 	server.sendmail(FROM, TO, msg.as_string())
 
