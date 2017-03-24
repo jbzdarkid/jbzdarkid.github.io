@@ -19,11 +19,11 @@ cipher = text[AES.block_size:]
 aes = AES.new(key, AES.MODE_CBC, iv)
 plain = aes.decrypt(cipher)
 
-FROM = environ['USERNAME']
+FROM = 'random.witness.puzzles@gmail.com'
 server = smtplib.SMTP('smtp.gmail.com', 587)
 server.ehlo()
 server.starttls()
-server.login(environ['USERNAME'], environ['PASSWORD'])
+server.login(FROM, environ['PASSWORD'])
 
 for to in plain.split('\n'):
 	to = to.strip()
