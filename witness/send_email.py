@@ -11,6 +11,8 @@ driver = PhantomJS()
 driver.set_window_size(1280, 720)
 print getcwd()+'/witness/index.html'
 driver.get(getcwd()+'/witness/index.html')
+puzzle = driver.find_element_by_id('puzzle')
+print puzzle
 driver.save_screenshot('temp.png')
 
 sha = SHA256.new()
@@ -38,6 +40,7 @@ for TO in plain.split('\n'):
 	msg['Date'] = DATE
 	msg['Subject'] = 'Witness puzzle for %s' % DATE
 	msg.attach(MIMEImage(open('temp.png', 'rb').read()))
+	print msg.as_string()
 	server.sendmail(FROM, TO, msg.as_string())
 
 server.quit()
