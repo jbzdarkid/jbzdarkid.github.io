@@ -1,8 +1,8 @@
 from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 from datetime import datetime
+from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 from os import getcwd, environ
 from selenium.webdriver import PhantomJS
 from smtplib import SMTP
@@ -31,7 +31,7 @@ server.login(FROM, environ['PASSWORD'])
 
 for TO in plain.split('\n'):
 	TO = TO.strip()
-	msg = MimeMultipart()
+	msg = MIMEMultipart()
 	msg['From'] = FROM
 	msg['To'] = TO
 	msg['Date'] = DATE
