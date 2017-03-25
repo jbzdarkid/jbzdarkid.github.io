@@ -21,6 +21,7 @@ iv = text[:AES.block_size]
 cipher = text[AES.block_size:]
 aes = AES.new(key, AES.MODE_CBC, iv)
 plain = aes.decrypt(cipher)
+print 'Decrypted: "' + plain + '"'
 
 FROM = 'random.witness.puzzles@gmail.com'
 DATE = datetime.today().strftime('%A, %B %d, %Y')
@@ -33,7 +34,7 @@ text = '<a href="jbzdarkid.github.io/index.html#1><img src="data:image/png;base6
 
 for TO in plain.split(','):
 	print TO
-	print '"%s <%s>"' % (TO.split('@')[0], TO)
+	print '"%s <%s>"' % (TO.split('@')[0], TO.strip())
 	msg = MIMEText(text)
 	msg['Subject'] = 'Witness puzzle for %s' % DATE
 	msg['To'] = '%s <%s>' % (TO.split('@')[0], TO)

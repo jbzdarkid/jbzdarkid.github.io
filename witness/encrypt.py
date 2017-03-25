@@ -15,7 +15,7 @@ cipher = text[AES.block_size:]
 aes = AES.new(key, AES.MODE_CBC, iv)
 plain = aes.decrypt(cipher).strip()
 
-print 'Decrypted:\n', plain
+print 'Decrypted: "' + plain + '"'
 plain += ','+raw_input('Append data:')
 plain += ' '*(AES.block_size - len(plain)%AES.block_size)
 
