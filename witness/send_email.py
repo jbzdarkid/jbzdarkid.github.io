@@ -2,15 +2,20 @@ from base64 import b64encode
 from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 from datetime import datetime
-from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from os import getcwd, environ
 from selenium.webdriver import PhantomJS
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.ui import WebDriverWait
 from smtplib import SMTP
 
 driver = PhantomJS()
 driver.set_window_size(1280, 720)
 driver.get(getcwd()+'/witness/index.html')
+condition = expected_conditions.presence_of_element_located(driver.find_element_by_id('puzzle_8_8') # Wait until final cell loads
+WebDriverWait(driver, 600).until(condition)
+
 print driver.page_source
 puzzle = driver.find_element_by_tag_name('table')
 puzzle.screenshot('temp.png')
