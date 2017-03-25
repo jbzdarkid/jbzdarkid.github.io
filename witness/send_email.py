@@ -3,6 +3,7 @@ from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 from datetime import datetime
 from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from os import getcwd, environ
 from selenium.webdriver import PhantomJS
 from smtplib import SMTP
@@ -32,12 +33,13 @@ server.login(FROM, environ['PASSWORD'])
 text = '<a href="jbzdarkid.github.io/index.html#1><img src="data:image/png;base64,%s"></a>' % b64encode(open('temp.png', 'rb').read())
 
 for TO in plain.split(','):
-	msg = MIMEText(text, 'html')
 	# msg.add_header('Content-Type', 'text/html')
+	msg = MIMEMultipart('alternative')
 	msg['Subject'] = 'Witness puzzle for %s' % DATE
 	msg['To'] = '%s <%s>' % (TO.split('@')[0], TO)
 	msg['From'] = FROM
 	msg['Date'] = DATE
+	msg.attach(MIMEText(text, 'html'))
 	server.sendmail(FROM, TO, msg.as_string())
 
 server.quit()
