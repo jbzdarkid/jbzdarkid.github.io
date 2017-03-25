@@ -10,8 +10,8 @@ from smtplib import SMTP
 
 driver = PhantomJS()
 driver.set_window_size(1280, 720)
-driver.get(getcwd()+'/witness/test.html')
-puzzle = driver.find_element_by_id('meta')
+driver.get(getcwd()+'/witness/index.html')
+puzzle = driver.find_element_by_id('puzzle')
 puzzle.screenshot('temp.png')
 
 sha = SHA256.new()
@@ -30,7 +30,9 @@ server.ehlo()
 server.starttls()
 server.login(FROM, environ['PASSWORD'])
 
-text = '<a href="jbzdarkid.github.io/index.html#1><img src="data:image/png;base64,%s"></a>' % b64encode(open('temp.png', 'rb').read())
+print puzzle.size
+text = '<a href="jbzdarkid.github.io/index.html#1><img height="%dpx" width="%dpx" src="data:image/png;base64,%s"></a>' % (puzzle.size.height, puzzle.size.width, b64encode(open('temp.png', 'rb').read())
+text = '<b>code monkey</b>'
 
 for TO in plain.split(','):
 	# msg.add_header('Content-Type', 'text/html')
