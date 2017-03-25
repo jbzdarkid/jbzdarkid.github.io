@@ -20,6 +20,7 @@ try:
 	WebDriverWait(driver, 60).until(condition)
 except TimeoutException:
 	print driver.get_log('browser')
+	raise
 
 puzzle = driver.find_element_by_tag_name('table')
 puzzle.screenshot('temp.png')
