@@ -2,8 +2,7 @@ from base64 import b64encode
 from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 from datetime import datetime
-from email.mime.image import MIMEImage
-from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from os import getcwd, environ
 from selenium.webdriver import PhantomJS
 from smtplib import SMTP
@@ -12,10 +11,6 @@ driver = PhantomJS()
 driver.set_window_size(1280, 720)
 driver.get(getcwd()+'/witness/test.html')
 puzzle = driver.find_element_by_id('meta')
-print puzzle.size
-puzzle.screenshot('temp.png')
-
-# driver.save_screenshot('temp.png')
 
 sha = SHA256.new()
 sha.update(environ['PASSWORD'])
@@ -33,39 +28,14 @@ server.ehlo()
 server.starttls()
 server.login(FROM, environ['PASSWORD'])
 
-
-msg = '''
-Subject: SUBJECT
-Content-Type: multipart/related;
-	type="text/html";
-From: random.witness.puzzles <random.witness.puzzles@gmail.com>
-Date: DATE
-To: jbzdarkid <jbzdarkid@gmail.com>
-
-Content-Type: text/html;
-	charset=us-ascii
-<html><body><a href="jbzdarkid.github.io/index.html#1><object id="puzzle_id_1"></object></a></body></html>
-
-Content-Transfer-Encoding: base64
-Content-Disposition: inline;
-	filename=temp.png
-Content-Type: application/png;
-	x-unix-mode=0644;
-	name="Puzzle for DATE"
-Content-Id: <puzzle_id_1>
-
-'''+puzzle.screenshot_as_png
-
-server.sendmail(FROM, 'jbzdarkid@gmail.com', msg)
+text = '<a href="jbzdarkid.github.io/index.html#1><img src="data:image/png;base64,%s"></a>' % puzzle.screenshot_as_png
 
 for TO in plain.split(','):
-	msg = MIMEMultipart()
-	msg['From'] = FROM
-	msg['To'] = '%s <%s>' % (TO.split('@')[0], TO)
-	# msg['Date'] = DATE
+	msg = MIMEText(text)
 	msg['Subject'] = 'Witness puzzle for %s' % DATE
-	msg.attach(MIMEImage(open('temp.png', 'rb').read()))
-	print msg
+	msg['To'] = '%s <%s>' % (TO.split('@')[0], TO)
+	msg['From'] = FROM
+	# msg['Date'] = DATE
 	server.sendmail(FROM, TO, msg.as_string())
 
 server.quit()
