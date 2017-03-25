@@ -10,11 +10,13 @@ from smtplib import SMTP
 
 driver = PhantomJS()
 driver.set_window_size(1280, 720)
-print getcwd()+'/witness/index.html'
 driver.get(getcwd()+'/witness/test.html')
-puzzle = driver.find_element_by_id('puzzle')
-print puzzle
-driver.save_screenshot('temp.png')
+puzzle = driver.find_element_by_id('meta')
+print puzzle.rect, puzzle.size
+puzzle.screenshot('temp.png')
+print puzzle.screenshot_as_png('temp2.png')
+
+# driver.save_screenshot('temp.png')
 
 sha = SHA256.new()
 sha.update(environ['PASSWORD'])
