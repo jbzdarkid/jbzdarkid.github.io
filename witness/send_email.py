@@ -13,7 +13,7 @@ from smtplib import SMTP
 driver = PhantomJS()
 driver.set_window_size(1280, 720)
 driver.get(getcwd()+'/witness/index.html')
-condition = expected_conditions.presence_of_element_located(driver.find_element_by_id('puzzle_8_8') # Wait until final cell loads
+condition = expected_conditions.presence_of_element_located(driver.find_element_by_id('puzzle_8_8')) # Wait until final cell loads
 WebDriverWait(driver, 600).until(condition)
 
 print driver.page_source
