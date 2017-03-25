@@ -5,14 +5,14 @@ from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from os import getcwd, environ
-from selenium.webdriver import Firefox
+from selenium.webdriver import Chrome
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 from smtplib import SMTP
 
-driver = Firefox()
+driver = Chrome()
 driver.set_window_size(1280, 720)
 driver.get(getcwd()+'/witness/index.html')
 condition = EC.presence_of_element_located((By.ID, 'puzzle_0_0'))

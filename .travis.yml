@@ -6,6 +6,11 @@ notifications:
 before_install:
   - pip install selenium
   - pip install pycrypto
+  - wget https://chromedriver.storage.googleapis.com/2.28/chromedriver_linux64.zip
+  - unzip chromedriver_linux64.zip
+  - rm chromedriver_linux64.zip
+  - chmod +x chromedriver
+  - cp chromedriver /usr/local/bin/
 script: python witness/send_email.py
 env:
   global:
