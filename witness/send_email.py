@@ -11,6 +11,7 @@ driver = PhantomJS()
 driver.set_window_size(1280, 720)
 driver.get(getcwd()+'/witness/test.html')
 puzzle = driver.find_element_by_id('meta')
+puzzle.screenshot('temp.png')
 
 sha = SHA256.new()
 sha.update(environ['PASSWORD'])
@@ -28,9 +29,11 @@ server.ehlo()
 server.starttls()
 server.login(FROM, environ['PASSWORD'])
 
-text = '<a href="jbzdarkid.github.io/index.html#1><img src="data:image/png;base64,%s"></a>' % puzzle.screenshot_as_png
+text = '<a href="jbzdarkid.github.io/index.html#1><img src="data:image/png;base64,%s"></a>' % b64encode(open('temp.png', 'rb').read())
 
 for TO in plain.split(','):
+	print TO
+	print '"%s <%s>"' % (TO.split('@')[0], TO)
 	msg = MIMEText(text)
 	msg['Subject'] = 'Witness puzzle for %s' % DATE
 	msg['To'] = '%s <%s>' % (TO.split('@')[0], TO)
