@@ -14,7 +14,6 @@ driver.get(getcwd()+'/witness/test.html')
 puzzle = driver.find_element_by_id('meta')
 print puzzle.size
 puzzle.screenshot('temp.png')
-print puzzle.screenshot_as_png
 
 # driver.save_screenshot('temp.png')
 
@@ -35,7 +34,6 @@ server.starttls()
 server.login(FROM, environ['PASSWORD'])
 
 
-b64 = b64encode(open('temp.png', 'rb').read())
 msg = '''
 Subject: SUBJECT
 Content-Type: multipart/related;
@@ -56,9 +54,9 @@ Content-Type: application/png;
 	name="Puzzle for DATE"
 Content-Id: <puzzle_id_1>
 
-'''+b64
+'''+puzzle.screenshot_as_png
 
-server.sendmail(FROM, 'jbzdarkid@gmail.com', msg.as_string())
+server.sendmail(FROM, 'jbzdarkid@gmail.com', msg)
 
 for TO in plain.split(','):
 	msg = MIMEMultipart()
