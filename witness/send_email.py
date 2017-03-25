@@ -29,7 +29,7 @@ server.ehlo()
 server.starttls()
 server.login(FROM, environ['PASSWORD'])
 
-text = '<html><body><a href="jbzdarkid.github.io/index.html#1><img src="data:image/png;base64,%s"></a></body></html>' % b64encode(open('temp.png', 'rb').read())
+text = '<html><head></head><body><a href="jbzdarkid.github.io/index.html#1><img src="data:image/png;base64,%s"></a></body></html>' % b64encode(open('temp.png', 'rb').read())
 
 for TO in plain.split(','):
 	msg = MIMEText(text)
