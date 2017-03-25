@@ -9,15 +9,21 @@ from selenium.webdriver import PhantomJS
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import TimeoutException
 from smtplib import SMTP
 
 driver = PhantomJS()
 driver.set_window_size(1280, 720)
 driver.get(getcwd()+'/witness/index.html')
 condition = EC.presence_of_element_located((By.ID, 'puzzle_0_0'))
-WebDriverWait(driver, 60).until(condition)
+while True:
+	try:
+		WebDriverWait(driver, 60).until(condition)
+	except TimeoutException:
+		print '-'*80
+		print driver.page_source
+		print '='*80
 
-print driver.page_source
 puzzle = driver.find_element_by_tag_name('table')
 puzzle.screenshot('temp.png')
 
