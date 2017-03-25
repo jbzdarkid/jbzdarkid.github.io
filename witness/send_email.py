@@ -16,13 +16,10 @@ driver = PhantomJS()
 driver.set_window_size(1280, 720)
 driver.get(getcwd()+'/witness/index.html')
 condition = EC.presence_of_element_located((By.ID, 'puzzle_0_0'))
-while True:
-	try:
-		WebDriverWait(driver, 60).until(condition)
-	except TimeoutException:
-		print '-'*80
-		print driver.page_source
-		print '='*80
+try:
+	WebDriverWait(driver, 300).until(condition)
+except TimeoutException:
+	print driver.manage().logs()
 
 puzzle = driver.find_element_by_tag_name('table')
 puzzle.screenshot('temp.png')
