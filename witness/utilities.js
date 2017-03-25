@@ -36,7 +36,7 @@ function _newGrid(width, height) {
   return grid
 }
 
-var POLY_DICT = {
+window.POLY_DICT = {
   '1.0.0': [{'x':0, 'y':0}],
   '2.0.0': [{'x':0, 'y':0}, {'x':0, 'y':2}],
   '2.0.1': [{'x':0, 'y':0}, {'x':2, 'y':0}],
