@@ -14,7 +14,7 @@ driver.get(getcwd()+'/witness/test.html')
 puzzle = driver.find_element_by_id('meta')
 print puzzle.size
 puzzle.screenshot('temp.png')
-print puzzle.screenshot_as_png('temp2.png')
+print puzzle.screenshot_as_png
 
 # driver.save_screenshot('temp.png')
 
