@@ -14,8 +14,8 @@ from smtplib import SMTP
 driver = PhantomJS()
 driver.set_window_size(1280, 720)
 driver.get(getcwd()+'/witness/index.html')
-condition = EC.presence_of_element_located((By.ID, 'puzzle_8_8'))
-WebDriverWait(driver, 600).until(condition)
+condition = EC.presence_of_element_located((By.ID, 'puzzle_0_0'))
+WebDriverWait(driver, 60).until(condition)
 
 print driver.page_source
 puzzle = driver.find_element_by_tag_name('table')
