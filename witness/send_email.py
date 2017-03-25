@@ -13,7 +13,7 @@ driver.set_window_size(1280, 720)
 driver.get(getcwd()+'/witness/test.html')
 puzzle = driver.find_element_by_id('meta')
 import inspect
-print inspect.getmemebers(puzzle)
+print inspect.getmembers(puzzle)
 exit()
 print puzzle.size
 puzzle.screenshot('temp.png')
