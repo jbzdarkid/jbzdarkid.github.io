@@ -12,9 +12,6 @@ driver = PhantomJS()
 driver.set_window_size(1280, 720)
 driver.get(getcwd()+'/witness/test.html')
 puzzle = driver.find_element_by_id('meta')
-import inspect
-print inspect.getmembers(puzzle, inspect.ismethod)
-exit()
 print puzzle.size
 puzzle.screenshot('temp.png')
 print puzzle.screenshot_as_png('temp2.png')
