@@ -32,8 +32,8 @@ server.login(FROM, environ['PASSWORD'])
 text = '<a href="jbzdarkid.github.io/index.html#1><img src="data:image/png;base64,%s"></a>' % b64encode(open('temp.png', 'rb').read())
 
 for TO in plain.split(','):
-	msg = MIMEText(text)
-	msg.add_header('Content-Type', 'text/html')
+	msg = MIMEText(text, 'html')
+	# msg.add_header('Content-Type', 'text/html')
 	msg['Subject'] = 'Witness puzzle for %s' % DATE
 	msg['To'] = '%s <%s>' % (TO.split('@')[0], TO)
 	msg['From'] = FROM
