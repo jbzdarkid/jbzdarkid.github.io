@@ -10,7 +10,7 @@ before_install:
   - unzip chromedriver_linux64.zip
   - rm chromedriver_linux64.zip
   - chmod +x chromedriver
-  - cp chromedriver /usr/local/bin/
+  - export PATH=$PATH:$(pwd)
 script: python witness/send_email.py
 env:
   global:
