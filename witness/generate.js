@@ -1,3 +1,5 @@
+import utilities
+
 /**
  * A 2x2 grid is listed as a 5x5:
  * Corner, edge, corner, edge, corner
@@ -82,7 +84,7 @@ function _randomize(width, height) {
     } else if (type == 'star') {
       obj.color = ['red', 'blue', 'green', 'orange'][_randint(3)]
     } else if (type == 'poly') {
-      var polys = Object.keys(POLY_DICT)
+      var polys = Object.keys(utilities.POLY_DICT)
       obj.shape = polys[_randint(polys.length)]
       obj.color = ['yellow', 'yellow', 'red', 'blue'][_randint(3)]
     } else if (type == 'nega') {
