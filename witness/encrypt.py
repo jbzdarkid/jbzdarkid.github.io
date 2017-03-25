@@ -13,9 +13,10 @@ text = open('emails.txt', 'rb').read()
 iv = text[:AES.block_size]
 cipher = text[AES.block_size:]
 aes = AES.new(key, AES.MODE_CBC, iv)
-plain = aes.decrypt(cipher)
+plain = aes.decrypt(cipher).strip()
+
 print 'Decrypted:\n', plain
-plain += '\n'+raw_input('Append data:')
+plain += ','+raw_input('Append data:')
 plain += ' '*(AES.block_size - len(plain)%AES.block_size)
 
 iv = Random.new().read(AES.block_size)

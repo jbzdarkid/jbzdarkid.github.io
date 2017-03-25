@@ -31,9 +31,8 @@ server.ehlo()
 server.starttls()
 server.login(FROM, environ['PASSWORD'])
 
-for TO in plain.split('\n'):
-	TO = TO.strip()
-	TO = '%s <%s>' % (TO, TO) # Gmail requires emails like: Bob <bob@gmail.com>
+for TO in plain.split(','):
+	TO = '%s <%s>' % (TO.split('@')[0], TO)
 	msg = MIMEMultipart()
 	msg['From'] = FROM
 	msg['To'] = TO
