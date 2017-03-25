@@ -11,9 +11,8 @@ from smtplib import SMTP
 driver = PhantomJS()
 driver.set_window_size(1280, 720)
 driver.get(getcwd()+'/witness/index.html')
-import inspect
-print inspect.getmembers(driver)
-puzzle = driver.find_element_by_id('puzzle')
+print driver.page_source
+puzzle = driver.find_element_by_tag_name('table')
 puzzle.screenshot('temp.png')
 
 sha = SHA256.new()
