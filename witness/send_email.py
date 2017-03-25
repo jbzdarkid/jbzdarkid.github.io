@@ -39,7 +39,6 @@ for TO in plain.split(','):
 	msg['Date'] = DATE
 	msg['Subject'] = 'Witness puzzle for %s' % DATE
 	msg.attach(MIMEImage(open('temp.png', 'rb').read()))
-	print msg.as_string()
 	server.sendmail(FROM, TO, msg.as_string())
 
 server.quit()
