@@ -107,6 +107,7 @@ function onMouseMove(e) {
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
 
+  // Limit motion via collision
   _collision(data)
 
   // Redraw all elements near the cursor
@@ -126,6 +127,7 @@ function onMouseMove(e) {
     }
   }
 
+  // Potentially move the cursor to a new cell
   _move(data)
 }
 

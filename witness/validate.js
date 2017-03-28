@@ -48,7 +48,7 @@ function isValid(puzzle) {
   for (var region of _getRegions(puzzle.grid)) {
     if (!_regionCheck(puzzle.grid, region)) {
       // console.log('Region', region, 'unsolvable')
-      return 1
+      return 1 // Since the endpoint is filled, regions can't be improved
     }
   }
   // All checks passed
