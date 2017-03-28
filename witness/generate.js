@@ -82,7 +82,7 @@ function _randomize(width, height) {
     } else if (type == 'star') {
       obj.color = ['red', 'blue', 'green', 'orange'][_randint(3)]
     } else if (type == 'poly') {
-      var polys = Object.keys(window.POLY_DICT)
+      var polys = Object.keys(POLYOMINOS)
       obj.shape = polys[_randint(polys.length)]
       obj.color = ['yellow', 'yellow', 'red', 'blue'][_randint(3)]
     } else if (type == 'nega') {

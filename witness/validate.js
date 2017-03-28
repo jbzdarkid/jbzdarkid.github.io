@@ -242,7 +242,7 @@ function _polyFit(polys, grid, first) {
   }
   nextPoly: for (var i=0; i<polys.length; i++) {
     var poly = polys.splice(i, 1)
-    var polyCells = POLY_DICT[poly]
+    var polyCells = POLYOMINOS[poly]
     var new_grid = _copyGrid(grid)
 
     for (var cell of polyCells) {
