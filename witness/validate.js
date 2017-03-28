@@ -5,6 +5,7 @@
 // Returns 2 if the grid is solved
 function isValid(puzzle) {
   // console.log('Validating', puzzle)
+  /* All of these are handled elsewhere
   // Check that start and end are well defined, with the end on an edge and the start distinct from the end
   if (puzzle.end.x != 0 && puzzle.end.x != puzzle.grid.length-1) {
     if (puzzle.end.y != 0 && puzzle.end.y != puzzle.grid[puzzle.end.x].length-1) {
@@ -28,9 +29,10 @@ function isValid(puzzle) {
     // console.log('End point not filled')
     return 0
   }
+  */
 
   // Check that all dots are covered
-  // FIXME: I'm not currently checking for invalid dot placements.
+  // FIXME: Check for invalid dot placement?
   // FIXME: Code in such a way that this works with negation?
   for (var dot of puzzle.dots) {
     if (!puzzle.grid[dot.x][dot.y]) {
@@ -38,6 +40,8 @@ function isValid(puzzle) {
       return 0
     }
   }
+  // Check that all gaps are not covered
+  // FIXME: Check for invalid gap placement?
   for (var gap of puzzle.gaps) {
     if (puzzle.grid[gap.x][gap.y]) {
       // console.log('Gap at grid['+gap.x+']['+gap.y+'] is covered')
@@ -70,7 +74,7 @@ function _regionCheck(grid, region) {
     }
   }
   if (hasNega) {
-    // Get all possible ways of applying negations, and set a label to easily move on to the next one.
+    // Iterate over all possible ways of applying negations
     var combinations = _combinations(grid, region)
     nextCombination: for (var combination of combinations) {
       // Make a copy of the grid and region with negation elements removed
@@ -86,16 +90,17 @@ function _regionCheck(grid, region) {
       // Verify that each negation is valid, i.e. removes an incorrect element
       for (var negation of combination) {
         new_grid[negation.target.x][negation.target.y] = negation.target.cell
-        var ret = _regionCheck(new_grid, region)
+        var isValid = _regionCheck(new_grid, region)
         new_grid[negation.target.x][negation.target.y] = 0
-        if (ret) {
+        if (isValid) {
+          // Grid is still valid with element removed so the negation is invalid
           continue nextCombination
         }
       }
       // console.info('Valid negation: ', combination)
       return true
     }
-    // console.log('Unable to find valid negation but symbols exist')
+    // console.log('Unable to find valid negation, but symbols exist')
     return false
   }
 
@@ -142,13 +147,21 @@ function _regionCheck(grid, region) {
   // For polyominos, we construct a grid to place them on
   // The grid is 1 inside the region, and undefined outside.
   var polys = []
+  var polyCount = 0
   for (var pos of region) {
     var cell = grid[pos.x][pos.y]
-    if (cell != 0 && cell.type == 'poly') {
-      polys.push(cell.shape)
+    if (cell != 0) {
+      if (cell.type == 'poly') {
+        polys.push(cell.shape)
+        polyCount += parseInt(cell.shape.charAt(0))
+      }
     }
   }
   if (polys.length > 0) {
+    if (polyCount != region.length) {
+      // console.log('Combined size of polyominos does not match region size')
+      return false
+    }
     var first = {'x':grid.length-1, 'y':grid[grid.length-1].length}
     var new_grid = []
     for (var x=0; x<grid.length; x++) {
