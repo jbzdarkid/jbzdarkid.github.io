@@ -25,12 +25,21 @@ function _copy(puzzle) {
   }
 }
 
+// A 2x2 grid is internally a 5x5:
+// Corner, edge, corner, edge, corner
+// Edge,   cell, edge,   cell, edge
+// Corner, edge, corner, edge, corner
+// Edge,   cell, edge,   cell, edge
+// Corner, edge, corner, edge, corner
+//
+// Corners and edges will have a value of true if the line passes through them
+// Cells will contain an object if there is an element in them
 function _newGrid(width, height) {
   var grid = []
-  for (var i=0; i<width; i++) {
+  for (var i=0; i<2*width+1; i++) {
     grid[i] = []
-    for (var j=0; j<height; j++) {
-      grid[i][j] = 0
+    for (var j=0; j<2*height+1; j++) {
+      grid[i][j] = false
     }
   }
   return grid

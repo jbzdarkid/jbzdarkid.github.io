@@ -1,16 +1,3 @@
-/**
- * A 2x2 grid is listed as a 5x5:
- * Corner, edge, corner, edge, corner
- * Edge,   cell, edge,   cell, edge
- * Corner, edge, corner, edge, corner
- * Edge,   cell, edge,   cell, edge
- * Corner, edge, corner, edge, corner
- *
- * Each corner has a value of 0, 1, 2 (for the number of connections)
- * Each edge has a value of 0 or 1 (enabled or disabled)
- * Each cell has a value of 0 or an object (if it has an element)
- **/
-
 // Returns a random integer in [0, n)
 // Uses a set seed so puzzles can be regenerated
 var seed = 42
@@ -21,13 +8,7 @@ function _randint(n) {
 
 // Generates a random puzzle for a given size.
 function _randomize(width, height) {
-  var grid = []
-  for (var i=0; i<width; i++) {
-    grid[i] = []
-    for (var j=0; j<height; j++) {
-      grid[i][j] = false
-    }
-  }
+  var grid = _newGrid(width, height)
 
   // Both start and end must be on corners
   /*
@@ -52,9 +33,9 @@ function _randomize(width, height) {
       break;
   }
   */
-  var start = {'x':width-1, 'y':0}
+  var start = {'x':grid.length-1, 'y':0}
   grid[start.x][start.y] = true
-  var end = {'x':0, 'y':height-1}
+  var end = {'x':0, 'y':grid[0].length-1}
 
   // Dots must be on edges or corners
   var dots = []
@@ -91,17 +72,17 @@ function _randomize(width, height) {
     return obj
   }
   var positions = []
-  for (var x=1; x<width; x+=2) {
-    for (var y=1; y<height; y+=2) {
       positions.push({'x':x, 'y':y})
+  for (var x=1; x<grid.length; x+=2) {
+    for (var y=1; y<grid[x].length; y+=2) {
     }
   }
   for (var i=0; i<8; i++) {
     var rand = _randint(100)
     for (var type in distribution) {
       if (rand < distribution[type]) {
-        var position = positions.splice(_randint(positions.length), 1)[0]
-        grid[position.x][position.y] = _randObject(type)
+        var cell = cells.splice(_randint(positions.length), 1)[0]
+        grid[cell.x][cell.y] = _randObject(type)
         break
       }
       rand -= distribution[type]
