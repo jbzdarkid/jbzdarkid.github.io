@@ -71,17 +71,17 @@ function _randomize(width, height) {
     }
     return obj
   }
-  var positions = []
-      positions.push({'x':x, 'y':y})
+  var cells = []
   for (var x=1; x<grid.length; x+=2) {
     for (var y=1; y<grid[x].length; y+=2) {
+      cells.push({'x':x, 'y':y})
     }
   }
   for (var i=0; i<8; i++) {
     var rand = _randint(100)
     for (var type in distribution) {
       if (rand < distribution[type]) {
-        var cell = cells.splice(_randint(positions.length), 1)[0]
+        var cell = cells.splice(_randint(cells.length), 1)[0]
         grid[cell.x][cell.y] = _randObject(type)
         break
       }
