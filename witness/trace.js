@@ -99,10 +99,18 @@ function onMouseMove(e) {
   var sens = document.getElementById('sens').value
   var dx = (e.movementX || e.mozMovementX || 0)
   var dy = (e.movementY || e.mozMovementY || 0)
-  data.subx += sens*dx
-  data.suby += sens*dy
+  // Option 1: Raw
+  // data.subx += sens*dx
+  // data.suby += sens*dy
+  // Option 2: Capped
+  data.subx += sens*Math.sign(dx)*Math.min(Math.abs(dx), 10)
+  data.suby += sens*Math.sign(dy)*Math.min(Math.abs(dy), 10)
+  // Option 3: Quadratic
   // data.subx += sens*Math.sign(dx)*Math.sqrt(Math.abs(dx))
   // data.suby += sens*Math.sign(dy)*Math.sqrt(Math.abs(dy))
+  // Option 4: Quadratic Capped
+  // data.subx += sens*Math.sign(dx)*Math.sqrt(Math.min(Math.abs(dx), 10))
+  // data.suby += sens*Math.sign(dy)*Math.sqrt(Math.min(Math.abs(dy), 10))
   var elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
