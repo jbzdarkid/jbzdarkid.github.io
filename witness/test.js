@@ -81,6 +81,17 @@ var tests = [
     var dots = [{'x':0, 'y':1}, {'x':0, 'y':3}, {'x':1, 'y':0}, {'x':3, 'y':0}]
     var gaps = [{'x':1, 'y':2}, {'x':2, 'y':1}, {'x':2, 'y':3}, {'x':3, 'y':2}]
     return {'grid':grid, 'dots':dots, 'gaps':gaps}
+  }, function() {
+    var grid = _newGrid(2, 2)
+    grid[1][1] = {'type':'poly', 'shape':'2.0.0', 'color':'yellow'}
+    grid[3][3] = {'type':'ylop', 'shape':'2.0.0', 'color':'blue'}
+    return {'grid':grid}
+  }, function() {
+    var grid = _newGrid(2, 4)
+    grid[3][1] = {'type':'poly', 'shape':'4.1.2', 'color':'yellow'}
+    grid[3][3] = {'type':'ylop', 'shape':'4.5.0', 'color':'blue'}
+    grid[3][7] = {'type':'poly', 'shape':'4.4.1', 'color':'yellow'}
+    return {'grid':grid}
   }
 ]
 

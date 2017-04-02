@@ -97,6 +97,34 @@ function draw(puzzle, target='puzzle') {
           svg.appendChild(rect)
         }
         cell.appendChild(svg)
+      } else if (puzzle.grid[x][y].type == 'ylop') {
+        var bounds = {'xmin':0, 'xmax':0, 'ymin':0, 'ymax':0}
+        for (var pos of POLYOMINOS[puzzle.grid[x][y].shape]) {
+          bounds.xmin = Math.min(bounds.xmin, pos.x)
+          bounds.xmax = Math.max(bounds.xmax, pos.x)
+          bounds.ymin = Math.min(bounds.ymin, pos.y)
+          bounds.ymax = Math.max(bounds.ymax, pos.y)
+        }
+        var xoffset = 19 - 3.5 * (bounds.xmax + bounds.xmin)
+        var yoffset = 19 - 3.5 * (bounds.ymax + bounds.ymin)
+
+        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', '0 0 50 50')
+        for (var pos of POLYOMINOS[puzzle.grid[x][y].shape]) {
+          var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+          rect.setAttribute('transform', 'translate('+(yoffset+pos.y*7)+', '+(xoffset+pos.x*7)+')')
+          rect.setAttribute('height', '12px')
+          rect.setAttribute('width', '12px')
+          rect.setAttribute('fill', puzzle.grid[x][y].color)
+          svg.appendChild(rect)
+          var rect2 = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+          rect2.setAttribute('transform', 'translate('+(yoffset+pos.y*7+3)+', '+(xoffset+pos.x*7+3)+')')
+          rect2.setAttribute('height', '6px')
+          rect2.setAttribute('width', '6px')
+          rect2.setAttribute('fill', 'black')
+          svg.appendChild(rect2)
+        }
+        cell.appendChild(svg)
       } else if (puzzle.grid[x][y].type == 'nega') {
         var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('viewBox', '0 0 50 50')
