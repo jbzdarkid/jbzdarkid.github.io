@@ -1,35 +1,7 @@
 // Puzzle = {grid, start, end, dots, gaps}
 // Determines if the current grid state is solvable.
-// Returns 0 if the grid is potentially solvable, but not currently solved
-// Returns 1 if the grid is unsolvable
-// Returns 2 if the grid is solved
 function isValid(puzzle) {
   // console.log('Validating', puzzle)
-  /* All of these are handled elsewhere
-  // Check that start and end are well defined, with the end on an edge and the start distinct from the end
-  if (puzzle.end.x != 0 && puzzle.end.x != puzzle.grid.length-1) {
-    if (puzzle.end.y != 0 && puzzle.end.y != puzzle.grid[puzzle.end.x].length-1) {
-      // console.log('End point not on an edge')
-      return 1
-    }
-  }
-  if (puzzle.start.x%2 != 0 && puzzle.start.y%2 != 0) {
-    // console.log('Puzzle start not in a corner')
-    return 1
-  }
-  if (puzzle.start.x == puzzle.end.x && puzzle.start.y == puzzle.end.y) {
-    // console.log('Start and end points not distinct')
-    return 1
-  }
-  if (!puzzle.grid[puzzle.start.x][puzzle.start.y]) {
-    // console.log('Start point not filled')
-    return 1
-  }
-  if (!puzzle.grid[puzzle.end.x][puzzle.end.y]) {
-    // console.log('End point not filled')
-    return 0
-  }
-  */
 
   // Check that all dots are covered
   // FIXME: Check for invalid dot placement?
@@ -37,7 +9,7 @@ function isValid(puzzle) {
   for (var dot of puzzle.dots) {
     if (!puzzle.grid[dot.x][dot.y]) {
       // console.log('Dot at grid['+dot.x+']['+dot.y+'] is not covered')
-      return 0
+      return false
     }
   }
   // Check that all gaps are not covered
@@ -45,19 +17,19 @@ function isValid(puzzle) {
   for (var gap of puzzle.gaps) {
     if (puzzle.grid[gap.x][gap.y]) {
       // console.log('Gap at grid['+gap.x+']['+gap.y+'] is covered')
-      return 1
+      return false
     }
   }
   // Check that individual regions are valid
   for (var region of _getRegions(puzzle.grid)) {
     if (!_regionCheck(puzzle.grid, region)) {
       // console.log('Region', region, 'unsolvable')
-      return 1 // Since the endpoint is filled, regions can't be improved
+      return false // Since the endpoint is filled, regions can't be improved
     }
   }
   // All checks passed
   // console.info('Puzzle', puzzle, 'is valid')
-  return 2
+  return true
 }
 
 // Checks if a region (series of cells) is valid.

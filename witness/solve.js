@@ -3,7 +3,7 @@ function solve(puzzle, pos, solutions) {
   // if (solutions.length > 0) return
   if (pos.x == puzzle.end.x && pos.y == puzzle.end.y) {
     // Reached the end point, validate solution and tail
-    if (isValid(puzzle) == 2) {
+    if (isValid(puzzle)) {
       solutions.push(puzzle)
     }
     return

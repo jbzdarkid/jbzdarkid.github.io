@@ -68,7 +68,7 @@ function trace(elem) {
           }
         }
       }
-      if (isValid(puzzle) == 2) {
+      if (isValid(puzzle)) {
         for (var line of table.getElementsByClassName('line')) {
           line.style.fill = '#EEEEEE'
         }
