@@ -4,36 +4,48 @@ function solve(puzzle, pos, solutions) {
   if (pos.x == puzzle.end.x && pos.y == puzzle.end.y) {
     // Reached the end point, validate solution and tail
     if (isValid(puzzle)) {
-      solutions.push(puzzle)
+      solutions.push(_copy(puzzle))
     }
     return
   }
   // Extend path down
   if (pos.x < puzzle.grid.length-1 && !puzzle.grid[pos.x+2][pos.y]) {
-    var new_puzzle = _copy(puzzle)
-    new_puzzle.grid[pos.x+1][pos.y] = true
-    new_puzzle.grid[pos.x+2][pos.y] = true
-    solve(new_puzzle, {'x':pos.x+2, 'y':pos.y}, solutions)
+    puzzle.grid[pos.x+1][pos.y] = true
+    puzzle.grid[pos.x+2][pos.y] = true
+    pos.x += 2
+    solve(puzzle, pos, solutions)
+    pos.x -= 2
+    puzzle.grid[pos.x+1][pos.y] = false
+    puzzle.grid[pos.x+2][pos.y] = false
   }
   // Extend path right
   if (pos.y < puzzle.grid[pos.x].length-1 && !puzzle.grid[pos.x][pos.y+2]) {
-    var new_puzzle = _copy(puzzle)
-    new_puzzle.grid[pos.x][pos.y+1] = true
-    new_puzzle.grid[pos.x][pos.y+2] = true
-    solve(new_puzzle, {'x':pos.x, 'y':pos.y+2}, solutions)
+    puzzle.grid[pos.x][pos.y+1] = true
+    puzzle.grid[pos.x][pos.y+2] = true
+    pos.y += 2
+    solve(puzzle, pos, solutions)
+    pos.y -= 2
+    puzzle.grid[pos.x][pos.y+1] = false
+    puzzle.grid[pos.x][pos.y+2] = false
   }
   // Extend path up
   if (pos.x > 0 && !puzzle.grid[pos.x-2][pos.y]) {
-    var new_puzzle = _copy(puzzle)
-    new_puzzle.grid[pos.x-1][pos.y] = true
-    new_puzzle.grid[pos.x-2][pos.y] = true
-    solve(new_puzzle, {'x':pos.x-2, 'y':pos.y}, solutions)
+    puzzle.grid[pos.x-1][pos.y] = true
+    puzzle.grid[pos.x-2][pos.y] = true
+    pos.x -= 2
+    solve(puzzle, pos, solutions)
+    pos.x += 2
+    puzzle.grid[pos.x-1][pos.y] = false
+    puzzle.grid[pos.x-2][pos.y] = false
   }
   // Extend path left
   if (pos.y > 0 && !puzzle.grid[pos.x][pos.y-2]) {
-    var new_puzzle = _copy(puzzle)
-    new_puzzle.grid[pos.x][pos.y-1] = true
-    new_puzzle.grid[pos.x][pos.y-2] = true
-    solve(new_puzzle, {'x':pos.x, 'y':pos.y-2}, solutions)
+    puzzle.grid[pos.x][pos.y-1] = true
+    puzzle.grid[pos.x][pos.y-2] = true
+    pos.y -= 2
+    solve(puzzle, pos, solutions)
+    pos.y += 2
+    puzzle.grid[pos.x][pos.y-1] = false
+    puzzle.grid[pos.x][pos.y-2] = false
   }
 }
