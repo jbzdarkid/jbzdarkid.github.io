@@ -112,11 +112,12 @@ function onMouseMove(e) {
   // data.subx += sens*Math.sign(dx)*Math.sqrt(Math.min(Math.abs(dx), 10))
   // data.suby += sens*Math.sign(dy)*Math.sqrt(Math.min(Math.abs(dy), 10))
   var elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
+  var next_elem = document.getElementById(data.table+'_'+(data.x+Math.sign(dx))+'_'+(data.y+Math.sign(dy)))
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
 
   // Limit motion via collision
-  _collision(data)
+  _collision(data, elem, next_elem)
 
   // Redraw all elements near the cursor
   for (var x=-1; x<=1; x++) {
@@ -142,12 +143,11 @@ function onMouseMove(e) {
 // Collision detection. If the cursor moves into an edge or into a cell,
 // then its position is reset to be exactly touching the edge.
 // Corners are handled separately to prevent runover into cells
-function _collision(data) {
-  var elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
+function _collision(data, elem, next_elem) {
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
 
-  if (elem.className.includes('corner')) { // Corner collision
+  if (elem.className.includes('corner') && next_elem != undefined) { // Corner collision
     // Calculates the distance to the edge in each direction
     var dist_x = (data.subx < width/2) ? data.subx : width - data.subx
     var dist_y = (data.suby < height/2) ? data.suby : height - data.suby
@@ -247,22 +247,21 @@ function _draw(elem, subx, suby) {
 
   var enter_dir = elem.className.split('-')[1]
   var exit_dir = elem.className.split('-')[2]
-  if (enter_dir == null) {
-    // Haven't entered the cell, draw nothing
+  if (enter_dir == null) { // Haven't entered the cell, draw nothing
   } else if (exit_dir == null) { // Still in the cell
     if (enter_dir == 'r') {
-      rect.setAttribute('width', subx)
+      rect.setAttribute('width', Math.max(subx, 0))
       rect.setAttribute('height', height)
     } else if (enter_dir == 'l') {
-      rect.setAttribute('width', width - subx)
+      rect.setAttribute('width', Math.max(width - subx, 0))
       rect.setAttribute('height', height)
       rect.setAttribute('transform', 'translate('+subx+', 0)')
     } else if (enter_dir == 'd') {
       rect.setAttribute('width', width)
-      rect.setAttribute('height', suby)
+      rect.setAttribute('height', Math.max(suby, 0))
     } else if (enter_dir == 'u') {
       rect.setAttribute('width', width)
-      rect.setAttribute('height', height - suby)
+      rect.setAttribute('height', Math.max(height - suby, 0))
       rect.setAttribute('transform', 'translate(0, '+suby+')')
     }
     if (enter_dir == 'l' && subx <= width/2) {
@@ -291,7 +290,7 @@ function _draw(elem, subx, suby) {
       rect2.setAttribute('height', height/2 - suby)
       rect2.setAttribute('transform', 'translate(0, '+suby+')')
     }
-  } else { // Entered and exited the cell.
+  } else { // Entered and exited the cell, redraw mostly not necessary
     if (enter_dir == 'r') {
       rect.setAttribute('width', width/2)
       rect.setAttribute('height', height)
