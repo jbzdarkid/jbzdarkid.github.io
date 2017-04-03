@@ -162,14 +162,14 @@ function _collision(data, elem, next_elem) {
 
   // Break collision
   if (elem.className.includes('break')) {
-    if (elem.className.endsWith('trace-r') && data.subx + 2.5 > 0) {
-      data.subx = 2.5
-    } else if (elem.className.endsWith('trace-l') && data.subx - 2.5 < width) {
-      data.subx = width - 2.5
-    } else if (elem.className.endsWith('trace-d') && data.suby + 2.5 > 0) {
-      data.suby = 2.5
-    } else if (elem.className.endsWith('trace-u') && data.suby + 2.5 < height) {
-      data.suby = height - 2.5
+    if (elem.className.endsWith('trace-r') && data.subx - 7 > 0) {
+      data.subx = 7
+    } else if (elem.className.endsWith('trace-l') && data.subx + 7 < width) {
+      data.subx = width - 7
+    } else if (elem.className.endsWith('trace-d') && data.suby - 7 > 0) {
+      data.suby = 7
+    } else if (elem.className.endsWith('trace-u') && data.suby + 7 < height) {
+      data.suby = height - 7
     }
   }
 

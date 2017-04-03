@@ -161,8 +161,12 @@ function draw(puzzle, target='puzzle') {
     var height = parseInt(window.getComputedStyle(cell).height)
     svg.setAttribute('viewBox', '0 0 '+width+' '+height)
     var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-    poly.setAttribute('points', '-11 -11, -11 11, 11 11, 11 -11')
-    poly.setAttribute('transform', 'translate('+(width/2)+', '+(height/2)+')')
+    poly.setAttribute('points', '-7 -11, -7 11, 7 11, 7 -11')
+    var transform = 'translate('+(width/2)+', '+(height/2)+')'
+    if (gap.x%2 == 1) {
+      transform += ' rotate(90, 0, 0)'
+    }
+    poly.setAttribute('transform', transform)
     poly.setAttribute('fill', '#1F1313')
     svg.appendChild(poly)
     cell.appendChild(svg)
