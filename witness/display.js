@@ -163,7 +163,7 @@ function draw(puzzle, target='puzzle') {
     var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
     poly.setAttribute('points', '-11 -11, -11 11, 11 11, 11 -11')
     poly.setAttribute('transform', 'translate('+(width/2)+', '+(height/2)+')')
-    poly.setAttribute('fill', 'black')
+    poly.setAttribute('fill', '#1F1313')
     svg.appendChild(poly)
     cell.appendChild(svg)
   }

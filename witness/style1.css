@@ -9,34 +9,34 @@
 .center {
   height: 50px;
   width: 50px;
-  background: #000000;
+  background: #1F1313;
 }
 .corner {
   height: 22px;
   width: 22px;
-  background: #404040;
+  background: #3B3B3B;
 }
 .verti {
   height: 50px;
   width: 22px;
-  background: #404040;
+  background: #3B3B3B;
 }
 .horiz {
   height: 22px;
   width: 50px;
-  background: #404040;
+  background: #3B3B3B;
 }
 .start {
-  background: #666666;
   position: relative;
   height: 22px;
   width: 22px;
+  background: #3B3B3B;
 }
 .end {
-  background: #404040;
   position: relative;
-  height: 22px;
-  width: 22px;
   border-top-right-radius: 11px;
   border-bottom-right-radius: 11px;
+  height: 22px;
+  width: 22px;
+  background: #404040;
 }

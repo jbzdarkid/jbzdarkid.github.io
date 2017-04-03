@@ -70,7 +70,7 @@ function trace(elem) {
       }
       if (isValid(puzzle)) {
         for (var line of table.getElementsByClassName('line')) {
-          line.style.fill = '#EEEEEE'
+          line.style.fill = '#4F1A1A'
         }
       } else {
         for (var line of table.getElementsByClassName('line')) {
