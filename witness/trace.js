@@ -1,6 +1,8 @@
 var data
 function trace(elem) {
   if (document.pointerLockElement == null && document.mozPointerLockElement == null) {
+    document.styleSheets[0].deleteRule(3)
+    document.styleSheets[0].insertRule(".line {fill: #6D4D4A}", 3)
     var parent = elem.parentNode
     var width = parseInt(window.getComputedStyle(parent).width)
     var height = parseInt(window.getComputedStyle(parent).height)
@@ -68,14 +70,11 @@ function trace(elem) {
           }
         }
       }
+      document.styleSheets[0].deleteRule(3)
       if (isValid(puzzle)) {
-        for (var line of table.getElementsByClassName('line')) {
-          line.style.fill = '#4F1A1A'
-        }
+        document.styleSheets[0].insertRule(".line {animation: 1s 1 forwards line-succ}", 3)
       } else {
-        for (var line of table.getElementsByClassName('line')) {
-          line.style.fill = '#161729'
-        }
+        document.styleSheets[0].insertRule(".line {animation: 1s 1 forwards line-fail}", 3)
       }
     }
     document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock

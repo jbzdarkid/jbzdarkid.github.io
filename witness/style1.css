@@ -1,5 +1,10 @@
-.line {
-  fill: #6D4D4A;
+@keyframes line-succ {
+  from {fill: #FFFFFF;}
+  to {fill: #4F1A1A;}
+}
+@keyframes line-fail {
+  from {fill: #000000;}
+  to {fill: #161729;}
 }
 .circle {
   fill: #A69191;
