@@ -103,8 +103,8 @@ function loadTests() {
       var puzzle = tests[i]()
       if (puzzle['start'] == undefined) {
         puzzle['start'] = {'x':puzzle.grid.length-1, 'y':0}
-        puzzle.grid[puzzle.start.x][puzzle.start.y] = true
       }
+      puzzle.grid[puzzle.start.x][puzzle.start.y] = true
       if (puzzle['end'] == undefined) {
         puzzle['end'] = {'x':0, 'y':puzzle.grid[0].length-1}
       }

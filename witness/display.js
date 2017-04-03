@@ -19,6 +19,9 @@ function draw(puzzle, target='puzzle') {
       } else if (x%2 == 1 && y%2 == 1) {
         cell.className = 'center'
       }
+      if (puzzle.grid[x][y] == true) { // FIXME: This is a dirty hack
+        cell.style.background = '#4F1A1A'
+      }
       if (x == 0 && y == 0) {
         cell.style.borderTopLeftRadius = '11px'
       } else if (x == 0 && y == puzzle.grid[x].length-1) {
