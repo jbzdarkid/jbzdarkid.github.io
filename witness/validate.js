@@ -216,12 +216,12 @@ function _combinations(grid, region) {
 // they act as an extra count for that square.
 function _polyFit(polys, ylops, grid, region) {
   if (polys.length + ylops.length == 0) {
-    // Done placing all polyominos and onimolyps, verify grid is either empty
+    // Done placing all polyominos and onimylops, verify grid is either empty
     // or contains exactly the same squares as initial region (cancelled)
     if (grid[region[0].x][region[0].y] == 1) {
       for (var cell of region) {
         if (grid[cell.x][cell.y] != 1) {
-          // console.log('All polys placed, but grid not full')
+          // console.log('All polys and ylops cancelled, but region not restored')
           return false
         }
       }
@@ -243,7 +243,7 @@ function _polyFit(polys, ylops, grid, region) {
   var first = undefined
   firstLoop: for (var x=1; x<grid.length; x+=2) {
     for (var y=1; y<grid[x].length; y+=2) {
-      if (grid[x][y] == 1) {
+      if (grid[x][y] >= 1) {
         first = {'x':x, 'y':y}
         break firstLoop
       }
