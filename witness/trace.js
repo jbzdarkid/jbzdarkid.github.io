@@ -74,7 +74,7 @@ function trace(elem) {
         }
       } else {
         for (var line of table.getElementsByClassName('line')) {
-          line.style.fill = '#111111'
+          line.style.fill = '#161729'
         }
       }
     }
