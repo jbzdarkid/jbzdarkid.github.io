@@ -33,10 +33,10 @@
   background: #3B3B3B;
 }
 .end {
-  position: relative;
   border-top-right-radius: 11px;
   border-bottom-right-radius: 11px;
+  position: relative;
   height: 22px;
   width: 22px;
-  background: #404040;
+  background: #3B3B3B;
 }
