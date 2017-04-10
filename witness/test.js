@@ -92,6 +92,24 @@ var tests = [
     grid[3][3] = {'type':'ylop', 'shape':'4.5.0', 'color':'blue'}
     grid[3][7] = {'type':'poly', 'shape':'4.4.1', 'color':'yellow'}
     return {'grid':grid}
+  }, function() {
+    var grid = _newGrid(1, 3)
+    grid[1][1] = {'type':'ylop', 'shape':'1.0.0', 'color':'blue'}
+    grid[1][3] = {'type':'poly', 'shape':'2.0.0', 'color':'yellow'}
+    grid[1][5] = {'type':'ylop', 'shape':'1.0.0', 'color':'blue'}
+    return {'grid':grid}
+  }, function() {
+    var grid = _newGrid(4, 4)
+    grid[1][1] = {'type':'poly', 'shape':'4.5.0', 'color':'yellow'}
+    grid[1][7] = {'type':'poly', 'shape':'1.0.0', 'color':'yellow'}
+    grid[3][3] = {'type':'ylop', 'shape':'1.0.0', 'color':'blue'}
+    grid[3][5] = {'type':'poly', 'shape':'1.0.0', 'color':'yellow'}
+    grid[3][7] = {'type':'poly', 'shape':'1.0.0', 'color':'yellow'}
+    grid[5][3] = {'type':'ylop', 'shape':'1.0.0', 'color':'blue'}
+    grid[5][5] = {'type':'ylop', 'shape':'1.0.0', 'color':'blue'}
+    grid[7][1] = {'type':'poly', 'shape':'3.1.1', 'color':'yellow'}
+    grid[7][7] = {'type':'poly', 'shape':'4.5.0', 'color':'yellow'}
+    return {'grid':grid, 'gaps':[{'x':4, 'y':5}]}
   }
 ]
 

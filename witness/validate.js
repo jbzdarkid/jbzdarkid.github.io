@@ -276,11 +276,12 @@ function _polyFit(polys, ylops, grid, region) {
       }
     }
     // console.log('Ylop found, but no placement valid')
+    ylops.push(ylop)
     return false
   }
 
   nextPoly: for (var i=0; i<polys.length; i++) {
-    var poly = polys.splice(i, 1)
+    var poly = polys.splice(i, 1)[0]
     var polyCells = POLYOMINOS[poly]
 
     for (var cell of polyCells) {
