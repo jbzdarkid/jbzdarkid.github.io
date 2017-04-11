@@ -10,6 +10,7 @@ function draw(puzzle, target='puzzle') {
     var row = table.insertRow(x)
     for (var y=0; y<puzzle.grid[x].length; y++) {
       var cell = row.insertCell(y)
+      // Basic cell types, flagging only certain elements as 'trace', as in 'traceable'
       if (x%2 == 0 && y%2 == 0) {
         cell.className = 'corner trace'
       } else if (x%2 == 0 && y%2 == 1) {
@@ -19,9 +20,11 @@ function draw(puzzle, target='puzzle') {
       } else if (x%2 == 1 && y%2 == 1) {
         cell.className = 'center'
       }
-      if (puzzle.grid[x][y] == true) { // FIXME: This is a dirty hack
+      // If there's a solution present for the grid, draw it (poorly)
+      if (puzzle.grid[x][y] == true) {
         cell.style.background = '#4F1A1A'
       }
+      // Grid corners are rounded
       if (x == 0 && y == 0) {
         cell.style.borderTopLeftRadius = '11px'
       } else if (x == 0 && y == puzzle.grid[x].length-1) {
@@ -48,11 +51,6 @@ function draw(puzzle, target='puzzle') {
         div.className = 'corner'
         div.onclick = function() {trace(this)}
         cell.appendChild(div)
-      } else if (x == puzzle.end.x && y == puzzle.end.y) {
-        cell.style.borderRadius = 0
-        var end = row.insertCell(row.length)
-        end.className = 'end trace'
-        end.id = target+'_'+(y+1)+'_'+x // FIXME: A dirty hack
       } else if (puzzle.grid[x][y].type == 'square') {
         var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('viewBox', '0 0 50 50')
@@ -143,6 +141,45 @@ function draw(puzzle, target='puzzle') {
       }
     }
   }
+  
+  // puzzle.end is correct (new syntax), but table references are reversed x <-> y
+  document.getElementById(target+'_'+puzzle.end.y+'_'+puzzle.end.x).style.borderRadius = '0px'
+  if (puzzle.end.y == 0) {
+    for (var x=0; x<puzzle.grid.length; x++) {
+      var cell = table.rows[x].insertCell(0)
+      if (x == puzzle.end.x) {
+        cell.className = 'end_left trace'
+        cell.id = target+'_'+(puzzle.end.y-1)+'_'+puzzle.end.x
+      }
+    }
+  } else if (puzzle.end.y == puzzle.grid[puzzle.end.x].length-1) {
+    for (var x=0; x<puzzle.grid.length; x++) {
+      var cell = table.rows[x].insertCell(-1)
+      if (x == puzzle.end.x) {
+        cell.className = 'end_right trace'
+        cell.id = target+'_'+(puzzle.end.y+1)+'_'+puzzle.end.x
+      }
+    }
+  } else if (puzzle.end.x == 0) {
+    var row = table.insertRow(0)
+    for (var x=0; x<puzzle.grid[puzzle.end.x].length; x++) {
+      var cell = row.insertCell(x)
+      if (x == puzzle.end.y) {
+        cell.className = 'end_up trace'
+        cell.id =  target+'_'+puzzle.end.y+'_'+(puzzle.end.x-1)
+      }
+    }
+  } else if (puzzle.end.x == puzzle.grid.length-1) {
+    var row = table.insertRow(-1)
+    for (var x=0; x<puzzle.grid[puzzle.end.x].length; x++) {
+      var cell = row.insertCell(x)
+      if (x == puzzle.end.y) {
+        cell.className = 'end_down trace'
+        cell.id =  target+'_'+puzzle.end.y+'_'+(puzzle.end.x+1)
+      }
+    }
+  }
+
   for (var dot of puzzle.dots) {
     var cell = document.getElementById(target+'_'+dot.y+'_'+dot.x)
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');

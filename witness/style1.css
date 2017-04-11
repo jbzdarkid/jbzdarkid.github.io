@@ -37,8 +37,32 @@
   width: 22px;
   background: #3B3B3B;
 }
-.end {
+.end_left {
+  border-top-left-radius: 11px;
+  border-bottom-left-radius: 11px;
+  position: relative;
+  height: 22px;
+  width: 22px;
+  background: #3B3B3B;
+}
+.end_right {
   border-top-right-radius: 11px;
+  border-bottom-right-radius: 11px;
+  position: relative;
+  height: 22px;
+  width: 22px;
+  background: #3B3B3B;
+}
+.end_up {
+  border-top-left-radius: 11px;
+  border-top-right-radius: 11px;
+  position: relative;
+  height: 22px;
+  width: 22px;
+  background: #3B3B3B;
+}
+.end_down {
+  border-bottom-left-radius: 11px;
   border-bottom-right-radius: 11px;
   position: relative;
   height: 22px;
