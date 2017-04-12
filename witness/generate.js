@@ -11,31 +11,27 @@ function _randomize(width, height) {
   var grid = _newGrid(width, height)
 
   // Both start and end must be on corners
-  /*
-  var start = {'x':2*_randint(width/2), 'y':2*_randint(height/2)}
+  var start = {'x':2*_randint(width), 'y':2*_randint(height)}
   var end = {}
   switch (_randint(4)) {
     case 0:
       end.x = 0
-      end.y = 2*_randint(height/2)
+      end.y = 2*_randint(height)
       break;
     case 1:
-      end.x = 2*_randint(height/2)
+      end.x = 2*_randint(height)
       end.y = 0
       break;
     case 2:
-      end.x = width-1
-      end.y = 2*_randint(height/2)
+      end.x = 2*width
+      end.y = 2*_randint(height)
       break;
     case 3:
-      end.x = 2*_randint(height/2)
-      end.y = height-1
+      end.x = 2*_randint(height)
+      end.y = 2*height
       break;
   }
-  */
-  var start = {'x':grid.length-1, 'y':0}
   grid[start.x][start.y] = true
-  var end = {'x':0, 'y':grid[0].length-1}
 
   // Dots must be on edges or corners
   var dots = []
@@ -63,9 +59,17 @@ function _randomize(width, height) {
     } else if (type == 'star') {
       obj.color = ['red', 'blue', 'green', 'orange'][_randint(3)]
     } else if (type == 'poly') {
-      var polys = Object.keys(POLYOMINOS)
-      obj.shape = polys[_randint(polys.length)]
-      obj.color = ['yellow', 'yellow', 'red', 'blue'][_randint(3)]
+      var count = Object.keys(POLYOMINOS)[_randint(Object.keys(POLYOMINOS).length)]
+      var kind = Object.keys(POLYOMINOS[count])[_randint(Object.keys(POLYOMINOS[count]).length)]
+      var rot = _randint(POLYOMINOS[count][kind].length)
+      obj.shape = count+'.'+kind+'.'+rot
+      obj.color = ['yellow', 'yellow', 'red', 'blue'][_randint(style['colors'])]
+    } else if (type == 'ylop') {
+      var count = Object.keys(POLYOMINOS)[_randint(Object.keys(POLYOMINOS).length)]
+      var kind = Object.keys(POLYOMINOS[count])[_randint(Object.keys(POLYOMINOS[count]).length)]
+      var rot = _randint(POLYOMINOS[count][kind].length)
+      obj.shape = count+'.'+kind+'.'+rot
+      obj.color = 'blue'
     } else if (type == 'nega') {
       obj.color = 'white'
     }

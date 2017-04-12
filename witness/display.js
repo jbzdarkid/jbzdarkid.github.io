@@ -78,7 +78,7 @@ function draw(puzzle, target='puzzle') {
         cell.appendChild(svg)
       } else if (puzzle.grid[x][y].type == 'poly') {
         var bounds = {'xmin':0, 'xmax':0, 'ymin':0, 'ymax':0}
-        for (var pos of POLYOMINOS[puzzle.grid[x][y].shape]) {
+        for (var pos of getPolyCells(puzzle.grid[x][y].shape)) {
           bounds.xmin = Math.min(bounds.xmin, pos.x)
           bounds.xmax = Math.max(bounds.xmax, pos.x)
           bounds.ymin = Math.min(bounds.ymin, pos.y)
@@ -89,7 +89,7 @@ function draw(puzzle, target='puzzle') {
 
         var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('viewBox', '0 0 50 50')
-        for (var pos of POLYOMINOS[puzzle.grid[x][y].shape]) {
+        for (var pos of getPolyCells(puzzle.grid[x][y].shape)) {
           var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
           rect.setAttribute('transform', 'translate('+(yoffset+pos.y*7)+', '+(xoffset+pos.x*7)+')')
           rect.setAttribute('height', '11px')
@@ -100,7 +100,7 @@ function draw(puzzle, target='puzzle') {
         cell.appendChild(svg)
       } else if (puzzle.grid[x][y].type == 'ylop') {
         var bounds = {'xmin':0, 'xmax':0, 'ymin':0, 'ymax':0}
-        for (var pos of POLYOMINOS[puzzle.grid[x][y].shape]) {
+        for (var pos of getPolyCells(puzzle.grid[x][y].shape)) {
           bounds.xmin = Math.min(bounds.xmin, pos.x)
           bounds.xmax = Math.max(bounds.xmax, pos.x)
           bounds.ymin = Math.min(bounds.ymin, pos.y)
@@ -111,7 +111,7 @@ function draw(puzzle, target='puzzle') {
 
         var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('viewBox', '0 0 50 50')
-        for (var pos of POLYOMINOS[puzzle.grid[x][y].shape]) {
+        for (var pos of getPolyCells(puzzle.grid[x][y].shape)) {
           var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
           rect.setAttribute('transform', 'translate('+(yoffset+pos.y*7)+', '+(xoffset+pos.x*7)+')')
           rect.setAttribute('height', '12px')

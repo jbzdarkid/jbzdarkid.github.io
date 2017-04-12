@@ -255,7 +255,7 @@ function _polyFit(polys, ylops, grid, region) {
   }
   if (ylops.length > 0) {
     ylop = ylops.pop()
-    var ylopCells = POLYOMINOS[ylop]
+    var ylopCells = getPolyCells(ylop)
     for (var x=1; x<grid.length; x+=2) {
       nextPos: for (var y=1; y<grid[x].length; y+=2) {
         for (var cell of ylopCells) { // Check if the ylop fits
@@ -282,7 +282,7 @@ function _polyFit(polys, ylops, grid, region) {
 
   nextPoly: for (var i=0; i<polys.length; i++) {
     var poly = polys.splice(i, 1)[0]
-    var polyCells = POLYOMINOS[poly]
+    var polyCells = getPolyCells(poly)
 
     for (var cell of polyCells) {
       // Check if the poly is off the grid or extends out of region
