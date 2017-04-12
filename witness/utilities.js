@@ -14,6 +14,35 @@ if (!String.prototype.includes) {
   }
 }
 
+// http://stackoverflow.com/q/901115
+var urlParams
+(window.onpopstate = function () {
+    var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) {return decodeURIComponent(s.replace(pl, " "))},
+        query  = window.location.search.substring(1)
+
+    urlParams = {};
+    while (match = search.exec(query))
+       urlParams[decode(match[1])] = decode(match[2])
+})()
+
+var styles = {
+  'monday':{
+    'width':4, 'height':4,
+    'dist':{'square':50, 'star':50},
+    'count':6,
+    'dots':0, 'gaps':0, 'colors':3,
+  },
+  'tuesday':{
+    'width':4, 'height':4,
+    'dist':{'poly':50, 'ylop':50},
+    'count':4,
+    'dots':2, 'gaps':2, 'colors':1,
+  }
+}
+
 // Returns a new copy of a puzzle, since javascript is pass-by-reference.
 function _copy(puzzle) {
   return {

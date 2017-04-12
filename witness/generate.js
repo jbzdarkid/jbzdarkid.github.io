@@ -7,7 +7,9 @@ function _randint(n) {
 }
 
 // Generates a random puzzle for a given size.
-function _randomize(width, height) {
+function _randomize(style) {
+  var width = style['width']
+  var height = style['height']
   var grid = _newGrid(width, height)
 
   // Both start and end must be on corners
@@ -33,31 +35,43 @@ function _randomize(width, height) {
   }
   grid[start.x][start.y] = true
 
+  var edges = []
+  var corners = []
+  var cells = []
+  for (var x=0; x<2*width+1; x++) {
+    for (var y=0; y<2*height+1; y++) {
+      if (x%2 == 0 && y%2 == 0) {
+        corners.push({'x':x, 'y':y})
+      } else if (x%2 == 1 && y%2 == 1) {
+        cells.push({'x':x, 'y':y})
+      } else {
+        edges.push({'x':x, 'y':y})
+      }
+    }
+  }
+
   // Dots must be on edges or corners
   var dots = []
-  // var numDots = _randint(width/2)
-  // for (var i=0; i<numDots; i++) {
-  //   var x = _randint(width)
-  //   if (x%2 == 0) {
-  //     dots.push({'x':x, 'y':_randint(height)})
-  //   } else {
-  //     dots.push({'x':x, 'y':2*_randint(width/2)})
-  //   }
-  // }
-  var gaps = []
-
-  var distribution = {
-    'square': 30,
-    'star': 35,
-    'poly': 30,
-    'nega': 5,
+  for (var i=0; i<style['dots']; i++) {
+    var index = _randint(edges.length+dots.length)
+    if (index < edges.length) {
+      dots.push(edges.splice(index, 1)[0])
+    } else {
+      dots.push(corners.splice(index-edges.length, 1)[0])
+    }
   }
+  // Gaps must be on edges
+  var gaps = []
+  for (var i=0; i<style['gaps']; i++) {
+    gaps.push(edges.splice(_randint(edges.length), 1)[0])
+  }
+  // All other objects must be in cells
   function _randObject(type) {
     var obj = {'type':type}
     if (type == 'square') {
-      obj.color = ['red', 'blue', 'green', 'orange'][_randint(3)]
+      obj.color = ['red', 'blue', 'green', 'orange'][_randint(style['colors'])]
     } else if (type == 'star') {
-      obj.color = ['red', 'blue', 'green', 'orange'][_randint(3)]
+      obj.color = ['red', 'blue', 'green', 'orange'][_randint(style['colors'])]
     } else if (type == 'poly') {
       var count = Object.keys(POLYOMINOS)[_randint(Object.keys(POLYOMINOS).length)]
       var kind = Object.keys(POLYOMINOS[count])[_randint(Object.keys(POLYOMINOS[count]).length)]
@@ -71,25 +85,19 @@ function _randomize(width, height) {
       obj.shape = count+'.'+kind+'.'+rot
       obj.color = 'blue'
     } else if (type == 'nega') {
-      obj.color = 'white'
+      obj.color = ['white', 'white', 'white', 'white'][_randint(style['colors'])]
     }
     return obj
   }
-  var cells = []
-  for (var x=1; x<grid.length; x+=2) {
-    for (var y=1; y<grid[x].length; y+=2) {
-      cells.push({'x':x, 'y':y})
-    }
-  }
-  for (var i=0; i<8; i++) {
+  for (var i=0; i<style['count']; i++) {
     var rand = _randint(100)
-    for (var type in distribution) {
-      if (rand < distribution[type]) {
+    for (var type in style['dist']) {
+      if (rand < style['dist'][type]) {
         var cell = cells.splice(_randint(cells.length), 1)[0]
         grid[cell.x][cell.y] = _randObject(type)
         break
       }
-      rand -= distribution[type]
+      rand -= style['dist'][type]
     }
   }
   return {'grid':grid, 'start':start, 'end':end, 'dots':dots, 'gaps':gaps}
@@ -104,13 +112,37 @@ window.onload = function () {
   document.getElementById('generate').onclick()
 }
 
-function generatePuzzle(width, height) {
+function generatePuzzle() {
+  if ('style' in urlParams) {
+    if (urlParams['style'] in styles) {
+      var style = styles[urlParams['style']]
+    } else {
+      var style = JSON.parse(urlParams['style'])
+    }
+  } else {
+    // var day = [
+      // 'sunday',
+      // 'monday',
+      // 'tuesday',
+      // 'wednesday',
+      // 'thursday',
+      // 'friday',
+      // 'saturday'][(new Date()).getDay()]
+    // var style = styles[day]
+    // FIXME: Think about full range of options
+    var style = {
+      'width':4, 'height':4,
+      'dist':{'square': 25, 'star':25, 'poly':25, 'ylop':20, 'nega':5,},
+      'count':7,
+      'dots':0, 'gaps':0, 'colors':2,
+    }
+  }
   var solutions = []
   // Require a puzzle with not too many solutions
   while (solutions.length == 0 || solutions.length > 100) {
     solutions = []
     var puzzleSeed = seed
-    var puzzle = _randomize(width, height)
+    var puzzle = _randomize(style)
     solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
     console.info('Solved', puzzle, 'found', solutions.length, 'solutions')
   }

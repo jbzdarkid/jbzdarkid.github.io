@@ -16,8 +16,8 @@
     </style>
     <link rel="stylesheet" type="text/css" href="style1.css" id="stylesheet">
     <!-- document.getElementById("stylesheet").href = 'style2.css' -->
-    <script type="text/javascript" src="utilities.js"></script>
     <script type="text/javascript" src="polyominos.js"></script>
+    <script type="text/javascript" src="utilities.js"></script>
     <script type="text/javascript" src="generate.js"></script>
     <script type="text/javascript" src="solve.js"></script>
     <script type="text/javascript" src="validate.js"></script>
@@ -27,15 +27,19 @@
   </head>
   <body>
 
-    <div width="500px" height="400px" style="position:absolute; left:0; top:0; text-align:center; font-size: 30; background: red">
-      Beta Build
+    <div width="500px" height="400px" style="position:absolute; left:0; top:0; font-size: 30; background: #6666FF">
+      &emsp;Beta v2 Changelog:
+      <ul>
+        <li>Hint and solution buttons work!</li>
+        <li>Implemented negation polyominos</li>
+        <li>Start and end point no longer fixed</li>
       <br>
-      Please report any bugs <a id="mailto">via email</a>
+      Please report bugs <a id="mailto" style="color:black">here</a>
     </div>
 
     <div style="text-align: center; font-size: 30">Random puzzles from The Witness</div>
     <div style="text-align: center;">
-      <button id="generate" onclick="generatePuzzle(4, 4)">New puzzle</button>
+      <button id="generate" onclick="generatePuzzle()">New puzzle</button>
       <button id="hint" onclick="showHint()">Show Hint</button>
       <button id="soln" onclick="showSolution()">Show Solution</button>
     </div>
