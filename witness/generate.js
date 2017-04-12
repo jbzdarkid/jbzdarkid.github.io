@@ -111,28 +111,28 @@ function generatePuzzle(width, height) {
     solutions = []
     var puzzleSeed = seed
     var puzzle = _randomize(width, height)
-    solve(puzzle, puzzle.start, solutions)
+    solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
     console.info('Solved', puzzle, 'found', solutions.length, 'solutions')
   }
-  /*
-  var targetSolution = solutions.splice(_randint(solutions.length), 1)[0]
-  solutionLoop: for (var solution of solutions) {
-    // If the solution is already distinguished by the gaps, continue
-    for (var gap of puzzle.gaps) {
-      if (solution.grid[gap.x][gap.y]) continue solutionLoop
-    }
-    // Else, find a new gap to separate them
-    for (var x=0; x<solution.grid.length; x++) {
-      for (var y=0; y<solution.grid[x].length; y++) {
-        if (x%2 == y%2) continue // Don't put gaps in corners or cells
-        if (solution.grid[x][y] && !targetSolution.grid[x][y]) {
-          puzzle.gaps.push({'x':x, 'y':y})
-          continue solutionLoop
-        }
+  var solution = solutions[_randint(solutions.length)]
+  var hints = []
+  for (var x=0; x<solution.grid.length; x++) {
+    for (var y=0; y<solution.grid[x].length; y++) {
+      if (x%2 + y%2 == 1 && !solution.grid[x][y]) {
+        hints.push({'x':x, 'y':y})
       }
     }
   }
-  */
+  window['showHint'] = function() {
+    var hint = hints.splice(_randint(hints.length), 1)[0]
+    puzzle.gaps.push(hint)
+    solution.gaps.push(hint)
+    draw(puzzle)
+  }
+  window['showSolution'] = function() {
+    draw(solution)
+  }
+  
   location.hash = puzzleSeed
   var mailer = document.getElementById('mailto')
   mailer.href = "mailto:jbzdarkid@gmail.com?subject=The Witness Random Puzzles&body=Puzzle id " + location.hash
