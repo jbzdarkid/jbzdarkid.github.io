@@ -70,11 +70,11 @@ function trace(elem) {
           }
         }
       }
-      document.styleSheets[0].deleteRule(3)
+      document.styleSheets[0].deleteRule(0)
       if (isValid(puzzle)) {
-        document.styleSheets[0].insertRule(".line {animation: 1s 1 forwards line-succ}", 3)
+        document.styleSheets[0].insertRule(".line {animation: 1s 1 forwards line-succ}", 0)
       } else {
-        document.styleSheets[0].insertRule(".line {animation: 1s 1 forwards line-fail}", 3)
+        document.styleSheets[0].insertRule(".line {animation: 1s 1 forwards line-fail}", 0)
       }
     }
     document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock
