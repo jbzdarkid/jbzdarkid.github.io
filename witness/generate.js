@@ -167,6 +167,7 @@ function generatePuzzle() {
     }
   }
   window['showHint'] = function() {
+    if (hints.length <= 0) return
     var hint = hints.splice(_randint(hints.length), 1)[0]
     puzzle.gaps.push(hint)
     solution.gaps.push(hint)
