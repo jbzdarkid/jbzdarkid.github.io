@@ -30,18 +30,58 @@ var urlParams
 
 var styles = {
   'monday':{
-    'width':4, 'height':4,
-    'dist':{'square':50, 'star':50},
-    'count':6,
-    'dots':0, 'gaps':0, 'colors':3,
+    'width':4, 'height':4, 'colors':3,
+    'distribution':{
+      'squares':4,
+      'stars':3,
+    }
   },
   'tuesday':{
-    'width':4, 'height':4,
-    'dist':{'poly':50, 'ylop':50},
-    'count':4,
-    'dots':2, 'gaps':2, 'colors':1,
-  }
+    'width':4, 'height':4, 'colors':1,
+    'distribution':{
+      'polyominos':3,
+      'onimoylops':2,
+      'dots':2,
+      'gaps':2,
+    }
+  },
+  'wednesday':{
+    'width':4, 'height':4, 'colors':2,
+    'distribution':{
+      'stars':6,
+      'negations':1
+    }
+  },
+  'thursday':{}, // 5x5 Dots, rpolys, ??
+  'friday':{} // 5x5 Negation*2, ??, ??
+  'saturday':{
+    'width':5, 'height':5, 'colors':2,
+    'distribution':{
+      'triangles':3,
+      'polyominos':4,
+      'stars':3,
+    }
+  },
+  'sunday':{
+    'width':6, 'height':6, 'colors':1,
+    'distribution':{
+      'triangles':1,
+      'polyominos':1,
+      'stars':1,
+      'squares':1,
+      'negations':1,
+      'dots':1,
+      'gaps':1,
+    }
+  },
 }
+
+// From the random panels
+RED = '#923A5E'
+ORANGE = '#C5714F'
+GREEN = '#58864C'
+BLUE = '#5697A2'
+PURPLE = '#785DAE'
 
 // Returns a new copy of a puzzle, since javascript is pass-by-reference.
 function _copy(puzzle) {
