@@ -34,7 +34,6 @@ function draw(puzzle, target='puzzle') {
       } else if (x == puzzle.grid.length-1 && y == puzzle.grid[x].length-1) {
         cell.style.borderBottomRightRadius = '12px'
       }
-      cell.align = 'center'
       cell.id = target+'_'+y+'_'+x
 
       if (x == puzzle.start.x && y == puzzle.start.y) {
@@ -43,10 +42,10 @@ function draw(puzzle, target='puzzle') {
         cell.className = 'start trace'
         var div = document.createElement('div')
         div.style.position = 'absolute'
-        div.style.width = '44px'
-        div.style.height = '44px'
-        div.style.top = '-11px'
-        div.style.left = '-11px'
+        div.style.width = '48px'
+        div.style.height = '48px'
+        div.style.top = '-12px'
+        div.style.left = '-12px'
         div.style.borderRadius = '50px'
         div.className = 'corner'
         div.onclick = function() {trace(this)}
