@@ -2,8 +2,8 @@ var cursorSize = 12
 var data
 function trace(elem) {
   if (document.pointerLockElement == null && document.mozPointerLockElement == null) {
-    document.styleSheets[0].deleteRule(3)
-    document.styleSheets[0].insertRule(".line {fill: #6D4D4A}", 3)
+    document.styleSheets[0].deleteRule(0)
+    document.styleSheets[0].insertRule(".line {fill: #6D4D4A}", 0)
     var parent = elem.parentNode
     var width = parseInt(window.getComputedStyle(parent).width)
     var height = parseInt(window.getComputedStyle(parent).height)
