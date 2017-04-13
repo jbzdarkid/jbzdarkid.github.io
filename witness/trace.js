@@ -1,3 +1,4 @@
+var cursorSize = 12
 var data
 function trace(elem) {
   if (document.pointerLockElement == null && document.mozPointerLockElement == null) {
@@ -23,7 +24,7 @@ function trace(elem) {
     while (lines.length > 0) {
       lines[0].remove()
     }
-    var circles = table.getElementsByClassName('circle')
+    var circles = table.getElementsByClassName('cursor')
     while (circles.length > 0) {
       circles[0].remove()
     }
@@ -39,8 +40,8 @@ function trace(elem) {
     if (circ == undefined) {
       var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
     }
-    circ.setAttribute('cx', '11px')
-    circ.setAttribute('cy', '11px')
+    circ.setAttribute('cx', cursorSize+'px')
+    circ.setAttribute('cy', cursorSize+'px')
     circ.setAttribute('border', '0px')
     circ.setAttribute('class', 'line')
     var anim = circ.getElementsByTagName('animate')[0]
@@ -49,7 +50,7 @@ function trace(elem) {
     }
     anim.setAttribute('attributeName', 'r')
     anim.setAttribute('from', '0')
-    anim.setAttribute('to', '11')
+    anim.setAttribute('to', '12')
     anim.setAttribute('dur', '0.2s')
     anim.setAttribute('fill', 'freeze') // Hold the final frame of animation
     circ.appendChild(anim)
@@ -151,56 +152,57 @@ function _collision(data, elem, next_elem) {
     var dist_x = (data.subx < width/2) ? data.subx : width - data.subx
     var dist_y = (data.suby < height/2) ? data.suby : height - data.suby
     if (dist_x > dist_y) { // Reduce the larger distance to the edge
-      if (data.subx - 11 < 0) data.subx = 11
-      if (data.subx + 11 > width) data.subx = width - 11
+      if (data.subx - cursorSize < 0) data.subx = cursorSize
+      if (data.subx + cursorSize > width) data.subx = width - cursorSize
     } else {
-      if (data.suby - 11 < 0) data.suby = 11
-      if (data.suby + 11 > height) data.suby = height - 11
+      if (data.suby - cursorSize < 0) data.suby = cursorSize
+      if (data.suby + cursorSize > height) data.suby = height - cursorSize
     }
   }
 
-  // Break collision
-  if (elem.className.includes('break')) {
-    if (elem.className.endsWith('trace-r') && data.subx - 7 > 0) {
-      data.subx = 7
-    } else if (elem.className.endsWith('trace-l') && data.subx + 7 < width) {
-      data.subx = width - 7
-    } else if (elem.className.endsWith('trace-d') && data.suby - 7 > 0) {
-      data.suby = 7
-    } else if (elem.className.endsWith('trace-u') && data.suby + 7 < height) {
-      data.suby = height - 7
+  // Gap (aka break) collision
+  if (elem.className.includes('gap')) {
+    var gapSize = 18 // Thickness of the gap, in pixels
+    if (elem.className.endsWith('trace-r') && data.subx + cursorSize > (width - gapSize)/2) {
+      data.subx = (width - gapSize)/2 - cursorSize
+    } else if (elem.className.endsWith('trace-l') && data.subx - cursorSize < (width + gapSize)/2) {
+      data.subx = (width + gapSize)/2 + cursorSize
+    } else if (elem.className.endsWith('trace-d') && data.suby + cursorSize > (height - gapSize)/2) {
+      data.suby = (height - gapSize)/2 - cursorSize
+    } else if (elem.className.endsWith('trace-u') && data.suby - cursorSize < (height + gapSize)/2) {
+      data.suby = (height + gapSize)/2 + cursorSize
     }
   }
 
   // Generic collision
-  if (data.subx - 11 < 0) {
+  if (data.subx - cursorSize < 0) {
     var new_elem = document.getElementById(data.table+'_'+(data.x-1)+'_'+data.y)
     if (new_elem == null) {
-      data.subx = 11
-    } else if (!(new_elem.className.endsWith('trace') ||elem.className.endsWith('trace-r'))) {
-      data.subx = 11
+      data.subx = cursorSize
+    } else if (!(new_elem.className.endsWith('trace') || elem.className.endsWith('trace-r'))) {
+      data.subx = cursorSize
     }
-  } else if (data.subx + 11 > width) {
+  } else if (data.subx + cursorSize > width) {
     var new_elem = document.getElementById(data.table+'_'+(data.x+1)+'_'+data.y)
     if (new_elem == null) {
-      data.subx = width - 11
-    } else if (!(new_elem.className.endsWith('trace') ||elem.className.endsWith('trace-l'))) {
-      data.subx = width - 11
+      data.subx = width - cursorSize
+    } else if (!(new_elem.className.endsWith('trace') || elem.className.endsWith('trace-l'))) {
+      data.subx = width - cursorSize
     }
   }
-  if (data.suby - 11 < 0) {
+  if (data.suby - cursorSize < 0) {
     var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y-1))
     if (new_elem == null) {
-      data.suby = 11
-    } else if (!(new_elem.className.endsWith('trace') ||elem.className.endsWith('trace-d'))) {
-      data.suby = 11
+      data.suby = cursorSize
+    } else if (!(new_elem.className.endsWith('trace') || elem.className.endsWith('trace-d'))) {
+      data.suby = cursorSize
     }
-  } else if (data.suby + 11 > height) {
+  } else if (data.suby + cursorSize > height) {
     var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y+1))
     if (new_elem == null) {
-      data.suby = height - 11
-    } else if (!(new_elem.className.endsWith('trace') ||elem.className.endsWith('trace-u'))) {
-      data.suby = height - 11
+      data.suby = height - cursorSize
+    } else if (!(new_elem.className.endsWith('trace') || elem.className.endsWith('trace-u'))) {
+      data.suby = height - cursorSize
     }
   }
 }
@@ -210,7 +212,6 @@ function _collision(data, elem, next_elem) {
 function _draw(elem, subx, suby) {
   if (elem == null) return
   if (elem.className.includes('start')) return
-  if (!elem.className.includes('trace')) return
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
   var svg = elem.getElementsByTagName('svg')[0]
@@ -218,17 +219,17 @@ function _draw(elem, subx, suby) {
     svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     svg.setAttribute('viewBox', '0 0 '+width+' '+height)
   }
-  while (svg.getElementsByTagName('circle').length > 0) {
-    svg.getElementsByTagName('circle')[0].remove()
+  while (svg.getElementsByClassName('cursor').length > 0) {
+    svg.getElementsByClassName('cursor')[0].remove()
+  }
+  while (svg.getElementsByClassName('line').length > 0) {
+    svg.getElementsByClassName('line')[0].remove()
   }
   var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
   circ.setAttribute('r', '11px')
-  circ.setAttribute('class', 'circle')
+  circ.setAttribute('class', 'cursor')
   circ.setAttribute('cx', subx)
   circ.setAttribute('cy', suby)
-  while (svg.getElementsByTagName('rect').length > 0) {
-    svg.getElementsByTagName('rect')[0].remove()
-  }
   var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
   rect.setAttribute('height', '0px')
   rect.setAttribute('width', '0px')
@@ -237,7 +238,7 @@ function _draw(elem, subx, suby) {
   rect.setAttribute('class', 'line')
   rect.setAttribute('transform', '')
   var circ2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-  circ2.setAttribute('r', '11px')
+  circ2.setAttribute('r', cursorSize+'px')
   circ2.setAttribute('cx', width/2)
   circ2.setAttribute('cy', height/2)
   circ2.setAttribute('class', 'line')

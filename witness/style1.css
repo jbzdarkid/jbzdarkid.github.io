@@ -6,66 +6,67 @@
   from {fill: #000000;}
   to {fill: #161729;}
 }
-.circle {
+.cursor {
   fill: #A69191;
   stroke: black;
-  stroke-opacity: 0.3;
+  stroke-width: 2px;
+  stroke-opacity: 0.4;
 }
 .center {
-  height: 50px;
-  width: 50px;
+  height: 58px;
+  width: 58px;
   background: #1F1313;
 }
 .corner {
-  height: 22px;
-  width: 22px;
+  height: 24px;
+  width: 24px;
   background: #3B3B3B;
 }
 .verti {
-  height: 50px;
-  width: 22px;
+  height: 58px;
+  width: 24px;
   background: #3B3B3B;
 }
 .horiz {
-  height: 22px;
-  width: 50px;
+  height: 24px;
+  width: 58px;
   background: #3B3B3B;
 }
 .start {
   position: relative;
-  height: 22px;
-  width: 22px;
+  height: 24px;
+  width: 24px;
   background: #3B3B3B;
 }
 .end_left {
-  border-top-left-radius: 11px;
-  border-bottom-left-radius: 11px;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
   position: relative;
-  height: 22px;
-  width: 22px;
+  height: 24px;
+  width: 24px;
   background: #3B3B3B;
 }
 .end_right {
-  border-top-right-radius: 11px;
-  border-bottom-right-radius: 11px;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
   position: relative;
-  height: 22px;
-  width: 22px;
+  height: 24px;
+  width: 24px;
   background: #3B3B3B;
 }
 .end_up {
-  border-top-left-radius: 11px;
-  border-top-right-radius: 11px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
   position: relative;
-  height: 22px;
-  width: 22px;
+  height: 24px;
+  width: 24px;
   background: #3B3B3B;
 }
 .end_down {
-  border-bottom-left-radius: 11px;
-  border-bottom-right-radius: 11px;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
   position: relative;
-  height: 22px;
-  width: 22px;
+  height: 24px;
+  width: 24px;
   background: #3B3B3B;
 }
