@@ -62,9 +62,8 @@ function trace(elem) {
     var curr_elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
     if (curr_elem.className.includes('end')) {
       for (var elem of table.getElementsByTagName('td')) {
-        // FIXME: Reversed?
-        var x = elem.id.split('_')[2]
-        var y = elem.id.split('_')[1]
+        var x = elem.id.split('_')[1]
+        var y = elem.id.split('_')[2]
         if (elem.className.includes('trace-')) {
           if (!elem.className.includes('end')) {
             puzzle.grid[x][y] = true
@@ -127,12 +126,12 @@ function onMouseMove(e) {
       var temp_width = width
       var temp_height = height
       if (x == -1) {
-        temp_width = parseInt(window.getComputedStyle(temp_elem).width)
-      }
-      if (y == -1) {
         temp_height = parseInt(window.getComputedStyle(temp_elem).height)
       }
-      _draw(temp_elem, data.subx - x * temp_width, data.suby - y * temp_height)
+      if (y == -1) {
+        temp_width = parseInt(window.getComputedStyle(temp_elem).width)
+      }
+      _draw(temp_elem, data.subx - y * temp_width, data.suby - x * temp_height)
     }
   }
 
@@ -176,14 +175,14 @@ function _collision(data, elem, next_elem) {
 
   // Generic collision
   if (data.subx - cursorSize < 0) {
-    var new_elem = document.getElementById(data.table+'_'+(data.x-1)+'_'+data.y)
+    var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y-1))
     if (new_elem == null) {
       data.subx = cursorSize
     } else if (!(new_elem.className.endsWith('trace') || elem.className.endsWith('trace-r'))) {
       data.subx = cursorSize
     }
   } else if (data.subx + cursorSize > width) {
-    var new_elem = document.getElementById(data.table+'_'+(data.x+1)+'_'+data.y)
+    var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y+1))
     if (new_elem == null) {
       data.subx = width - cursorSize
     } else if (!(new_elem.className.endsWith('trace') || elem.className.endsWith('trace-l'))) {
@@ -191,14 +190,14 @@ function _collision(data, elem, next_elem) {
     }
   }
   if (data.suby - cursorSize < 0) {
-    var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y-1))
+    var new_elem = document.getElementById(data.table+'_'+(data.x-1)+'_'+data.y)
     if (new_elem == null) {
       data.suby = cursorSize
     } else if (!(new_elem.className.endsWith('trace') || elem.className.endsWith('trace-d'))) {
       data.suby = cursorSize
     }
   } else if (data.suby + cursorSize > height) {
-    var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y+1))
+    var new_elem = document.getElementById(data.table+'_'+(data.x+1)+'_'+data.y)
     if (new_elem == null) {
       data.suby = height - cursorSize
     } else if (!(new_elem.className.endsWith('trace') || elem.className.endsWith('trace-u'))) {
@@ -344,31 +343,31 @@ function _move(data) {
   var height = parseInt(window.getComputedStyle(elem).height)
 
   if (data.subx < 0) { // Moving left
-    var new_elem = document.getElementById(data.table+'_'+(data.x-1)+'_'+data.y)
+    var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y-1))
     if (new_elem != null) {
       var new_width = parseInt(window.getComputedStyle(new_elem).width)
       if (new_elem.className.endsWith('trace')) { // Traced new path
-        data.x--
+        data.y--
         data.subx += new_width
         elem.className += '-l'
         new_elem.className += '-l'
       } else if (elem.className.endsWith('-r')) { // Retraced path
-        data.x--
+        data.y--
         data.subx += new_width
         elem.className = elem.className.substring(0, elem.className.length-2)
         new_elem.className = new_elem.className.substring(0, new_elem.className.length-2)
       }
     }
   } else if (data.subx > width) { // Moving right
-    var new_elem = document.getElementById(data.table+'_'+(data.x+1)+'_'+data.y)
+    var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y+1))
     if (new_elem != null) {
       if (new_elem.className.endsWith('trace')) { // Traced new path
-        data.x++
+        data.y++
         data.subx -= width
         elem.className += '-r'
         new_elem.className += '-r'
       } else if (elem.className.endsWith('-l')) { // Retraced path
-        data.x++
+        data.y++
         data.subx -= width
         elem.className = elem.className.substring(0, elem.className.length-2)
         new_elem.className = new_elem.className.substring(0, new_elem.className.length-2)
@@ -376,31 +375,31 @@ function _move(data) {
     }
   }
   if (data.suby < 0) { // Moving up
-    var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y-1))
+    var new_elem = document.getElementById(data.table+'_'+(data.x-1)+'_'+data.y)
     if (new_elem != null) {
       var new_height = parseInt(window.getComputedStyle(new_elem).height)
       if (new_elem.className.endsWith('trace')) { // Trace new path
-        data.y--
+        data.x--
         data.suby += new_height
         elem.className += '-u'
         new_elem.className += '-u'
       } else if (elem.className.endsWith('-d')) { // Retrace path
-        data.y--
+        data.x--
         data.suby += new_height
         elem.className = elem.className.substring(0, elem.className.length-2)
         new_elem.className = new_elem.className.substring(0, new_elem.className.length-2)
       }
     }
   } else if (data.suby > height) { // Moving down
-    var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y+1))
+    var new_elem = document.getElementById(data.table+'_'+(data.x+1)+'_'+data.y)
     if (new_elem != null) {
       if (new_elem.className.endsWith('trace')) { // Traced new path
-        data.y++
+        data.x++
         data.suby -= height
         elem.className += '-d'
         new_elem.className += '-d'
       } else if (elem.className.endsWith('-u')) { // Retraced path
-        data.y++
+        data.x++
         data.suby -= height
         elem.className = elem.className.substring(0, elem.className.length-2)
         new_elem.className = new_elem.className.substring(0, new_elem.className.length-2)

@@ -34,7 +34,7 @@ function draw(puzzle, target='puzzle') {
       } else if (x == puzzle.grid.length-1 && y == puzzle.grid[x].length-1) {
         cell.style.borderBottomRightRadius = '12px'
       }
-      cell.id = target+'_'+y+'_'+x
+      cell.id = target+'_'+x+'_'+y
 
       if (x == puzzle.start.x && y == puzzle.start.y) {
         var div = document.createElement('div')
@@ -166,13 +166,14 @@ function draw(puzzle, target='puzzle') {
   }
   
   // puzzle.end is correct (new syntax), but table references are reversed x <-> y
-  document.getElementById(target+'_'+puzzle.end.y+'_'+puzzle.end.x).style.borderRadius = '0px'
+  table.rows[puzzle.end.x].cells[puzzle.end.y].style.borderRadius = '0px'
   if (puzzle.end.y == 0) {
     for (var x=0; x<puzzle.grid.length; x++) {
       var cell = table.rows[x].insertCell(0)
       if (x == puzzle.end.x) {
         cell.className = 'end_left trace'
-        cell.id = target+'_'+(puzzle.end.y-1)+'_'+puzzle.end.x
+        cell.id = target+'_'+puzzle.end.x+'_'+(puzzle.end.y-1)
+        cell.style.background = table.rows[puzzle.end.x].cells[puzzle.end.y+1].style.background
       }
     }
   } else if (puzzle.end.y == puzzle.grid[puzzle.end.x].length-1) {
@@ -180,7 +181,8 @@ function draw(puzzle, target='puzzle') {
       var cell = table.rows[x].insertCell(-1)
       if (x == puzzle.end.x) {
         cell.className = 'end_right trace'
-        cell.id = target+'_'+(puzzle.end.y+1)+'_'+puzzle.end.x
+        cell.id = target+'_'+puzzle.end.x+'_'+(puzzle.end.y+1)
+        cell.style.background = table.rows[puzzle.end.x].cells[puzzle.end.y].style.background
       }
     }
   } else if (puzzle.end.x == 0) {
@@ -189,7 +191,8 @@ function draw(puzzle, target='puzzle') {
       var cell = row.insertCell(x)
       if (x == puzzle.end.y) {
         cell.className = 'end_up trace'
-        cell.id =  target+'_'+puzzle.end.y+'_'+(puzzle.end.x-1)
+        cell.id =  target+'_'+(puzzle.end.x-1)+'_'+puzzle.end.y
+        cell.style.background = table.rows[puzzle.end.x+1].cells[puzzle.end.y].style.background
       }
     }
   } else if (puzzle.end.x == puzzle.grid.length-1) {
@@ -198,7 +201,8 @@ function draw(puzzle, target='puzzle') {
       var cell = row.insertCell(x)
       if (x == puzzle.end.y) {
         cell.className = 'end_down trace'
-        cell.id =  target+'_'+puzzle.end.y+'_'+(puzzle.end.x+1)
+        cell.id =  target+'_'+(puzzle.end.x+1)+'_'+puzzle.end.y
+        cell.style.background = table.rows[puzzle.end.x].cells[puzzle.end.y].style.background
       }
     }
   }
@@ -217,7 +221,7 @@ function draw(puzzle, target='puzzle') {
     cell.appendChild(svg)
   }
   for (var gap of puzzle.gaps) {
-    var cell = document.getElementById(target+'_'+gap.y+'_'+gap.x)
+    var cell = document.getElementById(target+'_'+gap.x+'_'+gap.y)
     cell.className = 'gap '+cell.className
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     var width = parseInt(window.getComputedStyle(cell).width)
