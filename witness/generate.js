@@ -139,14 +139,12 @@ function generatePuzzle() {
     // FIXME: Think about full range of options
     var style = {
       'width':4, 'height':4, 'colors':2,
-      'dist':{
+      'distribution':{
         'squares':2,
         'stars':2,
-        'polys':2,
-        'ylops':1,
-        'negas':1,
-        'dots':0,
-        'gaps':0,
+        'polyominos':2,
+        'onimoylops':1,
+        'negations':1,
       }
     }
   }

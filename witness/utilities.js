@@ -53,7 +53,7 @@ var styles = {
     }
   },
   'thursday':{}, // 5x5 Dots, rpolys, ??
-  'friday':{} // 5x5 Negation*2, ??, ??
+  'friday':{}, // 5x5 Negation*2, ??, ??
   'saturday':{
     'width':5, 'height':5, 'colors':2,
     'distribution':{
