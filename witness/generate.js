@@ -33,7 +33,6 @@ function _randomize(style) {
       end.y = 2*height
       break;
   }
-  grid[start.x][start.y] = true
 
   var edges = []
   var corners = []
