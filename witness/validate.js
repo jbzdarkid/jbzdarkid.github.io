@@ -133,8 +133,11 @@ function _regionCheck(grid, region) {
       }
     }
   }
-  if (polys.length + ylops.length > 0) {
-    if (polyCount != region.length && polyCount != 0) {
+  if (polys.length + ylops.length > 0) { // Some polys/ylops exist in the region
+    if (polyCount < 0) {
+      // console.log('More onimoylops than polyominos by', -polyCount)
+      return false
+    } else if (polyCount > 0 && polyCount < region.length) {
       // console.log('Combined size of polyominos', polyCount, 'does not match region size', region.length)
       return false
     }
@@ -145,10 +148,15 @@ function _regionCheck(grid, region) {
         new_grid[x][y] = 0
       }
     }
+    // If polyCount == 0, then ylops cancel polys, and we should present the
+    // region as non-existant, thus forcing all the shapes to cancel.
+    if (polyCount == 0) {
+      region = []
+    }
     for (var cell of region) {
       new_grid[cell.x][cell.y] = 1
     }
-    if (!_polyFit(polys, ylops, new_grid, region)) {
+    if (!_polyFit(polys, ylops, new_grid)) {
       // console.log('Region does not match polyomino shapes', polys, ylops)
       return false
     }
@@ -214,45 +222,20 @@ function _combinations(grid, region) {
 // so try every piece to fill it, then recurse.
 // Onimoylops are complex, and basically can be placed anywhere, once placed
 // they act as an extra count for that square.
-function _polyFit(polys, ylops, grid, region) {
+function _polyFit(polys, ylops, grid) {
   if (polys.length + ylops.length == 0) {
-    // Done placing all polyominos and onimylops, verify grid is either empty
-    // or contains exactly the same squares as initial region (cancelled)
-    if (grid[region[0].x][region[0].y] == 1) {
-      for (var cell of region) {
-        if (grid[cell.x][cell.y] != 1) {
-          // console.log('All polys and ylops cancelled, but region not restored')
+    for (var x=1; x<grid.length; x+=2) {
+      for (var y=1; y<grid[x].length; y+=2) {
+        if (grid[x][y] != 0) {
+          // console.log('All polys placed, but grid not full')
           return false
         }
       }
-      // console.log('All polys and ylops cancelled, and region restored')
-      return true
-    } else {
-      for (var x=1; x<grid.length; x+=2) {
-        for (var y=1; y<grid[x].length; y+=2) {
-          if (grid[x][y] != 0) {
-            // console.log('All polys placed, but grid not full')
-            return false
-          }
-        }
-      }
-      // console.log('All polys placed, and grid full')
-      return true
     }
+    // console.log('All polys placed, and grid full')
+    return true
   }
-  var first = undefined
-  firstLoop: for (var x=1; x<grid.length; x+=2) {
-    for (var y=1; y<grid[x].length; y+=2) {
-      if (grid[x][y] >= 1) {
-        first = {'x':x, 'y':y}
-        break firstLoop
-      }
-    }
-  }
-  if (first == undefined) {
-    // console.log('Polys remaining but grid full')
-    return false
-  }
+
   if (ylops.length > 0) {
     ylop = ylops.pop()
     var ylopRotations = getPolyomino(ylop.size, ylop.shape, ylop.rot)
@@ -269,7 +252,7 @@ function _polyFit(polys, ylops, grid, region) {
           for (var cell of ylopCells) { // Place in the grid
             grid[cell.x+x][cell.y+y]++
           }
-          var ret = _polyFit(polys, ylops, grid, region)
+          var ret = _polyFit(polys, ylops, grid)
           for (var cell of ylopCells) { // Restore the grid
             grid[cell.x+x][cell.y+y]--
           }
@@ -279,6 +262,20 @@ function _polyFit(polys, ylops, grid, region) {
     }
     // console.log('Ylop found, but no placement valid')
     ylops.push(ylop)
+    return false
+  }
+
+  var first = undefined
+  firstLoop: for (var x=1; x<grid.length; x+=2) {
+    for (var y=1; y<grid[x].length; y+=2) {
+      if (grid[x][y] >= 1) {
+        first = {'x':x, 'y':y}
+        break firstLoop
+      }
+    }
+  }
+  if (first == undefined) {
+    // console.log('Polys remaining but grid full')
     return false
   }
 
@@ -301,7 +298,7 @@ function _polyFit(polys, ylops, grid, region) {
       for (var cell of polyCells) {
         grid[cell.x + first.x][cell.y + first.y]--
       }
-      if (_polyFit(polys, ylops, grid, region)) {
+      if (_polyFit(polys, ylops, grid)) {
         polyFits = true
       }
       // Restore grid and poly list for the next poly choice
