@@ -54,7 +54,7 @@ function _randomize(style) {
       }
     }
   }
-  
+
   // Place a number of elements according to the set distribution
   for (var type in style['distribution']) {
     for (var i=0; i<style['distribution'][type]; i++) {
@@ -71,16 +71,6 @@ function _randomize(style) {
         var color = ['white', 'white', 'white', 'white', 'white'][_randint(style['colors'])]
         var pos = cells.splice(_randint(cells.length), 1)[0]
         puzzle.grid[pos.x][pos.y] = {'type':'nega', 'color':color}
-      } else if (type == 'rpolys' || type == 'rylops') {
-        var count = Object.keys(POLYOMINOS)[_randint(Object.keys(POLYOMINOS).length)]
-        var kind = Object.keys(POLYOMINOS[count])[_randint(Object.keys(POLYOMINOS[count]).length)]
-        var pos = cells.splice(_randint(cells.length), 1)[0]
-        if (type == 'rpolys') {
-          var color = ['yellow', RED, GREEN, BLUE, PURPLE][_randint(style['colors'])]
-          puzzle.grid[pos.x][pos.y] = {'type':'rpoly', 'color':color, 'shape':count+'.'+kind}
-        } else {
-          puzzle.grid[pos.x][pos.y] = {'type':'rylop', 'color':'blue', 'shape':count+'.'+kind}
-        }
       } else if (type == 'squares') {
         var color = [RED, ORANGE, GREEN, BLUE, PURPLE][_randint(style['colors'])]
         var pos = cells.splice(_randint(cells.length), 1)[0]
@@ -92,21 +82,29 @@ function _randomize(style) {
       } else if (type == 'triangles') {
         var pos = cells.splice(_randint(cells.length), 1)[0]
         puzzle.grid[pos.x][pos.y] = {'type':'triangle', 'color':'orange'}
-      } else if (type == 'polyominos' || type == 'polyominos') {
-        var count = Object.keys(POLYOMINOS)[_randint(Object.keys(POLYOMINOS).length)]
-        var kind = Object.keys(POLYOMINOS[count])[_randint(Object.keys(POLYOMINOS[count]).length)]
-        var rot = _randint(POLYOMINOS[count][kind].length)
+      } else if (type == 'polyominos' || type == 'onimolyps') {
+        var size = _randint(Math.min(width, height))+1
+        var shapes = getPolyomino(size)
+        var shape = shapes[_randint(shapes.length)]
+        var numRotations = getPolyomino(size, shape)
+        if (numRotations == 1) {
+          var rotation = 0
+        } else {
+          var rotation = _randint(numRotations+1)
+          if (rotation == numRotations) { // Selected a rotation poly
+            rotation = 'all'
+          }
+        }
         var pos = cells.splice(_randint(cells.length), 1)[0]
         if (type == 'polyominos') {
           var color = ['yellow', RED, GREEN, BLUE, PURPLE][_randint(style['colors'])]
-          puzzle.grid[pos.x][pos.y] = {'type':'poly', 'color':color, 'shape':count+'.'+kind+'.'+rot}
+          puzzle.grid[pos.x][pos.y] = {'type':'poly', 'color':color, 'size':size, 'shape':shape, 'rot':rotation}
         } else {
-          puzzle.grid[pos.x][pos.y] = {'type':'ylop', 'color':'blue', 'shape':count+'.'+kind+'.'+rot}
+          puzzle.grid[pos.x][pos.y] = {'type':'ylop', 'color':'blue', 'size':size, 'shape':shape, 'rot':rotation}
         }
       }
     }
   }
-
   return puzzle
 }
 
@@ -145,12 +143,13 @@ function generatePuzzle() {
         'polyominos':2,
         'onimoylops':1,
         'negations':1,
+        'difficulty':70,
       }
     }
   }
   var solutions = []
   // Require a puzzle with not too many solutions
-  while (solutions.length == 0 || solutions.length > 70) {
+  while (solutions.length == 0 || solutions.length > style['difficulty']) {
     solutions = []
     var puzzleSeed = seed
     var puzzle = _randomize(style)
@@ -176,10 +175,10 @@ function generatePuzzle() {
   window['showSolution'] = function() {
     draw(solution)
   }
-  
+
   location.hash = puzzleSeed
   var mailer = document.getElementById('mailto')
-  mailer.href = "mailto:jbzdarkid@gmail.com?subject=The Witness Random Puzzles&body=Puzzle id " + location.hash
+  mailer.href = "mailto:jbzdarkid@gmail.com?subject=The Witness Random Puzzles&body=Puzzle id " + location.hash + "\n"
   draw(puzzle)
   // draw(solutions[0])
 }

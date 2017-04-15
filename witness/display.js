@@ -94,9 +94,13 @@ function draw(puzzle, target='puzzle') {
       } else if (puzzle.grid[x][y].type == 'poly') {
         var size = 10 // Side length of individual squares in the polyomino
         var space = 4 // Gap between squares in the polyomino
+        // Select the first element, either from the array of all rotations or
+        // as the only rotation.
+        var elem = puzzle.grid[x][y]
+        var polyomino = getPolyomino(elem.size, elem.shape, elem.rot)[0]
 
         var bounds = {'xmin':0, 'xmax':0, 'ymin':0, 'ymax':0}
-        for (var pos of getPolyCells(puzzle.grid[x][y].shape)) {
+        for (var pos of polyomino) {
           bounds.xmin = Math.min(bounds.xmin, pos.x)
           bounds.xmax = Math.max(bounds.xmax, pos.x)
           bounds.ymin = Math.min(bounds.ymin, pos.y)
@@ -108,9 +112,14 @@ function draw(puzzle, target='puzzle') {
 
         var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
         svg.setAttribute('viewBox', '0 0 58 58')
-        for (var pos of getPolyCells(puzzle.grid[x][y].shape)) {
+        for (var pos of polyomino) {
           var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-          rect.setAttribute('transform', 'translate(' + (center_y+pos.y*offset) + ', ' + (center_x+pos.x*offset) + ')')
+          var transform = 'translate('+(center_y+pos.y*offset)+', '+(center_x+pos.x*offset)+')'
+          if (elem.rot == 'all') {
+            // -30 degree rotation around (29, 29), the midpoint of the square
+            transform = 'rotate(-30, 29, 29) '+transform
+          }
+          rect.setAttribute('transform', transform)
           rect.setAttribute('height', size+'px')
           rect.setAttribute('width', size+'px')
           rect.setAttribute('fill', puzzle.grid[x][y].color)
@@ -120,9 +129,13 @@ function draw(puzzle, target='puzzle') {
       } else if (puzzle.grid[x][y].type == 'ylop') {
         var size = 12 // Side length of individual squares in the polyomino
         var space = 2 // Gap between squares in the polyomino
+        // Select the first element, either from the array of all rotations or
+        // as the only rotation.
+        var elem = puzzle.grid[x][y]
+        var polyomino = getPolyomino(elem.size, elem.shape, elem.rot)[0]
 
         var bounds = {'xmin':0, 'xmax':0, 'ymin':0, 'ymax':0}
-        for (var pos of getPolyCells(puzzle.grid[x][y].shape)) {
+        for (var pos of polyomino) {
           bounds.xmin = Math.min(bounds.xmin, pos.x)
           bounds.xmax = Math.max(bounds.xmax, pos.x)
           bounds.ymin = Math.min(bounds.ymin, pos.y)
@@ -134,7 +147,7 @@ function draw(puzzle, target='puzzle') {
 
         var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
         svg.setAttribute('viewBox', '0 0 58 58')
-        for (var pos of getPolyCells(puzzle.grid[x][y].shape)) {
+        for (var pos of polyomino) {
           var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
           rect.setAttribute('transform', 'translate(' + (center_y+pos.y*offset) + ', ' + (center_x+pos.x*offset) + ')')
           rect.setAttribute('height', size+'px')
@@ -142,7 +155,12 @@ function draw(puzzle, target='puzzle') {
           rect.setAttribute('fill', puzzle.grid[x][y].color)
           svg.appendChild(rect)
           var rect2 = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-          rect2.setAttribute('transform', 'translate('+(center_y+pos.y*offset+size/4)+', '+(center_x+pos.x*offset+size/4)+')')
+          var transform = 'translate('+(center_y+pos.y*offset+size/4)+', '+(center_x+pos.x*offset+size/4)+')'
+          if (elem.rot == 'all') {
+            // -30 degree rotation around (29, 29), the midpoint of the square
+            transform = 'rotate(-30, 29, 29) '+transform
+          }
+          rect2.setAttribute('transform', transform)
           rect2.setAttribute('height', size/2+'px')
           rect2.setAttribute('width', size/2+'px')
           rect2.setAttribute('fill', 'black')
@@ -164,7 +182,7 @@ function draw(puzzle, target='puzzle') {
       }
     }
   }
-  
+
   // puzzle.end is correct (new syntax), but table references are reversed x <-> y
   table.rows[puzzle.end.x].cells[puzzle.end.y].style.borderRadius = '0px'
   if (puzzle.end.y == 0) {

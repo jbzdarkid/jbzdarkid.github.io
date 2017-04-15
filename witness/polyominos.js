@@ -1,30 +1,20 @@
-function getPolyCells(shape) {
-  var size = shape.split('.')[0]
-  var kind = shape.split('.')[1]
-  var rot = parseInt(shape.split('.')[2])
-  try {
-    return POLYOMINOS[size][kind][rot]
-  } catch (error) {
-    if (size in POLYOMINOS) {
-      if (kind in POLYOMINOS[size]) {
-        if (rot < 0) {
-          throw 'Rotation '+rot+' less than zero'
-        } else if (rot >= POLYOMINOS[size][kind].length) {
-          throw 'Rotation '+rot+' greater than length '+POLYOMINOS[size][kind].length
-        } else {
-          throw 'Unknown error for '+size+' '+kind+' '+rot
-        }
-      } else {
-        throw 'Kind '+kind+' invalid'
-      }
-    } else {
-      throw 'Size '+size+' invalid'
-    }
+function getPolyomino(size=null, shape=null, rot=null) {
+  if (size == null) {
+    return Object.keys(POLYOMINOS)
+  }
+  if (shape == null) {
+    return Object.keys(POLYOMINOS[size])
+  }
+  if (rot == null) {
+    return POLYOMINOS[size][shape].length
+  } else if (rot == 'all') {
+    return POLYOMINOS[size][shape]
+  } else {
+    return [POLYOMINOS[size][shape][rot]]
   }
 }
 
 // IMPORTANT NOTE: The top-leftmost element must be at 0,0 or else placement will fail.
-// NOTE: '.' is a protected character, and cannot be used in polyomino names.
 POLYOMINOS = {
     '1':{
     'O':[[

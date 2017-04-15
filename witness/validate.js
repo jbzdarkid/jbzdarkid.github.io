@@ -125,11 +125,11 @@ function _regionCheck(grid, region) {
     var cell = grid[pos.x][pos.y]
     if (cell != 0) {
       if (cell.type == 'poly') {
-        polys.push(cell.shape)
-        polyCount += parseInt(cell.shape.charAt(0))
+        polys.push(cell)
+        polyCount += cell.size
       } else if (cell.type == 'ylop') {
-        ylops.push(cell.shape)
-        polyCount -= parseInt(cell.shape.charAt(0))
+        ylops.push(cell)
+        polyCount -= cell.size
       }
     }
   }
@@ -255,24 +255,26 @@ function _polyFit(polys, ylops, grid, region) {
   }
   if (ylops.length > 0) {
     ylop = ylops.pop()
-    var ylopCells = getPolyCells(ylop)
-    for (var x=1; x<grid.length; x+=2) {
-      nextPos: for (var y=1; y<grid[x].length; y+=2) {
-        for (var cell of ylopCells) { // Check if the ylop fits
-          if (cell.x + x < 0 || cell.x + x > grid.length-1) {
-            continue nextPos
-          } else if (cell.y + y < 0 || cell.y + y > grid[cell.x + x].length-1) {
-            continue nextPos
+    var ylopRotations = getPolyomino(ylop.size, ylop.shape, ylop.rot)
+    for (var ylopCells of ylopRotations) {
+      for (var x=1; x<grid.length; x+=2) {
+        nextPos: for (var y=1; y<grid[x].length; y+=2) {
+          for (var cell of ylopCells) { // Check if the ylop fits
+            if (cell.x + x < 0 || cell.x + x > grid.length-1) {
+              continue nextPos
+            } else if (cell.y + y < 0 || cell.y + y > grid[cell.x + x].length-1) {
+              continue nextPos
+            }
           }
+          for (var cell of ylopCells) { // Place in the grid
+            grid[cell.x+x][cell.y+y]++
+          }
+          var ret = _polyFit(polys, ylops, grid, region)
+          for (var cell of ylopCells) { // Restore the grid
+            grid[cell.x+x][cell.y+y]--
+          }
+          if (ret) return true
         }
-        for (var cell of ylopCells) { // Place in the grid
-          grid[cell.x+x][cell.y+y]++
-        }
-        var ret = _polyFit(polys, ylops, grid, region)
-        for (var cell of ylopCells) { // Restore the grid
-          grid[cell.x+x][cell.y+y]--
-        }
-        if (ret) return true
       }
     }
     // console.log('Ylop found, but no placement valid')
@@ -280,34 +282,36 @@ function _polyFit(polys, ylops, grid, region) {
     return false
   }
 
-  nextPoly: for (var i=0; i<polys.length; i++) {
+  for (var i=0; i<polys.length; i++) {
     var poly = polys.splice(i, 1)[0]
-    var polyCells = getPolyCells(poly)
-
-    for (var cell of polyCells) {
-      // Check if the poly is off the grid or extends out of region
-      if (cell.x + first.x < 0 || cell.x + first.x > grid.length-1) {
-        polys.splice(i, 0, poly)
-        continue nextPoly
-      } else if (cell.y + first.y < 0 || cell.y + first.y > grid[cell.x + first.x].length-1) {
-        polys.splice(i, 0, poly)
-        continue nextPoly
-      } else if (grid[cell.x + first.x][cell.y + first.y] <= 0) {
-        polys.splice(i, 0, poly)
-        continue nextPoly
+    var polyRotations = getPolyomino(poly.size, poly.shape, poly.rot)
+    var polyFits = false
+    nextRotation: for (var polyCells of polyRotations) {
+      for (var cell of polyCells) {
+        // Check if the poly is off the grid or extends out of region
+        if (cell.x + first.x < 0 || cell.x + first.x > grid.length-1) {
+          continue nextRotation
+        } else if (cell.y + first.y < 0 || cell.y + first.y > grid[cell.x + first.x].length-1) {
+          continue nextRotation
+        } else if (grid[cell.x + first.x][cell.y + first.y] <= 0) {
+          continue nextRotation
+        }
       }
-    }
-    // Poly fits, place it in the grid, update first empty cell, and recurse.
-    for (var cell of polyCells) {
-      grid[cell.x + first.x][cell.y + first.y]--
-    }
-    var ret = _polyFit(polys, ylops, grid, region)
-    // Restore grid and poly list for the next poly choice
-    for (var cell of polyCells) {
-      grid[cell.x + first.x][cell.y + first.y]++
+      // Poly fits, place it in the grid, update first empty cell, and recurse.
+      for (var cell of polyCells) {
+        grid[cell.x + first.x][cell.y + first.y]--
+      }
+      if (_polyFit(polys, ylops, grid, region)) {
+        polyFits = true
+      }
+      // Restore grid and poly list for the next poly choice
+      for (var cell of polyCells) {
+        grid[cell.x + first.x][cell.y + first.y]++
+      }
+      if (polyFits) break
     }
     polys.splice(i, 0, poly)
-    if (ret) return true
+    if (polyFits) return true
   }
   // console.log('Poly found, but no placement valid')
   return false
