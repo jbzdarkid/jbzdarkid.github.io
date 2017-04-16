@@ -62,8 +62,12 @@ function _regionCheck(grid, region) {
       // Verify that each negation is valid, i.e. removes an incorrect element
       for (var negation of combination) {
         new_grid[negation.target.x][negation.target.y] = negation.target.cell
+        negation.source.cell.type = 'nonce'
+        new_grid[negation.source.x][negation.source.y] = negation.source.cell
         var isValid = _regionCheck(new_grid, region)
         new_grid[negation.target.x][negation.target.y] = 0
+        negation.source.cell.type = 'nega'
+        new_grid[negation.source.x][negation.source.y] = 0
         if (isValid) {
           // Grid is still valid with element removed so the negation is invalid
           continue nextCombination
@@ -88,7 +92,7 @@ function _regionCheck(grid, region) {
         colors[cell.color]['squares']++
       } else if (cell.type == 'star') {
         colors[cell.color]['stars']++
-      } else if (cell.type == 'poly' || cell.type == 'nega') {
+      } else if (cell.type == 'poly' || cell.type == 'nega' || cell.type == 'nonce') {
         colors[cell.color]['other']++
       }
     }

@@ -68,7 +68,7 @@ function _randomize(style) {
       } else if (type == 'gaps') {
         gaps.push(edges.splice(_randint(edges.length), 1)[0])
       } else if (type == 'negations') {
-        var color = ['white', 'white', 'white', 'white', 'white'][_randint(style['colors'])]
+        var color = ['white', RED, GREEN, BLUE, PURPLE][_randint(style['colors'])]
         var pos = cells.splice(_randint(cells.length), 1)[0]
         puzzle.grid[pos.x][pos.y] = {'type':'nega', 'color':color}
       } else if (type == 'squares') {

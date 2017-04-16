@@ -122,6 +122,23 @@ var tests = [
     var grid = _newGrid(2, 2)
     grid[1][1] = {'type':'poly','color':'yellow','size':3,'shape':'L','rot':'all'}
     return {'grid':grid}
+  }, function() {
+    var grid = _newGrid(2, 2)
+    grid[1][1] = {'type':'star', 'color':'red'}
+    grid[3][3] = {'type':'nega', 'color':'white'}
+    return {'grid':grid}
+  }, function() {
+    var grid = _newGrid(2, 2)
+    grid[1][1] = {'type':'star', 'color':'red'}
+    grid[3][3] = {'type':'nega', 'color':'red'}
+    return {'grid':grid}
+  }, function() {
+    var grid = _newGrid(2, 2)
+    grid[1][1] = {'type':'star', 'color':'red'}
+    grid[1][3] = {'type':'star', 'color':'red'}
+    grid[3][1] = {'type':'star', 'color':'red'}
+    grid[3][3] = {'type':'nega', 'color':'red'}
+    return {'grid':grid}
   }
 ]
 
