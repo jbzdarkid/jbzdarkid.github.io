@@ -1,3 +1,4 @@
+var regionCache = {} // Global cache of validations for each potential region.
 // Puzzle = {grid, start, end, dots, gaps}
 // Determines if the current grid state is solvable.
 function isValid(puzzle) {
@@ -22,10 +23,16 @@ function isValid(puzzle) {
   }
   // Check that individual regions are valid
   for (var region of _getRegions(puzzle.grid)) {
-    if (!_regionCheck(puzzle.grid, region)) {
-      // console.log('Region', region, 'unsolvable')
-      return false // Since the endpoint is filled, regions can't be improved
+    var cache = regionCache[region]
+    if (cache == undefined) {
+      cache = _regionCheck(puzzle.grid, region)
+      regionCache[region] = cache
     }
+    return cache
+    // if (!_regionCheck(puzzle.grid, region)) {
+      // // console.log('Region', region, 'unsolvable')
+      // return false // Since the endpoint is filled, regions can't be improved
+    // }
   }
   // All checks passed
   // console.info('Puzzle', puzzle, 'is valid')

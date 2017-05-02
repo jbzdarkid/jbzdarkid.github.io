@@ -136,14 +136,13 @@ function generatePuzzle() {
     // var style = styles[day]
     // FIXME: Think about full range of options
     var style = {
-      'width':4, 'height':4, 'colors':2,
+      'width':4, 'height':6, 'colors':2, 'difficulty':1000000,
       'distribution':{
         'squares':2,
         'stars':2,
         'polyominos':2,
         'onimoylops':1,
         'negations':1,
-        'difficulty':70,
       }
     }
   }
@@ -153,7 +152,10 @@ function generatePuzzle() {
     solutions = []
     var puzzleSeed = seed
     var puzzle = _randomize(style)
+    regionCache = {}
+    var start = (new Date()).getTime()
     solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
+    console.log((new Date()).getTime() - start, 'millis')
     console.info('Solved', puzzle, 'found', solutions.length, 'solutions')
   }
   var solution = solutions[_randint(solutions.length)]

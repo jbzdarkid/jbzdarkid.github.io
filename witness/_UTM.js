@@ -1,5 +1,74 @@
 var tests = [
-  /* Various */
+  function() {
+    var grid = _newGrid(4, 4)
+    var dots = []
+    for (var x=0; x<grid.length; x+=2) {
+      for (var y=0; y<grid[x].length; y+=2) {
+        if (x == 0 && y == grid[x].length-1) continue
+        if (x == grid.length-1 && y == 0) continue
+        dots.push({'x':x, 'y':y})
+      }
+    }
+    grid[5][1] = {'type':'poly', 'color':'yellow', 'size':4, 'shape':'T', 'rot':'all'}
+    return {'grid':grid, 'dots':dots}
+  }, function() {
+    var grid = _newGrid(4, 4)
+    var dots = []
+    for (var x=0; x<grid.length; x+=2) {
+      for (var y=0; y<grid[x].length; y+=2) {
+        if (x == 0 && y == grid[x].length-1) continue
+        if (x == grid.length-1 && y == 0) continue
+        dots.push({'x':x, 'y':y})
+      }
+    }
+    grid[5][1] = {'type':'poly', 'color':'yellow', 'size':4, 'shape':'T', 'rot':'all'}
+    grid[5][3] = {'type':'poly', 'color':'yellow', 'size':1, 'shape':'O', 'rot':0}
+    return {'grid':grid, 'dots':dots}
+  }, function() {
+    var grid = _newGrid(4, 4)
+    var dots = []
+    for (var x=0; x<grid.length; x+=2) {
+      for (var y=0; y<grid[x].length; y+=2) {
+        if (x == 0 && y == grid[x].length-1) continue
+        if (x == grid.length-1 && y == 0) continue
+        dots.push({'x':x, 'y':y})
+      }
+    }
+    grid[5][1] = {'type':'poly', 'color':'yellow', 'size':4, 'shape':'T', 'rot':'all'}
+    grid[5][3] = {'type':'poly', 'color':'yellow', 'size':1, 'shape':'O', 'rot':0}
+    grid[7][3] = {'type':'poly', 'color':'yellow', 'size':1, 'shape':'O', 'rot':0}
+    return {'grid':grid, 'dots':dots}
+  }, function() {
+    var grid = _newGrid(4, 4)
+    var dots = []
+    for (var x=0; x<grid.length; x+=2) {
+      for (var y=0; y<grid[x].length; y+=2) {
+        if (x == 0 && y == grid[x].length-1) continue
+        if (x == grid.length-1 && y == 0) continue
+        dots.push({'x':x, 'y':y})
+      }
+    }
+    grid[5][1] = {'type':'poly', 'color':'yellow', 'size':4, 'shape':'T', 'rot':'all'}
+    grid[5][3] = {'type':'poly', 'color':'yellow', 'size':4, 'shape':'T', 'rot':'all'}
+    return {'grid':grid, 'dots':dots}
+  }, function() {
+    var grid = _newGrid(4, 4)
+    var dots = []
+    for (var x=0; x<grid.length; x+=2) {
+      for (var y=0; y<grid[x].length; y+=2) {
+        if (x == 0 && y == grid[x].length-1) continue
+        if (x == grid.length-1 && y == 0) continue
+        dots.push({'x':x, 'y':y})
+      }
+    }
+    grid[3][1] = {'type':'poly', 'color':'yellow', 'size':3, 'shape':'I', 'rot':'all'}
+    grid[3][7] = {'type':'poly', 'color':'yellow', 'size':3, 'shape':'I', 'rot':'all'}
+    return {'grid':grid, 'dots':dots}
+  }
+
+
+
+  /* Various 
   function() {
     var grid = _newGrid(4, 4)
     grid[1][1] = {'type':'square', 'color':'white'}
@@ -46,7 +115,7 @@ var tests = [
       {'x':8, 'y':3},
       {'x':8, 'y':5}
     ]}
-  }
+  }*/
   /* Blue puzzles that aren't obviously unique
   function() {
     var grid = _newGrid(5, 5)
@@ -243,7 +312,7 @@ function loadTests() {
       if (puzzle['gaps'] == undefined) {
         puzzle['gaps'] = []
       }
-      solve(puzzle, puzzle.start, solutions)
+      solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
       console.log('Solved', puzzle)
       var minEdges = 999999
       var minCorners = 999999
