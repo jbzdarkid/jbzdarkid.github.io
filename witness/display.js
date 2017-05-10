@@ -49,6 +49,8 @@ function draw(puzzle, target='puzzle') {
         div.style.borderRadius = '50px'
         div.className = 'corner'
         div.onclick = function() {trace(this)}
+        div.id = cell.id
+        cell.id += '_parent'
         cell.appendChild(div)
       } else if (puzzle.grid[x][y].type == 'square') {
         var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
