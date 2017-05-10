@@ -1,7 +1,7 @@
 var cursorSize = 12
 var data
 function trace(elem) {
-  if (document.pointerLockElement == null && document.mozPointerLockElement == null) {
+  if (document.pointerLockElement == null) {
     document.styleSheets[0].deleteRule(0)
     document.styleSheets[0].insertRule(".line {fill: #6D4D4A}", 0)
     var parent = elem.parentNode
@@ -29,7 +29,6 @@ function trace(elem) {
       circles[0].remove()
     }
 
-    elem.requestPointerLock = elem.requestPointerLock || elem.mozRequestPointerLock
     elem.requestPointerLock()
     var svg = elem.getElementsByTagName('svg')[0]
     if (svg == undefined) {
@@ -50,7 +49,7 @@ function trace(elem) {
     }
     anim.setAttribute('attributeName', 'r')
     anim.setAttribute('from', '0')
-    anim.setAttribute('to', '12')
+    anim.setAttribute('to', cursorSize)
     anim.setAttribute('dur', '0.2s')
     anim.setAttribute('fill', 'freeze') // Hold the final frame of animation
     circ.appendChild(anim)
@@ -77,7 +76,6 @@ function trace(elem) {
         document.styleSheets[0].insertRule(".line {animation: 1s 1 forwards line-fail}", 0)
       }
     }
-    document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock
     document.exitPointerLock()
   }
 }
@@ -225,7 +223,7 @@ function _draw(elem, subx, suby) {
     svg.getElementsByClassName('line')[0].remove()
   }
   var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-  circ.setAttribute('r', '11px')
+  circ.setAttribute('r', cursorSize)
   circ.setAttribute('class', 'cursor')
   circ.setAttribute('cx', subx)
   circ.setAttribute('cy', suby)

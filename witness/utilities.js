@@ -1,3 +1,18 @@
+/*** Firefox compatibility ***/
+if (!String.prototype.includes) {
+  String.prototype.includes = function() {
+    return String.prototype.indexOf.apply(this, arguments) !== -1
+  }
+}
+
+document.pointerLockElement = document.pointerLockElement && document.mozPointerLockElement
+document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock
+Element.prototype.requestPointerLock = Element.prototype.requestPointerLock || Element.prototype.mozRequestPointerLock
+Event.prototype.movementX = Event.prototype.movementX || Event.prototype.mozMovementX
+Event.prototype.movementY = Event.prototype.movementY || Event.prototype.mozMovementY
+
+/*** End Firefox compatibility ***/
+
 // Makes a copy of the grid, since javascript is pass-by-reference
 function _copyGrid(grid) {
   var new_grid = []
@@ -7,12 +22,6 @@ function _copyGrid(grid) {
   return new_grid
 }
 
-// Define .includes() for firefox
-if (!String.prototype.includes) {
-  String.prototype.includes = function() {
-    return String.prototype.indexOf.apply(this, arguments) !== -1
-  }
-}
 
 // http://stackoverflow.com/q/901115
 var urlParams
