@@ -94,14 +94,14 @@ function lockChange() {
 
 function onMouseMove(e) {
   var sens = document.getElementById('sens').value
-  var dx = (e.movementX || e.mozMovementX || 0)
-  var dy = (e.movementY || e.mozMovementY || 0)
+  var dx = e.movementX
+  var dy = e.movementY
   // Option 1: Raw
-  // data.subx += sens*dx
-  // data.suby += sens*dy
+  data.subx += sens*dx
+  data.suby += sens*dy
   // Option 2: Capped
-  data.subx += sens*Math.sign(dx)*Math.min(Math.abs(dx), 10)
-  data.suby += sens*Math.sign(dy)*Math.min(Math.abs(dy), 10)
+  // data.subx += sens*Math.sign(dx)*Math.min(Math.abs(dx), 10)
+  // data.suby += sens*Math.sign(dy)*Math.min(Math.abs(dy), 10)
   // Option 3: Quadratic
   // data.subx += sens*Math.sign(dx)*Math.sqrt(Math.abs(dx))
   // data.suby += sens*Math.sign(dy)*Math.sqrt(Math.abs(dy))
@@ -114,7 +114,7 @@ function onMouseMove(e) {
   var height = parseInt(window.getComputedStyle(elem).height)
 
   // Limit motion via collision
-  _collision(data, elem, next_elem)
+  _collision(next_elem)
 
   // Redraw all elements near the cursor
   for (var x=-1; x<=1; x++) {
@@ -138,9 +138,11 @@ function onMouseMove(e) {
 }
 
 // Collision detection. If the cursor moves into an edge or into a cell,
-// then its position is reset to be exactly touching the edge.
+// then its position is reset to be exactly touching the edge, and some
+// of the excess movement is converted to the other direction.
 // Corners are handled separately to prevent runover into cells
-function _collision(data, elem, next_elem) {
+function _collision(next_elem) {
+  var elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
 
@@ -172,34 +174,51 @@ function _collision(data, elem, next_elem) {
   }
 
   // Generic collision
-  if (data.subx - cursorSize < 0) {
+  var deltaMod = 3 // Fraction of movement to redirect to the other direction
+  if (data.subx < cursorSize) {
     var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y-1))
+    var delta = cursorSize - data.subx
     if (new_elem == null) {
-      data.subx = cursorSize
-    } else if (!(new_elem.className.endsWith('trace') || elem.className.endsWith('trace-r'))) {
-      data.subx = cursorSize
-    }
-  } else if (data.subx + cursorSize > width) {
-    var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y+1))
-    if (new_elem == null) {
-      data.subx = width - cursorSize
-    } else if (!(new_elem.className.endsWith('trace') || elem.className.endsWith('trace-l'))) {
-      data.subx = width - cursorSize
+      data.subx += delta
+      data.suby -= delta / deltaMod
+    } else if (!new_elem.className.endsWith('trace') && !elem.className.endsWith('trace-r')) {
+      data.subx += delta
+      data.suby += (data.suby > height/2 ? 1 : -1) * delta / deltaMod
     }
   }
-  if (data.suby - cursorSize < 0) {
+  if (data.suby < cursorSize) {
     var new_elem = document.getElementById(data.table+'_'+(data.x-1)+'_'+data.y)
+    var delta = cursorSize - data.suby
     if (new_elem == null) {
-      data.suby = cursorSize
-    } else if (!(new_elem.className.endsWith('trace') || elem.className.endsWith('trace-d'))) {
-      data.suby = cursorSize
+      data.subx += delta / deltaMod
+      data.suby += delta
+    } else if (!new_elem.className.endsWith('trace') && !new_elem.className.endsWith('trace-d')) {
+      data.subx += (data.subx > width/2 ? 1 : -1) * delta / deltaMod
+      data.suby += delta
     }
-  } else if (data.suby + cursorSize > height) {
+  } else if (data.suby > height - cursorSize) {
     var new_elem = document.getElementById(data.table+'_'+(data.x+1)+'_'+data.y)
+    var delta = data.suby - (height - cursorSize)
     if (new_elem == null) {
-      data.suby = height - cursorSize
-    } else if (!(new_elem.className.endsWith('trace') || elem.className.endsWith('trace-u'))) {
-      data.suby = height - cursorSize
+      data.subx += delta / deltaMod
+      data.suby -= delta
+    } else if (!new_elem.className.endsWith('trace') && !elem.className.endsWith('trace-u')) {
+      data.subx += (data.subx > width/2 ? 1 : -1) * delta / deltaMod
+      data.suby -= delta
+    }
+  }
+  if (data.subx > width - cursorSize) {
+    var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y+1))
+    var delta = data.subx - (width - cursorSize)
+    if (new_elem == null) {
+      data.subx -= delta
+      data.suby -= delta / deltaMod
+    } else if (!new_elem.className.endsWith('trace') && !elem.className.endsWith('trace-l')) {
+      data.subx -= delta
+      data.suby += (data.suby > height/2 ? 1 : -1) * delta / deltaMod
+    }
+    if (document.getElementById(data.table+'_'+(data.x-1)+'_'+data.y) == null) {
+      data.suby = Math.max(data.suby, cursorSize)
     }
   }
 }
