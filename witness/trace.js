@@ -28,33 +28,10 @@ function trace(elem) {
     while (circles.length > 0) {
       circles[0].remove()
     }
+    // Redraw the start so the line appears. FIXME: Animation?
+    _draw(elem, data.subx, data.suby)
 
     elem.requestPointerLock()
-    var svg = elem.getElementsByTagName('svg')[0]
-    if (svg == undefined) {
-      var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-    }
-    svg.setAttribute('viewBox', '0 0 '+width+' '+height)
-    var circ = svg.getElementsByTagName('circle')[0]
-    if (circ == undefined) {
-      var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-    }
-    circ.setAttribute('cx', cursorSize+'px')
-    circ.setAttribute('cy', cursorSize+'px')
-    circ.setAttribute('border', '0px')
-    circ.setAttribute('class', 'line')
-    var anim = circ.getElementsByTagName('animate')[0]
-    if (anim == undefined) {
-      var anim = document.createElementNS('http://www.w3.org/2000/svg', 'animate')
-    }
-    anim.setAttribute('attributeName', 'r')
-    anim.setAttribute('from', '0')
-    anim.setAttribute('to', cursorSize)
-    anim.setAttribute('dur', '0.2s')
-    anim.setAttribute('fill', 'freeze') // Hold the final frame of animation
-    circ.appendChild(anim)
-    svg.appendChild(circ)
-    elem.appendChild(svg)
   } else {
     var table = document.getElementById(data.table)
     var puzzle = JSON.parse(table.getAttribute('json'))
@@ -109,7 +86,7 @@ function onMouseMove(e) {
   // data.subx += sens*Math.sign(dx)*Math.sqrt(Math.min(Math.abs(dx), 10))
   // data.suby += sens*Math.sign(dy)*Math.sqrt(Math.min(Math.abs(dy), 10))
   var elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
-  var next_elem = document.getElementById(data.table+'_'+(data.x+Math.sign(dx))+'_'+(data.y+Math.sign(dy)))
+  var next_elem = document.getElementById(data.table+'_'+(data.x+Math.sign(dy))+'_'+(data.y+Math.sign(dx)))
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
 
@@ -134,7 +111,7 @@ function onMouseMove(e) {
   }
 
   // Potentially move the cursor to a new cell
-  _move(data)
+  _move(data, next_elem)
 }
 
 // Collision detection. If the cursor moves into an edge or into a cell,
@@ -145,8 +122,13 @@ function _collision(next_elem) {
   var elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
+  if (elem.className.includes('start')) {
+    height /= 2
+    width /= 2
+  }
 
-  if (elem.className.includes('corner') && next_elem != undefined) { // Corner collision
+  // Corner collision
+  if (elem.className.includes('corner') || elem.className.includes('start') && next_elem != undefined) {
     // Calculates the distance to the edge in each direction
     var dist_x = (data.subx < width/2) ? data.subx : width - data.subx
     var dist_y = (data.suby < height/2) ? data.suby : height - data.suby
@@ -192,7 +174,7 @@ function _collision(next_elem) {
     if (new_elem == null) {
       data.subx += delta / deltaMod
       data.suby += delta
-    } else if (!new_elem.className.endsWith('trace') && !new_elem.className.endsWith('trace-d')) {
+    } else if (!new_elem.className.endsWith('trace') && !elem.className.endsWith('trace-d')) {
       data.subx += (data.subx > width/2 ? 1 : -1) * delta / deltaMod
       data.suby += delta
     }
@@ -227,7 +209,6 @@ function _collision(next_elem) {
 // differently if the cursor is currently in the cell or not
 function _draw(elem, subx, suby) {
   if (elem == null) return
-  if (elem.className.includes('start')) return
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
   var svg = elem.getElementsByTagName('svg')[0]
@@ -254,7 +235,7 @@ function _draw(elem, subx, suby) {
   rect.setAttribute('class', 'line')
   rect.setAttribute('transform', '')
   var circ2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-  circ2.setAttribute('r', cursorSize+'px')
+  circ2.setAttribute('r', cursorSize)
   circ2.setAttribute('cx', width/2)
   circ2.setAttribute('cy', height/2)
   circ2.setAttribute('class', 'line')
@@ -263,8 +244,20 @@ function _draw(elem, subx, suby) {
 
   var enter_dir = elem.className.split('-')[1]
   var exit_dir = elem.className.split('-')[2]
-  if (enter_dir == null) { // Haven't entered the cell, draw nothing
-  } else if (exit_dir == null) { // Still in the cell
+  if (elem.className.includes('start')) {
+    // Tracing from the start element, special case
+    if (subx > width) {
+      circ.setAttribute('cx', parseInt(circ.getAttribute('cx')) - width/2)
+    }
+    circ.setAttribute('cx', parseInt(circ.getAttribute('cx')) + cursorSize)
+    circ.setAttribute('cy', parseInt(circ.getAttribute('cy')) + cursorSize)
+
+    circ2.setAttribute('r', cursorSize*2)
+    svg.appendChild(circ2)
+  } else if (enter_dir == null) {
+    // Haven't entered the cell, draw nothing
+  } else if (exit_dir == null) {
+    // Still in the cell, draw cursor and first half of line
     if (enter_dir == 'r') {
       rect.setAttribute('width', Math.max(subx, 0))
       rect.setAttribute('height', height)
@@ -280,6 +273,7 @@ function _draw(elem, subx, suby) {
       rect.setAttribute('height', Math.max(height - suby, 0))
       rect.setAttribute('transform', 'translate(0, '+suby+')')
     }
+    svg.appendChild(rect)
     if (enter_dir == 'l' && subx <= width/2) {
       svg.appendChild(circ2)
     } else if (enter_dir == 'r' && subx >= width/2) {
@@ -289,6 +283,7 @@ function _draw(elem, subx, suby) {
     } else if (enter_dir == 'd' && suby >= height/2) {
       svg.appendChild(circ2)
     }
+    // If past the halfway point, draw the second half of the line
     if (enter_dir != 'l' && subx > width/2) {
       rect2.setAttribute('width', subx - width/2)
       rect2.setAttribute('height', height)
@@ -306,7 +301,10 @@ function _draw(elem, subx, suby) {
       rect2.setAttribute('height', height/2 - suby)
       rect2.setAttribute('transform', 'translate(0, '+suby+')')
     }
-  } else { // Entered and exited the cell, redraw mostly not necessary
+    svg.appendChild(rect2)
+  } else {
+    // Entered and exited the cell, redraw
+     svg.appendChild(rect)
     if (enter_dir == 'r') {
       rect.setAttribute('width', width/2)
       rect.setAttribute('height', height)
@@ -338,9 +336,9 @@ function _draw(elem, subx, suby) {
       rect2.setAttribute('width', width)
       rect2.setAttribute('height', height/2)
     }
+    svg.appendChild(rect2)
   }
-  svg.appendChild(rect)
-  svg.appendChild(rect2)
+  // Always redraw cursor, at the end so it goes over the line
   svg.appendChild(circ)
   elem.appendChild(svg)
 }
@@ -354,15 +352,20 @@ function _draw(elem, subx, suby) {
 // was exited from. Thus, tracing to the right leads to class 'trace-r-r' If the
 // cursor is currently in a cell, it will have only one direction, eg 'trace-r'
 // and if the cell is not traced (but can be) then it will have class 'trace'
-function _move(data) {
+function _move(data, next_elem) {
   var elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
+  if (elem.className.includes('start')) {
+    height /= 2
+    width /= 2
+  }
 
   if (data.subx < 0) { // Moving left
     var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y-1))
     if (new_elem != null) {
       var new_width = parseInt(window.getComputedStyle(new_elem).width)
+      if (new_elem.className.includes('start')) new_width /= 2
       if (new_elem.className.endsWith('trace')) { // Traced new path
         data.y--
         data.subx += new_width

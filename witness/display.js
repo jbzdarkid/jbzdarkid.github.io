@@ -38,18 +38,11 @@ function draw(puzzle, target='puzzle') {
 
       if (x == puzzle.start.x && y == puzzle.start.y) {
         var div = document.createElement('div')
-        div.align = 'center'
-        cell.className = 'start trace'
-        var div = document.createElement('div')
-        div.style.position = 'absolute'
-        div.style.width = '48px'
-        div.style.height = '48px'
-        div.style.top = '-12px'
-        div.style.left = '-12px'
-        div.style.borderRadius = '50px'
-        div.className = 'corner'
         div.onclick = function() {trace(this)}
         div.id = cell.id
+        div.className = 'start trace'
+        cell.style.position = 'relative'
+        cell.removeAttribute('class')
         cell.id += '_parent'
         cell.appendChild(div)
       } else if (puzzle.grid[x][y].type == 'square') {
