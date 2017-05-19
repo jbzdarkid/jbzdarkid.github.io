@@ -1,12 +1,12 @@
 var tests = [
   function() {
-    return {'grid':_newGrid(2, 2), 'end':{'x':2, 'y':0}}
+    return {'grid':_newGrid(2, 2), 'start':{'x':4, 'y':4}, 'end':{'x':2, 'y':0}}
   }, function() {
-    return {'grid':_newGrid(2, 2), 'end':{'x':2, 'y':4}}
+    return {'grid':_newGrid(2, 2), 'start':{'x':0, 'y':4}, 'end':{'x':4, 'y':2}}
   }, function() {
-    return {'grid':_newGrid(2, 2), 'end':{'x':0, 'y':2}}
+    return {'grid':_newGrid(2, 2), 'start':{'x':0, 'y':0}, 'end':{'x':2, 'y':4}}
   }, function() {
-    return {'grid':_newGrid(2, 2), 'end':{'x':4, 'y':2}}
+    return {'grid':_newGrid(2, 2), 'start':{'x':4, 'y':0}, 'end':{'x':0, 'y':2}}
   }, function() {
     var grid = _newGrid(1, 3)
     grid[1][1] = {'type':'nega', 'color':'white'}
