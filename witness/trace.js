@@ -249,6 +249,9 @@ function _draw(elem, subx, suby) {
     if (subx > width) {
       circ.setAttribute('cx', parseInt(circ.getAttribute('cx')) - width/2)
     }
+    if (suby > height) {
+      circ.setAttribute('cy', parseInt(circ.getAttribute('cy')) - height/2)
+    }
     circ.setAttribute('cx', parseInt(circ.getAttribute('cx')) + cursorSize)
     circ.setAttribute('cy', parseInt(circ.getAttribute('cy')) + cursorSize)
 
@@ -398,6 +401,7 @@ function _move(data, next_elem) {
     var new_elem = document.getElementById(data.table+'_'+(data.x-1)+'_'+data.y)
     if (new_elem != null) {
       var new_height = parseInt(window.getComputedStyle(new_elem).height)
+      if (new_elem.className.includes('start')) new_height /= 2
       if (new_elem.className.endsWith('trace')) { // Trace new path
         data.x--
         data.suby += new_height
