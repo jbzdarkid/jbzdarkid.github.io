@@ -1,3 +1,149 @@
+function _square(elem) {
+  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  svg.setAttribute('viewBox', '0 0 58 58')
+  var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+  rect.setAttribute('transform', 'translate(15, 15)')
+  rect.setAttribute('height', 28)
+  rect.setAttribute('width', 28)
+  rect.setAttribute('rx', 7)
+  rect.setAttribute('ry', 7)
+  rect.setAttribute('fill', elem.color)
+  svg.appendChild(rect)
+  return svg
+}
+
+function _star(elem) {
+  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  svg.setAttribute('viewBox', '0 0 58 58')
+  var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
+  var points = [
+    '0 0', // Top left
+    '1 6.5',
+    '-4.5 10.5',
+    '1 14.5',
+    '0 21', // Bottom left
+    '6.5 20',
+    '10.5 25.5',
+    '14.5 20',
+    '21 21', // Bottom right
+    '20 14.5',
+    '25.5 10.5',
+    '20 6.5',
+    '21 0', // Top right
+    '14.5, 1',
+    '10.5 -4.5',
+    '6.5 1',
+  ]
+  poly.setAttribute('points', points.join(', '))
+  poly.setAttribute('fill', elem.color)
+  poly.setAttribute('transform', 'translate(18.5, 18.5)')
+  svg.appendChild(poly)
+  return svg
+}
+
+function _poly(elem) {
+  var size = 10 // Side length of individual squares in the polyomino
+  var space = 4 // Gap between squares in the polyomino
+  // Select the first (potentially only) rotation of the element.
+  var polyomino = getPolyomino(elem.size, elem.shape, elem.rot)[0]
+
+  var bounds = {'xmin':0, 'xmax':0, 'ymin':0, 'ymax':0}
+  for (var pos of polyomino) {
+    bounds.xmin = Math.min(bounds.xmin, pos.x)
+    bounds.xmax = Math.max(bounds.xmax, pos.x)
+    bounds.ymin = Math.min(bounds.ymin, pos.y)
+    bounds.ymax = Math.max(bounds.ymax, pos.y)
+  }
+  var offset = (size+space)/2 // Offset between elements to create the gap
+  var center_x = (58 - size - offset * (bounds.xmax + bounds.xmin)) / 2
+  var center_y = (58 - size - offset * (bounds.ymax + bounds.ymin)) / 2
+
+  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  svg.setAttribute('viewBox', '0 0 58 58')
+  for (var pos of polyomino) {
+    var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+    var transform = 'translate('+(center_y+pos.y*offset)+', '+(center_x+pos.x*offset)+')'
+    if (elem.rot == 'all') {
+      // -30 degree rotation around (29, 29), the midpoint of the square
+      transform = 'rotate(-30, 29, 29) '+transform
+    }
+    rect.setAttribute('transform', transform)
+    rect.setAttribute('height', size)
+    rect.setAttribute('width', size)
+    rect.setAttribute('fill', elem.color)
+    svg.appendChild(rect)
+  }
+  return svg
+}
+
+function _ylop(elem) {
+  var size = 12 // Side length of individual squares in the polyomino
+  var space = 2 // Gap between squares in the polyomino
+  // Select the first (potentially only) rotation of the element.
+  var polyomino = getPolyomino(elem.size, elem.shape, elem.rot)[0]
+
+  var bounds = {'xmin':0, 'xmax':0, 'ymin':0, 'ymax':0}
+  for (var pos of polyomino) {
+    bounds.xmin = Math.min(bounds.xmin, pos.x)
+    bounds.xmax = Math.max(bounds.xmax, pos.x)
+    bounds.ymin = Math.min(bounds.ymin, pos.y)
+    bounds.ymax = Math.max(bounds.ymax, pos.y)
+  }
+  var offset = (size+space)/2 // Offset between elements to create the gap
+  var center_x = (58 - size - offset * (bounds.xmax + bounds.xmin)) / 2
+  var center_y = (58 - size - offset * (bounds.ymax + bounds.ymin)) / 2
+
+  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  svg.setAttribute('viewBox', '0 0 58 58')
+  for (var pos of polyomino) {
+    var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+    rect.setAttribute('transform', 'translate(' + (center_y+pos.y*offset) + ', ' + (center_x+pos.x*offset) + ')')
+    rect.setAttribute('height', size)
+    rect.setAttribute('width', size)
+    rect.setAttribute('fill', elem.color)
+    svg.appendChild(rect)
+    var rect2 = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+    var transform = 'translate('+(center_y+pos.y*offset+size/4)+', '+(center_x+pos.x*offset+size/4)+')'
+    if (elem.rot == 'all') {
+      // -30 degree rotation around (29, 29), the midpoint of the square
+      transform = 'rotate(-30, 29, 29) '+transform
+    }
+    rect2.setAttribute('transform', transform)
+    rect2.setAttribute('height', size/2)
+    rect2.setAttribute('width', size/2)
+    rect2.setAttribute('fill', 'black')
+    svg.appendChild(rect2)
+    }
+  return svg
+}
+
+// FIXME: Exact sizing
+function _nega(elem) {
+  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  svg.setAttribute('viewBox', '0 0 50 50')
+  for (var rot of [60, 180, 300]) {
+    var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+    rect.setAttribute('transform', 'translate(22, 27) rotate('+rot+', 3, 0)')
+    rect.setAttribute('height', 12)
+    rect.setAttribute('width', 6)
+    rect.setAttribute('fill', elem.color)
+    svg.appendChild(rect)
+  }
+  return svg
+}
+
+// FIXME: Exact sizing
+function _tri(elem) {
+  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  svg.setAttribute('viewBox', '0 0 50 50')
+  var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
+  poly.setAttribute('points', '0 0, -10 20, 10 20')
+  poly.setAttribute('transform', 'translate(25, 15)')
+  poly.setAttribute('fill', elem.color)
+  svg.appendChild(poly)
+  return svg
+}
+
 function draw(puzzle, target='puzzle') {
   // console.log('Drawing', puzzle)
   var table = document.getElementById(target)
@@ -46,139 +192,22 @@ function draw(puzzle, target='puzzle') {
         cell.id += '_parent'
         cell.appendChild(div)
       } else if (puzzle.grid[x][y].type == 'square') {
-        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-        svg.setAttribute('viewBox', '0 0 58 58')
-        var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-        rect.setAttribute('transform', 'translate(15, 15)')
-        rect.setAttribute('height', '28px')
-        rect.setAttribute('width', '28px')
-        rect.setAttribute('rx', '7px')
-        rect.setAttribute('ry', '7px')
-        rect.setAttribute('fill', puzzle.grid[x][y].color)
-        svg.appendChild(rect)
-        cell.appendChild(svg)
+        cell.appendChild(_square(puzzle.grid[x][y]))
       } else if (puzzle.grid[x][y].type == 'star') {
-        // FIXME: Stars are actually canted in slightly
-        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-        svg.setAttribute('viewBox', '0 0 58 58')
-        var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polyline')
-        var points = [
-          '0 0', // Top left
-          '1 6.5',
-          '-4.5 10.5',
-          '1 14.5',
-          '0 21', // Bottom left
-          '6.5 20',
-          '10.5 25.5',
-          '14.5 20',
-          '21 21', // Bottom right
-          '20 14.5',
-          '25.5 10.5',
-          '20 6.5',
-          '21 0', // Top right
-          '14.5, 1',
-          '10.5 -4.5',
-          '6.5 1',
-          '0 0' // Top left
-        ]
-        poly.setAttribute('points', points.join(', '))
-        poly.setAttribute('fill', puzzle.grid[x][y].color)
-        poly.setAttribute('transform', 'translate(18.5, 18.5)')
-        svg.appendChild(poly)
-        cell.appendChild(svg)
+        cell.appendChild(_star(puzzle.grid[x][y]))
       } else if (puzzle.grid[x][y].type == 'poly') {
-        var size = 10 // Side length of individual squares in the polyomino
-        var space = 4 // Gap between squares in the polyomino
-        // Select the first element, either from the array of all rotations or
-        // as the only rotation.
-        var elem = puzzle.grid[x][y]
-        var polyomino = getPolyomino(elem.size, elem.shape, elem.rot)[0]
-
-        var bounds = {'xmin':0, 'xmax':0, 'ymin':0, 'ymax':0}
-        for (var pos of polyomino) {
-          bounds.xmin = Math.min(bounds.xmin, pos.x)
-          bounds.xmax = Math.max(bounds.xmax, pos.x)
-          bounds.ymin = Math.min(bounds.ymin, pos.y)
-          bounds.ymax = Math.max(bounds.ymax, pos.y)
-        }
-        var offset = (size+space)/2 // Offset between elements to create the gap
-        var center_x = (58 - size - offset * (bounds.xmax + bounds.xmin)) / 2
-        var center_y = (58 - size - offset * (bounds.ymax + bounds.ymin)) / 2
-
-        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-        svg.setAttribute('viewBox', '0 0 58 58')
-        for (var pos of polyomino) {
-          var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-          var transform = 'translate('+(center_y+pos.y*offset)+', '+(center_x+pos.x*offset)+')'
-          if (elem.rot == 'all') {
-            // -30 degree rotation around (29, 29), the midpoint of the square
-            transform = 'rotate(-30, 29, 29) '+transform
-          }
-          rect.setAttribute('transform', transform)
-          rect.setAttribute('height', size+'px')
-          rect.setAttribute('width', size+'px')
-          rect.setAttribute('fill', puzzle.grid[x][y].color)
-          svg.appendChild(rect)
-        }
-        cell.appendChild(svg)
+        cell.appendChild(_poly(puzzle.grid[x][y]))
       } else if (puzzle.grid[x][y].type == 'ylop') {
-        var size = 12 // Side length of individual squares in the polyomino
-        var space = 2 // Gap between squares in the polyomino
-        // Select the first element, either from the array of all rotations or
-        // as the only rotation.
-        var elem = puzzle.grid[x][y]
-        var polyomino = getPolyomino(elem.size, elem.shape, elem.rot)[0]
-
-        var bounds = {'xmin':0, 'xmax':0, 'ymin':0, 'ymax':0}
-        for (var pos of polyomino) {
-          bounds.xmin = Math.min(bounds.xmin, pos.x)
-          bounds.xmax = Math.max(bounds.xmax, pos.x)
-          bounds.ymin = Math.min(bounds.ymin, pos.y)
-          bounds.ymax = Math.max(bounds.ymax, pos.y)
-        }
-        var offset = (size+space)/2 // Offset between elements to create the gap
-        var center_x = (58 - size - offset * (bounds.xmax + bounds.xmin)) / 2
-        var center_y = (58 - size - offset * (bounds.ymax + bounds.ymin)) / 2
-
-        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-        svg.setAttribute('viewBox', '0 0 58 58')
-        for (var pos of polyomino) {
-          var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-          rect.setAttribute('transform', 'translate(' + (center_y+pos.y*offset) + ', ' + (center_x+pos.x*offset) + ')')
-          rect.setAttribute('height', size+'px')
-          rect.setAttribute('width', size+'px')
-          rect.setAttribute('fill', puzzle.grid[x][y].color)
-          svg.appendChild(rect)
-          var rect2 = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-          var transform = 'translate('+(center_y+pos.y*offset+size/4)+', '+(center_x+pos.x*offset+size/4)+')'
-          if (elem.rot == 'all') {
-            // -30 degree rotation around (29, 29), the midpoint of the square
-            transform = 'rotate(-30, 29, 29) '+transform
-          }
-          rect2.setAttribute('transform', transform)
-          rect2.setAttribute('height', size/2+'px')
-          rect2.setAttribute('width', size/2+'px')
-          rect2.setAttribute('fill', 'black')
-          svg.appendChild(rect2)
-        }
-        cell.appendChild(svg)
+        cell.appendChild(_ylop(puzzle.grid[x][y]))
       } else if (puzzle.grid[x][y].type == 'nega') {
-        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-        svg.setAttribute('viewBox', '0 0 50 50')
-        for (var rot of [60, 180, 300]) {
-          var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-          rect.setAttribute('transform', 'translate(22, 27) rotate('+rot+', 3, 0)')
-          rect.setAttribute('height', '12px')
-          rect.setAttribute('width', '6px')
-          rect.setAttribute('fill', puzzle.grid[x][y].color)
-          svg.appendChild(rect)
-        }
-        cell.appendChild(svg)
+        cell.appendChild(_nega(puzzle.grid[x][y]))
+      } else if (puzzle.grid[x][y].type == 'tri') {
+        cell.appendChild(_tri(puzzle.grid[x][y]))
       }
     }
   }
 
-  // puzzle.end is correct (new syntax), but table references are reversed x <-> y
+  // FIXME: puzzle.end is correct (new syntax), but table references are reversed x/y
   table.rows[puzzle.end.x].cells[puzzle.end.y].style.borderRadius = '0px'
   if (puzzle.end.y == 0) {
     for (var x=0; x<puzzle.grid.length; x++) {
@@ -241,8 +270,8 @@ function draw(puzzle, target='puzzle') {
     var height = parseInt(window.getComputedStyle(cell).height)
     svg.setAttribute('viewBox', '0 0 '+width+' '+height)
     var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-    rect.setAttribute('width', '18px')
-    rect.setAttribute('height', '24px')
+    rect.setAttribute('width', 18)
+    rect.setAttribute('height', 24)
     rect.setAttribute('fill', '#1F1313')
     var transform = 'translate('+(width-18)/2+', '+(height-24)/2+')'
     if (gap.x%2 == 1) {

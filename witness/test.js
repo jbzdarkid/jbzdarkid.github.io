@@ -139,6 +139,10 @@ var tests = [
     grid[3][1] = {'type':'star', 'color':'red'}
     grid[3][3] = {'type':'nega', 'color':'red'}
     return {'grid':grid}
+  }, function() {
+    var grid = _newGrid(3, 3)
+    grid[1][1] = {'type':'tri', 'color':'orange', 'count':1}
+    return {'grid':grid}
   }
 ]
 
