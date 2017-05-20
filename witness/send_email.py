@@ -58,6 +58,8 @@ server.ehlo()
 server.starttls()
 server.login(FROM, environ['PASSWORD'])
 
+print b64encode(output.getvalue())
+
 text = '<a href="jbzdarkid.github.io/index.html#1><img height="%dpx" width="%dpx" src="data:image/png;base64,%s"></a>' % (img.size[0], img.size[1], b64encode(output.getvalue()))
 
 for TO in plain.split(','):
