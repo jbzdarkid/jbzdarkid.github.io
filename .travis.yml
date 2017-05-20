@@ -1,4 +1,5 @@
 language: python
+dist: trusty
 notifications:
   email:
     on_success: never
@@ -6,7 +7,6 @@ notifications:
 before_install:
   - pip install selenium
   - pip install pycrypto
-  - npm update phantomjs
 script:
   - phantomjs --version
   - phantomjs --debug=true witness/polyominos.js
