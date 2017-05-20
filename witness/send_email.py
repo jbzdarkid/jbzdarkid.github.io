@@ -56,22 +56,32 @@ server.ehlo()
 server.starttls()
 server.login(FROM, environ['PASSWORD'])
 
-text = '''
-<html>
-  <head></head>
-  <body>
-    <a href="jbzdarkid.github.io/index.html#1><img height="%dpx" width="%dpx" src="data:image/png;base64,%s"></a>
-  </body>
-</html>
-''' % (img.size[0], img.size[1], b64encode(open('temp2.png', 'rb').read()))
+text1 = '''
+Content-Type: image/png; name="sig.png"
+Content-Disposition: inline; filename="sig.png"
+Content-Transfer-Encoding: base64
+Content-ID: <0123456789>
+Content-Location: sig.png
+
+%s
+
+''' % b64encode(open('temp2.png').read())
+
+text2 = '''
+<head></head>
+<body>
+  <img height="%dpx" width="%dpx" src="cid:0123456789" href="jbzdarkid.github.io/index.html#1">
+</body>
+''' % (img.size[0], img.size[1])
 
 for TO in plain.split(','):
-	msg = MIMEMultipart('mixed')
+	msg = MIMEMultipart('multipart')
 	msg['Subject'] = 'Witness puzzle for %s' % DATE
 	msg['To'] = '%s <%s>' % (TO.split('@')[0], TO)
 	msg['From'] = FROM
 	msg['Date'] = DATE
-	msg.attach(MIMEText(text, 'html'))
+	msg.attach(MIMEText(text1, 'png'))
+	msg.attach(MIMEText(text2, 'html'))
 	server.sendmail(FROM, TO, msg.as_string())
 
 server.quit()
