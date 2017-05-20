@@ -12,7 +12,8 @@ before_install:
   - rm geckodriver-v0.16.1-linux64.tar.gz
   - chmod +x geckodriver
   - ls
-  - sudo set PATH="$PATH:/home/travis/build/jbzdarkid/jbzdarkid.github.io/geckodriver"
+  - setenv PATH "${PATH}:`path`"
+
   - echo $PATH
 script:
   - python witness/send_email.py
