@@ -11,6 +11,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 from smtplib import SMTP
+from PIL import Image
+from cStringIO import StringIO
 
 driver = Chrome()
 driver.set_window_size(1280, 720)
@@ -27,7 +29,18 @@ while 1:
 	break
 
 puzzle = driver.find_element_by_tag_name('table')
-screenshot = puzzle.get_screenshot_as_base64()
+rect = (
+	puzzle.location['x'],
+	puzzle.location['y'],
+	puzzle.location['x']+puzzle.size['width'],
+	puzzle.location['y']+puzzle.size['height']
+)
+driver.save_screenshot('temp.png')
+driver.quit()
+img = Image.open('temp.png')
+img = img.crop(rect)
+output = StringIO()
+img.save(output, format='JPEG')
 
 sha = SHA256.new()
 sha.update(environ['PASSWORD'])
@@ -46,7 +59,7 @@ server.starttls()
 server.login(FROM, environ['PASSWORD'])
 
 print puzzle.size
-text = '<a href="jbzdarkid.github.io/index.html#1><img height="%dpx" width="%dpx" src="data:image/png;base64,%s"></a>' % (puzzle.size['height'], puzzle.size['width'], screenshot)
+text = '<a href="jbzdarkid.github.io/index.html#1><img height="%dpx" width="%dpx" src="data:image/png;base64,%s"></a>' % (puzzle.size['height'], puzzle.size['width'], b64encode(output.getvalue())
 
 for TO in plain.split(','):
 	# msg.add_header('Content-Type', 'text/html')
