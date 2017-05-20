@@ -7,4 +7,4 @@ dependencies:
     - pip install selenium
 test:
   override:
-    - python send_email.py
+    - python witness/send_email.py
