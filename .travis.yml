@@ -6,7 +6,10 @@ notifications:
 before_install:
   - pip install selenium
   - pip install pycrypto
-script: phantomjs witness/polyominos.js
+script:
+  - phantomjs --?
+  - phantomjs --version
+  - phantomjs --debug=true witness/polyominos.js
 env:
   global:
     secure: pnFCjwW1UAxbrQ/AAwRImW/+AMNbuho74plW3prLjeTYsTf0UTfgYKCj6kLO/2RauhCohfFc/U4AUx/m61btn9Ra3yxRqaNWkKHfnbEZknyeIc+LvO+MIGSBwmDcxAlNgDjYw0P5ZNR+UbuMuXawcG9M1ALnXUGa6yyowpblXbDYTuaHeuGgZOtUq2A1aMa3LBtcud+pTo4SnZyNarBYfAgkeuSLD/DAqzMTugSef2q5lC78BS2WqaCPea9wSF5sK51WUwy94Ig1wor+XxP9i7eQvuLLNR6b1eK+tqnPTEPaBFvT0EhsxO8uZSW9tJBLuE4SeZ1xewAUHXn/E2TUTB7DdGV50xcxRLdmEEEjnhWaFLEuL38sbmWyr/dSqGNe9dHuOfwIb7dGOftrJGq/X4YjEl4LTvG2bmJRk2TqeobgnUb0aNxpDw6xISKX/22N3eQKSi11gi0CHxGnq1bIX3jxWi6IyVjjtUHblEUhWtNcrcjTg4t+yrQDzRG+u9uYN20mTBm7HlbvUCgsRvZ9KxBN4dRBCax79SaGVKbudFBehi7ZeJ3VLa5hsfVX5KawHILa/ZKh2Ze1FAfAfVwJkPkl7rD81enz1YEsHYgVKgqOU/rPlc/t6P3sXBJLF13wUonl7Zbze9UCex9FccOdhmNlVz7BbuEKbfOS+TLVxKY=
