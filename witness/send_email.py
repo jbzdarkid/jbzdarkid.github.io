@@ -22,7 +22,7 @@ while 1:
 		WebDriverWait(driver, 10).until(condition)
 	except TimeoutException:
 		log = driver.get_log('browser')
-		for line in log[length:]:
+		for line in log[0:]:
 			print line
 		length = len(log)
 		continue
