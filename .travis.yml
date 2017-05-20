@@ -6,10 +6,14 @@ notifications:
 before_install:
   - pip install selenium
   - pip install pycrypto
-  - wget https://github.com/mozilla/geckodriver/releases/download/v0.16.1/geckodriver-v0.16.1-linux64.tar.gz
-  - tar -xvzf geckodriver-v0.16.1-linux64.tar.gz
-  - rm geckodriver-v0.16.1-linux64.tar.gz
-  - chmod +x geckodriver
+#  - wget https://github.com/mozilla/geckodriver/releases/download/v0.16.1/geckodriver-v0.16.1-linux64.tar.gz
+#  - tar -xvzf geckodriver-v0.16.1-linux64.tar.gz
+#  - rm geckodriver-v0.16.1-linux64.tar.gz
+#  - chmod +x geckodriver
+  - wget https://chromedriver.storage.googleapis.com/2.29/chromedriver_linux64.zip
+  - unzip chromedriver_linux64.zip
+  - rm chromedriver_linux64.zip
+  - chmod +x chromedriver
   - export PATH="${PATH}:`pwd`"
 script:
   - python witness/send_email.py
