@@ -9,7 +9,6 @@ before_install:
   - pip install pycrypto
 script:
   - phantomjs --version
-  - phantomjs witness/polyominos.js
   - python witness/send_email.py
 env:
   global:
