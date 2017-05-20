@@ -21,6 +21,7 @@ while 1:
 		WebDriverWait(driver, 10).until(condition)
 	except TimeoutException:
 		pass
+	break
 for line in driver.get_log('browser'):
 	print line
 raise
