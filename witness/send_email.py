@@ -17,7 +17,7 @@ driver.set_window_size(1280, 720)
 driver.get(getcwd()+'/witness/index.html')
 condition = EC.presence_of_element_located((By.ID, 'puzzle_0_0'))
 try:
-	WebDriverWait(driver, 60).until(condition)
+	WebDriverWait(driver).until(condition)
 except TimeoutException:
 	for line in driver.get_log('browser'):
 		print line
