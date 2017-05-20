@@ -39,8 +39,7 @@ driver.save_screenshot('temp.png')
 driver.quit()
 img = Image.open('temp.png')
 img = img.crop(rect)
-output = StringIO()
-img.save(output, format='JPEG')
+img.save('temp.png')
 
 sha = SHA256.new()
 sha.update(environ['PASSWORD'])
@@ -58,9 +57,9 @@ server.ehlo()
 server.starttls()
 server.login(FROM, environ['PASSWORD'])
 
-print b64encode(output.getvalue())
+print b64encode(open('temp.png', 'rb'))
 
-text = '<a href="jbzdarkid.github.io/index.html#1><img height="%dpx" width="%dpx" src="data:image/png;base64,%s"></a>' % (img.size[0], img.size[1], b64encode(output.getvalue()))
+text = '<a href="jbzdarkid.github.io/index.html#1><img height="%dpx" width="%dpx" src="data:image/png;base64,%s"></a>' % (img.size[0], img.size[1], b64encode(open('temp.png', 'rb')))
 
 for TO in plain.split(','):
 	# msg.add_header('Content-Type', 'text/html')
