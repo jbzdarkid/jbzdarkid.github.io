@@ -6,7 +6,7 @@ notifications:
 before_install:
   - pip install selenium
   - pip install pycrypto
-  - npm upgrade phantomjs
+  - npm update phantomjs
 script:
   - phantomjs --version
   - phantomjs --debug=true witness/polyominos.js
