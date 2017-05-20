@@ -16,10 +16,15 @@ driver = PhantomJS()
 driver.set_window_size(1280, 720)
 driver.get(getcwd()+'/witness/index.html')
 condition = EC.presence_of_element_located((By.ID, 'puzzle_0_0'))
+length = 0
 while 1:
 	try:
 		WebDriverWait(driver, 10).until(condition)
 	except TimeoutException:
+		log = driver.get_log('browser')
+		for line in log[length:]:
+			print line
+		length = len(log)
 		continue
 	break
 for line in driver.get_log('browser'):
