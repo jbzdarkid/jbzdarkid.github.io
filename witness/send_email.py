@@ -15,7 +15,8 @@ from smtplib import SMTP
 driver = Chrome()
 driver.set_window_size(1280, 720)
 print 'send_email.py<17>'
-driver.get(getcwd()+'/witness/temp.html')
+print 'http://'+getcwd()+'/witness/temp.html'
+driver.get('http://'+getcwd()+'/witness/temp.html')
 print 'send_email.py<19>'
 for line in driver.get_log('browser'):
 	print line
