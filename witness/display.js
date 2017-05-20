@@ -1,3 +1,4 @@
+console.log('display.js<1>')
 function _square(elem) {
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
   svg.setAttribute('viewBox', '0 0 58 58')
@@ -187,6 +188,9 @@ function draw(puzzle, target='puzzle') {
         div.onclick = function() {trace(this)}
         div.id = cell.id
         div.className = 'start trace'
+        if (puzzle.grid[x][y] == true) {
+          div.style.background = '#4F1A1A'
+        }
         cell.style.position = 'relative'
         cell.removeAttribute('class')
         cell.id += '_parent'

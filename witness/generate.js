@@ -1,3 +1,4 @@
+console.log('generate.js<1>')
 // Returns a random integer in [0, n)
 // Uses a set seed so puzzles can be regenerated
 var seed = 42
@@ -118,6 +119,7 @@ window.onload = function () {
 }
 
 function generatePuzzle() {
+  console.log(Object.keys(window))
   if ('style' in urlParams) {
     if (urlParams['style'] in styles) {
       var style = styles[urlParams['style']]

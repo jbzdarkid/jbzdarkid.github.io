@@ -5,22 +5,31 @@ from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from os import getcwd, environ
-from selenium.webdriver import Chrome
+from selenium.webdriver import PhantomJS
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 from smtplib import SMTP
 
-driver = Chrome()
+driver = PhantomJS()
 driver.set_window_size(1280, 720)
 driver.get(getcwd()+'/witness/temp.html')
 condition = EC.presence_of_element_located((By.ID, 'puzzle_0_0'))
-try:
-	WebDriverWait(driver, 60).until(condition)
-except TimeoutException:
-	print driver.get_log('browser')
-	raise
+length = 0
+while 1:
+	try:
+		WebDriverWait(driver, 10).until(condition)
+	except TimeoutException:
+		log = driver.get_log('browser')
+		for line in log[0:]:
+			print line
+		length = len(log)
+		continue
+	break
+for line in driver.get_log('browser'):
+	print line
+raise
 
 puzzle = driver.find_element_by_tag_name('table')
 puzzle.screenshot('temp.png')
