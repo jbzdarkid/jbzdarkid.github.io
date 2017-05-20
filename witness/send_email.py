@@ -59,7 +59,7 @@ server.starttls()
 server.login(FROM, environ['PASSWORD'])
 
 print puzzle.size
-text = '<a href="jbzdarkid.github.io/index.html#1><img height="%dpx" width="%dpx" src="data:image/png;base64,%s"></a>' % (puzzle.size['height'], puzzle.size['width'], b64encode(output.getvalue())
+text = '<a href="jbzdarkid.github.io/index.html#1><img height="%dpx" width="%dpx" src="data:image/png;base64,%s"></a>' % (puzzle.size['height'], puzzle.size['width'], b64encode(output.getvalue()))
 
 for TO in plain.split(','):
 	# msg.add_header('Content-Type', 'text/html')
