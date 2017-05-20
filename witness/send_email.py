@@ -56,10 +56,10 @@ server.ehlo()
 server.starttls()
 server.login(FROM, environ['PASSWORD'])
 
-print b64encode(open('temp.png', 'rb'))
-print b64encode(open('temp2.png', 'rb'))
+print b64encode(open('temp.png', 'rb').read())
+print b64encode(open('temp2.png', 'rb').read())
 
-text = '<a href="jbzdarkid.github.io/index.html#1><img height="%dpx" width="%dpx" src="data:image/png;base64,%s"></a>' % (img.size[0], img.size[1], b64encode(open('temp2.png', 'rb')))
+text = '<a href="jbzdarkid.github.io/index.html#1><img height="%dpx" width="%dpx" src="data:image/png;base64,%s"></a>' % (img.size[0], img.size[1], b64encode(open('temp2.png', 'rb').read()))
 
 for TO in plain.split(','):
 	# msg.add_header('Content-Type', 'text/html')
