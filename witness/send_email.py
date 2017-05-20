@@ -19,7 +19,8 @@ condition = EC.presence_of_element_located((By.ID, 'puzzle_0_0'))
 try:
 	WebDriverWait(driver, 60).until(condition)
 except TimeoutException:
-	print driver.get_log('browser')
+	for line in driver.get_log('browser'):
+		print line
 	raise
 
 puzzle = driver.find_element_by_tag_name('table')

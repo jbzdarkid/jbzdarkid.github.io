@@ -1,3 +1,4 @@
+console.log('utilities.js<1>')
 /*** Firefox compatibility ***/
 if (!String.prototype.includes) {
   String.prototype.includes = function() {

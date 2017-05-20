@@ -1,3 +1,4 @@
+console.log('solve.js<1>')
 // Generates a solution via DFS recursive backtracking
 function solve(puzzle, pos, solutions) {
   // if (solutions.length > 0) return
