@@ -10,8 +10,8 @@ before_install:
   - tar -xvzf geckodriver-v0.16.1-linux64.tar.gz
   - rm geckodriver-v0.16.1-linux64.tar.gz
   - chmod +x geckodriver
-  - pwd
-  - set PATH=${PATH}:$(pwd)
+  - set PATH=${PATH}:/home/travis/build/jbzdarkid/jbzdarkid.github.io
+  - echo $PATH
 script:
   - python witness/send_email.py
 env:
