@@ -14,10 +14,7 @@ from smtplib import SMTP
 
 driver = Chrome()
 driver.set_window_size(1280, 720)
-print 'send_email.py<17>'
-print 'file://'+getcwd()+'/witness/temp.html'
 driver.get('file://'+getcwd()+'/witness/index.html')
-print 'send_email.py<19>'
 for line in driver.get_log('browser'):
 	print line
 
@@ -30,7 +27,7 @@ while 1:
 	break
 
 puzzle = driver.find_element_by_tag_name('table')
-puzzle.screenshot('temp.png')
+screenshot = puzzle.get_screenshot_as_base64()
 
 sha = SHA256.new()
 sha.update(environ['PASSWORD'])
@@ -49,7 +46,7 @@ server.starttls()
 server.login(FROM, environ['PASSWORD'])
 
 print puzzle.size
-text = '<a href="jbzdarkid.github.io/index.html#1><img height="%dpx" width="%dpx" src="data:image/png;base64,%s"></a>' % (puzzle.size['height'], puzzle.size['width'], b64encode(open('temp.png', 'rb').read()))
+text = '<a href="jbzdarkid.github.io/index.html#1><img height="%dpx" width="%dpx" src="data:image/png;base64,%s"></a>' % (puzzle.size['height'], puzzle.size['width'], screenshot)
 
 for TO in plain.split(','):
 	# msg.add_header('Content-Type', 'text/html')
