@@ -1,11 +1,10 @@
 machine:
   python:
     version: 2.7
-  services:
-    - pip
-test:
+dependencies:
   pre:
     - pip install pycrypto
     - pip install selenium
+test:
   override:
     - python send_email.py
