@@ -14,7 +14,7 @@ from smtplib import SMTP
 
 driver = Chrome()
 driver.set_window_size(1280, 720)
-driver.get(getcwd()+'/witness/index.html')
+driver.get(getcwd()+'/witness/temp.html')
 condition = EC.presence_of_element_located((By.ID, 'puzzle_0_0'))
 try:
 	WebDriverWait(driver, 60).until(condition)
