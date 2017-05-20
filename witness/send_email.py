@@ -20,7 +20,7 @@ while 1:
 	try:
 		WebDriverWait(driver, 10).until(condition)
 	except TimeoutException:
-		pass
+		continue
 	break
 for line in driver.get_log('browser'):
 	print line
