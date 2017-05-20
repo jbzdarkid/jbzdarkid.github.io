@@ -5,6 +5,7 @@ dependencies:
   pre:
     - pip install pycrypto
     - pip install selenium
+    - pip install pillow
 test:
   override:
     - python witness/send_email.py
