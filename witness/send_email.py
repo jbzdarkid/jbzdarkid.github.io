@@ -4,6 +4,7 @@ from Crypto.Hash import SHA256
 from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
 from os import getcwd, environ, remove
 from selenium.webdriver import Chrome
 from selenium.webdriver.common.by import By
@@ -56,23 +57,12 @@ server.ehlo()
 server.starttls()
 server.login(FROM, environ['PASSWORD'])
 
-text1 = '''
-Content-Type: image/png; name="sig.png"
-Content-Disposition: inline; filename="sig.png"
-Content-Transfer-Encoding: base64
-Content-ID: <0123456789>
-Content-Location: sig.png
-
-%s
-
-''' % b64encode(open('temp2.png').read())
-
-text2 = '''
-<head></head>
-<body>
-  <img height="%dpx" width="%dpx" src="cid:0123456789" href="jbzdarkid.github.io/index.html#1">
-</body>
-''' % (img.size[0], img.size[1])
+puzzle_id = 1 # FIXME
+body = '''
+<a href="http://jbzdarkid.github.io/witness/index.html#%d" style="text-decoration: none">
+  <img src="cid:%d">
+</a>
+''' % (puzzle_id, puzzle_id)
 
 for TO in plain.split(','):
 	msg = MIMEMultipart('multipart')
@@ -80,8 +70,9 @@ for TO in plain.split(','):
 	msg['To'] = '%s <%s>' % (TO.split('@')[0], TO)
 	msg['From'] = FROM
 	msg['Date'] = DATE
-	msg.attach(MIMEText(text1, 'png'))
-	msg.attach(MIMEText(text2, 'html'))
+	msg.attach(MIMEText(body, 'html'))
+	img = MIMEImage(open('temp2.png', 'rb').read())
+	img.add_header('Content-ID', '<%d>' % puzzle_id)
+	msg.attach(img)
 	server.sendmail(FROM, TO, msg.as_string())
-
 server.quit()
