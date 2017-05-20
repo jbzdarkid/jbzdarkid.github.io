@@ -11,7 +11,7 @@ before_install:
   - tar -xvzf geckodriver-v0.16.1-linux64.tar.gz
   - rm geckodriver-v0.16.1-linux64.tar.gz
   - chmod +x geckodriver
-  - export PATH=$PATH:%(pwd)
+  - set PATH=$PATH:%(pwd)
 script:
   - python witness/send_email.py
 env:
