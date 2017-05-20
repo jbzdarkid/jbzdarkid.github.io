@@ -7,8 +7,8 @@ notifications:
 before_install:
   - pip install selenium
   - pip install pycrypto
+  - npm install geckodriver
 script:
-  - phantomjs --version
   - python witness/send_email.py
 env:
   global:
