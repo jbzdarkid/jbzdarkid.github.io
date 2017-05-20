@@ -4,7 +4,7 @@ from Crypto.Hash import SHA256
 from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from os import getcwd, environ
+from os import getcwd, environ, remove
 from selenium.webdriver import Chrome
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -12,7 +12,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 from smtplib import SMTP
 from PIL import Image
-from cStringIO import StringIO
 
 driver = Chrome()
 driver.set_window_size(1280, 720)
@@ -39,7 +38,7 @@ driver.save_screenshot('temp.png')
 driver.quit()
 img = Image.open('temp.png')
 img = img.crop(rect)
-img.save('temp.png')
+img.save('temp2.png')
 
 sha = SHA256.new()
 sha.update(environ['PASSWORD'])
@@ -58,8 +57,9 @@ server.starttls()
 server.login(FROM, environ['PASSWORD'])
 
 print b64encode(open('temp.png', 'rb'))
+print b64encode(open('temp2.png', 'rb'))
 
-text = '<a href="jbzdarkid.github.io/index.html#1><img height="%dpx" width="%dpx" src="data:image/png;base64,%s"></a>' % (img.size[0], img.size[1], b64encode(open('temp.png', 'rb')))
+text = '<a href="jbzdarkid.github.io/index.html#1><img height="%dpx" width="%dpx" src="data:image/png;base64,%s"></a>' % (img.size[0], img.size[1], b64encode(open('temp2.png', 'rb')))
 
 for TO in plain.split(','):
 	# msg.add_header('Content-Type', 'text/html')
