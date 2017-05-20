@@ -56,9 +56,6 @@ server.ehlo()
 server.starttls()
 server.login(FROM, environ['PASSWORD'])
 
-print b64encode(open('temp.png', 'rb').read())
-print b64encode(open('temp2.png', 'rb').read())
-
 text = '''
 <html>
   <head></head>
@@ -69,8 +66,7 @@ text = '''
 ''' % (img.size[0], img.size[1], b64encode(open('temp2.png', 'rb').read()))
 
 for TO in plain.split(','):
-	# msg.add_header('Content-Type', 'text/html')
-	msg = MIMEMultipart('alternative')
+	msg = MIMEMultipart('mixed')
 	msg['Subject'] = 'Witness puzzle for %s' % DATE
 	msg['To'] = '%s <%s>' % (TO.split('@')[0], TO)
 	msg['From'] = FROM
