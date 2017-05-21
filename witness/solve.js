@@ -12,42 +12,34 @@ function solve(puzzle, pos, solutions) {
   }
   // Extend path down
   if (pos.x < puzzle.grid.length-1 && !puzzle.grid[pos.x+2][pos.y]) {
-    puzzle.grid[pos.x+0][pos.y] = true
-    puzzle.grid[pos.x+1][pos.y] = true
-    pos.x += 2
+    puzzle.grid[pos.x++][pos.y] = true
+    puzzle.grid[pos.x++][pos.y] = true
     solve(puzzle, pos, solutions)
-    pos.x -= 2
-    puzzle.grid[pos.x+0][pos.y] = false
-    puzzle.grid[pos.x+1][pos.y] = false
+    puzzle.grid[pos.x--][pos.y] = false
+    puzzle.grid[pos.x--][pos.y] = false
   }
   // Extend path right
   if (pos.y < puzzle.grid[pos.x].length-1 && !puzzle.grid[pos.x][pos.y+2]) {
-    puzzle.grid[pos.x][pos.y+0] = true
-    puzzle.grid[pos.x][pos.y+1] = true
-    pos.y += 2
+    puzzle.grid[pos.x][pos.y++] = true
+    puzzle.grid[pos.x][pos.y++] = true
     solve(puzzle, pos, solutions)
-    pos.y -= 2
-    puzzle.grid[pos.x][pos.y+0] = false
-    puzzle.grid[pos.x][pos.y+1] = false
+    puzzle.grid[pos.x][pos.y--] = false
+    puzzle.grid[pos.x][pos.y--] = false
   }
   // Extend path up
   if (pos.x > 0 && !puzzle.grid[pos.x-2][pos.y]) {
-    puzzle.grid[pos.x-0][pos.y] = true
-    puzzle.grid[pos.x-1][pos.y] = true
-    pos.x -= 2
+    puzzle.grid[pos.x--][pos.y] = true
+    puzzle.grid[pos.x--][pos.y] = true
     solve(puzzle, pos, solutions)
-    pos.x += 2
-    puzzle.grid[pos.x-0][pos.y] = false
-    puzzle.grid[pos.x-1][pos.y] = false
+    puzzle.grid[pos.x++][pos.y] = false
+    puzzle.grid[pos.x++][pos.y] = false
   }
   // Extend path left
   if (pos.y > 0 && !puzzle.grid[pos.x][pos.y-2]) {
-    puzzle.grid[pos.x][pos.y-0] = true
-    puzzle.grid[pos.x][pos.y-1] = true
-    pos.y -= 2
+    puzzle.grid[pos.x][pos.y--] = true
+    puzzle.grid[pos.x][pos.y--] = true
     solve(puzzle, pos, solutions)
-    pos.y += 2
-    puzzle.grid[pos.x][pos.y-0] = false
-    puzzle.grid[pos.x][pos.y-1] = false
+    puzzle.grid[pos.x][pos.y++] = false
+    puzzle.grid[pos.x][pos.y++] = false
   }
 }
