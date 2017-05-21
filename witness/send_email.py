@@ -14,8 +14,6 @@ from selenium.common.exceptions import TimeoutException
 from smtplib import SMTP
 from PIL import Image
 
-print environ['TEST']
-
 driver = Chrome()
 driver.set_window_size(1280, 720)
 driver.get('file://'+getcwd()+'/witness/index.html')
