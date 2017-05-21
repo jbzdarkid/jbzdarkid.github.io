@@ -1,4 +1,3 @@
-console.log('trace.js<1>')
 var cursorSize = 12
 var data
 function trace(elem) {

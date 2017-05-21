@@ -1,4 +1,3 @@
-console.log('validate.js<1>')
 // Puzzle = {grid, start, end, dots, gaps}
 // Determines if the current grid state is solvable.
 function isValid(puzzle) {

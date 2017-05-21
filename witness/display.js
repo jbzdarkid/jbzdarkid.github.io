@@ -1,4 +1,3 @@
-console.log('display.js<1>')
 function _square(elem) {
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
   svg.setAttribute('viewBox', '0 0 58 58')

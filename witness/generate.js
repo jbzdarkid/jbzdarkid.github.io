@@ -119,7 +119,6 @@ window.onload = function () {
 }
 
 function generatePuzzle() {
-  console.log(Object.keys(window))
   if ('style' in urlParams) {
     if (urlParams['style'] in styles) {
       var style = styles[urlParams['style']]

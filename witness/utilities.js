@@ -1,4 +1,3 @@
-console.log('utilities.js<1>')
 /*** Firefox compatibility ***/
 if (!String.prototype.includes) {
   String.prototype.includes = function() {
@@ -23,7 +22,6 @@ function _copyGrid(grid) {
   return new_grid
 }
 
-
 // http://stackoverflow.com/q/901115
 var urlParams
 (window.onpopstate = function () {
@@ -37,7 +35,6 @@ var urlParams
     while (match = search.exec(query))
        urlParams[decode(match[1])] = decode(match[2])
 })()
-console.log(urlParams)
 
 var styles = {
   'monday':{

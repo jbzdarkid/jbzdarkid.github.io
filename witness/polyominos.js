@@ -1,4 +1,3 @@
-console.log('polyominos.js<1>')
 function getPolyomino(size=null, shape=null, rot=null) {
   if (size == null) {
     return Object.keys(POLYOMINOS)
