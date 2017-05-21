@@ -20,6 +20,22 @@ function isValid(puzzle) {
       return false
     }
   }
+  // FIXME: Move inside the region check so that it can be negated
+  for (var x=1; x<puzzle.grid.length; x+=2) {
+    for (var y=1; y<puzzle.grid[x].length; y+=2) {
+      if (puzzle.grid[x][y].type == 'tri') {
+        var count = 0
+        if (puzzle.grid[x-1][y]) count++
+        if (puzzle.grid[x+1][y]) count++
+        if (puzzle.grid[x][y-1]) count++
+        if (puzzle.grid[x][y+1]) count++
+        if (count != puzzle.grid[x][y].count) {
+          // console.log('Triangle at grid['+x+']['+y+'] has', count, 'borders')
+          return false
+        }
+      }
+    }
+  }
   // Check that individual regions are valid
   for (var region of _getRegions(puzzle.grid)) {
     if (!_regionCheck(puzzle.grid, region)) {
