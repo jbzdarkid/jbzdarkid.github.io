@@ -1,4 +1,3 @@
-console.log('generate.js<1>')
 // Returns a random integer in [0, n)
 // Uses a set seed so puzzles can be regenerated
 var seed = 42
@@ -115,7 +114,7 @@ window.onload = function () {
   if (!seed) {
     seed = Math.floor(Math.random() * (1 << 30))
   }
-  document.getElementById('generate').onclick()
+  generatePuzzle()
 }
 
 function generatePuzzle() {
