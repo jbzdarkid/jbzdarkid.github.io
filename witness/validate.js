@@ -108,7 +108,7 @@ function _regionCheck(grid, region) {
         colors[cell.color]['squares']++
       } else if (cell.type == 'star') {
         colors[cell.color]['stars']++
-      } else if (cell.type == 'poly' || cell.type == 'nega' || cell.type == 'nonce') {
+      } else if (cell.type == 'poly' || cell.type == 'nega' || cell.type == 'nonce' || cell.type == 'tri') {
         colors[cell.color]['other']++
       }
     }
