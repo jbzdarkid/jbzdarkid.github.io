@@ -136,11 +136,13 @@ function _nega(elem) {
 function _tri(elem) {
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
   svg.setAttribute('viewBox', '0 0 50 50')
-  var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
-  poly.setAttribute('points', '0 0, -10 20, 10 20')
-  poly.setAttribute('transform', 'translate(25, 15)')
-  poly.setAttribute('fill', elem.color)
-  svg.appendChild(poly)
+  for (var i=0; i<elem.count; i++) {
+    var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
+    poly.setAttribute('points', '0 0, -5 10, 5 10')
+    poly.setAttribute('transform', 'translate('+(20+10*i)+', 20)')
+    poly.setAttribute('fill', elem.color)
+    svg.appendChild(poly)
+  }
   return svg
 }
 
