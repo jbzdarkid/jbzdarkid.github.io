@@ -253,7 +253,7 @@ function draw(puzzle, target='puzzle') {
   }
 
   for (var dot of puzzle.dots) {
-    var cell = document.getElementById(target+'_'+dot.y+'_'+dot.x)
+    var cell = document.getElementById(target+'_'+dot.x+'_'+dot.y)
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     var width = parseInt(window.getComputedStyle(cell).width)
     var height = parseInt(window.getComputedStyle(cell).height)
