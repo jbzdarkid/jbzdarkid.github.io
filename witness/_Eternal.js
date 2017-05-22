@@ -39,7 +39,7 @@ var tests = [
       'start':{'x':4, 'y':6},
       'end':{'x':0, 'y':8},
       'dots':dots,
-      'gaps':[{'x':1, 'y':8}, {'x':3, 'y':4}]
+      'gaps':[{'x':1, 'y':6}, {'x':3, 'y':4}]
     }
   }, function() {
     var grid = _newGrid(5, 4)
@@ -72,7 +72,7 @@ var tests = [
       'grid':grid,
       'start':{'x':10, 'y':0},
       'end':{'x':10, 'y':8},
-      'gaps':[{'x':1, 'y':4}]
+      'gaps':[{'x':1, 'y':4}, {'x':9, 'y':4}]
     }
   }, function() {
     var grid = _newGrid(5, 6)
@@ -162,21 +162,42 @@ var tests = [
     }
   }, function() {
     var grid = _newGrid(5, 5)
+    grid[1][1] = {'type':'poly','color':'yellow','size':4,'shape':'O','rot':0}
+    grid[1][9] = {'type':'poly','color':'yellow','size':4,'shape':'O','rot':0}
+    grid[3][3] = {'type':'poly','color':'yellow','size':4,'shape':'O','rot':0}
+    grid[3][7] = {'type':'poly','color':'yellow','size':4,'shape':'O','rot':0}
+    grid[5][5] = {'type':'poly','color':'yellow','size':3,'shape':'L','rot':'all'}
     return {
       'grid':grid,
       'start':{'x':0, 'y':0},
-      'end':{'x':0, 'y':0},
-      'dots':[],
-      'gaps':[]
+      'end':{'x':10, 'y':0},
+      'gaps':[{'x':6, 'y':5}, {'x':10, 'y':5}]
     }
   }, function() {
     var grid = _newGrid(3, 3)
+    grid[1][1] = {'type':'poly','color':'yellow','size':2,'shape':'I','rot':0}
+    grid[1][3] = {'type':'nega', 'color':'white'}
+    grid[1][5] = {'type':'poly','color':'yellow','size':2,'shape':'I','rot':0}
+    grid[3][3] = {'type':'poly','color':'yellow','size':2,'shape':'I','rot':1}
+    grid[5][3] = {'type':'poly','color':'yellow','size':2,'shape':'I','rot':1}
     return {
       'grid':grid,
-      'start':{'x':0, 'y':0},
+      'start':{'x':6, 'y':0},
       'end':{'x':0, 'y':0},
-      'dots':[],
-      'gaps':[]
+      'gaps':[{'x':0, 'y':3}, {'x':1, 'y':0}, {'x':4, 'y':1}]
+    }
+  }, function() {
+    var grid = _newGrid(3, 3)
+    grid[1][1] = {'type':'poly','color':'yellow','size':2,'shape':'I','rot':0}
+    grid[1][3] = {'type':'nega', 'color':'white'}
+    grid[1][5] = {'type':'poly','color':'yellow','size':2,'shape':'I','rot':0}
+    grid[3][3] = {'type':'poly','color':'yellow','size':2,'shape':'I','rot':1}
+    grid[5][3] = {'type':'poly','color':'yellow','size':2,'shape':'I','rot':1}
+    return {
+      'grid':grid,
+      'start':{'x':6, 'y':0},
+      'end':{'x':0, 'y':6},
+      'gaps':[{'x':0, 'y':3}, {'x':1, 'y':0}, {'x':4, 'y':1}]
     }
   }
 ]
