@@ -15,31 +15,31 @@ function solve(puzzle, pos, solutions) {
     puzzle.grid[pos.x++][pos.y] = true
     puzzle.grid[pos.x++][pos.y] = true
     solve(puzzle, pos, solutions)
-    puzzle.grid[pos.x--][pos.y] = false
-    puzzle.grid[pos.x--][pos.y] = false
+    puzzle.grid[--pos.x][pos.y] = false
+    puzzle.grid[--pos.x][pos.y] = false
   }
   // Extend path right
   if (pos.y < puzzle.grid[pos.x].length-1 && !puzzle.grid[pos.x][pos.y+2]) {
     puzzle.grid[pos.x][pos.y++] = true
     puzzle.grid[pos.x][pos.y++] = true
     solve(puzzle, pos, solutions)
-    puzzle.grid[pos.x][pos.y--] = false
-    puzzle.grid[pos.x][pos.y--] = false
+    puzzle.grid[pos.x][--pos.y] = false
+    puzzle.grid[pos.x][--pos.y] = false
   }
   // Extend path up
   if (pos.x > 0 && !puzzle.grid[pos.x-2][pos.y]) {
     puzzle.grid[pos.x--][pos.y] = true
     puzzle.grid[pos.x--][pos.y] = true
     solve(puzzle, pos, solutions)
-    puzzle.grid[pos.x++][pos.y] = false
-    puzzle.grid[pos.x++][pos.y] = false
+    puzzle.grid[++pos.x][pos.y] = false
+    puzzle.grid[++pos.x][pos.y] = false
   }
   // Extend path left
   if (pos.y > 0 && !puzzle.grid[pos.x][pos.y-2]) {
     puzzle.grid[pos.x][pos.y--] = true
     puzzle.grid[pos.x][pos.y--] = true
     solve(puzzle, pos, solutions)
-    puzzle.grid[pos.x][pos.y++] = false
-    puzzle.grid[pos.x][pos.y++] = false
+    puzzle.grid[pos.x][++pos.y] = false
+    puzzle.grid[pos.x][++pos.y] = false
   }
 }
