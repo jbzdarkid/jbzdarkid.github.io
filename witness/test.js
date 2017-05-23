@@ -150,8 +150,7 @@ var tests = [
   }
 ]
 
-function loadTests() {
-  var start = (new Date()).getTime()
+window.onload = function() {
   for (var i=0; i<tests.length; i++) {
     try {
       var solutions = []
@@ -177,6 +176,4 @@ function loadTests() {
       continue
     }
   }
-  var end = (new Date()).getTime()
-  document.getElementById('load').innerHTML = (end - start)/1000 + ' seconds'
 }
