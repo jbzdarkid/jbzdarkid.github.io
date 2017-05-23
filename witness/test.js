@@ -144,8 +144,10 @@ var tests = [
     grid[3][3] = {'type':'nega', 'color':'red'}
     return {'grid':grid}
   }, function() {
-    var grid = _newGrid(3, 3)
+    var grid = _newGrid(1, 5)
     grid[1][1] = {'type':'tri', 'color':'orange', 'count':1}
+    grid[1][5] = {'type':'tri', 'color':'orange', 'count':2}
+    grid[1][9] = {'type':'tri', 'color':'orange', 'count':3}
     return {'grid':grid}
   }
 ]
