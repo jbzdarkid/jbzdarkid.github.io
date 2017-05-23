@@ -132,14 +132,14 @@ function _nega(elem) {
   return svg
 }
 
-// FIXME: Exact sizing
 function _tri(elem) {
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('viewBox', '0 0 50 50')
+  svg.setAttribute('viewBox', '0 0 58 58')
   for (var i=0; i<elem.count; i++) {
     var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
-    poly.setAttribute('points', '0 0, -5 10, 5 10')
-    poly.setAttribute('transform', 'translate('+(20+10*i)+', 20)')
+    poly.setAttribute('points', '0 0, -8 14, 8 14')
+    var y_offset = (58 - 22*(elem.count - 1)) / 2 + 22*i
+    poly.setAttribute('transform', 'translate('+y_offset+', 22)')
     poly.setAttribute('fill', elem.color)
     svg.appendChild(poly)
   }
