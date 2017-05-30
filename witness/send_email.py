@@ -29,11 +29,12 @@ while 1:
 	break
 
 puzzle = driver.find_element_by_tag_name('table')
+url = driver.getCurrentUrl()
 rect = (
-	puzzle.location['x'],
-	puzzle.location['y'],
-	puzzle.location['x']+puzzle.size['width'],
-	puzzle.location['y']+puzzle.size['height']
+	puzzle.location['x']-10,
+	puzzle.location['y']-10,
+	puzzle.location['x']+puzzle.size['width']+10,
+	puzzle.location['y']+puzzle.size['height']+10
 )
 driver.save_screenshot('temp.png')
 driver.quit()
@@ -59,10 +60,10 @@ server.login(FROM, environ['PASSWORD'])
 
 puzzle_id = 1 # FIXME
 body = '''
-<a href="http://jbzdarkid.github.io/witness/index.html#%d" style="text-decoration: none">
-  <img src="cid:%d">
+<a href="%s" style="text-decoration: none">
+  <img src="cid:puzzle">
 </a>
-''' % (puzzle_id, puzzle_id)
+''' % url
 
 for TO in plain.split(','):
 	msg = MIMEMultipart('multipart')
@@ -72,7 +73,7 @@ for TO in plain.split(','):
 	msg['Date'] = DATE
 	msg.attach(MIMEText(body, 'html'))
 	img = MIMEImage(open('temp2.png', 'rb').read())
-	img.add_header('Content-ID', '<%d>' % puzzle_id)
+	img.add_header('Content-ID', '<puzzle>')
 	msg.attach(img)
 	server.sendmail(FROM, TO, msg.as_string())
 server.quit()
