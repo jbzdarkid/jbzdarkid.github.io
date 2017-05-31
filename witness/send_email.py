@@ -30,6 +30,7 @@ while 1:
 
 puzzle = driver.find_element_by_tag_name('table')
 url = driver.current_url
+url = url.replace('file:///home/runner/', 'http://')
 rect = (
 	puzzle.location['x']-10,
 	puzzle.location['y']-10,
