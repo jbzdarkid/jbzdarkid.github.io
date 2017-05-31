@@ -29,7 +29,7 @@ while 1:
 	break
 
 puzzle = driver.find_element_by_tag_name('table')
-url = driver.getCurrentUrl()
+url = driver.current_url
 rect = (
 	puzzle.location['x']-10,
 	puzzle.location['y']-10,
