@@ -109,15 +109,11 @@ function _randomize(style) {
 }
 
 // When the page is done loading, generate a puzzle
-window.onload = function () {
+window.onload = function() {
   seed = parseInt(location.hash.substring(1))
   if (!seed) {
     seed = Math.floor(Math.random() * (1 << 30))
   }
-  generatePuzzle()
-}
-
-function generatePuzzle() {
   if ('style' in urlParams) {
     if (urlParams['style'] in styles) {
       var style = styles[urlParams['style']]
