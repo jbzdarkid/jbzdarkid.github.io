@@ -82,7 +82,7 @@ function _randomize(style) {
       } else if (type == 'triangles') {
         var pos = cells.splice(_randint(cells.length), 1)[0]
         puzzle.grid[pos.x][pos.y] = {'type':'triangle', 'color':'orange'}
-      } else if (type == 'polyominos' || type == 'onimolyps') {
+      } else if (type == 'polyominos' || type == 'onimoylops') {
         var size = _randint(Math.min(width, height))+1
         var shapes = getPolyomino(size)
         var shape = shapes[_randint(shapes.length)]
