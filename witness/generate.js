@@ -10,7 +10,7 @@ function _randint(n) {
 function _randomize(style) {
   var width = style['width']
   var height = style['height']
-  var puzzle = {
+  var puzzle = { // FIXME: This should be an object?
     'grid':_newGrid(width, height),
     'start':{'x':null, 'y':null},
     'end':{'x':null,'y':null},
@@ -58,8 +58,10 @@ function _randomize(style) {
   // Place a number of elements according to the set distribution
   for (var type in style['distribution']) {
     for (var i=0; i<style['distribution'][type]; i++) {
-      if (type == 'dots') {
-        var index = _randint(edges.length + dots.length)
+      if (type == 'dots' && style['distribution'][type] == (width+1)*(height+1)) {
+        puzzle.dots.push(corners.splice(_randint(corners.length), 1)[0])
+      } else if (type == 'dots') {
+        var index = _randint(edges.length + corners.length)
         if (index < edges.length) {
           puzzle.dots.push(edges.splice(index, 1)[0])
         } else {
