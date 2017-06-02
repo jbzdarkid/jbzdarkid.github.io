@@ -61,12 +61,12 @@ function _randomize(style) {
       if (type == 'dots') {
         var index = _randint(edges.length + dots.length)
         if (index < edges.length) {
-          dots.push(edges.splice(index, 1)[0])
+          puzzle.dots.push(edges.splice(index, 1)[0])
         } else {
-          dots.push(corners.splice(index - edges.length, 1)[0])
+          puzzle.dots.push(corners.splice(index - edges.length, 1)[0])
         }
       } else if (type == 'gaps') {
-        gaps.push(edges.splice(_randint(edges.length), 1)[0])
+        puzzle.gaps.push(edges.splice(_randint(edges.length), 1)[0])
       } else if (type == 'negations') {
         var color = ['white', RED, GREEN, BLUE, PURPLE][_randint(style['colors'])]
         var pos = cells.splice(_randint(cells.length), 1)[0]
