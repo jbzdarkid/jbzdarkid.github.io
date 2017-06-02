@@ -2,11 +2,6 @@
   <head>
     <style>
       .line {fill: #6D4D4A} /* Always at index 0 */
-      @font-face {
-        font-family: Constantia;
-        src: url('Constantia.ttf');
-      }
-      * {font-family: Constantia}
       table {
         position: relative;
         top: 10%;
@@ -26,26 +21,25 @@
   </head>
   <body>
 
-    <div style="text-align: center; font-size: 30">Test cases</div>
     <div style="text-align: center">
-      Mouse Sensitivity 2D
+      Sensitivity
       <input id="sens" type="range" min="0.1" max="1.3" step="0.1" value="0.7"/>
     </div>
 
-  <table id="meta" cellpadding="40"></table>
-  <script type="text/javascript">
-    var table = document.getElementById('meta')
-    for (var i=0; i<20; i++) {
-      var row = table.insertRow(i)
-      for (var j=0; j<3; j++) {
-        var cell = row.insertCell(j)
-        var subtable = document.createElement('table')
-        subtable.id = 'test'+(i*3+j)
-        subtable.setAttribute('cellspacing', '0px')
-        subtable.setAttribute('cellpadding', '0px')
-        cell.appendChild(subtable)
+    <table id="meta" cellpadding="40"></table>
+    <script type="text/javascript">
+      var table = document.getElementById('meta')
+      for (var i=0; i<20; i++) {
+        var row = table.insertRow(i)
+        for (var j=0; j<3; j++) {
+          var cell = row.insertCell(j)
+          var subtable = document.createElement('table')
+          subtable.id = 'test'+(i*3+j)
+          subtable.setAttribute('cellspacing', '0px')
+          subtable.setAttribute('cellpadding', '0px')
+          cell.appendChild(subtable)
+        }
       }
-    }
-  </script>
+    </script>
   </body>
 </html>
