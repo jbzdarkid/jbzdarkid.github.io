@@ -97,18 +97,23 @@ function _ylop(elem) {
   svg.setAttribute('viewBox', '0 0 58 58')
   for (var pos of polyomino) {
     var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-    rect.setAttribute('transform', 'translate(' + (center_y+pos.y*offset) + ', ' + (center_x+pos.x*offset) + ')')
+    var transform = 'translate('+(center_y+pos.y*offset)+', '+(center_x+pos.x*offset)+')'
+    if (elem.rot == 'all') {
+      // -30 degree rotation around (29, 29), the midpoint of the square
+      transform = 'rotate(-30, 29, 29) '+transform
+    }
+    rect.setAttribute('transform', transform)
     rect.setAttribute('height', size)
     rect.setAttribute('width', size)
     rect.setAttribute('fill', elem.color)
     svg.appendChild(rect)
     var rect2 = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-    var transform = 'translate('+(center_y+pos.y*offset+size/4)+', '+(center_x+pos.x*offset+size/4)+')'
+    var transform2 = 'translate('+(center_y+pos.y*offset+size/4)+', '+(center_x+pos.x*offset+size/4)+')'
     if (elem.rot == 'all') {
       // -30 degree rotation around (29, 29), the midpoint of the square
-      transform = 'rotate(-30, 29, 29) '+transform
+      transform2 = 'rotate(-30, 29, 29) '+transform2
     }
-    rect2.setAttribute('transform', transform)
+    rect2.setAttribute('transform', transform2)
     rect2.setAttribute('height', size/2)
     rect2.setAttribute('width', size/2)
     rect2.setAttribute('fill', 'black')
