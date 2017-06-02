@@ -31,10 +31,10 @@ while 1:
 puzzle = driver.find_element_by_tag_name('table')
 url = driver.current_url
 rect = (
-	puzzle.location['x']-10,
-	puzzle.location['y']-10,
-	puzzle.location['x']+puzzle.size['width']+10,
-	puzzle.location['y']+puzzle.size['height']+10
+	puzzle.location['x']-25,
+	puzzle.location['y']-25,
+	puzzle.location['x']+puzzle.size['width']+25,
+	puzzle.location['y']+puzzle.size['height']+25
 )
 driver.save_screenshot('temp.png')
 driver.quit()
