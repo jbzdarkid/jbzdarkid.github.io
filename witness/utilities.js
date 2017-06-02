@@ -48,7 +48,7 @@ var styles = {
     'width':4, 'height':4, 'colors':1,
     'distribution':{
       'polyominos':3,
-      'onimoylops':2,
+      'onimoylops':1,
       'dots':2,
       'gaps':2,
     }
@@ -57,11 +57,26 @@ var styles = {
     'width':4, 'height':4, 'colors':2,
     'distribution':{
       'stars':6,
-      'negations':1
+      'negations':1,
     }
   },
-  'thursday':{}, // 5x5 Dots, rpolys, ??
-  'friday':{}, // 5x5 Negation*2, ??, ??
+  'thursday':{
+    'width':4, 'height':4, 'colors':2,
+    'distribution':{
+      'triangles':2,
+      'squares':2,
+      'dots':25,
+    }
+  },
+  'friday':{
+    'width':5, 'height':5, 'colors':4,
+    'distribution': {
+      'squares':4,
+      'stars':4,
+      'polyominos':4,
+    }
+    // symmetry: 1
+  },
   'saturday':{
     'width':5, 'height':5, 'colors':2,
     'distribution':{
@@ -81,6 +96,7 @@ var styles = {
       'dots':1,
       'gaps':1,
     }
+    // pillar: 1
   },
 }
 

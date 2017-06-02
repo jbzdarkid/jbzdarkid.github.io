@@ -125,27 +125,16 @@ function generatePuzzle() {
       var style = JSON.parse(urlParams['style'])
     }
   } else {
-    // var day = [
-      // 'sunday',
-      // 'monday',
-      // 'tuesday',
-      // 'wednesday',
-      // 'thursday',
-      // 'friday',
-      // 'saturday'][(new Date()).getDay()]
-    // var style = styles[day]
-    // FIXME: Think about full range of options
-    var style = {
-      'width':4, 'height':4, 'colors':2,
-      'distribution':{
-        'squares':2,
-        'stars':2,
-        'polyominos':2,
-        'onimoylops':1,
-        'negations':1,
-        'difficulty':70,
-      }
-    }
+    var day = [
+      'sunday',
+      'monday',
+      'tuesday',
+      'wednesday',
+      'thursday',
+      'friday',
+      'saturday'][(new Date()).getDay()]
+    var style = styles[day]
+    location.query = 'style='+style
   }
   var solutions = []
   // Require a puzzle with not too many solutions
