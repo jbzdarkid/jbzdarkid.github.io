@@ -101,7 +101,7 @@ function _randomize(style) {
           Object.assign(obj, {'type':'poly'})
         } else if (type == 'rpolyominos') {
           Object.assign(obj, {'type':'poly', 'rot':'all'})
-        } else if (type == 'onimoylops') {
+        } else if (type == 'ronimoylops') {
           Object.assign(obj, {'type':'ylop', 'color':'blue'})
         } else if (type == 'onimoylops') {
           Object.assign(obj, {'type':'ylop', 'color':'blue', 'rot':'all'})
