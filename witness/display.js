@@ -137,7 +137,8 @@ function _nega(elem) {
   return svg
 }
 
-function _tri(elem) {
+// FIXME: Sizing looks wrong?
+function _triangle(elem) {
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
   svg.setAttribute('viewBox', '0 0 58 58')
   for (var i=0; i<elem.count; i++) {
@@ -211,8 +212,8 @@ function draw(puzzle, target='puzzle') {
         cell.appendChild(_ylop(puzzle.grid[x][y]))
       } else if (puzzle.grid[x][y].type == 'nega') {
         cell.appendChild(_nega(puzzle.grid[x][y]))
-      } else if (puzzle.grid[x][y].type == 'tri') {
-        cell.appendChild(_tri(puzzle.grid[x][y]))
+      } else if (puzzle.grid[x][y].type == 'triangle') {
+        cell.appendChild(_triangle(puzzle.grid[x][y]))
       }
     }
   }
