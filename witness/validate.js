@@ -81,18 +81,16 @@ function _regionCheck(grid, region) {
   }
 
   // Check for triangles
-  for (var x=1; x<grid.length; x+=2) {
-    for (var y=1; y<grid[x].length; y+=2) {
-      if (grid[x][y].type == 'triangle') {
-        var count = 0
-        if (grid[x-1][y]) count++
-        if (grid[x+1][y]) count++
-        if (grid[x][y-1]) count++
-        if (grid[x][y+1]) count++
-        if (count != grid[x][y].count) {
-          // console.log('Triangle at grid['+x+']['+y+'] has', count, 'borders')
-          return false
-        }
+  for (var pos of region) {
+    if (grid[pos.x][pos.y].type == 'triangle') {
+      var count = 0
+      if (grid[pos.x-1][pos.y]) count++
+      if (grid[pos.x+1][pos.y]) count++
+      if (grid[pos.x][pos.y-1]) count++
+      if (grid[pos.x][pos.y+1]) count++
+      if (count != grid[pos.x][pos.y].count) {
+        // console.log('Triangle at grid['+pos.x+']['+pos.y+'] has', count, 'borders')
+        return false
       }
     }
   }
