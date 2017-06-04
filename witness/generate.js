@@ -58,19 +58,23 @@ function _randomize(style) {
   // Place a number of elements according to the set distribution
   for (var type in style['distribution']) {
     for (var i=0; i<style['distribution'][type]; i++) {
-      if (type == 'dots' && style['distribution'][type] == (width+1)*(height+1)) {
-        puzzle.dots.push(corners.splice(_randint(corners.length), 1)[0])
-      } else if (type == 'dots') {
-        var index = _randint(edges.length + corners.length)
-        if (index < edges.length) {
-          puzzle.dots.push(edges.splice(index, 1)[0])
+      if (type == 'dots') {
+        if (style['distribution'][type] == corners.length) {
+          puzzle.dots = corners // Style requests all corners filled
+          corners = []
+          break
         } else {
-          puzzle.dots.push(corners.splice(index - edges.length, 1)[0])
+          var index = _randint(edges.length + corners.length)
+          if (index < edges.length) {
+            puzzle.dots.push(edges.splice(index, 1)[0])
+          } else {
+            puzzle.dots.push(corners.splice(index - edges.length, 1)[0])
+          }
         }
       } else if (type == 'gaps') {
         puzzle.gaps.push(edges.splice(_randint(edges.length), 1)[0])
       } else if (type == 'negations') {
-        var color = ['white', RED, GREEN, BLUE, PURPLE][_randint(style['colors'])]
+        var color = [PURPLE, RED, ORANGE, GREEN, BLUE][_randint(style['colors'])]
         var pos = cells.splice(_randint(cells.length), 1)[0]
         puzzle.grid[pos.x][pos.y] = {'type':'nega', 'color':color}
       } else if (type == 'squares') {
@@ -83,27 +87,27 @@ function _randomize(style) {
         puzzle.grid[pos.x][pos.y] = {'type':'star', 'color':color}
       } else if (type == 'triangles') {
         var pos = cells.splice(_randint(cells.length), 1)[0]
-        puzzle.grid[pos.x][pos.y] = {'type':'triangle', 'color':'orange'}
-      } else if (type == 'polyominos' || type == 'onimoylops') {
+        var count = _randint(3)+1
+        puzzle.grid[pos.x][pos.y] = {'type':'triangle', 'color':ORANGE, 'count':count}
+      } else { // Polyominos
         var size = _randint(Math.min(width, height))+1
         var shapes = getPolyomino(size)
         var shape = shapes[_randint(shapes.length)]
         var numRotations = getPolyomino(size, shape)
-        if (numRotations == 1) {
-          var rotation = 0
-        } else {
-          var rotation = _randint(numRotations+1)
-          if (rotation == numRotations) { // Selected a rotation poly
-            rotation = 'all'
-          }
+        var rotation = _randint(numRotations)
+        var color = [ORANGE, GREEN, BLUE, PURPLE, RED][_randint(style['colors'])]
+        var obj = {'color':color, 'size':size, 'shape':shape, 'rot':rotation}
+        if (type == 'polyominos') {
+          Object.assign(obj, {'type':'poly'})
+        } else if (type == 'rpolyominos') {
+          Object.assign(obj, {'type':'poly', 'rot':'all'})
+        } else if (type == 'onimoylops') {
+          Object.assign(obj, {'type':'ylop', 'color':'blue'})
+        } else if (type == 'onimoylops') {
+          Object.assign(obj, {'type':'ylop', 'color':'blue', 'rot':'all'})
         }
         var pos = cells.splice(_randint(cells.length), 1)[0]
-        if (type == 'polyominos') {
-          var color = ['yellow', RED, GREEN, BLUE, PURPLE][_randint(style['colors'])]
-          puzzle.grid[pos.x][pos.y] = {'type':'poly', 'color':color, 'size':size, 'shape':shape, 'rot':rotation}
-        } else {
-          puzzle.grid[pos.x][pos.y] = {'type':'ylop', 'color':'blue', 'size':size, 'shape':shape, 'rot':rotation}
-        }
+        puzzle.grid[pos.x][pos.y] = obj
       }
     }
   }
@@ -132,16 +136,26 @@ window.onload = function() {
       'friday',
       'saturday'][(new Date()).getDay()]
     var style = styles[day]
-    location.query = 'style='+style
+    location.search = 'style='+day
   }
   var solutions = []
   // Require a puzzle with not too many solutions
-  while (solutions.length == 0 || solutions.length > style['difficulty']) {
+  while (true) {
     solutions = []
     var puzzleSeed = seed
     var puzzle = _randomize(style)
     solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
-    console.info('Solved', puzzle, 'found', solutions.length, 'solutions')
+    if (solutions.length == 0) {
+      console.info('Puzzle', puzzle, 'has no solution')
+      solutions = [puzzle]
+    } else if (solutions.length < style['difficulty'][0]) {
+      console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: Too Hard')
+    } else if (solutions.length > style['difficulty'][1]) {
+      console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: Too Easy')
+    } else {
+      console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: Just Right')
+      break
+    }
   }
   var solution = solutions[_randint(solutions.length)]
   var hints = []
