@@ -101,9 +101,9 @@ function _randomize(style) {
           Object.assign(obj, {'type':'poly'})
         } else if (type == 'rpolyominos') {
           Object.assign(obj, {'type':'poly', 'rot':'all'})
-        } else if (type == 'ronimoylops') {
-          Object.assign(obj, {'type':'ylop', 'color':'blue'})
         } else if (type == 'onimoylops') {
+          Object.assign(obj, {'type':'ylop', 'color':'blue'})
+        } else if (type == 'ronimoylops') {
           Object.assign(obj, {'type':'ylop', 'color':'blue', 'rot':'all'})
         }
         var pos = cells.splice(_randint(cells.length), 1)[0]
@@ -148,6 +148,7 @@ window.onload = function() {
     if (solutions.length == 0) {
       console.info('Puzzle', puzzle, 'has no solution')
       solutions = [puzzle]
+      break
     } else if (solutions.length < style['difficulty'][0]) {
       console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: Too Hard')
     } else if (solutions.length > style['difficulty'][1]) {
