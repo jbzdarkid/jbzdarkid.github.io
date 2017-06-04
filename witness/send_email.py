@@ -15,7 +15,7 @@ from smtplib import SMTP
 from PIL import Image
 
 driver = Chrome()
-driver.set_window_size(1280, 720)
+driver.set_window_size(2000, 2000)
 driver.get('file://'+getcwd()+'/witness/index.html')
 for line in driver.get_log('browser'):
 	print line
