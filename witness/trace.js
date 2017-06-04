@@ -37,15 +37,17 @@ function trace(elem) {
     var puzzle = JSON.parse(table.getAttribute('json'))
     var curr_elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
     if (curr_elem.className.includes('end')) {
-      for (var elem of table.getElementsByTagName('td')) {
-        var x = elem.id.split('_')[1]
-        var y = elem.id.split('_')[2]
-        if (elem.className.includes('trace-')) {
-          if (!elem.className.includes('end')) {
-            puzzle.grid[x][y] = true
+      for (var x=0; x<puzzle.grid.length; x++) {
+        for (var y=0; y<puzzle.grid[x].length; y++) {
+          var elem = document.getElementById(data.table+'_'+x+'_'+y)
+          if (elem != undefined && elem.className.includes('trace-')) {
+            if (!elem.className.includes('end')) {
+              puzzle.grid[x][y] = true
+            }
           }
         }
       }
+
       document.styleSheets[0].deleteRule(0)
       if (isValid(puzzle)) {
         document.styleSheets[0].insertRule(".line {animation: 1s 1 forwards line-succ}", 0)
