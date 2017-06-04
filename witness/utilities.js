@@ -45,7 +45,7 @@ var styles = {
     }
   },
   'tuesday':{
-    'width':4, 'height':4, 'colors':1,
+    'width':4, 'height':4, 'colors':1, 'difficulty':[1, 9999],
     'distribution':{
       'polyominos':3,
       'triangles':2,
@@ -60,24 +60,23 @@ var styles = {
     }
   },
   'thursday':{
-    'width':4, 'height':4, 'colors':2,
-    'distribution':{
-      'triangles':2,
-      'squares':2,
-      'dots':25,
-    }
-  },
-  'friday':{
-    'width':5, 'height':5, 'colors':4,
+    'width':5, 'height':5, 'colors':3, 'difficulty':[1, 9999],
     'distribution': {
-      'squares':4,
       'stars':4,
-      'polyominos':4,
+      'polyominos':2,
+      'onimoylops':2,
     }
     // symmetry: 1
   },
+  'friday':{
+    'width':5, 'height':5, 'colors':1, 'difficulty':[1, 9999],
+    'distribution':{
+      'triangles':12,
+      'negations':2,
+    }
+  },
   'saturday':{
-    'width':5, 'height':5, 'colors':2,
+    'width':5, 'height':5, 'colors':2, 'difficulty':[1, 9999],
     'distribution':{
       'triangles':3,
       'polyominos':4,
@@ -85,7 +84,7 @@ var styles = {
     }
   },
   'sunday':{
-    'width':6, 'height':6, 'colors':1,
+    'width':6, 'height':6, 'colors':1, 'difficulty':[1, 9999],
     'distribution':{
       'triangles':1,
       'polyominos':1,
