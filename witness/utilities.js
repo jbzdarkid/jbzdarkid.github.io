@@ -38,26 +38,25 @@ var urlParams
 
 var styles = {
   'monday':{
-    'width':4, 'height':4, 'colors':3,
+    'width':4, 'height':4, 'colors':2, 'difficulty':[50, 100],
     'distribution':{
       'squares':4,
-      'stars':3,
+      'stars':4,
     }
   },
   'tuesday':{
     'width':4, 'height':4, 'colors':1,
     'distribution':{
       'polyominos':3,
-      'onimoylops':1,
-      'dots':2,
-      'gaps':2,
+      'triangles':2,
     }
   },
   'wednesday':{
-    'width':4, 'height':4, 'colors':2,
+    'width':4, 'height':4, 'colors':2, 'difficulty':[1, 9999],
     'distribution':{
-      'stars':6,
+      'stars':5,
       'negations':1,
+      'dots':25,
     }
   },
   'thursday':{
