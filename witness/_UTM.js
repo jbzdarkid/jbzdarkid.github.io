@@ -1,5 +1,5 @@
 var tests = [
-  /* Various */
+  /* Various
   function() {
     var grid = _newGrid(4, 4)
     grid[1][1] = {'type':'square', 'color':'white'}
@@ -46,42 +46,140 @@ var tests = [
       {'x':8, 'y':3},
       {'x':8, 'y':5}
     ]}
-  }
+  }, function() {
+    var grid = _newGrid(5, 5)
+    grid[1][1] = {'type':'poly','color':'yellow','size':3,'shape':'L','rot':'all'}
+    grid[1][3] = {'type':'poly','color':'yellow','size':3,'shape':'L','rot':'all'}
+    grid[1][5] = {'type':'poly','color':'yellow','size':3,'shape':'L','rot':'all'}
+    grid[1][7] = {'type':'poly','color':'yellow','size':3,'shape':'L','rot':'all'}
+    grid[1][9] = {'type':'poly','color':'yellow','size':3,'shape':'L','rot':'all'}
+    grid[5][5] = {'type':'star','color':'purple'}
+    grid[9][1] = {'type':'star','color':'purple'}
+    grid[9][3] = {'type':'star','color':'purple'}
+    grid[9][5] = {'type':'star','color':'purple'}
+    grid[9][7] = {'type':'star','color':'purple'}
+    grid[9][9] = {'type':'star','color':'purple'}
+    return {'grid':grid}
+  }, function() {
+    var grid = _newGrid(4, 4)
+    grid[1][1] = {'type':'star', 'color':'white'}
+    grid[1][3] = {'type':'star', 'color':'white'}
+    grid[1][5] = {'type':'star', 'color':'white'}
+    grid[1][7] = {'type':'star', 'color':'white'}
+    grid[3][1] = {'type':'star', 'color':'white'}
+    grid[3][3] = {'type':'star', 'color':'white'}
+    grid[3][5] = {'type':'star', 'color':'black'}
+    grid[3][7] = {'type':'star', 'color':'red'}
+    grid[5][1] = {'type':'star', 'color':'black'}
+    grid[5][3] = {'type':'star', 'color':'black'}
+    grid[5][5] = {'type':'star', 'color':'black'}
+    grid[5][7] = {'type':'star', 'color':'red'}
+    grid[7][1] = {'type':'star', 'color':'red'}
+    grid[7][3] = {'type':'star', 'color':'red'}
+    grid[7][5] = {'type':'star', 'color':'red'}
+    grid[7][7] = {'type':'star', 'color':'red'}
+    return {'grid':grid}
+  }, function() {
+    var grid = _newGrid(4, 4)
+    grid[1][1] = {'type':'star', 'color':'purple'}
+    grid[3][1] = {'type':'poly','color':'orange','size':3,'shape':'I','rot':1}
+    grid[3][7] = {'type':'star', 'color':'purple'}
+    grid[5][7] = {'type':'poly','color':'orange','size':2,'shape':'I','rot':1}
+    return {'grid':grid, 'start':{'x':8,'y':4}, 'end':{'x':0,'y':4}}
+  }, function() {
+    var grid = _newGrid(4, 4)
+    grid[1][1] = {'type':'star', 'color':'purple'}
+    grid[3][3] = {'type':'poly','color':'orange','size':4,'shape':'T','rot':1}
+    grid[5][7] = {'type':'poly','color':'orange','size':3,'shape':'I','rot':0}
+    grid[7][7] = {'type':'star', 'color':'purple'}
+    return {'grid':grid, 'start':{'x':8,'y':2}, 'end':{'x':0,'y':4}, 'gaps':[{'x':6, 'y':5}]}
+  }, function() {
+    var grid = _newGrid(4, 4)
+    grid[1][7] = {'type':'star', 'color':'purple'}
+    grid[3][3] = {'type':'poly','color':'orange','size':4,'shape':'I','rot':1}
+    grid[7][3] = {'type':'star', 'color':'purple'}
+    grid[7][5] = {'type':'poly','color':'orange','size':4,'shape':'L','rot':'all'}
+    return {'grid':grid, 'start':{'x':8,'y':0}, 'end':{'x':0,'y':4}}
+  },/* function() {
+    var grid = _newGrid(6, 6)
+    grid[1][5] = {'type':'poly','color':'orange','size':3,'shape':'I','rot':1}
+    grid[1][11] = {'type':'star', 'color':'purple'}
+    grid[5][5] = {'type':'poly','color':'purple','size':3,'shape':'I','rot':0}
+    grid[9][5] = {'type':'poly','color':'orange','size':4,'shape':'J','rot':3}
+    grid[11][1] = {'type':'star', 'color':'purple'}
+    grid[11][11] = {'type':'star', 'color':'purple'}
+    return {'grid':grid, 'start':{'x':12,'y':6}, 'end':{'x':0,'y':6}}
+  }, function() {
+    var grid = _newGrid(4, 4)
+    grid[1][3] = {'type':'poly','color':'orange','size':4,'shape':'J','rot':'all'}
+    grid[1][5] = {'type':'poly','color':'orange','size':4,'shape':'J','rot':'all'}
+    grid[3][3] = {'type':'star', 'color':'purple'}
+    grid[3][7] = {'type':'ylop','color':'blue','size':3,'shape':'L','rot':0}
+    grid[7][5] = {'type':'star', 'color':'purple'}
+    return {'grid':grid, 'start':{'x':8,'y':4}, 'end':{'x':0,'y':4}}
+  }, function() {
+    var grid = _newGrid(5, 5)
+    grid[1][3] = {'type':'star', 'color':'green'}
+    grid[3][3] = {'type':'star', 'color':'purple'}
+    grid[5][7] = {'type':'poly','color':'orange','size':4,'shape':'L','rot':'all'}
+    grid[5][9] = {'type':'star', 'color':'green'}
+    grid[7][3] = {'type':'poly','color':'orange','size':4,'shape':'J','rot':'all'}
+    grid[9][7] = {'type':'poly','color':'orange','size':2,'shape':'I','rot':0}
+    grid[9][9] = {'type':'star', 'color':'purple'}
+    return {'grid':grid, 'start':{'x':10,'y':6}, 'end':{'x':0,'y':6}}
+  } */
   /* Blue puzzles that aren't obviously unique
   function() {
     var grid = _newGrid(5, 5)
-    grid[1][1] = {'type':'poly', 'shape':'5.?', 'color':'yellow'}
-    grid[1][9] = {'type':'poly', 'shape':'3.0.1', 'color':'yellow'}
-    grid[5][5] = {'type':'poly', 'shape':'1.0.0', 'color':'yellow'}
-    grid[9][9] = {'type':'poly', 'shape':'3.1.0', 'color':'yellow'}
+    grid[1][1] = {'type':'poly','color':'yellow','size':5,'shape':'V','rot':1}
+    grid[1][9] = {'type':'poly','color':'yellow','size':3,'shape':'I','rot':0}
+    grid[5][5] = {'type':'poly','color':'yellow','size':1,'shape':'O','rot':0}
+    grid[9][9] = {'type':'poly','color':'yellow','size':3,'shape':'L','rot':2}
     return {'grid':grid, 'gaps':[{'x':10, 'y':7}]}
   }, function() {
     var grid = _newGrid(5, 5)
-    grid[1][1] = {'type':'poly', 'shape':'5.?', 'color':'yellow'}
-    grid[1][9] = {'type':'poly', 'shape':'3.0.1', 'color':'yellow'}
-    grid[5][5] = {'type':'poly', 'shape':'1.0.0', 'color':'yellow'}
-    grid[9][9] = {'type':'poly', 'shape':'3.1.0', 'color':'yellow'}
+    grid[1][1] = {'type':'poly','color':'yellow','size':5,'shape':'V','rot':1}
+    grid[1][9] = {'type':'poly','color':'yellow','size':3,'shape':'I','rot':0}
+    grid[5][5] = {'type':'poly','color':'yellow','size':1,'shape':'O','rot':0}
+    grid[9][9] = {'type':'poly','color':'yellow','size':3,'shape':'L','rot':2}
     return {'grid':grid, 'gaps':[{'x':5, 'y':10}]}
   }, function() {
     var grid = _newGrid(5, 5)
-    grid[1][1] = {'type':'poly', 'shape':'3.0.0', 'color':'yellow'}
-    grid[1][5] = {'type':'poly', 'shape':'2.0.1', 'color':'yellow'}
-    grid[3][9] = {'type':'poly', 'shape':'1.0.0', 'color':'yellow'}
-    grid[7][5] = {'type':'poly', 'shape':'4.1.3', 'color':'yellow'}
-    return {'grid':grid, 'gaps':[{'x':3, 'y':4}, {'x':4, 'y':3}, {'x':4, 'y':5}, {'x':5, 'y':4}, ]}
+    grid[1][1] = {'type':'poly','color':'yellow','size':3,'shape':'I','rot':1}
+    grid[1][5] = {'type':'poly','color':'yellow','size':2,'shape':'I','rot':0}
+    grid[3][9] = {'type':'poly','color':'yellow','size':1,'shape':'O','rot':0}
+    grid[7][5] = {'type':'poly','color':'yellow','size':4,'shape':'J','rot':2}
+    return {'grid':grid, 'gaps':[{'x':3, 'y':4}, {'x':4, 'y':3}, {'x':4, 'y':5}, {'x':5, 'y':4}]}
   }, function() {
     var grid = _newGrid(5, 5)
-    grid[1][7] = {'type':'poly', 'shape':'4.1.2', 'color':'yellow'}
-    grid[9][5] = {'type':'poly', 'shape':'2.0.0', 'color':'yellow'}
-    grid[9][9] = {'type':'poly', 'shape':'4.5.0', 'color':'yellow'}
-    return {'grid':grid, 'gaps':[{'x':3, 'y':4}, {'x':4, 'y':3}, {'x':4, 'y':5}, {'x':5, 'y':4}, ]}
+    grid[1][7] = {'type':'poly','color':'yellow','size':4,'shape':'J','rot':1}
+    grid[9][5] = {'type':'poly','color':'yellow','size':2,'shape':'I','rot':1}
+    grid[9][9] = {'type':'poly','color':'yellow','size':4,'shape':'O','rot':0}
+    return {'grid':grid, 'gaps':[{'x':3, 'y':4}, {'x':4, 'y':3}, {'x':4, 'y':5}, {'x':5, 'y':4}]}
   }, function() {
     var grid = _newGrid(5, 5)
     grid[1][1] = {'type':'poly', 'shape':'2.0.0', 'color':'yellow'}
     grid[1][9] = {'type':'poly', 'shape':'3.0.1', 'color':'yellow'}
     grid[9][7] = {'type':'poly', 'shape':'4.5.0', 'color':'yellow'}
-    return {'grid':grid, 'gaps':[{'x':3, 'y':4}, {'x':4, 'y':3}, {'x':4, 'y':5}, {'x':5, 'y':4}, ]}
-  }, */
+    return {'grid':grid, 'gaps':[{'x':3, 'y':4}, {'x':4, 'y':3}, {'x':4, 'y':5}, {'x':5, 'y':4}]}
+  },*/
+  function() {
+    var grid = _newGrid(4, 4)
+    grid[1][1] = {'type':'square', 'color':'black'}
+    grid[1][7] = {'type':'square', 'color':'black'}
+    grid[3][1] = {'type':'square', 'color':'black'}
+    grid[3][7] = {'type':'square', 'color':'black'}
+    grid[5][1] = {'type':'square', 'color':'white'}
+    grid[5][7] = {'type':'square', 'color':'white'}
+    grid[7][1] = {'type':'square', 'color':'white'}
+    grid[7][7] = {'type':'square', 'color':'white'}
+    return {'grid':grid, 'start':{'x':8, 'y':8}, 'end':{'x':4, 'y':0}, 'gaps':[{'x':5, 'y':8}]}
+  }, function() {
+    var grid = _newGrid(4, 4)
+    grid[1][7] = {'type':'poly','color':'yellow','size':4,'shape':'I','rot':1}
+    grid[7][5] = {'type':'poly','color':'yellow','size':4,'shape':'J','rot':1}
+    return {'grid':grid, 'start':{'x':8, 'y':8}, 'end':{'x':0, 'y':0}}
+  }
   /* Green puzzles (with visible dots)
   function() {
     var grid = _newGrid(4, 4)
@@ -233,7 +331,6 @@ function loadTests() {
       if (puzzle['start'] == undefined) {
         puzzle['start'] = {'x':puzzle.grid.length-1, 'y':0}
       }
-      puzzle.grid[puzzle.start.x][puzzle.start.y] = true
       if (puzzle['end'] == undefined) {
         puzzle['end'] = {'x':0, 'y':puzzle.grid[0].length-1}
       }
@@ -282,6 +379,7 @@ function loadTests() {
             }
           }
         }
+        if (edges == 16) {console.log(solution)}
         if (edges < minEdges || (edges == minEdges && corners < minCorners)) {
           minEdges = edges
           minCorners = corners
