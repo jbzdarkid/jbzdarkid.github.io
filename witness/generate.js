@@ -100,10 +100,18 @@ function _randomize(style) {
         if (type == 'polyominos') {
           Object.assign(obj, {'type':'poly'})
         } else if (type == 'rpolyominos') {
+          if (numRotations == 1) {
+            i--
+            continue
+          }
           Object.assign(obj, {'type':'poly', 'rot':'all'})
         } else if (type == 'onimoylops') {
           Object.assign(obj, {'type':'ylop', 'color':'blue'})
         } else if (type == 'ronimoylops') {
+          if (numRotations == 1) {
+            i--
+            continue
+          }
           Object.assign(obj, {'type':'ylop', 'color':'blue', 'rot':'all'})
         }
         var pos = cells.splice(_randint(cells.length), 1)[0]
