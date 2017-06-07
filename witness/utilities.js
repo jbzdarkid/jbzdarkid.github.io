@@ -61,12 +61,10 @@ var styles = {
   },
   'thursday':{
     'width':5, 'height':5, 'colors':3, 'difficulty':[1, 9999],
-    'distribution': {
-      'stars':4,
-      'polyominos':2,
-      'onimoylops':2,
+    'distribution':{
+      'polyominos':4,
+      'squares':4,
     }
-    // symmetry: 1
   },
   'friday':{
     'width':5, 'height':5, 'colors':1, 'difficulty':[1, 9999],
@@ -75,16 +73,18 @@ var styles = {
       'negations':2,
     }
   },
-  'saturday':{
-    'width':5, 'height':5, 'colors':2, 'difficulty':[1, 9999],
-    'distribution':{
-      'triangles':3,
-      'polyominos':4,
-      'stars':3,
+  'saturday':{ // FIXME
+    'width':5, 'height':5, 'colors':3, 'difficulty':[1, 9999],
+    'distribution': {
+      'stars':4,
+      'polyominos':2,
+      'onimoylops':2,
     }
+    // symmetry: 1
   },
   'sunday':{
-    'width':6, 'height':6, 'colors':1, 'difficulty':[1, 9999],
+//    'width':6, 'height':6, 'colors':1, 'difficulty':[1, 9999],
+    'width':5, 'height':5, 'colors':1, 'difficulty':[1, 9999],
     'distribution':{
       'triangles':1,
       'polyominos':1,
