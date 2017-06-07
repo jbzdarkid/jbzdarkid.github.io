@@ -156,7 +156,7 @@ window.onload = function() {
     if (solutions.length == 0) {
       console.info('Puzzle', puzzle, 'has no solution')
       solutions = [puzzle]
-      break
+      // break
     } else if (solutions.length < style['difficulty'][0]) {
       console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: Too Hard')
     } else if (solutions.length > style['difficulty'][1]) {
