@@ -36,7 +36,6 @@ function isValid(puzzle) {
 // Since the path must be complete at this point, returns only true or false
 function _regionCheck(grid, region) {
   // console.log('Validating region of length', region.length)
-  // FIXME: Handle better (via for loop?)
   var hasNega = false
   for (var pos of region) {
     var cell = grid[pos.x][pos.y]
