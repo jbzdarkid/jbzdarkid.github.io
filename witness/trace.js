@@ -131,15 +131,47 @@ function _collision(next_elem) {
 
   // Corner collision
   if (elem.className.includes('corner') || elem.className.includes('start') && next_elem != undefined) {
-    // Calculates the distance to the edge in each direction
-    var dist_x = (data.subx < width/2) ? data.subx : width - data.subx
-    var dist_y = (data.suby < height/2) ? data.suby : height - data.suby
-    if (dist_x > dist_y) { // Reduce the larger distance to the edge
-      if (data.subx - cursorSize < 0) data.subx = cursorSize
-      if (data.subx + cursorSize > width) data.subx = width - cursorSize
-    } else {
-      if (data.suby - cursorSize < 0) data.suby = cursorSize
-      if (data.suby + cursorSize > height) data.suby = height - cursorSize
+    var deltaMod = 3 // Fraction of movement to redirect to the other direction
+    var padding = 3 // Pixels above and below the corner where we won't modify movement
+    if (data.subx < cursorSize && data.subx > cursorSize / 2) {
+      var delta = cursorSize - data.subx
+      if (data.suby > cursorSize + padding) {
+        data.subx += delta
+        data.suby -= delta / deltaMod
+      } else if (data.suby < cursorSize - padding) {
+        data.subx += delta
+        data.suby += delta / deltaMod
+      }
+    }
+    if (data.suby < cursorSize && data.suby > cursorSize / 2) {
+      var delta = cursorSize - data.suby
+      if (data.subx > cursorSize + padding) {
+        data.subx -= delta / deltaMod
+        data.suby += delta
+      } else if (data.subx < cursorSize - padding) {
+        data.subx += delta / deltaMod
+        data.suby += delta
+      }
+    }
+    if (data.subx > cursorSize && data.subx < cursorSize * 3 / 2) {
+      var delta = data.subx - cursorSize
+      if (data.suby > cursorSize + padding) {
+        data.subx -= delta
+        data.suby -= delta / deltaMod
+      } else if (data.suby < cursorSize - padding) {
+        data.subx -= delta
+        data.suby += delta / deltaMod
+      }
+    }
+    if (data.suby > cursorSize && data.suby < cursorSize * 3 / 2) {
+      var delta = data.suby - cursorSize
+      if (data.subx > cursorSize + padding) {
+        data.subx -= delta / deltaMod
+        data.suby -= delta
+      } else if (data.subx < cursorSize - padding) {
+        data.subx += delta / deltaMod
+        data.suby -= delta
+      }
     }
   }
 
