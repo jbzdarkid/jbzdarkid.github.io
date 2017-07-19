@@ -50,5 +50,13 @@
         }
       }
     </script>
+
+    <div id="cookieWarning" style="text-align: center; font-size: 36; width: 100%; position: fixed; bottom: 0; left: 0; background: gray">
+      This website uses 🍪s to save your sensitivity setting and puzzle completion rate.
+      <button onclick="closeWindow(true)">OK</button>
+      <button onclick="closeWindow(false)">NOT OK</button>
+      <script>if(localStorage.seenWarning) {closeWindow(true);}</script>
+    </div>
+
   </body>
 </html>
