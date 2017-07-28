@@ -194,7 +194,7 @@ var urlParams
     var match,
         pl     = /\+/g,  // Regex for replacing addition symbol with a space
         search = /([^&=]+)=?([^&]*)/g,
-        decode = function (s) {return decodeURIComponent(s.replace(pl, " "))},
+        decode = function (s) {return decodeURIComponent(s.replace(pl, ' '))},
         query  = window.location.search.substring(1)
 
     urlParams = {};
@@ -205,14 +205,14 @@ var urlParams
 function closeWindow(accept) {
     document.body.removeChild(document.getElementById('cookieWarning'))
     if (!accept) {
-        navigator.doNotTrack = "1"
+        navigator.doNotTrack = '1'
     } else {
         localStorage.seenWarning = true
     }
 }
 
 function saveSens() {
-    if (navigator.doNotTrack == "1" || navigator.doNotTrack == "yes" || window.doNotTrack == "1") {
+    if (navigator.doNotTrack == '1' || navigator.doNotTrack == 'yes' || window.doNotTrack == '1') {
         return
     }
     localStorage.sensitivity = document.getElementById('sens').value
