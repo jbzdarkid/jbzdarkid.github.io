@@ -244,8 +244,8 @@ var styles = {
   'thursday':{
     'width':5, 'height':5, 'colors':3, 'difficulty':[1, 9999],
     'distribution':{
-      'polyominos':4,
-      'squares':4,
+      'polyominos':3,
+      'stars':4,
     }
   },
   'friday':{

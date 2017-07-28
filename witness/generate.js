@@ -79,6 +79,13 @@ function _randomize(style) {
         var color = [RED, ORANGE, GREEN, BLUE, PURPLE][_randint(style['colors'])]
         var pos = cells.splice(_randint(cells.length), 1)[0]
         puzzle.grid[pos.x][pos.y] = {'type':'star', 'color':color}
+        // If the distribution has more stars, place another of the same color
+        // This should reduce the likelihood of unsolvable puzzles
+        if (i < style['distribution'][type]-1) {
+          i++
+          var pos2 = cells.splice(_randint(cells.length), 1)[0]
+          puzzle.grid[pos2.x][pos2.y] = {'type':'star', 'color':color}
+        }
       } else if (type == 'triangles') {
         var pos = cells.splice(_randint(cells.length), 1)[0]
         var count = _randint(3)+1
