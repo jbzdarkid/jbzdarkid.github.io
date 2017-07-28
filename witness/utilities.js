@@ -227,18 +227,18 @@ var styles = {
     }
   },
   'tuesday':{
-    'width':4, 'height':4, 'colors':1, 'difficulty':[1, 9999],
-    'distribution':{
-      'polyominos':3,
-      'triangles':2,
-    }
-  },
-  'wednesday':{
     'width':4, 'height':4, 'colors':2, 'difficulty':[1, 9999],
     'distribution':{
       'stars':5,
       'negations':1,
       'dots':25,
+    }
+  },
+  'wednesday':{
+    'width':4, 'height':4, 'colors':1, 'difficulty':[1, 9999],
+    'distribution':{
+      'polyominos':3,
+      'triangles':2,
     }
   },
   'thursday':{
