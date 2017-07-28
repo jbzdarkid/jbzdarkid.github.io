@@ -10,13 +10,7 @@ function _randint(n) {
 function _randomize(style) {
   var width = style['width']
   var height = style['height']
-  var puzzle = { // FIXME: This should be an object?
-    'grid':_newGrid(width, height),
-    'start':{'x':null, 'y':null},
-    'end':{'x':null,'y':null},
-    'dots':[],
-    'gaps':[],
-  }
+  var puzzle = new Puzzle(width, height)
 
   // FIXME: Both start and end must be on corners
   puzzle.start.x = 2*_randint(width)

@@ -3,7 +3,7 @@ function solve(puzzle, pos, solutions) {
   // if (solutions.length > 0) return
   if (pos.x == puzzle.end.x && pos.y == puzzle.end.y) {
     // Reached the end point, validate solution and tail recurse
-    var temp = _copy(puzzle)
+    var temp = puzzle.clone()
     temp.grid[puzzle.end.x][puzzle.end.y] = true
     if (isValid(temp)) {
       solutions.push(temp)

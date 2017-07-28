@@ -13,8 +13,94 @@ Event.prototype.movementY = Event.prototype.movementY || Event.prototype.mozMove
 
 /*** End Firefox compatibility ***/
 
-// Makes a copy of the grid, since javascript is pass-by-reference
-function _copyGrid(grid) {
+class Puzzle {
+  constructor(width, height) {
+    this.grid  = this.newGrid(width, height)
+    this.start = {'x':null, 'y':null}
+    this.end   = {'x':null, 'y':null}
+    this.dots  = []
+    this.gaps  = []
+    this.toString = function() {
+      return 'Puzzle object:\n'+
+        'Start: '+this.start.x+' '+this.start.y+'\n'+
+        'End: '+this.end.x+' '+this.end.y+'\n'+
+        'Dots: ['+this.dots+']\n'+
+        'Gaps: ['+this.gaps+']\n'+
+        'Grid ('+this.grid.length+' by '+this.grid[0].length+'):\n'+
+        this.gridString()
+    }
+  }
+
+  gridString() {
+    var str = ''
+    for (var row of this.grid) {
+      var rowStr = ''
+      for (var cell of row) {
+        if (cell == false) {
+          rowStr += ' '
+        } else if (cell == true) {
+          rowStr += '#'
+        } else {
+          rowStr += '?'
+        }
+      }
+      str += '[' + rowStr + ']\n'
+    }
+    return str
+  }
+
+
+  grid(x, y=null) {
+    if (y == null) {
+      // Passed in a value like {'x':x, 'y':y}
+      y = x.y
+      x = x.x
+    }
+    return this.grid[x][y]
+  }
+
+  newGrid(width, height) {
+    var grid = []
+    for (var i=0; i<2*width+1; i++) {
+      grid[i] = []
+      for (var j=0; j<2*height+1; j++) {
+        grid[i][j] = false
+      }
+    }
+    return grid
+  }
+
+  clone() {
+    return {
+      'grid':this.copyGrid(this.grid),
+      'start':{'x':this.start.x, 'y':this.start.y},
+      'end':{'x':this.end.x, 'y':this.end.y},
+      'dots':this.dots.slice(),
+      'gaps':this.gaps.slice()
+    }
+  }
+
+  copyGrid() {
+    var new_grid = []
+    for (var row of this.grid) {
+      new_grid.push(row.slice())
+    }
+    return new_grid
+  }
+}
+
+Puzzle.prototype.toString = function() {
+  return 'Puzzle object:\n'+
+    'Start: '+this.start.x+' '+this.start.y+'\n'+
+    'End: '+this.end.x+' '+this.end.y+'\n'+
+    'Dots: '+this.dots.toString()+'\n'+
+    'Gaps: '+this.gaps.toString()+'\n'+
+    'Grid: '+this.grid.length+' by '+this.grid[0].length+':\n'+
+    this.grid.toString()
+}
+
+
+function _copyGrid(width, height) { // FIXME: Deprecated
   var new_grid = []
   for (var row of grid) {
     new_grid.push(row.slice())
@@ -22,6 +108,86 @@ function _copyGrid(grid) {
   return new_grid
 }
 
+// A 2x2 grid is internally a 5x5:
+// Corner, edge, corner, edge, corner
+// Edge,   cell, edge,   cell, edge
+// Corner, edge, corner, edge, corner
+// Edge,   cell, edge,   cell, edge
+// Corner, edge, corner, edge, corner
+//
+// Corners and edges will have a value of true if the line passes through them
+// Cells will contain an object if there is an element in them
+function _newGrid(width, height) { // FIXME: Deprecated
+  var grid = []
+  for (var i=0; i<2*width+1; i++) {
+    grid[i] = []
+    for (var j=0; j<2*height+1; j++) {
+      grid[i][j] = false
+    }
+  }
+  return grid
+}
+
+// Returns the contiguous regions on the grid, as arrays of points.
+// The return array may contain empty cells.
+function _getRegions(grid) { // FIXME: Should I deprecate this?
+  var colors = []
+  for (var x=0; x<grid.length; x++) {
+    colors[x] = []
+    for (var y=0; y<grid[x].length; y++) {
+      colors[x][y] = 0
+    }
+  }
+
+  var regions = []
+  var unvisited = [{'x':1, 'y':1}]
+  var localRegion = []
+
+  while (unvisited.length > 0) {
+    regions[regions.length] = []
+    localRegion.push(unvisited.pop())
+    while (localRegion.length > 0) {
+      var cell = localRegion.pop()
+      if (colors[cell.x][cell.y] != 0) {
+        continue
+      } else {
+        colors[cell.x][cell.y] = regions.length
+        regions[regions.length-1].push(cell)
+      }
+      if (cell.x < colors.length-2 && colors[cell.x+2][cell.y] == 0) {
+        if (grid[cell.x+1][cell.y] == 0) {
+          localRegion.push({'x':cell.x+2, 'y':cell.y})
+        } else {
+          unvisited.push({'x':cell.x+2, 'y':cell.y})
+        }
+      }
+      if (cell.y < colors[cell.x].length-2 && colors[cell.x][cell.y+2] == 0) {
+        if (grid[cell.x][cell.y+1] == 0) {
+          localRegion.push({'x':cell.x, 'y':cell.y+2})
+        } else {
+          unvisited.push({'x':cell.x, 'y':cell.y+2})
+        }
+      }
+      if (cell.x > 1 && colors[cell.x-2][cell.y] == 0) {
+        if (grid[cell.x-1][cell.y] == 0) {
+          localRegion.push({'x':cell.x-2, 'y':cell.y})
+        } else {
+          unvisited.push({'x':cell.x-2, 'y':cell.y})
+        }
+      }
+      if (cell.y > 1 && colors[cell.x][cell.y-2] == 0) {
+        if (grid[cell.x][cell.y-1] == 0) {
+          localRegion.push({'x':cell.x, 'y':cell.y-2})
+        } else {
+          unvisited.push({'x':cell.x, 'y':cell.y-2})
+        }
+      }
+    }
+  }
+
+  // console.log('Computed region map, colors:', colors)
+  return regions
+}
 // http://stackoverflow.com/q/901115
 var urlParams
 (window.onpopstate = function () {
@@ -121,94 +287,3 @@ GREEN = '#58864C'
 BLUE = '#5697A2'
 PURPLE = '#785DAE'
 
-// Returns a new copy of a puzzle, since javascript is pass-by-reference.
-function _copy(puzzle) {
-  return {
-    'grid':_copyGrid(puzzle.grid),
-    'start':{'x':puzzle.start.x, 'y':puzzle.start.y},
-    'end':{'x':puzzle.end.x, 'y':puzzle.end.y},
-    'dots':puzzle.dots.slice(),
-    'gaps':puzzle.gaps.slice()
-  }
-}
-
-// A 2x2 grid is internally a 5x5:
-// Corner, edge, corner, edge, corner
-// Edge,   cell, edge,   cell, edge
-// Corner, edge, corner, edge, corner
-// Edge,   cell, edge,   cell, edge
-// Corner, edge, corner, edge, corner
-//
-// Corners and edges will have a value of true if the line passes through them
-// Cells will contain an object if there is an element in them
-function _newGrid(width, height) {
-  var grid = []
-  for (var i=0; i<2*width+1; i++) {
-    grid[i] = []
-    for (var j=0; j<2*height+1; j++) {
-      grid[i][j] = false
-    }
-  }
-  return grid
-}
-
-// Returns the contiguous regions on the grid, as arrays of points.
-// The return array may contain empty cells.
-function _getRegions(grid) {
-  var colors = []
-  for (var x=0; x<grid.length; x++) {
-    colors[x] = []
-    for (var y=0; y<grid[x].length; y++) {
-      colors[x][y] = 0
-    }
-  }
-
-  var regions = []
-  var unvisited = [{'x':1, 'y':1}]
-  var localRegion = []
-
-  while (unvisited.length > 0) {
-    regions[regions.length] = []
-    localRegion.push(unvisited.pop())
-    while (localRegion.length > 0) {
-      var cell = localRegion.pop()
-      if (colors[cell.x][cell.y] != 0) {
-        continue
-      } else {
-        colors[cell.x][cell.y] = regions.length
-        regions[regions.length-1].push(cell)
-      }
-      if (cell.x < colors.length-2 && colors[cell.x+2][cell.y] == 0) {
-        if (grid[cell.x+1][cell.y] == 0) {
-          localRegion.push({'x':cell.x+2, 'y':cell.y})
-        } else {
-          unvisited.push({'x':cell.x+2, 'y':cell.y})
-        }
-      }
-      if (cell.y < colors[cell.x].length-2 && colors[cell.x][cell.y+2] == 0) {
-        if (grid[cell.x][cell.y+1] == 0) {
-          localRegion.push({'x':cell.x, 'y':cell.y+2})
-        } else {
-          unvisited.push({'x':cell.x, 'y':cell.y+2})
-        }
-      }
-      if (cell.x > 1 && colors[cell.x-2][cell.y] == 0) {
-        if (grid[cell.x-1][cell.y] == 0) {
-          localRegion.push({'x':cell.x-2, 'y':cell.y})
-        } else {
-          unvisited.push({'x':cell.x-2, 'y':cell.y})
-        }
-      }
-      if (cell.y > 1 && colors[cell.x][cell.y-2] == 0) {
-        if (grid[cell.x][cell.y-1] == 0) {
-          localRegion.push({'x':cell.x, 'y':cell.y-2})
-        } else {
-          unvisited.push({'x':cell.x, 'y':cell.y-2})
-        }
-      }
-    }
-  }
-
-  // console.log('Computed region map, colors:', colors)
-  return regions
-}
