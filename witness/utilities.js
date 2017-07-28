@@ -20,43 +20,6 @@ class Puzzle {
     this.end   = {'x':null, 'y':null}
     this.dots  = []
     this.gaps  = []
-    this.toString = function() {
-      return 'Puzzle object:\n'+
-        'Start: '+this.start.x+' '+this.start.y+'\n'+
-        'End: '+this.end.x+' '+this.end.y+'\n'+
-        'Dots: ['+this.dots+']\n'+
-        'Gaps: ['+this.gaps+']\n'+
-        'Grid ('+this.grid.length+' by '+this.grid[0].length+'):\n'+
-        this.gridString()
-    }
-  }
-
-  gridString() {
-    var str = ''
-    for (var row of this.grid) {
-      var rowStr = ''
-      for (var cell of row) {
-        if (cell == false) {
-          rowStr += ' '
-        } else if (cell == true) {
-          rowStr += '#'
-        } else {
-          rowStr += '?'
-        }
-      }
-      str += '[' + rowStr + ']\n'
-    }
-    return str
-  }
-
-
-  grid(x, y=null) {
-    if (y == null) {
-      // Passed in a value like {'x':x, 'y':y}
-      y = x.y
-      x = x.x
-    }
-    return this.grid[x][y]
   }
 
   newGrid(width, height) {
@@ -89,18 +52,7 @@ class Puzzle {
   }
 }
 
-Puzzle.prototype.toString = function() {
-  return 'Puzzle object:\n'+
-    'Start: '+this.start.x+' '+this.start.y+'\n'+
-    'End: '+this.end.x+' '+this.end.y+'\n'+
-    'Dots: '+this.dots.toString()+'\n'+
-    'Gaps: '+this.gaps.toString()+'\n'+
-    'Grid: '+this.grid.length+' by '+this.grid[0].length+':\n'+
-    this.grid.toString()
-}
-
-
-function _copyGrid(width, height) { // FIXME: Deprecated
+function _copyGrid(grid) { // FIXME: Deprecated
   var new_grid = []
   for (var row of grid) {
     new_grid.push(row.slice())
@@ -188,6 +140,7 @@ function _getRegions(grid) { // FIXME: Should I deprecate this?
   // console.log('Computed region map, colors:', colors)
   return regions
 }
+
 // http://stackoverflow.com/q/901115
 var urlParams
 (window.onpopstate = function () {
