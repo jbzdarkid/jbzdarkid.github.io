@@ -14,10 +14,12 @@ Event.prototype.movementY = Event.prototype.movementY || Event.prototype.mozMove
 /*** End Firefox compatibility ***/
 
 class Puzzle {
+  // Javascript doesn't allow named parameters, so this constructor
+  // isn't taking any additional arguments.
   constructor(width, height) {
     this.grid  = this.newGrid(width, height)
-    this.start = {'x':null, 'y':null}
-    this.end   = {'x':null, 'y':null}
+    this.start = {'x':2*width, 'y':0}
+    this.end   = {'x':0, 'y':2*height}
     this.dots  = []
     this.gaps  = []
   }
