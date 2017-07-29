@@ -200,38 +200,37 @@ function _combinations(grid, region) {
   }
   if (nega == undefined) {
     return [[]]
-  } else {
-    // Remove it from the region so we don't try and use it
-    region.splice(nega.i, 1)
-    grid[nega.x][nega.y] = 0
-    var combinations = []
-    // For each element in the region
-    for (var i=0; i<region.length; i++) {
-      var pos = region[i]
-      var cell = grid[pos.x][pos.y]
-      if (cell != 0) {
-        // Negate the item
-        // FIXME: This is where duplication occurs.
-        var new_region = region.slice()
-        new_region.splice(i, 1)
-        grid[pos.x][pos.y] = 0
-        // Find all combinations of later items
-        for (var comb of _combinations(grid, new_region)) {
-          // Combine this negation with each later combination
-          combinations.push([{
-            'source':{'x':nega.x, 'y':nega.y, 'cell':nega.cell},
-            'target':{'x':pos.x, 'y':pos.y, 'cell':cell}
-          }].concat(comb))
-        }
-        // Undo the negation
-        grid[pos.x][pos.y] = cell
-      }
-    }
-    // Restore the negation element too
-    region.splice(nega.i, 0, {'x':nega.x, 'y':nega.y})
-    grid[nega.x][nega.y] = nega.cell
-    return combinations
   }
+  // Remove it from the region so we don't try and use it
+  region.splice(nega.i, 1)
+  grid[nega.x][nega.y] = 0
+  var combinations = []
+  // For each element in the region
+  for (var i=0; i<region.length; i++) {
+    var pos = region[i]
+    var cell = grid[pos.x][pos.y]
+    if (cell != 0) {
+      // Negate the item
+      // FIXME: This is where duplication occurs.
+      var new_region = region.slice()
+      new_region.splice(i, 1)
+      grid[pos.x][pos.y] = 0
+      // Find all combinations of later items
+      for (var comb of _combinations(grid, new_region)) {
+        // Combine this negation with each later combination
+        combinations.push([{
+          'source':{'x':nega.x, 'y':nega.y, 'cell':nega.cell},
+          'target':{'x':pos.x, 'y':pos.y, 'cell':cell}
+        }].concat(comb))
+      }
+      // Undo the negation
+      grid[pos.x][pos.y] = cell
+    }
+  }
+  // Restore the negation element too
+  region.splice(nega.i, 0, {'x':nega.x, 'y':nega.y})
+  grid[nega.x][nega.y] = nega.cell
+  return combinations
 }
 
 // Returns whether or not a set of polyominos fit into a region.
