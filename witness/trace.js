@@ -130,7 +130,7 @@ function _collision(next_elem) {
   }
 
   // Corner collision
-  if (elem.className.includes('corner') || elem.className.includes('start') && next_elem != undefined) {
+  if ((elem.className.includes('corner') || elem.className.includes('start')) && next_elem != null) {
     var deltaMod = 3 // Fraction of movement to redirect to the other direction
     var padding = 3 // Pixels above and below the corner where we won't modify movement
     if (data.subx < cursorSize && data.subx > cursorSize / 2) {
