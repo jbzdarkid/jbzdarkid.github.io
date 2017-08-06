@@ -1,7 +1,7 @@
 var cursorSize = 12
 var data
 function trace(elem) {
-  if (document.pointerLockElement == null) {
+  if (document.pointerLockElement == null) { // Started tracing a solution
     document.styleSheets[0].deleteRule(0)
     document.styleSheets[0].insertRule(".line {fill: #6D4D4A}", 0)
     var parent = elem.parentNode
@@ -18,7 +18,10 @@ function trace(elem) {
     var table = document.getElementById(data.table)
     // These aren't really arrays, they live update during iteration
     for (var cell of table.getElementsByTagName('td')) {
+      // Remove leftover color from a previous trace
       cell.className = cell.className.split('-')[0]
+      // Remove leftover color from a shown solution
+      cell.style.removeProperty('background') 
     }
     var lines = table.getElementsByClassName('line')
     while (lines.length > 0) {
@@ -32,7 +35,7 @@ function trace(elem) {
     _draw(elem, data.subx, data.suby)
 
     elem.requestPointerLock()
-  } else {
+  } else { // Stopped tracing a solution
     var table = document.getElementById(data.table)
     var puzzle = JSON.parse(table.getAttribute('json'))
     var curr_elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
