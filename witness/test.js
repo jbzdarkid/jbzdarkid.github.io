@@ -194,9 +194,7 @@ window.onload = function() {
     try {
       var solutions = []
       var puzzleData = tests[i]()
-      console.log('Testing', puzzleData.puzzle)
       solve(puzzleData.puzzle, puzzleData.puzzle.start, solutions)
-      console.log(solutions.length)
       if (solutions.length != puzzleData.solutions) {
         document.getElementById('test'+i).parentElement.bgColor = 'red'
       }
