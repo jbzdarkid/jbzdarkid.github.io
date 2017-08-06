@@ -80,7 +80,7 @@ function _randomize(style) {
         var pos = cells.splice(_randint(cells.length), 1)[0]
         puzzle.grid[pos.x][pos.y] = {'type':'star', 'color':color}
         // If the distribution has more stars, place another of the same color
-        // This should reduce the likelihood of unsolvable puzzles
+        // This reduces the likelihood of unsolvable puzzles
         if (i < style['distribution'][type]-1) {
           i++
           var pos2 = cells.splice(_randint(cells.length), 1)[0]
@@ -154,16 +154,15 @@ window.onload = function() {
     var puzzleSeed = seed
     var puzzle = _randomize(style)
     solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
+    console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: ')
     if (solutions.length == 0) {
-      console.info('Puzzle', puzzle, 'has no solution')
-      solutions = [puzzle]
-      // break
+      console.info('Impossible')
     } else if (solutions.length < style['difficulty'][0]) {
-      console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: Too Hard')
+      console.info('Too Hard')
     } else if (solutions.length > style['difficulty'][1]) {
-      console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: Too Easy')
+      console.info('Too Easy')
     } else {
-      console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: Just Right')
+      console.info('Just Right')
       break
     }
   }
