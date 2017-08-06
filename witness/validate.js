@@ -184,51 +184,43 @@ function _regionCheck(grid, region) {
 }
 
 // Returns all the different ways to negate elements.
-// FIXME: Doesn't remove swaps, i.e. A->i B->j == A->j B->i
-function _combinations(grid, region) {
-  // Get the first negation symbol
+function _combinations(grid, region, regionStart=0) {
+  // Find the first negation element (may be part of cells already considered)
   var nega = undefined
   for (var i=0; i<region.length; i++) {
     var pos = region[i]
     var cell = grid[pos.x][pos.y]
-    if (cell != 0) {
-      if (cell.type == 'nega') {
-        nega = {'x':pos.x, 'y':pos.y, 'cell':cell, 'i':i}
-        break
-      }
+    if (cell == 0) continue
+    if (cell.type == 'nega') {
+      nega = {'x':pos.x, 'y':pos.y, 'cell':cell}
+      grid[nega.x][nega.y] = 0
+      break
     }
   }
   if (nega == undefined) {
+    // No more negation elements -> No ways to combine negation elements
     return [[]]
   }
-  // Remove it from the region so we don't try and use it
-  region.splice(nega.i, 1)
-  grid[nega.x][nega.y] = 0
+
   var combinations = []
-  // For each element in the region
-  for (var i=0; i<region.length; i++) {
+  // All elements before regionStart have been considered, so don't try negating them again.
+  for (var i=regionStart; i<region.length; i++) {
     var pos = region[i]
     var cell = grid[pos.x][pos.y]
-    if (cell != 0) {
-      // Negate the item
-      // FIXME: This is where duplication occurs.
-      var new_region = region.slice()
-      new_region.splice(i, 1)
-      grid[pos.x][pos.y] = 0
-      // Find all combinations of later items
-      for (var comb of _combinations(grid, new_region)) {
-        // Combine this negation with each later combination
-        combinations.push([{
-          'source':{'x':nega.x, 'y':nega.y, 'cell':nega.cell},
-          'target':{'x':pos.x, 'y':pos.y, 'cell':cell}
-        }].concat(comb))
-      }
-      // Undo the negation
-      grid[pos.x][pos.y] = cell
+    if (cell == 0) continue
+    grid[pos.x][pos.y] = 0
+    // Find all combinations of later items
+    for (var comb of _combinations(grid, region, i+1)) {
+      // Combine this negation with each later combination
+      combinations.push([{
+        'source':{'x':nega.x, 'y':nega.y, 'cell':nega.cell},
+        'target':{'x':pos.x, 'y':pos.y, 'cell':cell}
+      }].concat(comb))
     }
+    // Restore the negated element
+    grid[pos.x][pos.y] = cell
   }
-  // Restore the negation element too
-  region.splice(nega.i, 0, {'x':nega.x, 'y':nega.y})
+  // Restore the negation symbol
   grid[nega.x][nega.y] = nega.cell
   return combinations
 }
