@@ -180,6 +180,12 @@ var tests = [
     puzzle.grid[1][5] = {'type':'triangle', 'color':'orange', 'count':2}
     puzzle.grid[1][9] = {'type':'triangle', 'color':'orange', 'count':3}
     return {'puzzle':puzzle, 'solutions':2}
+  }, function() {
+    var puzzle = new Puzzle(3, 3)
+    puzzle.grid[1][1] = {'type':'nega', 'color':'white'}
+    puzzle.grid[3][3] = {'type':'nega', 'color':'white'}
+    puzzle.grid[5][5] = {'type':'nega', 'color':'white'}
+    return {'puzzle':puzzle, 'solutions':0}
   }
 ]
 
