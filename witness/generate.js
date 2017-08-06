@@ -177,10 +177,28 @@ window.onload = function() {
   }
   window['showHint'] = function() {
     if (hints.length <= 0) return
-    var hint = hints.splice(_randint(hints.length), 1)[0]
+    var goodHints = []
+    var badHints = []
+    console.log(puzzle.grid)
+    for (var hint of hints) {
+      // FIXME: This is terrible encapsulation
+      var elem = document.getElementById("puzzle_"+hint.x+"_"+hint.y)
+      if (!elem.className.endsWith("trace")) {
+        // User's solution will be broken by this hint
+        goodHints.push(hint)
+      } else {
+        badHints.push(hint)
+      }
+    }
+    if (goodHints.length > 0) {
+      var hint = goodHints.splice(_randint(goodHints.length), 1)[0]
+    } else {
+      var hint = badHints.splice(_randint(badHints.length), 1)[0]
+    }
     puzzle.gaps.push(hint)
     solution.gaps.push(hint)
     draw(puzzle)
+    hints = badHints.concat(goodHints)
   }
   window['showSolution'] = function() {
     draw(solution)
