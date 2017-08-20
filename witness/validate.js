@@ -22,7 +22,22 @@ function isValid(puzzle) {
   }
   // Check that individual regions are valid
   for (var region of _getRegions(puzzle.grid)) {
-    if (!_regionCheck(puzzle.grid, region)) {
+    var key = JSON.stringify(region)
+    var regionValid = puzzle.regionCache[key]
+    if (regionValid == undefined) {
+      // console.log('Cache miss for region', region, 'key', key)
+      regionValid = _regionCheck(puzzle.grid, region)
+      puzzle.regionCache[key] = regionValid
+      // FIXME: Can't cache regions with triangles because the edges matter, not just the cells.
+      for (var pos of region) {
+        if (puzzle.grid[pos.x][pos.y].type == 'triangle') {
+          puzzle.regionCache[key] = undefined
+          break
+        }
+      }
+    }
+    
+    if (!regionValid) {
       // console.log('Region', region, 'unsolvable')
       return false // Since the endpoint is filled, regions can't be improved
     }

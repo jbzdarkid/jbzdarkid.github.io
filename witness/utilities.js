@@ -22,6 +22,7 @@ class Puzzle {
     this.end   = {'x':0, 'y':2*height}
     this.dots  = []
     this.gaps  = []
+    this.regionCache = {}
   }
 
   newGrid(width, height) {
@@ -41,7 +42,8 @@ class Puzzle {
       'start':{'x':this.start.x, 'y':this.start.y},
       'end':{'x':this.end.x, 'y':this.end.y},
       'dots':this.dots.slice(),
-      'gaps':this.gaps.slice()
+      'gaps':this.gaps.slice(),
+      'regionCache':this.regionCache
     }
   }
 
