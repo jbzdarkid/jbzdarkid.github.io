@@ -157,22 +157,6 @@ var urlParams
        urlParams[decode(match[1])] = decode(match[2])
 })()
 
-function closeWindow(accept) {
-    document.body.removeChild(document.getElementById('cookieWarning'))
-    if (!accept) {
-        navigator.doNotTrack = '1'
-    } else {
-        localStorage.seenWarning = true
-    }
-}
-
-function saveSens() {
-    if (navigator.doNotTrack == '1' || navigator.doNotTrack == 'yes' || window.doNotTrack == '1') {
-        return
-    }
-    localStorage.sensitivity = document.getElementById('sens').value
-}
-
 var styles = {
   'monday':{
     'width':4, 'height':4, 'colors':2, 'difficulty':[50, 100],
