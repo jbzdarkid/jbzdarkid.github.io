@@ -155,19 +155,153 @@ function _collision(next_elem) {
   // If next_elem is null, we're at an insersection but pushing against a wall,
   // so we fall through to wall collision.
   if ((elem.className.includes('corner') || elem.className.includes('start')) && next_elem != null) {
-    var padding = 3 // "Smoothing" pixels where the cursor can slide
-    if (data.subx < cursorSize - padding) { // In the left of the intersection
+    var smoothing = 5 // Pixels around the exact center where no collision occurs
+    if (data.subx < cursorSize - smoothing) { // In the left of the intersection
       data.subx += Math.abs(data.suby - cursorSize) / deltaMod
       data.suby = cursorSize
-    } else if (data.subx > cursorSize + padding) { // In the right of the intersection
+    } else if (data.subx > cursorSize + smoothing) { // In the right of the intersection
       data.subx -= Math.abs(data.suby - cursorSize) / deltaMod
       data.suby = cursorSize
-    } else if (data.suby < cursorSize - padding) { // In the top of the intersection
+    } else if (data.suby < cursorSize - smoothing) { // In the top of the intersection
       data.suby += Math.abs(data.subx - cursorSize) / deltaMod
       data.subx = cursorSize
-    } else if (data.suby > cursorSize + padding) { // In the bottom of the intersection
+    } else if (data.suby > cursorSize + smoothing) { // In the bottom of the intersection
       data.suby -= Math.abs(data.subx - cursorSize) / deltaMod
       data.subx = cursorSize
+    }
+  }
+
+  // Endpoint collision
+  if (next_elem == null) {
+    if (elem.className.startsWith('end_up')) {
+      data.suby += Math.abs(data.subx - cursorSize) / deltaMod
+      data.subx = cursorSize
+    } else if (elem.className.startsWith('end_down')) {
+      data.suby -= Math.abs(data.subx - cursorSize) / deltaMod
+      data.subx = cursorSize
+    } else if (elem.className.startsWith('end_left')) {
+      data.subx += Math.abs(data.suby - cursorSize) / deltaMod
+      data.suby = cursorSize
+    } else if (elem.className.startsWith('end_right')) {
+      console.log('Endpoint')
+      data.subx -= Math.abs(data.suby - cursorSize) / deltaMod
+      data.suby = cursorSize
+    }
+  }
+
+  // FIXME: data.x and data.y feel backwards
+  // Inner wall collision
+  if (data.subx < cursorSize) { // Against a left wall
+    var new_elem = getVisualCell(data.x, data.y - 1)
+    if (new_elem != null && !new_elem.className.includes('trace')) {
+      if (data.suby < height / 2) { // Top half of cell
+        data.suby -= Math.abs(data.subx - cursorSize) / deltaMod
+        data.subx = cursorSize
+      } else { // Bottom half of cell
+        data.suby += Math.abs(data.subx - cursorSize) / deltaMod
+        data.subx = cursorSize
+      }
+    }
+  } else if (data.subx > cursorSize) { // Against a right wall
+    var new_elem = getVisualCell(data.x, data.y + 1)
+    if (new_elem != null && !new_elem.className.includes('trace')) {
+      if (data.suby < height / 2) { // Top half of cell
+        data.suby -= Math.abs(data.subx - cursorSize) / deltaMod
+        data.subx = cursorSize
+      } else { // Bottom half of cell
+        data.suby += Math.abs(data.subx - cursorSize) / deltaMod
+        data.subx = cursorSize
+      }
+    }
+  }
+  if (data.suby < cursorSize) { // Against a top wall
+    var new_elem = getVisualCell(data.x - 1, data.y)
+    if (new_elem != null && !new_elem.className.includes('trace')) {
+      if (data.subx < width / 2) { // Left half of cell
+        data.subx -= Math.abs(data.suby - cursorSize) / deltaMod
+        data.suby = cursorSize
+      } else { // Right half of cell
+        data.subx += Math.abs(data.suby - cursorSize) / deltaMod
+        data.suby = cursorSize
+      }
+    }
+  } else if (data.suby > cursorSize) { // Against a bottom wall
+    var new_elem = getVisualCell(data.x + 1, data.y)
+    if (new_elem != null && !new_elem.className.includes('trace')) {
+      if (data.subx < width / 2) { // Left half of cell
+        data.subx -= Math.abs(data.suby - cursorSize) / deltaMod
+        data.suby = cursorSize
+      } else { // Right half of cell
+        data.subx += Math.abs(data.suby - cursorSize) / deltaMod
+        data.suby = cursorSize
+      }
+    }
+  }
+
+  // FIXME: data.x and data.y feel backwards
+  // Outer wall collision
+  // Against left wall, pushing moves you up
+  if (data.subx < cursorSize && getVisualCell(data.x, data.y - 1) == null) {
+    data.suby -= Math.abs(data.subx - cursorSize) / deltaMod
+    data.subx = cursorSize
+    if (getVisualCell(data.x - 1, data.y) == null) { // Also against top wall
+      if (data.suby < cursorSize) data.suby = cursorSize
+    }
+  }
+  // Against right wall, pushing moves you up
+  if (data.subx > cursorSize && getVisualCell(data.x, data.y + 1) == null) {
+    data.suby -= Math.abs(data.subx - cursorSize) / deltaMod
+    data.subx = cursorSize
+    if (getVisualCell(data.x - 1, data.y) == null) { // Also against top wall
+      if (data.suby < cursorSize) data.suby = cursorSize
+    }
+  }
+  // Against top wall, pushing moves you right
+  if (data.suby < cursorSize && getVisualCell(data.x - 1, data.y) == null) {
+    data.subx += Math.abs(data.suby - cursorSize) / deltaMod
+    data.suby = cursorSize
+    if (getVisualCell(data.x, data.y + 1) == null) { // Also against right wall
+      if (data.subx > cursorSize) data.subx = cursorSize
+    }
+  }
+  // Against bottom wall, pushing moves you right
+  if (data.suby > cursorSize && getVisualCell(data.x + 1, data.y) == null) {
+    data.subx += Math.abs(data.suby - cursorSize) / deltaMod
+    data.suby = cursorSize
+    if (getVisualCell(data.x, data.y + 1) == null) { // Also against right wall
+      if (data.subx > cursorSize) data.subx = cursorSize
+    }
+  }
+  
+  // Self collision - Should not slide because the cursor is 'stuck'
+  var selfPadding = 5 // Gap between cursor and previously traced line
+  if (elem.className.endsWith('trace-r')) { // Approaching from left
+    var new_elem = getVisualCell(data.x, data.y + 1)
+    if (new_elem != null && new_elem.className.includes('trace-')) {
+      if (data.subx > width - cursorSize - selfPadding) {
+        data.subx = width - cursorSize - selfPadding
+      }
+    }
+  } else if (elem.className.endsWith('trace-l')) { // Approaching from right
+    var new_elem = getVisualCell(data.x, data.y - 1)
+    if (new_elem != null && new_elem.className.includes('trace-')) {
+      if (data.subx < cursorSize + selfPadding) {
+        data.subx = cursorSize + selfPadding
+      }
+    }
+  } else if (elem.className.endsWith('trace-d')) { // Approaching from above
+    var new_elem = getVisualCell(data.x + 1, data.y)
+    if (new_elem != null && new_elem.className.includes('trace-')) {
+      if (data.suby > height - cursorSize - selfPadding) {
+        data.suby = height - cursorSize - selfPadding
+      }
+    }
+  } else if (elem.className.endsWith('trace-u')) { // Approaching from below
+    var new_elem = getVisualCell(data.x - 1, data.y)
+    if (new_elem != null && new_elem.className.includes('trace-')) {
+      if (data.suby < cursorSize + selfPadding) {
+        data.suby = cursorSize + selfPadding
+      }
     }
   }
 
@@ -189,107 +323,6 @@ function _collision(next_elem) {
     } else if (elem.className.endsWith('trace-u')) {
       if (data.suby - cursorSize < (height + gapSize)/2) { // Approaching from below
         data.suby = (height + gapSize)/2 + cursorSize
-      }
-    }
-  }
-
-  // Self collision
-  if (next_elem != null && next_elem.className.includes('trace-')) {
-    var padding = 5 // Gap between cursor and previously traced line
-    
-    if (elem.className.endsWith('trace-r')) { // Approaching from left
-      if (data.subx > width - cursorSize - padding) {
-        data.subx = width - cursorSize - padding
-      }
-    } else if (elem.className.endsWith('trace-l')) { // Approaching from right
-      if (data.subx < cursorSize + padding) {
-        data.subx = cursorSize + padding
-      }
-    } else if (elem.className.endsWith('trace-d')) { // Approaching from above
-      if (data.suby > height - cursorSize - padding) {
-        data.suby = height - cursorSize - padding
-      }
-    } else if (elem.className.endsWith('trace-u')) { // Approaching from below
-      if (data.suby < cursorSize + padding) {
-        data.suby = cursorSize + padding
-      }
-    }
-  }
-
-  // FIXME: data.x and data.y feel backwards
-  // Outer wall collision
-  // Against left or right wall, pushing moves you up
-  if ((data.subx < cursorSize && getVisualCell(data.x, data.y - 1) == null)
-   || (data.subx > cursorSize && getVisualCell(data.x, data.y + 1) == null)) {
-    data.suby -= Math.abs(data.subx - cursorSize) / deltaMod
-    data.subx = cursorSize
-    if (getVisualCell(data.x - 1, data.y) == null) { // Also against top wall
-      if (data.suby < cursorSize) data.suby = cursorSize
-    }
-  }
-  // Against top or bottom wall, pushing moves you right
-  if ((data.suby < cursorSize && getVisualCell(data.x - 1, data.y) == null)
-   || (data.suby > cursorSize && getVisualCell(data.x + 1, data.y) == null)) {
-    data.subx += Math.abs(data.suby - cursorSize) / deltaMod
-    data.suby = cursorSize
-    if (getVisualCell(data.x, data.y + 1) == null) { // Also against right wall
-      if (data.subx > cursorSize) data.subx = cursorSize
-    }
-  }
-  
-  // FIXME: data.x and data.y feel backwards
-  // Cell wall collision
-  if (data.subx < cursorSize) { // Against left wall
-    var new_elem = getVisualCell(data.x, data.y - 1)
-    if (new_elem != null
-     && !new_elem.className.endsWith('trace')
-     && !elem.className.endsWith('trace-r')) {
-      if (data.suby < height / 2) { // Top half of cell
-        data.suby -= Math.abs(data.subx - cursorSize) / deltaMod
-        data.subx = cursorSize
-      } else { // Bottom half of cell
-        data.suby += Math.abs(data.subx - cursorSize) / deltaMod
-        data.subx = cursorSize
-      }
-    }
-  } else if (data.subx > cursorSize) { // Against right wall
-    var new_elem = getVisualCell(data.x, data.y + 1)
-    if (new_elem != null
-     && !new_elem.className.endsWith('trace')
-     && !elem.className.endsWith('trace-l')) {
-      if (data.suby < height / 2) { // Top half of cell
-        data.suby -= Math.abs(data.subx - cursorSize) / deltaMod
-        data.subx = cursorSize
-      } else { // Bottom half of cell
-        data.suby += Math.abs(data.subx - cursorSize) / deltaMod
-        data.subx = cursorSize
-      }
-    }
-  }
-  if (data.suby < cursorSize) { // Against top wall
-    var new_elem = getVisualCell(data.x - 1, data.y)
-    if (new_elem != null
-     && !new_elem.className.endsWith('trace')
-     && !elem.className.endsWith('trace-d')) {
-      if (data.subx < width / 2) { // Left half of cell
-        data.subx -= Math.abs(data.suby - cursorSize) / deltaMod
-        data.suby = cursorSize
-      } else { // Right half of cell
-        data.subx += Math.abs(data.suby - cursorSize) / deltaMod
-        data.suby = cursorSize
-      }
-    }
-  } else if (data.suby > cursorSize) { // Against bottom wall
-    var new_elem = getVisualCell(data.x + 1, data.y)
-    if (new_elem != null
-     && !new_elem.className.endsWith('trace')
-     && !elem.className.endsWith('trace-u')) {
-      if (data.subx < width / 2) { // Left half of cell
-        data.subx -= Math.abs(data.suby - cursorSize) / deltaMod
-        data.suby = cursorSize
-      } else { // Right half of cell
-        data.subx += Math.abs(data.suby - cursorSize) / deltaMod
-        data.suby = cursorSize
       }
     }
   }
