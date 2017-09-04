@@ -178,15 +178,17 @@ function draw(puzzle, target='puzzle') {
       if (puzzle.grid[x][y] == true) {
         cell.style.background = '#4F1A1A'
       }
-      // Grid corners are rounded
-      if (x == 0 && y == 0) {
-        cell.style.borderTopLeftRadius = '12px'
-      } else if (x == 0 && y == puzzle.grid[x].length-1) {
-        cell.style.borderTopRightRadius = '12px'
-      } else if (x == puzzle.grid.length-1 && y == 0) {
-        cell.style.borderBottomLeftRadius = '12px'
-      } else if (x == puzzle.grid.length-1 && y == puzzle.grid[x].length-1) {
-        cell.style.borderBottomRightRadius = '12px'
+      // Grid corners are rounded on non-pillar puzzles
+      if (!puzzle.pillar) {
+        if (x == 0 && y == 0) {
+          cell.style.borderTopLeftRadius = '12px'
+        } else if (x == 0 && y == puzzle.grid[x].length-1) {
+          cell.style.borderTopRightRadius = '12px'
+        } else if (x == puzzle.grid.length-1 && y == 0) {
+          cell.style.borderBottomLeftRadius = '12px'
+        } else if (x == puzzle.grid.length-1 && y == puzzle.grid[x].length-1) {
+          cell.style.borderBottomRightRadius = '12px'
+        }
       }
       cell.id = target+'_'+x+'_'+y
 

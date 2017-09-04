@@ -16,7 +16,11 @@ Event.prototype.movementY = Event.prototype.movementY || Event.prototype.mozMove
 class Puzzle {
   // Javascript doesn't allow named parameters, so this constructor
   // isn't taking any additional arguments.
-  constructor(width, height) {
+  constructor(width, height, pillar=false) {
+    this.pillar = pillar
+    if (this.pillar) {
+      height -= 0.5
+    }
     this.grid  = this.newGrid(width, height)
     this.start = {'x':2*width, 'y':0}
     this.end   = {'x':0, 'y':2*height}
@@ -25,7 +29,7 @@ class Puzzle {
     this.regionCache = {}
   }
 
-  newGrid(width, height) {
+  newGrid(width, height, pillar) {
     var grid = []
     for (var i=0; i<2*width+1; i++) {
       grid[i] = []
@@ -35,7 +39,71 @@ class Puzzle {
     }
     return grid
   }
-
+  
+  // FIXME: Find a way to use prototyping to avoid implementing getters and setters
+  getCell(x, y) {
+    if (x < 0 || x >= this.grid.length) {
+      return true
+    }
+    if (y < 0) {
+      if (this.pillar) {
+        y = (y % this.grid[x].length) + this.grid[x].length
+      } else {
+        return true
+      }
+    }
+    if (y >= this.grid[x].length) {
+      if (this.pillar) {
+        y = (y % this.grid[x].length)
+      } else {
+        return true
+      }
+    }
+    return this.grid[x][y]
+  }
+  
+  setCell(x, y, value) {
+    if (x < 0 || x >= this.grid.length) {
+      return true
+    }
+    if (y < 0) {
+      if (this.pillar) {
+        y = (y % this.grid[x].length) + this.grid[x].length
+      } else {
+        throw (x, y), "is out of bounds"
+      }
+    }
+    if (y >= this.grid[x].length) {
+      if (this.pillar) {
+        y = (y % this.grid[x].length)
+      } else {
+        throw (x, y), "is out of bounds"
+      }
+    }
+    this.grid[x][y] = value
+  }
+  
+  isEndpoint(x, y) {
+    if (x < 0 || x >= this.grid.length) {
+      return false
+    }
+    if (y < 0) {
+      if (this.pillar) {
+        y = (y % this.grid[x].length) + this.grid[x].length
+      } else {
+        return false
+      }
+    }
+    if (y >= this.grid[x].length) {
+      if (this.pillar) {
+        y = (y % this.grid[x].length)
+      } else {
+        return false
+      }
+    }
+    return (x == this.end.x && y == this.end.y)
+  }
+  
   clone() {
     return {
       'grid':this.copyGrid(this.grid),
@@ -43,7 +111,8 @@ class Puzzle {
       'end':{'x':this.end.x, 'y':this.end.y},
       'dots':this.dots.slice(),
       'gaps':this.gaps.slice(),
-      'regionCache':this.regionCache
+      'regionCache':this.regionCache,
+      'pillar':this.pillar
     }
   }
 
@@ -65,15 +134,16 @@ function _copyGrid(grid) { // FIXME: Deprecated
 }
 
 // A 2x2 grid is internally a 5x5:
-// Corner, edge, corner, edge, corner
-// Edge,   cell, edge,   cell, edge
-// Corner, edge, corner, edge, corner
-// Edge,   cell, edge,   cell, edge
-// Corner, edge, corner, edge, corner
+// corner, edge, corner, edge, corner
+// edge,   cell, edge,   cell, edge
+// corner, edge, corner, edge, corner
+// edge,   cell, edge,   cell, edge
+// corner, edge, corner, edge, corner
 //
 // Corners and edges will have a value of true if the line passes through them
 // Cells will contain an object if there is an element in them
-function _newGrid(width, height) { // FIXME: Deprecated
+function _newGrid(width, height) {
+  console.info('FIXME: Deprecated, use puzzle.newGrid instead')
   var grid = []
   for (var i=0; i<2*width+1; i++) {
     grid[i] = []
@@ -86,7 +156,8 @@ function _newGrid(width, height) { // FIXME: Deprecated
 
 // Returns the contiguous regions on the grid, as arrays of points.
 // The return array may contain empty cells.
-function _getRegions(grid) { // FIXME: Should I deprecate this?
+function _getRegions(grid) {
+  //console.info('FIXME: Deprecated, use puzzle.getRegions instead')
   var colors = []
   for (var x=0; x<grid.length; x++) {
     colors[x] = []

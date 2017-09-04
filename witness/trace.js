@@ -1,5 +1,21 @@
 var cursorSize = 12
 var data
+
+// FIXME: likely bad encapsulation
+function getVisualCell(x, y) {
+  if (y < 0) {
+    if (data.puzzle.pillar) {
+      y = (y % data.puzzle.grid[0].length) + data.puzzle.grid[0].length
+    }
+  }
+  if (y >= data.puzzle.grid[0].length) {
+    if (data.puzzle.pillar) {
+      y = (y % data.puzzle.grid[0].length)
+    }
+  }
+  return document.getElementById(data.table+'_'+x+'_'+y)
+}
+
 function trace(elem) {
   if (document.pointerLockElement == null) { // Started tracing a solution
     document.styleSheets[0].deleteRule(0)
@@ -16,6 +32,7 @@ function trace(elem) {
     }
 
     var table = document.getElementById(data.table)
+    data.puzzle = JSON.parse(table.getAttribute('json'))
     // These aren't really arrays, they live update during iteration
     for (var cell of table.getElementsByTagName('td')) {
       // Remove leftover color from a previous trace
@@ -36,23 +53,21 @@ function trace(elem) {
 
     elem.requestPointerLock()
   } else { // Stopped tracing a solution
-    var table = document.getElementById(data.table)
-    var puzzle = JSON.parse(table.getAttribute('json'))
-    var curr_elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
+    var curr_elem = getVisualCell(data.x, data.y)
     if (curr_elem.className.includes('end')) {
-      for (var x=0; x<puzzle.grid.length; x++) {
-        for (var y=0; y<puzzle.grid[x].length; y++) {
-          var elem = document.getElementById(data.table+'_'+x+'_'+y)
+      for (var x=0; x<data.puzzle.grid.length; x++) {
+        for (var y=0; y<data.puzzle.grid[x].length; y++) {
+          var elem = getVisualCell(x, y)
           if (elem != undefined && elem.className.includes('trace-')) {
             if (!elem.className.includes('end')) {
-              puzzle.grid[x][y] = true
+              data.puzzle.grid[x][y] = true
             }
           }
         }
       }
 
       document.styleSheets[0].deleteRule(0)
-      if (isValid(puzzle)) {
+      if (isValid(data.puzzle)) {
         document.styleSheets[0].insertRule(".line {animation: 1s 1 forwards line-succ}", 0)
       } else {
         document.styleSheets[0].insertRule(".line {animation: 1s 1 forwards line-fail}", 0)
@@ -90,8 +105,8 @@ function onMouseMove(e) {
   // Option 4: Quadratic Capped
   // data.subx += sens*Math.sign(dx)*Math.sqrt(Math.min(Math.abs(dx), 10))
   // data.suby += sens*Math.sign(dy)*Math.sqrt(Math.min(Math.abs(dy), 10))
-  var elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
-  var next_elem = document.getElementById(data.table+'_'+(data.x+Math.sign(dy))+'_'+(data.y+Math.sign(dx)))
+  var elem = getVisualCell(data.x, data.y)
+  var next_elem = getVisualCell(data.x + Math.sign(dy), data.y + Math.sign(dx))
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
 
@@ -101,7 +116,7 @@ function onMouseMove(e) {
   // Redraw all elements near the cursor
   for (var x=-1; x<=1; x++) {
     for (var y=-1; y<=1; y++) {
-      var temp_elem = document.getElementById(data.table+'_'+(data.x+x)+'_'+(data.y+y))
+      var temp_elem = getVisualCell(data.x + x, data.y + y)
       if (temp_elem == null) continue
       var temp_width = width
       var temp_height = height
@@ -124,7 +139,7 @@ function onMouseMove(e) {
 // of the excess movement is converted to the other direction.
 // Corners are handled separately to prevent runover into cells
 function _collision(next_elem) {
-  var elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
+  var elem = getVisualCell(data.x, data.y)
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
   if (elem.className.includes('start')) {
@@ -393,7 +408,7 @@ function _draw(elem, subx, suby) {
 // cursor is currently in a cell, it will have only one direction, eg 'trace-r'
 // and if the cell is not traced (but can be) then it will have class 'trace'
 function _move(data, next_elem) {
-  var elem = document.getElementById(data.table+'_'+data.x+'_'+data.y)
+  var elem = getVisualCell(data.x, data.y)
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
   if (elem.className.includes('start')) {
@@ -402,7 +417,7 @@ function _move(data, next_elem) {
   }
 
   if (data.subx < 0) { // Moving left
-    var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y-1))
+    var new_elem = getVisualCell(data.x, data.y - 1)
     if (new_elem != null) {
       var new_width = parseInt(window.getComputedStyle(new_elem).width)
       if (new_elem.className.includes('start')) new_width /= 2
@@ -419,7 +434,7 @@ function _move(data, next_elem) {
       }
     }
   } else if (data.subx > width) { // Moving right
-    var new_elem = document.getElementById(data.table+'_'+data.x+'_'+(data.y+1))
+    var new_elem = getVisualCell(data.x, data.y + 1)
     if (new_elem != null) {
       if (new_elem.className.endsWith('trace')) { // Traced new path
         data.y++
@@ -435,7 +450,7 @@ function _move(data, next_elem) {
     }
   }
   if (data.suby < 0) { // Moving up
-    var new_elem = document.getElementById(data.table+'_'+(data.x-1)+'_'+data.y)
+    var new_elem = getVisualCell(data.x - 1, data.y)
     if (new_elem != null) {
       var new_height = parseInt(window.getComputedStyle(new_elem).height)
       if (new_elem.className.includes('start')) new_height /= 2
@@ -452,7 +467,7 @@ function _move(data, next_elem) {
       }
     }
   } else if (data.suby > height) { // Moving down
-    var new_elem = document.getElementById(data.table+'_'+(data.x+1)+'_'+data.y)
+    var new_elem = getVisualCell(data.x + 1, data.y)
     if (new_elem != null) {
       if (new_elem.className.endsWith('trace')) { // Traced new path
         data.x++
