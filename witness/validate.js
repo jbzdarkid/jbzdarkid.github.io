@@ -127,7 +127,7 @@ function _regionCheck(puzzle, region) {
     }
   }
 
-  var colorKeys = Object.keys(colors)
+  var colorKeys = Object.keys(colors) // FIXME: Object.values might be cleaner
   for (var i=0; i<colorKeys.length; i++) {
     var objects = colors[colorKeys[i]]
     if (objects['squares'] > 0) {
