@@ -186,6 +186,34 @@ var tests = [
     puzzle.grid[3][3] = {'type':'nega', 'color':'white'}
     puzzle.grid[5][5] = {'type':'nega', 'color':'white'}
     return {'puzzle':puzzle, 'solutions':0}
+  }, function() {
+    var puzzle = new Puzzle(1, 2, true)
+    puzzle.gaps = [
+      {'x':0, 'y':1},
+      {'x':2, 'y':1}
+    ]
+    puzzle.end = {'x':0, 'y':2}
+    return {'puzzle':puzzle, 'solutions':2}
+  }, function() {
+    var puzzle = new Puzzle(1, 2, true)
+    puzzle.grid[1][1] = {'type':'square', 'color':'white'}
+    puzzle.grid[1][3] = {'type':'square', 'color':'black'}
+    puzzle.start = {'x':2, 'y':2}
+    puzzle.end = {'x':0, 'y':2}
+    return {'puzzle':puzzle, 'solutions':0}
+  }, function() {
+    var puzzle = new Puzzle(2, 2, true)
+    puzzle.grid[1][1] = {'type':'poly', 'color':'yellow', 'size':3, 'shape':'L', 'rot':0}
+    puzzle.start = {'x':4, 'y':2}
+    puzzle.end = {'x':0, 'y':2}
+    return {'puzzle':puzzle, 'solutions':0}
+  }, function() {
+    var puzzle = new Puzzle(1, 2, true)
+    puzzle.grid[1][1] = {'type':'star', 'color':'orange'}
+    puzzle.grid[1][3] = {'type':'star', 'color':'orange'}
+    puzzle.start = {'x':2, 'y':2}
+    puzzle.end = {'x':0, 'y':2}
+    return {'puzzle':puzzle, 'solutions':5}
   }
 ]
 
@@ -196,6 +224,8 @@ window.onload = function() {
       var puzzleData = tests[i]()
       solve(puzzleData.puzzle, puzzleData.puzzle.start, solutions)
       if (solutions.length != puzzleData.solutions) {
+        console.log('Puzzle has', solutions.length, 'solutions, should have', puzzleData.solutions)
+        console.log(solutions)
         document.getElementById('test'+i).parentElement.bgColor = 'red'
       }
       draw(puzzleData.puzzle, 'test'+i)
