@@ -32,7 +32,8 @@ function trace(elem) {
     }
 
     var table = document.getElementById(data.table)
-    data.puzzle = JSON.parse(table.getAttribute('json'))
+    data.puzzle = Puzzle.deserialize(table.getAttribute('json'))
+
     // These aren't really arrays, they live update during iteration
     for (var cell of table.getElementsByTagName('td')) {
       // Remove leftover color from a previous trace
