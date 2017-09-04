@@ -7,7 +7,7 @@ function isValid(puzzle) {
   // FIXME: Check for invalid dot placement?
   // FIXME: Code in such a way that this works with negation?
   for (var dot of puzzle.dots) {
-    if (!puzzle.grid[dot.x][dot.y]) {
+    if (!puzzle.getCell(dot.x, dot.y)) {
       // console.log('Dot at grid['+dot.x+']['+dot.y+'] is not covered')
       return false
     }
@@ -15,22 +15,22 @@ function isValid(puzzle) {
   // Check that all gaps are not covered
   // FIXME: Check for invalid gap placement?
   for (var gap of puzzle.gaps) {
-    if (puzzle.grid[gap.x][gap.y]) {
+    if (puzzle.getCell(gap.x, gap.y)) {
       // console.log('Gap at grid['+gap.x+']['+gap.y+'] is covered')
       return false
     }
   }
   // Check that individual regions are valid
-  for (var region of _getRegions(puzzle.grid)) {
+  for (var region of puzzle.getRegions()) {
     var key = JSON.stringify(region)
     var regionValid = puzzle.regionCache[key]
     if (regionValid == undefined) {
       // console.log('Cache miss for region', region, 'key', key)
-      regionValid = _regionCheck(puzzle.grid, region)
+      regionValid = _regionCheck(puzzle, region)
       puzzle.regionCache[key] = regionValid
       // FIXME: Can't cache regions with triangles because the edges matter, not just the cells.
       for (var pos of region) {
-        if (puzzle.grid[pos.x][pos.y].type == 'triangle') {
+        if (puzzle.getCell(pos.x, pos.y).type == 'triangle') {
           puzzle.regionCache[key] = undefined
           break
         }
@@ -49,39 +49,39 @@ function isValid(puzzle) {
 
 // Checks if a region (series of cells) is valid.
 // Since the path must be complete at this point, returns only true or false
-function _regionCheck(grid, region) {
+function _regionCheck(puzzle, region) {
   // console.log('Validating region of length', region.length)
   var hasNega = false
   for (var pos of region) {
-    var cell = grid[pos.x][pos.y]
-    if (cell != 0 && cell.type == 'nega') {
+    var cell = puzzle.getCell(pos.x, pos.y)
+    if (cell != false && cell.type == 'nega') {
       hasNega = true
       break
     }
   }
   if (hasNega) {
     // Iterate over all possible ways of applying negations
-    var combinations = _combinations(grid, region)
+    var combinations = _combinations(puzzle, region)
     nextCombination: for (var combination of combinations) {
       // Make a copy of the grid and region with negation elements removed
-      var new_grid = _copyGrid(grid)
+      var new_puzzle = puzzle.clone()
       for (var negation of combination) {
-        new_grid[negation.source.x][negation.source.y] = 0
-        new_grid[negation.target.x][negation.target.y] = 0
+        new_puzzle.setCell(negation.source.x, negation.source.y, false)
+        new_puzzle.setCell(negation.target.x, negation.target.y, false)
       }
       // Verify that the puzzle solves with negations applied
-      if (!_regionCheck(new_grid, region)) {
+      if (!_regionCheck(new_puzzle, region)) {
         continue
       }
       // Verify that each negation is valid, i.e. removes an incorrect element
       for (var negation of combination) {
-        new_grid[negation.target.x][negation.target.y] = negation.target.cell
+        new_puzzle.setCell(negation.target.x, negation.target.y, negation.target.cell)
         negation.source.cell.type = 'nonce'
-        new_grid[negation.source.x][negation.source.y] = negation.source.cell
-        var isValid = _regionCheck(new_grid, region)
-        new_grid[negation.target.x][negation.target.y] = 0
+        new_puzzle.setCell(negation.source.x, negation.source.y, negation.source.cell)
+        var isValid = _regionCheck(new_puzzle, region)
+        new_puzzle.setCell(negation.target.x, negation.target.y, false)
         negation.source.cell.type = 'nega'
-        new_grid[negation.source.x][negation.source.y] = 0
+        new_puzzle.setCell(negation.source.x, negation.source.y, false)
         if (isValid) {
           // Grid is still valid with element removed so the negation is invalid
           continue nextCombination
@@ -96,13 +96,13 @@ function _regionCheck(grid, region) {
 
   // Check for triangles
   for (var pos of region) {
-    if (grid[pos.x][pos.y].type == 'triangle') {
+    if (puzzle.getCell(pos.x, pos.y).type == 'triangle') {
       var count = 0
-      if (grid[pos.x-1][pos.y]) count++
-      if (grid[pos.x+1][pos.y]) count++
-      if (grid[pos.x][pos.y-1]) count++
-      if (grid[pos.x][pos.y+1]) count++
-      if (count != grid[pos.x][pos.y].count) {
+      if (puzzle.getCell(pos.x - 1, pos.y)) count++
+      if (puzzle.getCell(pos.x + 1, pos.y)) count++
+      if (puzzle.getCell(pos.x, pos.y - 1)) count++
+      if (puzzle.getCell(pos.x, pos.y + 1)) count++
+      if (count != puzzle.getCell(pos.x, pos.y).count) {
         // console.log('Triangle at grid['+pos.x+']['+pos.y+'] has', count, 'borders')
         return false
       }
@@ -112,7 +112,7 @@ function _regionCheck(grid, region) {
   // Check for color-based elements
   var colors = {}
   for (var pos of region) {
-    var cell = grid[pos.x][pos.y]
+    var cell = puzzle.getCell(pos.x, pos.y)
     if (cell != 0) {
       if (colors[cell.color] == undefined) {
         colors[cell.color] = {'squares':0, 'stars':0, 'other':0}
@@ -155,7 +155,7 @@ function _regionCheck(grid, region) {
   var ylops = []
   var polyCount = 0
   for (var pos of region) {
-    var cell = grid[pos.x][pos.y]
+    var cell = puzzle.getCell(pos.x, pos.y)
     if (cell != 0) {
       if (cell.type == 'poly') {
         polys.push(cell)
@@ -174,41 +174,38 @@ function _regionCheck(grid, region) {
       // console.log('Combined size of polyominos', polyCount, 'does not match region size', region.length)
       return false
     }
-    var new_grid = []
-    for (var x=0; x<grid.length; x++) {
-      new_grid[x] = []
-      for (var y=0; y<grid[x].length; y++) {
-        new_grid[x][y] = 0
-      }
-    }
+    var savedGrid = puzzle.copyGrid()
+    puzzle.grid = puzzle.newGrid(puzzle.grid.length, puzzle.grid[0].length, puzzle.pillar)
     // If polyCount == 0, then ylops cancel polys, and we should present the
-    // region as non-existant, thus forcing all the shapes to cancel.
+    // region as nonexistant, thus forcing all the shapes to cancel.
     if (polyCount == 0) {
       region = []
     }
     for (var cell of region) {
-      new_grid[cell.x][cell.y] = 1
+      puzzle.setCell(cell.x, cell.y, true)
     }
-    if (!_polyFit(polys, ylops, new_grid)) {
+    if (!_polyFit(polys, ylops, puzzle.grid)) {
       // console.log('Region does not match polyomino shapes', polys, ylops)
+      puzzle.grid = savedGrid
       return false
     }
+    puzzle.grid = savedGrid
   }
   // console.info('Region valid', region)
   return true
 }
 
 // Returns all the different ways to negate elements.
-function _combinations(grid, region, regionStart=0) {
+function _combinations(puzzle, region, regionStart=0) {
   // Find the first negation element (may be part of cells already considered)
   var nega = undefined
   for (var i=0; i<region.length; i++) {
     var pos = region[i]
-    var cell = grid[pos.x][pos.y]
-    if (cell == 0) continue
+    var cell = puzzle.getCell(pos.x, pos.y)
+    if (cell == false) continue
     if (cell.type == 'nega') {
       nega = {'x':pos.x, 'y':pos.y, 'cell':cell}
-      grid[nega.x][nega.y] = 0
+      puzzle.setCell(nega.x, nega.y, false)
       break
     }
   }
@@ -221,11 +218,11 @@ function _combinations(grid, region, regionStart=0) {
   // All elements before regionStart have been considered, so don't try negating them again.
   for (var i=regionStart; i<region.length; i++) {
     var pos = region[i]
-    var cell = grid[pos.x][pos.y]
-    if (cell == 0) continue
-    grid[pos.x][pos.y] = 0
+    var cell = puzzle.getCell(pos.x, pos.y)
+    if (cell == false) continue
+    puzzle.setCell(pos.x, pos.y, false)
     // Find all combinations of later items
-    for (var comb of _combinations(grid, region, i+1)) {
+    for (var comb of _combinations(puzzle, region, i+1)) {
       // Combine this negation with each later combination
       combinations.push([{
         'source':{'x':nega.x, 'y':nega.y, 'cell':nega.cell},
@@ -233,10 +230,10 @@ function _combinations(grid, region, regionStart=0) {
       }].concat(comb))
     }
     // Restore the negated element
-    grid[pos.x][pos.y] = cell
+    puzzle.setCell(pos.x, pos.y, cell)
   }
   // Restore the negation symbol
-  grid[nega.x][nega.y] = nega.cell
+  puzzle.setCell(nega.x, nega.y, nega.cell)
   return combinations
 }
 

@@ -17,23 +17,23 @@ class Puzzle {
   // Javascript doesn't allow named parameters, so this constructor
   // isn't taking any additional arguments.
   constructor(width, height, pillar=false) {
-    this.pillar = pillar
-    if (this.pillar) {
+    if (pillar) {
       height -= 0.5
     }
-    this.grid  = this.newGrid(width, height)
+    this.grid  = this.newGrid(2*width+1, 2*height+1)
     this.start = {'x':2*width, 'y':0}
     this.end   = {'x':0, 'y':2*height}
     this.dots  = []
     this.gaps  = []
     this.regionCache = {}
+    this.pillar = pillar
   }
 
-  newGrid(width, height, pillar) {
+  newGrid(width, height) { // FIXME: Should this just be puzzle.clearGrid?
     var grid = []
-    for (var i=0; i<2*width+1; i++) {
+    for (var i=0; i<width; i++) {
       grid[i] = []
-      for (var j=0; j<2*height+1; j++) {
+      for (var j=0; j<height; j++) {
         grid[i][j] = false
       }
     }
@@ -105,6 +105,16 @@ class Puzzle {
   }
   
   clone() {
+    var copy = new Puzzle(0, 0)
+    copy.grid = this.copyGrid()
+    copy.start = {'x':this.start.x, 'y':this.start.y}
+    copy.end = {'x':this.end.x, 'y':this.end.y}
+    copy.dots = this.dots.slice()
+    copy.gaps = this.gaps.slice()
+    copy.regionCache = this.regionCache
+    copy.pillar = this.pillar
+    return copy
+    /*
     return {
       'grid':this.copyGrid(this.grid),
       'start':{'x':this.start.x, 'y':this.start.y},
@@ -114,6 +124,7 @@ class Puzzle {
       'regionCache':this.regionCache,
       'pillar':this.pillar
     }
+    */
   }
 
   copyGrid() {
@@ -122,6 +133,70 @@ class Puzzle {
       new_grid.push(row.slice())
     }
     return new_grid
+  }
+  
+  _innerLoop(x, y, region) {
+    if (this.getCell(x, y) == 2) {
+      delete this.potentialRegions[x+'_'+y]
+    }
+    region.push({'x':x, 'y':y})
+    this.setCell(x, y, true)
+    
+    if (this.getCell(x+2, y) == true) { // Already visited, do nothing
+    } else if (this.getCell(x+1, y) == true) { // Unvisited and potentially disconnected
+      this.potentialRegions[(x+2)+'_'+y] = true
+      this.setCell(x+2, y, 2)
+    } else { // Unvisited and connected
+      this._innerLoop(x+2, y, region)
+    }
+
+    if (this.getCell(x-2, y) == true) { // Already visited, do nothing
+    } else if (this.getCell(x-1, y) == true) { // Unvisited and potentially disconnected
+      this.potentialRegions[(x-2)+'_'+y] = true
+      this.setCell(x-2, y, 2)
+    } else { // Unvisited and connected
+      this._innerLoop(x-2, y, region)
+    }
+
+    if (this.getCell(x, y+2) == true) { // Already visited, do nothing
+    } else if (this.getCell(x, y+1) == true) { // Unvisited and potentially disconnected
+      this.potentialRegions[x+'_'+(y+2)] = true
+      this.setCell(x, y+2, 2)
+    } else { // Unvisited and connected
+      this._innerLoop(x, y+2, region)
+    }
+
+    if (this.getCell(x, y-2) == true) { // Already visited, do nothing
+    } else if (this.getCell(x, y-1) == true) { // Unvisited and potentially disconnected
+      this.potentialRegions[x+'_'+(y-2)] = true
+      this.setCell(x, y-2, 2)
+    } else { // Unvisited and connected
+      this._innerLoop(x, y-2, region)
+    }
+  }
+  
+  getRegions() {
+    var savedGrid = this.copyGrid()
+    this.potentialRegions = {'1_1': true}
+    this.setCell(1, 1, 2)
+    var regions = []
+    while (Object.keys(this.potentialRegions).length > 0) {
+      var pos = Object.keys(this.potentialRegions)[0]
+      var x = parseInt(pos.split('_')[0])
+      var y = parseInt(pos.split('_')[1])
+      if (this.getCell(x, y) != 2) {
+        delete this.potentialRegions[pos]
+        continue
+      }
+      var region = []
+      this._innerLoop(x, y, region)
+      regions.push(region)
+    }
+    this.grid = savedGrid
+    if (window.debug) {
+      console.log(regions)
+    }
+    return regions
   }
 }
 
@@ -157,7 +232,7 @@ function _newGrid(width, height) {
 // Returns the contiguous regions on the grid, as arrays of points.
 // The return array may contain empty cells.
 function _getRegions(grid) {
-  //console.info('FIXME: Deprecated, use puzzle.getRegions instead')
+  console.info('FIXME: Deprecated, use puzzle.getRegions instead')
   var colors = []
   for (var x=0; x<grid.length; x++) {
     colors[x] = []
