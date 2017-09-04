@@ -162,8 +162,7 @@ var tests = [
     grid[1][9] = {'type':'poly', 'shape':'3.0.1', 'color':'yellow'}
     grid[9][7] = {'type':'poly', 'shape':'4.5.0', 'color':'yellow'}
     return {'grid':grid, 'gaps':[{'x':3, 'y':4}, {'x':4, 'y':3}, {'x':4, 'y':5}, {'x':5, 'y':4}]}
-  },*/
-  function() {
+  }, function() {
     var grid = _newGrid(4, 4)
     grid[1][1] = {'type':'square', 'color':'black'}
     grid[1][7] = {'type':'square', 'color':'black'}
@@ -179,7 +178,88 @@ var tests = [
     grid[1][7] = {'type':'poly','color':'yellow','size':4,'shape':'I','rot':1}
     grid[7][5] = {'type':'poly','color':'yellow','size':4,'shape':'J','rot':1}
     return {'grid':grid, 'start':{'x':8, 'y':8}, 'end':{'x':0, 'y':0}}
-  }
+  },*/ function() {
+    var puzzle = new Puzzle(2, 6, true)
+    for (var x=0; x<puzzle.grid.length; x+=2) {
+      for (var y=0; y<puzzle.grid[x].length; y+=2) {
+        puzzle.dots.push({'x':x, 'y':y})
+      }
+    }
+    puzzle.gaps = [{'x':0, 'y':9}, {'x':0, 'y':11}]
+    puzzle.start = {'x':4, 'y':4}
+    puzzle.end = {'x':0, 'y':10}
+    return puzzle
+  }, function() {
+    var puzzle = new Puzzle(3, 6, true)
+    puzzle.grid[1][1] = {'type':'square', 'color':'white'}
+    puzzle.grid[1][3] = {'type':'square', 'color':'black'}
+    puzzle.grid[1][5] = {'type':'square', 'color':'black'}
+    puzzle.grid[1][9] = {'type':'square', 'color':'white'}
+    puzzle.grid[3][3] = {'type':'square', 'color':'white'}
+    puzzle.grid[3][5] = {'type':'square', 'color':'white'}
+    puzzle.grid[5][1] = {'type':'square', 'color':'black'}
+    puzzle.grid[5][3] = {'type':'square', 'color':'black'}
+    puzzle.grid[5][5] = {'type':'square', 'color':'black'}
+    puzzle.grid[5][11] = {'type':'square', 'color':'black'}
+    puzzle.start = {'x':6, 'y':6}
+    puzzle.end = {'x':0, 'y':6}
+    return puzzle
+  }, function() {
+    var puzzle = new Puzzle(5, 5, true)
+    puzzle.grid[1][7] = {'type':'poly', 'color':'yellow', 'size':4, 'shape':'J', 'rot':2}
+    puzzle.grid[9][5] = {'type':'poly', 'color':'yellow', 'size':4, 'shape':'L', 'rot':0}
+    puzzle.start = {'x':10, 'y':6}
+    puzzle.end = {'x':0, 'y':6}
+    return puzzle
+  }, function() {
+    var puzzle = new Puzzle(3, 6, true)
+    puzzle.grid[3][1] = {'type':'star', 'color':'orange'}
+    puzzle.grid[3][3] = {'type':'star', 'color':'orange'}
+    puzzle.grid[3][5] = {'type':'star', 'color':'orange'}
+    puzzle.grid[3][7] = {'type':'star', 'color':'orange'}
+    puzzle.grid[3][9] = {'type':'star', 'color':'orange'}
+    puzzle.grid[3][11] = {'type':'star', 'color':'orange'}
+    puzzle.start = {'x':6, 'y':6}
+    puzzle.end = {'x':0, 'y':6}
+    return puzzle
+  }, function() {
+    var puzzle = new Puzzle(3, 6, true)
+    puzzle.grid[3][5] = {'type':'star', 'color':'orange'}
+    puzzle.grid[3][7] = {'type':'star', 'color':'orange'}
+    puzzle.dots = [{'x':3, 'y':4}, {'x':3, 'y':6}, {'x':3, 'y':8}]
+    puzzle.gaps = [{'x':0, 'y':5}, {'x':0, 'y':7}]
+    puzzle.start = {'x':6, 'y':6}
+    puzzle.end = {'x':0, 'y':6}
+    return puzzle
+  }, function() {
+    var puzzle = new Puzzle(4, 6, true)
+    for (var x=0; x<puzzle.grid.length; x+=2) {
+      for (var y=0; y<puzzle.grid[x].length; y+=2) {
+        puzzle.dots.push({'x':x, 'y':y})
+      }
+    }
+    puzzle.gaps = [
+      {'x':1, 'y':10},
+      {'x':2, 'y':9},
+      {'x':3, 'y':8},
+      {'x':4, 'y':7},
+      {'x':5, 'y':6},
+      {'x':6, 'y':5},
+      {'x':7, 'y':4},
+    ]
+    puzzle.start = {'x':8, 'y':4}
+    puzzle.end = {'x':0, 'y':10}
+    return puzzle
+  }/*, function() {
+    var puzzle = new Puzzle(5, 5)
+    puzzle.grid[1][1] = {'type':'triangle', 'color':'orange', 'count':3}
+    puzzle.grid[1][9] = {'type':'triangle', 'color':'orange', 'count':3}
+    puzzle.grid[5][5] = {'type':'triangle', 'color':'orange', 'count':3}
+    puzzle.grid[9][1] = {'type':'triangle', 'color':'orange', 'count':3}
+    puzzle.grid[9][9] = {'type':'triangle', 'color':'orange', 'count':3}
+    return puzzle
+  }*/
+  
   /* Green puzzles (with visible dots)
   function() {
     var grid = _newGrid(4, 4)
