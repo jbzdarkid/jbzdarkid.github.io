@@ -78,9 +78,10 @@ function trace(elem) {
   }
 }
 
-document.addEventListener('pointerlockchange', lockChange, false)
-document.addEventListener('mozpointerlockchange', lockChange, false)
-function lockChange() {
+document.addEventListener('pointerlockchange', _lockChange, false)
+document.addEventListener('mozpointerlockchange', _lockChange, false)
+
+function _lockChange() {
   if (document.pointerLockElement == null && document.mozPointerLockElement == null) {
     console.log('Cursor release requested')
     document.removeEventListener("mousemove", _onMouseMove, false)
