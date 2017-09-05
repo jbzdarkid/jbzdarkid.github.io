@@ -346,31 +346,26 @@ var styles = {
     }
   },
   'thursday':{
-    'width':5, 'height':5, 'colors':3, 'difficulty':[1, 9999],
-    'distribution':{
-      'polyominos':3,
-      'stars':4,
-    }
-  },
-  'friday':{
     'width':5, 'height':5, 'colors':1, 'difficulty':[1, 9999],
     'distribution':{
       'triangles':12,
       'negations':2,
     }
   },
-  'saturday':{ // FIXME
+  'friday':{
     'width':5, 'height':5, 'colors':3, 'difficulty':[1, 9999],
-    'distribution': {
-      'stars':4,
-      'polyominos':2,
-      'onimoylops':2,
-    }
-    // symmetry: 1
+    'pillar':1,
+    'distribution':{}
+  },
+  'saturday':{
+    'width':5, 'height':5, 'colors':3, 'difficulty':[1, 9999],
+    'symmetry':1,
+    'distribution': {}
   },
   'sunday':{
 //    'width':6, 'height':6, 'colors':1, 'difficulty':[1, 9999],
     'width':5, 'height':5, 'colors':1, 'difficulty':[1, 9999],
+    'pillar':1, 'symmetry':1,
     'distribution':{
       'triangles':1,
       'polyominos':1,
@@ -380,7 +375,6 @@ var styles = {
       'dots':1,
       'gaps':1,
     }
-    // pillar: 1
   },
 }
 
