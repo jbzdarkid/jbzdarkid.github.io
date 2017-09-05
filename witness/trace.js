@@ -2,7 +2,7 @@ var cursorSize = 12
 var data
 
 // FIXME: likely bad encapsulation
-function getVisualCell(x, y) {
+function _getVisualCell(x, y) {
   if (y < 0) {
     if (data.puzzle.pillar) {
       y = (y % data.puzzle.grid[0].length) + data.puzzle.grid[0].length
@@ -54,11 +54,11 @@ function trace(elem) {
 
     elem.requestPointerLock()
   } else { // Stopped tracing a solution
-    var curr_elem = getVisualCell(data.x, data.y)
+    var curr_elem = _getVisualCell(data.x, data.y)
     if (curr_elem.className.includes('end')) {
       for (var x=0; x<data.puzzle.grid.length; x++) {
         for (var y=0; y<data.puzzle.grid[x].length; y++) {
-          var elem = getVisualCell(x, y)
+          var elem = _getVisualCell(x, y)
           if (elem != undefined && elem.className.includes('trace-')) {
             if (!elem.className.includes('end')) {
               data.puzzle.grid[x][y] = true
@@ -83,14 +83,14 @@ document.addEventListener('mozpointerlockchange', lockChange, false)
 function lockChange() {
   if (document.pointerLockElement == null && document.mozPointerLockElement == null) {
     console.log('Cursor release requested')
-    document.removeEventListener("mousemove", onMouseMove, false)
+    document.removeEventListener("mousemove", _onMouseMove, false)
   } else {
     console.log('Cursor lock requested')
-    document.addEventListener("mousemove", onMouseMove, false)
+    document.addEventListener("mousemove", _onMouseMove, false)
   }
 }
 
-function onMouseMove(e) {
+function _onMouseMove(e) {
   var sens = document.getElementById('sens').value
   var dx = e.movementX
   var dy = e.movementY
@@ -106,7 +106,7 @@ function onMouseMove(e) {
   // Option 4: Quadratic Capped
   // data.subx += sens*Math.sign(dx)*Math.sqrt(Math.min(Math.abs(dx), 10))
   // data.suby += sens*Math.sign(dy)*Math.sqrt(Math.min(Math.abs(dy), 10))
-  var elem = getVisualCell(data.x, data.y)
+  var elem = _getVisualCell(data.x, data.y)
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
 
@@ -116,7 +116,7 @@ function onMouseMove(e) {
   // Redraw all elements near the cursor
   for (var x=-1; x<=1; x++) {
     for (var y=-1; y<=1; y++) {
-      var temp_elem = getVisualCell(data.x + x, data.y + y)
+      var temp_elem = _getVisualCell(data.x + x, data.y + y)
       if (temp_elem == null) continue
       var temp_width = width
       var temp_height = height
@@ -135,13 +135,14 @@ function onMouseMove(e) {
 }
 
 // FIXME: Huge code duplication. I've simplified so it's more obvious, but I should look into shared helper functions rather than merging if statements.
-// FIXME: data.x and data.y feel backwards. Maybe use getVisualCell to do the swap?
+// FIXME: Alternatively, I can 1/4 this by making it generic on direction, may be more complex in the end?
+// FIXME: data.x and data.y feel backwards. Maybe use _getVisualCell to do the swap?
 // Collision detection. If the cursor moves into an edge or into a cell,
 // then its position is reset to be exactly touching the edge, and some
 // of the excess movement is converted to the other direction.
 // Corners are handled separately to prevent runover into cells
 function _collision() {
-  var elem = getVisualCell(data.x, data.y)
+  var elem = _getVisualCell(data.x, data.y)
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
   if (elem.className.includes('start')) {
@@ -156,25 +157,25 @@ function _collision() {
   var smoothing = 5 // Pixels around the exact center where no collision occurs
   if (elem.className.includes('corner') || elem.className.includes('start')) {
     if (data.subx < cursorSize - smoothing) { // In the left of the intersection
-      var new_elem = getVisualCell(data.x, data.y - 1)
+      var new_elem = _getVisualCell(data.x, data.y - 1)
       if (new_elem != null) {
         data.subx += Math.abs(data.suby - cursorSize) / deltaMod
         data.suby = cursorSize
       }
     } else if (data.subx > cursorSize + smoothing) { // In the right of the intersection
-      var new_elem = getVisualCell(data.x, data.y + 1)
+      var new_elem = _getVisualCell(data.x, data.y + 1)
       if (new_elem != null) {
         data.subx -= Math.abs(data.suby - cursorSize) / deltaMod
         data.suby = cursorSize
       }
     } else if (data.suby < cursorSize - smoothing) { // In the top of the intersection
-      var new_elem = getVisualCell(data.x - 1, data.y)
+      var new_elem = _getVisualCell(data.x - 1, data.y)
       if (new_elem != null) {
         data.suby += Math.abs(data.subx - cursorSize) / deltaMod
         data.subx = cursorSize
       }
     } else if (data.suby > cursorSize + smoothing) { // In the bottom of the intersection
-      var new_elem = getVisualCell(data.x - 1, data.y)
+      var new_elem = _getVisualCell(data.x - 1, data.y)
       if (new_elem != null) {
         data.suby -= Math.abs(data.subx - cursorSize) / deltaMod
         data.subx = cursorSize
@@ -184,25 +185,25 @@ function _collision() {
 
   // Endpoint collision
   if (elem.className.startsWith('end_left')) {
-    var new_elem = getVisualCell(data.x, data.y - 1)
+    var new_elem = _getVisualCell(data.x, data.y - 1)
     if (new_elem == null) {
       data.subx += Math.abs(data.suby - cursorSize) / deltaMod
       data.suby = cursorSize
     }
   } else if (elem.className.startsWith('end_right')) {
-    var new_elem = getVisualCell(data.x, data.y + 1)
+    var new_elem = _getVisualCell(data.x, data.y + 1)
     if (new_elem == null) {
       data.subx -= Math.abs(data.suby - cursorSize) / deltaMod
       data.suby = cursorSize
     }
   } else if (elem.className.startsWith('end_up')) {
-    var new_elem = getVisualCell(data.x - 1, data.y)
+    var new_elem = _getVisualCell(data.x - 1, data.y)
     if (new_elem == null) {
       data.suby += Math.abs(data.subx - cursorSize) / deltaMod
       data.subx = cursorSize
     }
   } else if (elem.className.startsWith('end_down')) {
-    var new_elem = getVisualCell(data.x + 1, data.y)
+    var new_elem = _getVisualCell(data.x + 1, data.y)
     if (new_elem == null) {
       data.suby -= Math.abs(data.subx - cursorSize) / deltaMod
       data.subx = cursorSize
@@ -211,7 +212,7 @@ function _collision() {
 
   // Inner wall collision
   if (data.subx < cursorSize) { // Against a left wall
-    var new_elem = getVisualCell(data.x, data.y - 1)
+    var new_elem = _getVisualCell(data.x, data.y - 1)
     if (new_elem != null && !new_elem.className.includes('trace')) {
       if (data.suby < height / 2) { // Top half of cell
         data.suby -= Math.abs(data.subx - cursorSize) / deltaMod
@@ -222,7 +223,7 @@ function _collision() {
       }
     }
   } else if (data.subx > cursorSize) { // Against a right wall
-    var new_elem = getVisualCell(data.x, data.y + 1)
+    var new_elem = _getVisualCell(data.x, data.y + 1)
     if (new_elem != null && !new_elem.className.includes('trace')) {
       if (data.suby < height / 2) { // Top half of cell
         data.suby -= Math.abs(data.subx - cursorSize) / deltaMod
@@ -234,7 +235,7 @@ function _collision() {
     }
   }
   if (data.suby < cursorSize) { // Against a top wall
-    var new_elem = getVisualCell(data.x - 1, data.y)
+    var new_elem = _getVisualCell(data.x - 1, data.y)
     if (new_elem != null && !new_elem.className.includes('trace')) {
       if (data.subx < width / 2) { // Left half of cell
         data.subx -= Math.abs(data.suby - cursorSize) / deltaMod
@@ -245,7 +246,7 @@ function _collision() {
       }
     }
   } else if (data.suby > cursorSize) { // Against a bottom wall
-    var new_elem = getVisualCell(data.x + 1, data.y)
+    var new_elem = _getVisualCell(data.x + 1, data.y)
     if (new_elem != null && !new_elem.className.includes('trace')) {
       if (data.subx < width / 2) { // Left half of cell
         data.subx -= Math.abs(data.suby - cursorSize) / deltaMod
@@ -259,34 +260,34 @@ function _collision() {
 
   // Outer wall collision
   // Against left wall, pushing moves you up
-  if (data.subx < cursorSize && getVisualCell(data.x, data.y - 1) == null) {
+  if (data.subx < cursorSize && _getVisualCell(data.x, data.y - 1) == null) {
     data.suby -= Math.abs(data.subx - cursorSize) / deltaMod
     data.subx = cursorSize
-    if (getVisualCell(data.x - 1, data.y) == null) { // Also against top wall
+    if (_getVisualCell(data.x - 1, data.y) == null) { // Also against top wall
       if (data.suby < cursorSize) data.suby = cursorSize
     }
   }
   // Against right wall, pushing moves you up
-  if (data.subx > cursorSize && getVisualCell(data.x, data.y + 1) == null) {
+  if (data.subx > cursorSize && _getVisualCell(data.x, data.y + 1) == null) {
     data.suby -= Math.abs(data.subx - cursorSize) / deltaMod
     data.subx = cursorSize
-    if (getVisualCell(data.x - 1, data.y) == null) { // Also against top wall
+    if (_getVisualCell(data.x - 1, data.y) == null) { // Also against top wall
       if (data.suby < cursorSize) data.suby = cursorSize
     }
   }
   // Against top wall, pushing moves you right
-  if (data.suby < cursorSize && getVisualCell(data.x - 1, data.y) == null) {
+  if (data.suby < cursorSize && _getVisualCell(data.x - 1, data.y) == null) {
     data.subx += Math.abs(data.suby - cursorSize) / deltaMod
     data.suby = cursorSize
-    if (getVisualCell(data.x, data.y + 1) == null) { // Also against right wall
+    if (_getVisualCell(data.x, data.y + 1) == null) { // Also against right wall
       if (data.subx > cursorSize) data.subx = cursorSize
     }
   }
   // Against bottom wall, pushing moves you right
-  if (data.suby > cursorSize && getVisualCell(data.x + 1, data.y) == null) {
+  if (data.suby > cursorSize && _getVisualCell(data.x + 1, data.y) == null) {
     data.subx += Math.abs(data.suby - cursorSize) / deltaMod
     data.suby = cursorSize
-    if (getVisualCell(data.x, data.y + 1) == null) { // Also against right wall
+    if (_getVisualCell(data.x, data.y + 1) == null) { // Also against right wall
       if (data.subx > cursorSize) data.subx = cursorSize
     }
   }
@@ -294,28 +295,28 @@ function _collision() {
   // Self collision - Should not slide because the cursor is 'stuck'
   var selfPadding = 5 // Gap between cursor and previously traced line
   if (elem.className.endsWith('trace-r')) { // Approaching from left
-    var new_elem = getVisualCell(data.x, data.y + 1)
+    var new_elem = _getVisualCell(data.x, data.y + 1)
     if (new_elem != null && new_elem.className.includes('trace-')) {
       if (data.subx > width - cursorSize - selfPadding) {
         data.subx = width - cursorSize - selfPadding
       }
     }
   } else if (elem.className.endsWith('trace-l')) { // Approaching from right
-    var new_elem = getVisualCell(data.x, data.y - 1)
+    var new_elem = _getVisualCell(data.x, data.y - 1)
     if (new_elem != null && new_elem.className.includes('trace-')) {
       if (data.subx < cursorSize + selfPadding) {
         data.subx = cursorSize + selfPadding
       }
     }
   } else if (elem.className.endsWith('trace-d')) { // Approaching from above
-    var new_elem = getVisualCell(data.x + 1, data.y)
+    var new_elem = _getVisualCell(data.x + 1, data.y)
     if (new_elem != null && new_elem.className.includes('trace-')) {
       if (data.suby > height - cursorSize - selfPadding) {
         data.suby = height - cursorSize - selfPadding
       }
     }
   } else if (elem.className.endsWith('trace-u')) { // Approaching from below
-    var new_elem = getVisualCell(data.x - 1, data.y)
+    var new_elem = _getVisualCell(data.x - 1, data.y)
     if (new_elem != null && new_elem.className.includes('trace-')) {
       if (data.suby < cursorSize + selfPadding) {
         data.suby = cursorSize + selfPadding
@@ -497,7 +498,7 @@ function _draw(elem, subx, suby) {
 // cursor is currently in a cell, it will have only one direction, eg 'trace-r'
 // and if the cell is not traced (but can be) then it will have class 'trace'
 function _move() {
-  var elem = getVisualCell(data.x, data.y)
+  var elem = _getVisualCell(data.x, data.y)
   var width = parseInt(window.getComputedStyle(elem).width)
   var height = parseInt(window.getComputedStyle(elem).height)
   if (elem.className.includes('start')) {
@@ -506,7 +507,7 @@ function _move() {
   }
 
   if (data.subx < 0) { // Moving left
-    var new_elem = getVisualCell(data.x, data.y - 1)
+    var new_elem = _getVisualCell(data.x, data.y - 1)
     if (new_elem != null) {
       var new_width = parseInt(window.getComputedStyle(new_elem).width)
       if (new_elem.className.includes('start')) new_width /= 2
@@ -523,7 +524,7 @@ function _move() {
       }
     }
   } else if (data.subx > width) { // Moving right
-    var new_elem = getVisualCell(data.x, data.y + 1)
+    var new_elem = _getVisualCell(data.x, data.y + 1)
     if (new_elem != null) {
       if (new_elem.className.endsWith('trace')) { // Traced new path
         data.y++
@@ -539,7 +540,7 @@ function _move() {
     }
   }
   if (data.suby < 0) { // Moving up
-    var new_elem = getVisualCell(data.x - 1, data.y)
+    var new_elem = _getVisualCell(data.x - 1, data.y)
     if (new_elem != null) {
       var new_height = parseInt(window.getComputedStyle(new_elem).height)
       if (new_elem.className.includes('start')) new_height /= 2
@@ -556,7 +557,7 @@ function _move() {
       }
     }
   } else if (data.suby > height) { // Moving down
-    var new_elem = getVisualCell(data.x + 1, data.y)
+    var new_elem = _getVisualCell(data.x + 1, data.y)
     if (new_elem != null) {
       if (new_elem.className.endsWith('trace')) { // Traced new path
         data.x++
