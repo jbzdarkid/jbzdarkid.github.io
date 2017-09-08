@@ -152,8 +152,8 @@ function _triangle(elem) {
   return svg
 }
 
-function onmessage(puzzle, target='puzzle') {
-  draw(puzzle, target)
+function onmessage(e) {
+  postMessage(draw(e.data[0], e.data[1]))
 }
 
 function draw(puzzle, target='puzzle') {
