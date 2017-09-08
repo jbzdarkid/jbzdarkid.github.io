@@ -147,23 +147,20 @@ window.onload = function() {
     var style = styles[day]
     location.search = 'style='+day
   }
+  var renderer = {'draw': function(){}}
   if (window.Worker) {
     try {
-      var renderer = new Worker('display.js')
-    } catch (e) {
-      if (e instanceof DOMException) {
-        renderer = {'draw': function(){}}
-      }
-    }
-  } else {
-    renderer = {'draw': function(){}}
+      renderer = new Worker('display.js')
+    } catch () {}
   }
+  console.log(renderer)
   var solutions = []
   // Require a puzzle with not too many solutions
   while (true) {
     solutions = []
     var puzzleSeed = seed
     var puzzle = _randomize(style)
+    console.log(renderer.draw)
     renderer.draw(puzzle)
     solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
     console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: ')
