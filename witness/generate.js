@@ -151,7 +151,7 @@ window.onload = function() {
   if (window.Worker) {
     try {
       renderer = new Worker('display.js')
-    } catch () {}
+    } catch (e) {}
   }
   console.log(renderer)
   var solutions = []
