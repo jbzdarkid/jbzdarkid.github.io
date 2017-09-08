@@ -147,7 +147,7 @@ window.onload = function() {
     var style = styles[day]
     location.search = 'style='+day
   }
-  var renderer = {'draw': function(){}}
+  var renderer = {'onmessage': function(){}}
   if (window.Worker) {
     try {
       renderer = new Worker('display.js')
@@ -160,8 +160,8 @@ window.onload = function() {
     solutions = []
     var puzzleSeed = seed
     var puzzle = _randomize(style)
-    console.log(renderer.draw)
-    renderer.draw(puzzle)
+    console.log(renderer.onmessage)
+    renderer.onmessage(puzzle)
     solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
     console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: ')
     if (solutions.length == 0) {
