@@ -1,13 +1,22 @@
 <html>
+  <head>
+    <script type="text/javascript" src="temp.js"></script>
+  </head>
   <body>
     <button id="button">Send Message</label>
     <script>
       var button = document.querySelector('#button');
-      var worker = {'postMessage': function() {}};
+      var worker = {}
       if (window.Worker) {
         try {
-          var worker = new Worker('temp.js');
-        } catch (e) {}
+          worker = new Worker('temp.js');
+        } catch (e) {
+          window.postMessage = function(e){worker.onmessage(e)}
+          worker.postMessage = function(e){window.onmessage(e)}
+        }
+      } else {
+        window.postMessage = function(e){worker.onmessage(e)}
+        worker.postMessage = function(e){window.onmessage(e)}
       }
 
       button.onclick = function() {
@@ -16,7 +25,7 @@
         div.style.width = '100px'
         div.style.background = 'red'
         document.body.appendChild(div)
-        worker.postMessage(null)
+        worker.postMessage()
       };
       worker.onmessage = function() {
         console.log('Recieved at main')
