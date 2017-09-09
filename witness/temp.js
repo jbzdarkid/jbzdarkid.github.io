@@ -4,5 +4,5 @@ function onmessage() {
   for (var i=0; i<N; i++) {
     var j = i**i
   }
-  postMessage()
+  postMessage(null)
 }
