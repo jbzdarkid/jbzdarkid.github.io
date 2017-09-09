@@ -10,14 +10,8 @@
         <input type="text" id="number2" value="0">
       </div>
     </form>
-
-    <p class="result">Result: 0</p>
     <script>
       var first = document.querySelector('#number1');
-      var second = document.querySelector('#number2');
-
-      var result = document.querySelector('.result');
-
       if (window.Worker) { // Check if Browser supports the Worker api.
         // Requires script name as input
         var myWorker = new Worker("worker.js");
@@ -29,12 +23,6 @@
           myWorker.postMessage(null); // Sending message as an array to the worker
           console.log('Message posted to worker');
         };
-
-        second.onchange = function() {
-          myWorker.postMessage(null);
-          console.log('Message posted to worker');
-        };
-
       }
     </script>
   </body>
