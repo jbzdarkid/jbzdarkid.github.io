@@ -5,10 +5,6 @@
         <label for="number1">Multiply number 1: </label>    
         <input type="text" id="number1" value="0">
       </div>
-      <div>
-        <label for="number2">Multiply number 2: </label>   
-        <input type="text" id="number2" value="0">
-      </div>
     </form>
     <script>
       var first = document.querySelector('#number1');
@@ -20,9 +16,11 @@
       // an entered value is changed, and you don't want to have to unfocus the field to update its .value
 
         first.onchange = function() {
-          myWorker.postMessage(null); // Sending message as an array to the worker
-          console.log('Message posted to worker');
+          myWorker.postMessage(document.createElement('div'))
         };
+        myWorker.onmessage(div) {
+          document.appendChild(div)
+        }
       }
     </script>
   </body>
