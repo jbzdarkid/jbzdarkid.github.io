@@ -1,3 +1,9 @@
+onmessage = function(puzzle) {
+  var solutions = []
+  solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
+  postMessage(solutions[_randint(solutions.length)])
+}
+
 // Generates a solution via DFS recursive backtracking
 function solve(puzzle, pos, solutions) {
   // if (solutions.length > 0) return

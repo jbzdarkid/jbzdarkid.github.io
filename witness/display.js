@@ -152,10 +152,6 @@ function _triangle(elem) {
   return svg
 }
 
-function onmessage(e) {
-  postMessage(draw(e.data[0], e.data[1]))
-}
-
 function draw(puzzle, target='puzzle') {
   // console.log('Drawing', puzzle)
   var table = document.getElementById(target)

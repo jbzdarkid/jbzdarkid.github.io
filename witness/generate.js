@@ -1,13 +1,17 @@
 // Returns a random integer in [0, n)
 // Uses a set seed so puzzles can be regenerated
 var seed = 42
+function setSeed(newSeed) {
+  seed = newSeed
+}
+
 function _randint(n) {
   seed = ((seed << 13) ^ seed) - (seed >> 21)
   return Math.abs(seed) % Math.floor(n)
 }
 
 // Generates a random puzzle for a given size.
-function _randomize(style) {
+function randomPuzzle(style) {
   var width = style['width']
   var height = style['height']
   var puzzle = new Puzzle(width, height)
@@ -123,45 +127,13 @@ function _randomize(style) {
   return puzzle
 }
 
-// When the page is done loading, generate a puzzle
-window.onload = function() {
-  seed = parseInt(location.hash.substring(1))
-  if (!seed) {
-    seed = Math.floor(Math.random() * (1 << 30))
-  }
-  if ('style' in urlParams) {
-    if (urlParams['style'] in styles) {
-      var style = styles[urlParams['style']]
-    } else {
-      var style = JSON.parse(urlParams['style'])
-    }
-  } else {
-    var day = [
-      'sunday',
-      'monday',
-      'tuesday',
-      'wednesday',
-      'thursday',
-      'friday',
-      'saturday'][(new Date()).getDay()]
-    var style = styles[day]
-    location.search = 'style='+day
-  }
-  var renderer = {'postMessage': function(e){}}
-  if (window.Worker) {
-    try {
-      renderer = new Worker('display.js')
-    } catch (e) {}
-  }
-  console.log(renderer)
+function validPuzzle(style) {
   var solutions = []
   // Require a puzzle with not too many solutions
   while (true) {
     solutions = []
     var puzzleSeed = seed
-    var puzzle = _randomize(style)
-    console.log(renderer.postMessage)
-    renderer.postMessage([puzzle])
+    var puzzle = randomPuzzle(style)
     solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
     console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: ')
     if (solutions.length == 0) {
@@ -176,44 +148,5 @@ window.onload = function() {
     }
   }
   var solution = solutions[_randint(solutions.length)]
-  var hints = []
-  for (var x=0; x<solution.grid.length; x++) {
-    for (var y=0; y<solution.grid[x].length; y++) {
-      if (x%2 + y%2 == 1 && !solution.grid[x][y]) {
-        hints.push({'x':x, 'y':y})
-      }
-    }
-  }
-  window['showHint'] = function() {
-    if (hints.length <= 0) return
-    var goodHints = []
-    var badHints = []
-    console.log(puzzle.grid)
-    for (var hint of hints) {
-      // FIXME: This is terrible encapsulation
-      var elem = document.getElementById("puzzle_"+hint.x+"_"+hint.y)
-      if (!elem.className.endsWith("trace")) {
-        // User's solution will be broken by this hint
-        goodHints.push(hint)
-      } else {
-        badHints.push(hint)
-      }
-    }
-    if (goodHints.length > 0) {
-      var hint = goodHints.splice(_randint(goodHints.length), 1)[0]
-    } else {
-      var hint = badHints.splice(_randint(badHints.length), 1)[0]
-    }
-    puzzle.gaps.push(hint)
-    solution.gaps.push(hint)
-    draw(puzzle)
-    hints = badHints.concat(goodHints)
-  }
-  window['showSolution'] = function() {
-    draw(solution)
-  }
-
-  location.hash = puzzleSeed
-  draw(puzzle)
-  // draw(solutions[0])
+  return {'puzzle':puzzle, 'solution':solution, 'seed':puzzleSeed}
 }
