@@ -1,6 +1,8 @@
-onmessage = function(div) {
-  div.style.height = '100px'
-  div.style.width = '100px'
-  div.style.background = 'red'
-  postMessage(div)
+onmessage = function() {
+  console.log('Recieved at worker')
+  var N = 10000000		
+  for (var i=0; i<N; i++) {		
+    var j = i**i
+  }
+  postMessage(null)
 }
