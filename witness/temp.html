@@ -15,7 +15,7 @@
           div.style.height = '100px'
           div.style.width = '100px'
           div.style.background = 'red'
-          document.appendChild(div)
+          document.body.appendChild(div)
           myWorker.postMessage(null)
         };
         myWorker.onmessage = function() {
