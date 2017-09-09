@@ -3,24 +3,23 @@
     <button id="button">Send Message</label>
     <script>
       var button = document.querySelector('#button');
-      if (window.Worker) { // Check if Browser supports the Worker api.
-        // Requires script name as input
-        var myWorker = new Worker("worker.js");
+      var worker = {'postMessage': function() {}};
+      if (window.Worker) {
+        try {
+          var worker = new Worker('temp.js');
+        } catch (e) {}
+      }
 
-      // onkeyup could be used instead of onchange if you wanted to update the answer every time
-      // an entered value is changed, and you don't want to have to unfocus the field to update its .value
-
-        button.onclick = function() {
-          var div = document.createElement('div')
-          div.style.height = '100px'
-          div.style.width = '100px'
-          div.style.background = 'red'
-          document.body.appendChild(div)
-          myWorker.postMessage(null)
-        };
-        myWorker.onmessage = function() {
-          console.log('Recieved at main')
-        }
+      button.onclick = function() {
+        var div = document.createElement('div')
+        div.style.height = '100px'
+        div.style.width = '100px'
+        div.style.background = 'red'
+        document.body.appendChild(div)
+        worker.postMessage(null)
+      };
+      worker.onmessage = function() {
+        console.log('Recieved at main')
       }
     </script>
   </body>
