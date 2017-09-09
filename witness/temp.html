@@ -1,26 +1,45 @@
 <html>
   <body>
+    <form>
+      <div>
+        <label for="number1">Multiply number 1: </label>    
+        <input type="text" id="number1" value="0">
+      </div>
+      <div>
+        <label for="number2">Multiply number 2: </label>   
+        <input type="text" id="number2" value="0">
+      </div>
+    </form>
+
+    <p class="result">Result: 0</p>
     <script>
-      var worker = {'postMessage': function(e){}}
-      if (window.Worker) {
-        try {
-          worker = new Worker('temp2.js')
-          worker.onmessage = function(e) {
-            console.log(e)
-            document.appendChild(e)
-          }
-        } catch (e) {}
+      var first = document.querySelector('#number1');
+      var second = document.querySelector('#number2');
+
+      var result = document.querySelector('.result');
+
+      if (window.Worker) { // Check if Browser supports the Worker api.
+        // Requires script name as input
+        var myWorker = new Worker("worker.js");
+
+      // onkeyup could be used instead of onchange if you wanted to update the answer every time
+      // an entered value is changed, and you don't want to have to unfocus the field to update its .value
+
+        first.onchange = function() {
+          myWorker.postMessage([first.value,second.value]); // Sending message as an array to the worker
+          console.log('Message posted to worker');
+        };
+
+        second.onchange = function() {
+          myWorker.postMessage([first.value,second.value]);
+          console.log('Message posted to worker');
+        };
+
+        myWorker.onmessage = function(e) {
+          result.textContent = e.data;
+          console.log('Message received from worker');
+        };
       }
-      console.log(worker)
-      function wait() {
-        var N = 10000000
-        for (var i=0; i<N; i++) {
-          var j = i**i
-        }
-      }
-      worker.postMessage(null)
-      wait()
-      console.log('<12>')
     </script>
   </body>
 </html>
