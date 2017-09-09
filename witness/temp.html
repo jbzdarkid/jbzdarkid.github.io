@@ -11,16 +11,12 @@
         try {
           worker = new Worker('temp.js');
         } catch (e) {
-        /*
           window.postMessage = function(e){worker.onmessage(e)}
           worker.postMessage = function(e){window.onmessage(e)}
-        */
         }
       } else {
-        /*
         window.postMessage = function(e){worker.onmessage(e)}
         worker.postMessage = function(e){window.onmessage(e)}
-        */
       }
 
       button.onclick = function() {
