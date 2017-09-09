@@ -5,6 +5,9 @@
       if (window.Worker) {
         try {
           worker = new Worker('temp2.js')
+          worker.onmessage = function(e) {
+            document.appendChild(e)
+          }
         } catch (e) {}
       }
       function wait() {

@@ -3,5 +3,7 @@ function onmessage(e) {
   div.style.height = '100px'
   div.style.width = '100px'
   div.style.background = 'red'
+  console.log(div)
   document.body.appendChild(div)
+  postMessage(div)
 }
