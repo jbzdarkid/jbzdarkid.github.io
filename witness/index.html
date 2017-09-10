@@ -102,8 +102,7 @@
         document.getElementById('soln').disabled = false
       }
       
-      // Main startup code, detect style + puzzle id, generate and validate
-      // puzzle to be displayed.
+      // Main startup code, detect style + puzzle id, generate, validate, and display puzzle.
       if ('style' in urlParams) {
         if (urlParams['style'] in styles) {
           var style = styles[urlParams['style']]
@@ -134,9 +133,9 @@
         setSeed(parseInt(location.hash.substring(1)))
         var puzzle = randomPuzzle(style)
         draw(puzzle)
+        console.log(puzzle)
         worker.postMessage(puzzle)
       }
-      
     </script>
   </body>
 </html>

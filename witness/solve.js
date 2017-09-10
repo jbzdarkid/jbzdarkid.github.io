@@ -1,4 +1,5 @@
 onmessage = function(puzzle) {
+  console.log(puzzle)
   var solutions = []
   solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
   postMessage(solutions[_randint(solutions.length)])
