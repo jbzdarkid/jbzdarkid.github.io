@@ -75,7 +75,6 @@
           if (hints.length <= 0) return
           var goodHints = []
           var badHints = []
-          console.log(puzzle.grid)
           for (var hint of hints) {
             // FIXME: This is terrible encapsulation
             var elem = document.getElementById("puzzle_"+hint.x+"_"+hint.y)
@@ -127,7 +126,7 @@
         setSeed(Math.floor(Math.random() * (1 << 30)))
         var puzzleData = validPuzzle(style)
         draw(puzzleData['puzzle'])
-        worker.onmessage(puzzleData['solution'])
+        window.postMessage(puzzleData['solution'])
         location.hash = puzzleData['seed']
       } else {
         // A seed was provided, so draw the puzzle then validate it async
