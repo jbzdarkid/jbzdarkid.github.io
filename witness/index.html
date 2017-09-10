@@ -48,16 +48,17 @@
         try {
           worker = new Worker('solve.js');
         } catch (e) {
-          window.postMessage = function(e) {worker.onmessage(e)}
-          worker.postMessage = function(e) {window.onmessage(e)}
+          window.postMessage = function(msg) {worker.onmessage({'data':msg})}
+          worker.postMessage = function(msg) {window.onmessage({'data':msg})}
         }
       } else {
-        window.postMessage = function(e) {worker.onmessage(e)}
-        worker.postMessage = function(e) {window.onmessage(e)}
+        window.postMessage = function(msg) {worker.onmessage({'data':msg})}
+        worker.postMessage = function(msg) {window.onmessage({'data':msg})}
       }
       // Callback from the worker, after validating a puzzle it provides
       // a solution. We use this to create showHint() and showSolution()
-      worker.onmessage = function(solution) {
+      worker.onmessage = function(e) {
+        var solution = e.data
         if (solution == undefined) {
           console.log('%cWarning: This puzzle has no solution. Solve at your own risk!', 'color:red; font-size: large')
           return
@@ -133,7 +134,6 @@
         setSeed(parseInt(location.hash.substring(1)))
         var puzzle = randomPuzzle(style)
         draw(puzzle)
-        console.log(puzzle)
         worker.postMessage(puzzle)
       }
     </script>
