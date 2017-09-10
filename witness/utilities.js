@@ -1,21 +1,17 @@
-/*** Firefox compatibility ***/
+/*** Start cross-compatibility ***/
 if (!String.prototype.includes) {
   String.prototype.includes = function() {
     return String.prototype.indexOf.apply(this, arguments) !== -1
   }
 }
-
 document.pointerLockElement = document.pointerLockElement && document.mozPointerLockElement
 document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock
 Element.prototype.requestPointerLock = Element.prototype.requestPointerLock || Element.prototype.mozRequestPointerLock
 Event.prototype.movementX = Event.prototype.movementX || Event.prototype.mozMovementX
 Event.prototype.movementY = Event.prototype.movementY || Event.prototype.mozMovementY
-
-/*** End Firefox compatibility ***/
+/*** End cross-compatibility ***/
 
 class Puzzle {
-  // Javascript doesn't allow named parameters, so this constructor
-  // isn't taking any additional arguments.
   constructor(width, height, pillar=false) {
     if (pillar) {
       height -= 0.5
@@ -57,68 +53,36 @@ class Puzzle {
     return grid
   }
   
-  // FIXME: Find a way to use prototyping to avoid implementing getters and setters
+  copyGrid() {
+    var new_grid = []
+    for (var row of this.grid) {
+      new_grid.push(row.slice())
+    }
+    return new_grid
+  }
+  
+  // Wrap a value around at the width of the grid.
+  _mod(val) {
+    if (this.pillar) {
+      var mod = this.grid[0].length
+      return ((val % mod) + mod) % mod
+    } else {
+      return val
+    }
+  }
+
   getCell(x, y) {
-    if (x < 0 || x >= this.grid.length) {
-      return true
-    }
-    if (y < 0) {
-      if (this.pillar) {
-        y = (y % this.grid[x].length) + this.grid[x].length
-      } else {
-        return true
-      }
-    }
-    if (y >= this.grid[x].length) {
-      if (this.pillar) {
-        y = (y % this.grid[x].length)
-      } else {
-        return true
-      }
-    }
-    return this.grid[x][y]
+    if (x < 0 || x >= this.grid.length) return undefined
+    return this.grid[x][this._mod(y)]
   }
   
   setCell(x, y, value) {
-    if (x < 0 || x >= this.grid.length) {
-      return true
-    }
-    if (y < 0) {
-      if (this.pillar) {
-        y = (y % this.grid[x].length) + this.grid[x].length
-      } else {
-        throw (x, y), "is out of bounds"
-      }
-    }
-    if (y >= this.grid[x].length) {
-      if (this.pillar) {
-        y = (y % this.grid[x].length)
-      } else {
-        throw (x, y), "is out of bounds"
-      }
-    }
-    this.grid[x][y] = value
+    if (x < 0 || x >= this.grid.length) throw 'grid['+x+']['+y+'] is out of bounds'
+    this.grid[x][this._mod(y)] = value
   }
   
   isEndpoint(x, y) {
-    if (x < 0 || x >= this.grid.length) {
-      return false
-    }
-    if (y < 0) {
-      if (this.pillar) {
-        y = (y % this.grid[x].length) + this.grid[x].length
-      } else {
-        return false
-      }
-    }
-    if (y >= this.grid[x].length) {
-      if (this.pillar) {
-        y = (y % this.grid[x].length)
-      } else {
-        return false
-      }
-    }
-    return (x == this.end.x && y == this.end.y)
+    return (x == this.end.x && this._mod(y) == this.end.y)
   }
   
   clone() {
@@ -144,80 +108,68 @@ class Puzzle {
     */
   }
 
-  copyGrid() {
-    var new_grid = []
-    for (var row of this.grid) {
-      new_grid.push(row.slice())
-    }
-    return new_grid
-  }
-  
-  _innerLoop(x, y, region) {
-    if (this.getCell(x, y) == 2) {
-      delete this.potentialRegions[x+'_'+y]
-    }
+  _innerLoop(x, y, region, potentialRegions) {
+    delete potentialRegions[x+'_'+y]
+    if (this.getCell(x, y) == true) return
     region.push({'x':x, 'y':y})
     this.setCell(x, y, true)
     
-    if (this.getCell(x+2, y) == true) { // Already visited, do nothing
-    } else if (this.getCell(x+1, y) == true) { // Unvisited and potentially disconnected
-      this.potentialRegions[(x+2)+'_'+y] = true
-      this.setCell(x+2, y, 2)
-    } else { // Unvisited and connected
-      this._innerLoop(x+2, y, region)
+    if (this.getCell(x-2, y) == false) { // Unvisited cell left
+      if (this.getCell(x-1, y) == false) { // Connected
+        this._innerLoop(x-2, y, region, potentialRegions)
+      } else { // Disconnected, potential new region
+        potentialRegions[(x-2)+'_'+y] = true
+      }
     }
-
-    if (this.getCell(x-2, y) == true) { // Already visited, do nothing
-    } else if (this.getCell(x-1, y) == true) { // Unvisited and potentially disconnected
-      this.potentialRegions[(x-2)+'_'+y] = true
-      this.setCell(x-2, y, 2)
-    } else { // Unvisited and connected
-      this._innerLoop(x-2, y, region)
+    if (this.getCell(x+2, y) == false) { // Unvisited cell right
+      if (this.getCell(x+1, y) == false) { // Connected
+        this._innerLoop(x+2, y, region, potentialRegions)
+      } else { // Disconnected, potential new region
+        potentialRegions[(x+2)+'_'+y] = true
+      }
     }
-
-    if (this.getCell(x, y+2) == true) { // Already visited, do nothing
-    } else if (this.getCell(x, y+1) == true) { // Unvisited and potentially disconnected
-      this.potentialRegions[x+'_'+(y+2)] = true
-      this.setCell(x, y+2, 2)
-    } else { // Unvisited and connected
-      this._innerLoop(x, y+2, region)
+    if (this.getCell(x, y-2) == false) { // Unvisited cell above
+      if (this.getCell(x, y-1) == false) { // Connected
+        this._innerLoop(x, y-2, region, potentialRegions)
+      } else { // Disconnected, potential new region
+        potentialRegions[x+'_'+(y-2)] = true
+      }
     }
-
-    if (this.getCell(x, y-2) == true) { // Already visited, do nothing
-    } else if (this.getCell(x, y-1) == true) { // Unvisited and potentially disconnected
-      this.potentialRegions[x+'_'+(y-2)] = true
-      this.setCell(x, y-2, 2)
-    } else { // Unvisited and connected
-      this._innerLoop(x, y-2, region)
+    if (this.getCell(x, y+2) == false) { // Unvisited cell below
+      if (this.getCell(x, y+1) == false) { // Connected
+        this._innerLoop(x, y+2, region, potentialRegions)
+      } else { // Disconnected, potential new region
+        potentialRegions[x+'_'+(y+2)] = true
+      }
     }
   }
   
   getRegions() {
     var savedGrid = this.copyGrid()
-    this.potentialRegions = {'1_1': true}
-    this.setCell(1, 1, 2)
+    // Temporarily remove all elements from the grid
+    for (var x=1; x<this.grid.length; x+=2) {
+      for (var y=1; y<this.grid[x].length; y+=2) {
+        this.grid[x][y] = false
+      }
+    }
+    var potentialRegions = {'1_1': true}
     var regions = []
-    while (Object.keys(this.potentialRegions).length > 0) {
-      var pos = Object.keys(this.potentialRegions)[0]
+    while (Object.keys(potentialRegions).length > 0) {
+      var pos = Object.keys(potentialRegions)[0]
       var x = parseInt(pos.split('_')[0])
       var y = parseInt(pos.split('_')[1])
-      if (this.getCell(x, y) != 2) {
-        delete this.potentialRegions[pos]
-        continue
-      }
       var region = []
-      this._innerLoop(x, y, region)
+      this._innerLoop(x, y, region, potentialRegions)
       regions.push(region)
     }
     this.grid = savedGrid
-    if (window.debug) {
-      console.log(regions)
-    }
+    if (window.debug) console.log(regions)
     return regions
   }
 }
 
-function _copyGrid(grid) { // FIXME: Deprecated
+function _copyGrid(grid) {
+  console.info('FIXME: Deprecated, use puzzle.copyGrid instead')
   var new_grid = []
   for (var row of grid) {
     new_grid.push(row.slice())
