@@ -1,5 +1,7 @@
 onmessage = function(e) {
   var puzzle = e.data
+  console.log(puzzle)
+  console.log(puzzle.isEndpoint)
   var solutions = []
   solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
   postMessage(solutions[_randint(solutions.length)])
