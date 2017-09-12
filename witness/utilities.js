@@ -37,11 +37,11 @@ class Puzzle {
     puzzle.pillar = parsed.pillar
     return puzzle
   }
-  
+
   serialize() {
     return JSON.stringify(this)
   }
-  
+
   newGrid(width, height) { // FIXME: Should this just be puzzle.clearGrid?
     var grid = []
     for (var i=0; i<width; i++) {
@@ -52,7 +52,7 @@ class Puzzle {
     }
     return grid
   }
-  
+
   copyGrid() {
     var new_grid = []
     for (var row of this.grid) {
@@ -60,7 +60,7 @@ class Puzzle {
     }
     return new_grid
   }
-  
+
   // Wrap a value around at the width of the grid.
   _mod(val) {
     if (this.pillar) {
@@ -75,16 +75,16 @@ class Puzzle {
     if (x < 0 || x >= this.grid.length) return undefined
     return this.grid[x][this._mod(y)]
   }
-  
+
   setCell(x, y, value) {
     if (x < 0 || x >= this.grid.length) throw 'grid['+x+']['+y+'] is out of bounds'
     this.grid[x][this._mod(y)] = value
   }
-  
+
   isEndpoint(x, y) {
     return (x == this.end.x && this._mod(y) == this.end.y)
   }
-  
+
   clone() {
     var copy = new Puzzle(0, 0)
     copy.grid = this.copyGrid()
@@ -113,7 +113,7 @@ class Puzzle {
     if (this.getCell(x, y) == true) return
     region.push({'x':x, 'y':y})
     this.setCell(x, y, true)
-    
+
     if (this.getCell(x-2, y) == false) { // Unvisited cell left
       if (this.getCell(x-1, y) == false) { // Connected
         this._innerLoop(x-2, y, region, potentialRegions)
@@ -143,7 +143,7 @@ class Puzzle {
       }
     }
   }
-  
+
   getRegions() {
     var savedGrid = this.copyGrid()
     // Temporarily remove all elements from the grid
@@ -169,7 +169,7 @@ class Puzzle {
 }
 
 function _copyGrid(grid) {
-  console.info('FIXME: Deprecated, use puzzle.copyGrid instead')
+  console.trace('FIXME: Deprecated, use puzzle.copyGrid instead')
   var new_grid = []
   for (var row of grid) {
     new_grid.push(row.slice())
@@ -187,7 +187,7 @@ function _copyGrid(grid) {
 // Corners and edges will have a value of true if the line passes through them
 // Cells will contain an object if there is an element in them
 function _newGrid(width, height) {
-  console.info('FIXME: Deprecated, use puzzle.newGrid instead')
+  console.trace('FIXME: Deprecated, use puzzle.newGrid instead')
   var grid = []
   for (var i=0; i<2*width+1; i++) {
     grid[i] = []
@@ -201,7 +201,7 @@ function _newGrid(width, height) {
 // Returns the contiguous regions on the grid, as arrays of points.
 // The return array may contain empty cells.
 function _getRegions(grid) {
-  console.info('FIXME: Deprecated, use puzzle.getRegions instead')
+  console.trace('FIXME: Deprecated, use puzzle.getRegions instead')
   var colors = []
   for (var x=0; x<grid.length; x++) {
     colors[x] = []
