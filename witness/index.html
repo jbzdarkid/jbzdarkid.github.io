@@ -101,7 +101,7 @@
         document.getElementById('hint').disabled = false
         document.getElementById('soln').disabled = false
       }
-      
+
       // Main startup code, detect style + puzzle id, generate, validate, and display puzzle.
       if ('style' in urlParams) {
         if (urlParams['style'] in styles) {
@@ -133,6 +133,7 @@
         setSeed(parseInt(location.hash.substring(1)))
         var puzzle = randomPuzzle(style)
         draw(puzzle)
+        console.log(puzzle)
         worker.postMessage(puzzle)
       }
     </script>
