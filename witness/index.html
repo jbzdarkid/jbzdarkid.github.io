@@ -128,7 +128,7 @@
         setSeed(Math.floor(Math.random() * (1 << 30)))
         var puzzleData = validPuzzle(style)
         draw(puzzleData['puzzle'])
-        window.postMessage(puzzleData['solutions'])
+        postMessage(puzzleData['solutions'])
         location.hash = puzzleData['seed']
       } else {
         // A seed was provided, so draw the puzzle then validate it async
