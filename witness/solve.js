@@ -1,8 +1,6 @@
 onmessage = function(e) {
   self.importScripts('puzzle.js', 'validate.js', 'polyominos.js')
   var puzzle = Puzzle.deserialize(e.data)
-  console.log(puzzle.isEndpoint)
-  console.log(puzzle.isEndpoint(0, 0))
   var solutions = []
   solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
   postMessage(solutions)
