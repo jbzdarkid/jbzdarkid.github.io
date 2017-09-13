@@ -49,11 +49,11 @@
         try {
           worker = new Worker('solve.js');
         } catch (e) {
-          window.postMessage = function(msg) {worker.onmessage({'data':msg})}
+          //window.postMessage = function(msg) {worker.onmessage({'data':msg})}
           worker.postMessage = function(msg) {window.onmessage({'data':msg})}
         }
       } else {
-        window.postMessage = function(msg) {worker.onmessage({'data':msg})}
+        //window.postMessage = function(msg) {worker.onmessage({'data':msg})}
         worker.postMessage = function(msg) {window.onmessage({'data':msg})}
       }
       // Callback from the worker, after validating a puzzle it provides
@@ -128,7 +128,7 @@
         setSeed(Math.floor(Math.random() * (1 << 30)))
         var puzzleData = validPuzzle(style)
         draw(puzzleData['puzzle'])
-        postMessage(puzzleData['solutions'])
+        worker.onmessage({'data':puzzleData['solutions']})
         location.hash = puzzleData['seed']
       } else {
         // A seed was provided, so draw the puzzle then validate it async
