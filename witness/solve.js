@@ -3,12 +3,7 @@ onmessage = function(e) {
   var puzzle = Puzzle.deserialize(e.data)
   var solutions = []
   solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
-  if (solutions.length == 0) {
-    console.log('%cWarning: This puzzle has no solution. Solve at your own risk!', 'color:red; font-size: large')
-  } else {
-    console.log('Puzzle validation completed, found', solutions.length, 'solutions')
-    postMessage(solutions)
-  }
+  postMessage(solutions)
 }
 
 // Generates a solution via DFS recursive backtracking

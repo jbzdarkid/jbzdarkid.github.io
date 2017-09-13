@@ -60,6 +60,7 @@
       // a solution. We use this to create showHint() and showSolution()
       worker.onmessage = function(e) {
         var solutions = e.data
+        console.log(solutions)
         if (solutions == undefined) {
           console.log('%cWarning: This puzzle has no solution. Solve at your own risk!', 'color:red; font-size: large')
           return
