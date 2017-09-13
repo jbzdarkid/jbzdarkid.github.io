@@ -3,6 +3,7 @@ onmessage = function(e) {
   var puzzle = Puzzle.deserialize(e.data)
   var solutions = []
   solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
+  console.log('Puzzle validation completed, found', solutions.length, 'solutions')
   postMessage(solutions)
 }
 
