@@ -124,7 +124,6 @@ function randomPuzzle(style) {
       }
     }
   }
-  console.log(puzzle)
   return puzzle
 }
 
@@ -148,7 +147,6 @@ function validPuzzle(style) {
       break
     }
   }
-  console.log(puzzle)
   var solution = solutions[_randint(solutions.length)]
   return {'puzzle':puzzle, 'solution':solution, 'seed':puzzleSeed}
 }

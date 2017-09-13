@@ -133,7 +133,8 @@
         setSeed(parseInt(location.hash.substring(1)))
         var puzzle = randomPuzzle(style)
         draw(puzzle)
-        console.log(puzzle)
+        console.log(puzzle.isEndpoint)
+        console.log(puzzle.isEndpoint(0, 0))
         worker.postMessage(puzzle)
       }
     </script>
