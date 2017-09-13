@@ -1,5 +1,5 @@
 onmessage = function(e) {
-  var puzzle = e.data
+  var puzzle = Puzzle.deserialize(e.data)
   console.log(puzzle.isEndpoint)
   console.log(puzzle.isEndpoint(0, 0))
   var solutions = []

@@ -135,7 +135,7 @@
         draw(puzzle)
         console.log(puzzle.isEndpoint)
         console.log(puzzle.isEndpoint(0, 0))
-        worker.postMessage(puzzle)
+        worker.postMessage(puzzle.serialize())
       }
     </script>
   </body>
