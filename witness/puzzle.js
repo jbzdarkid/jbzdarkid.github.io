@@ -150,7 +150,6 @@ class Puzzle {
       regions.push(region)
     }
     this.grid = savedGrid
-    if (window.debug) console.log(regions)
     return regions
   }
 }
