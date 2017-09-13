@@ -61,7 +61,7 @@
       worker.onmessage = function(e) {
         var solutions = e.data
         console.log(solutions)
-        if (solutions == undefined) {
+        if (solutions == undefined || solutions.length == 0) {
           console.log('%cWarning: This puzzle has no solution. Solve at your own risk!', 'color:red; font-size: large')
           return
         }
