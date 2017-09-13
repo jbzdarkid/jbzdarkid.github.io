@@ -58,11 +58,12 @@
       // Callback from the worker, after validating a puzzle it provides
       // a solution. We use this to create showHint() and showSolution()
       worker.onmessage = function(e) {
-        var solution = e.data
-        if (solution == undefined) {
+        var solutions = e.data
+        if (solutions == undefined) {
           console.log('%cWarning: This puzzle has no solution. Solve at your own risk!', 'color:red; font-size: large')
           return
         }
+        var solution = solutions[_randint(solutions.length)]
         var hints = []
         for (var x=0; x<solution.grid.length; x++) {
           for (var y=0; y<solution.grid[x].length; y++) {
@@ -126,15 +127,13 @@
         setSeed(Math.floor(Math.random() * (1 << 30)))
         var puzzleData = validPuzzle(style)
         draw(puzzleData['puzzle'])
-        window.postMessage(puzzleData['solution'])
+        window.postMessage(puzzleData['solutions'])
         location.hash = puzzleData['seed']
       } else {
         // A seed was provided, so draw the puzzle then validate it async
         setSeed(parseInt(location.hash.substring(1)))
         var puzzle = randomPuzzle(style)
         draw(puzzle)
-        console.log(puzzle.isEndpoint)
-        console.log(puzzle.isEndpoint(0, 0))
         worker.postMessage(puzzle.serialize())
       }
     </script>

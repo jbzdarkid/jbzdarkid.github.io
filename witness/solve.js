@@ -5,7 +5,7 @@ onmessage = function(e) {
   console.log(puzzle.isEndpoint(0, 0))
   var solutions = []
   solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
-  postMessage(solutions[_randint(solutions.length)])
+  postMessage(solutions)
 }
 
 // Generates a solution via DFS recursive backtracking

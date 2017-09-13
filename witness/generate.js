@@ -147,6 +147,5 @@ function validPuzzle(style) {
       break
     }
   }
-  var solution = solutions[_randint(solutions.length)]
-  return {'puzzle':puzzle, 'solution':solution, 'seed':puzzleSeed}
+  return {'puzzle':puzzle, 'solutions':solutions, 'seed':puzzleSeed}
 }
