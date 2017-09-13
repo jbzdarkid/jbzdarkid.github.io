@@ -1,5 +1,5 @@
 onmessage = function(e) {
-  self.importScripts('utilities.js')
+  self.importScripts('puzzle.js')
   var puzzle = Puzzle.deserialize(e.data)
   console.log(puzzle.isEndpoint)
   console.log(puzzle.isEndpoint(0, 0))
