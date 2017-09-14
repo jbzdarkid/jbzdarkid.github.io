@@ -41,28 +41,27 @@
       var table = document.getElementById('meta')
       for (var i=0; i<tests.length; i+=3) {
         var row = table.insertRow()
-        for (var j=0; j<3; j++) {
+        for (var j=i; j<i+3 && j < tests.length; j++) {
           var cell = row.insertCell()
           var subtable = document.createElement('table')
-          subtable.id = 'test'+(i+j)
+          subtable.id = 'test'+j
           subtable.setAttribute('cellspacing', '0px')
           cell.appendChild(subtable)
-        }
-      }
-      for (var i=0; i<tests.length; i++) {
-        try {
-          var solutions = []
-          var puzzleData = tests[i]()
-          solve(puzzleData.puzzle, puzzleData.puzzle.start, solutions)
-          if (solutions.length != puzzleData.solutions) {
-            console.log('Puzzle has', solutions.length, 'solutions, should have', puzzleData.solutions)
-            console.log(solutions)
-            document.getElementById('test'+i).parentElement.bgColor = 'red'
+
+          try {
+            var solutions = []
+            var puzzleData = tests[j]()
+            solve(puzzleData.puzzle, puzzleData.puzzle.start, solutions)
+            if (solutions.length != puzzleData.solutions) {
+              console.log('Puzzle has', solutions.length, 'solutions, should have', puzzleData.solutions)
+              console.log(solutions)
+              document.getElementById('test'+j).parentElement.bgColor = 'red'
+            }
+            draw(puzzleData.puzzle, 'test'+j)
+          } catch (e) {
+            document.getElementById('test'+j).innerHTML = e.stack || 'ERROR: '+e
           }
-          draw(puzzleData.puzzle, 'test'+i)
-        } catch (e) {
-          document.getElementById('test'+i).innerHTML = e.stack || 'ERROR: '+e
-          continue
+
         }
       }
     </script>
