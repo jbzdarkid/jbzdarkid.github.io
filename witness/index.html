@@ -44,17 +44,13 @@
     <script>
       // Initialize our worker (multithreaded processing class) with defaults
       // to allow for cases where multithreading isn't enabled.
-      var worker = {}
+      var worker = {
+        'postMessage': function(msg) {window.onmessage({'data':msg})}
+      }
       if (window.Worker) {
         try {
           worker = new Worker('solve.js');
-        } catch (e) {
-          //window.postMessage = function(msg) {worker.onmessage({'data':msg})}
-          worker.postMessage = function(msg) {window.onmessage({'data':msg})}
-        }
-      } else {
-        //window.postMessage = function(msg) {worker.onmessage({'data':msg})}
-        worker.postMessage = function(msg) {window.onmessage({'data':msg})}
+        } catch (e) {}
       }
       // Callback from the worker, after validating a puzzle it provides
       // a solution. We use this to create showHint() and showSolution()
