@@ -39,15 +39,30 @@
     <table id="meta" cellpadding="40"></table>
     <script type="text/javascript">
       var table = document.getElementById('meta')
-      for (var i=0; i<20; i++) {
-        var row = table.insertRow(i)
+      for (var i=0; i<tests.length; i+=3) {
+        var row = table.insertRow()
         for (var j=0; j<3; j++) {
-          var cell = row.insertCell(j)
+          var cell = row.insertCell()
           var subtable = document.createElement('table')
-          subtable.id = 'test'+(i*3+j)
+          subtable.id = 'test'+(i+j)
           subtable.setAttribute('cellspacing', '0px')
-          subtable.setAttribute('cellpadding', '0px')
           cell.appendChild(subtable)
+        }
+      }
+      for (var i=0; i<tests.length; i++) {
+        try {
+          var solutions = []
+          var puzzleData = tests[i]()
+          solve(puzzleData.puzzle, puzzleData.puzzle.start, solutions)
+          if (solutions.length != puzzleData.solutions) {
+            console.log('Puzzle has', solutions.length, 'solutions, should have', puzzleData.solutions)
+            console.log(solutions)
+            document.getElementById('test'+i).parentElement.bgColor = 'red'
+          }
+          draw(puzzleData.puzzle, 'test'+i)
+        } catch (e) {
+          document.getElementById('test'+i).innerHTML = e.stack || 'ERROR: '+e
+          continue
         }
       }
     </script>

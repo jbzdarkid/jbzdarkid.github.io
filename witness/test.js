@@ -1,4 +1,4 @@
-var tests = [
+tests = [
   function() {
     var puzzle = new Puzzle(2, 2)
     puzzle.start = {'x':4, 'y':4}
@@ -216,22 +216,3 @@ var tests = [
     return {'puzzle':puzzle, 'solutions':5}
   }
 ]
-
-window.onload = function() {
-  for (var i=0; i<tests.length; i++) {
-    try {
-      var solutions = []
-      var puzzleData = tests[i]()
-      solve(puzzleData.puzzle, puzzleData.puzzle.start, solutions)
-      if (solutions.length != puzzleData.solutions) {
-        console.log('Puzzle has', solutions.length, 'solutions, should have', puzzleData.solutions)
-        console.log(solutions)
-        document.getElementById('test'+i).parentElement.bgColor = 'red'
-      }
-      draw(puzzleData.puzzle, 'test'+i)
-    } catch (e) {
-      document.getElementById('test'+i).innerHTML = e.stack || 'ERROR: '+e
-      continue
-    }
-  }
-}
