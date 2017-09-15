@@ -176,6 +176,7 @@ function draw(puzzle, target='puzzle') {
       }
       // If there's a solution present for the grid, draw it (poorly)
       if (puzzle.grid[x][y] == true) {
+        // FIXME: This needs curving, and should honestly try to leverage real draw code
         cell.style.background = '#4F1A1A'
       }
       // Grid corners are rounded on non-pillar puzzles
@@ -283,9 +284,7 @@ function draw(puzzle, target='puzzle') {
     var height = parseInt(window.getComputedStyle(cell).height)
     svg.setAttribute('viewBox', '0 0 '+width+' '+height)
     var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-    rect.setAttribute('width', 18)
-    rect.setAttribute('height', 24)
-    rect.setAttribute('fill', '#1F1313')
+    rect.setAttribute('class', 'gap')
     var transform = 'translate('+(width-18)/2+', '+(height-24)/2+')'
     if (gap.x%2 == 1) {
       // 9, 12 being the center of the rectangle
