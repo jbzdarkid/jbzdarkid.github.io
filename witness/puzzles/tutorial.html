@@ -1,0 +1,103 @@
+<html xmlns="http://www.w3.org/2000/xhtml">
+  <head>
+    <style>
+      .line {fill: #6D4D4A} /* Always at index 0 */
+      @font-face {src: url('Constantia.ttf')}
+      * {
+        font-family: Constantia;
+        font-variant: small-caps;
+        font-weight: bold;
+        font-size: 28px;
+      }
+      table {
+        position: relative;
+        top: 10%;
+        margin: auto;
+      }
+    </style>
+    <link rel="stylesheet" type="text/css" href="tutorial.css" id="stylesheet">
+    <!-- document.getElementById("stylesheet").href = 'style2.css' -->
+    <script type="text/javascript" src="../engine/polyominos.js"></script>
+    <script type="text/javascript" src="../engine/utilities.js"></script>
+    <script type="text/javascript" src="../engine/puzzle.js"></script>
+    <script type="text/javascript" src="../engine/solve.js"></script>
+    <script type="text/javascript" src="../engine/validate.js"></script>
+    <script type="text/javascript" src="../engine/display.js"></script>
+    <script type="text/javascript" src="../engine/trace.js"></script>
+    <script type="text/javascript" src="tutorial.js"></script>
+    <title>Puzzles from The Witness - Tutorial</title>
+  </head>
+  <body>
+
+    <div style="text-align: center; font-size: 72">Puzzles from The Witness - Tutorial</div>
+    <div style="text-align: center">
+      <label for="sens">Mouse Speed 2D</label>
+      <input id="sens" type="range" min="0.1" max="1.3" step="0.1" onchange="localStorage.sensitivity = this.value"/>
+      <script>document.getElementById('sens').value = localStorage.sensitivity</script>
+    </div>
+
+    <table id="meta" cellpadding="40"></table>
+    <script type="text/javascript">
+      var table = document.getElementById('meta')
+      for (var i=0; i<puzzles.length; i+=3) {
+        var row = table.insertRow()
+        for (var j=i; j<i+3 && j<puzzles.length; j++) {
+          var cell = row.insertCell()
+          var subtable = document.createElement('table')
+          subtable.id = 'puzzle'+j
+          subtable.setAttribute('cellspacing', '0px')
+          subtable.setAttribute('cellpadding', '0px')
+          cell.appendChild(subtable)
+
+          var solutions = []
+          var puzzle = puzzles[j]()
+          console.log(puzzle)
+          solve(puzzle, puzzle.start, solutions)
+
+          var minEdges = 999999
+          var minCorners = 999999
+          var minSolution = undefined
+          for (var solution of solutions) {
+            var edges = 0
+            var corners = 0
+            for (var x=0; x<solution.grid.length; x++) {
+              for (var y=0; y<solution.grid[x].length; y++) {
+                if (x%2 == 0 && y%2 == 0) { // At an intersection
+                  if (solution.getCell(x, y) == true) {
+                    // If there is a valid cell to the left and right,
+                    // this is not a corner
+                    if (solution.getCell(x-1, y) && solution.getCell(x+1, y)) {
+                      continue
+                    }
+                    // Similarly for above and below
+                    if (solution.getCell(x, y-1) && solution.getCell(x, y+1)) {
+                      continue
+                    }
+                    corners++
+                  }
+                } else if (x%2 == 1 && y%2 == 1) { // At a cell
+                  continue
+                } else { // At an edge
+                  if (solution.getCell(x, y)) {
+                    edges++
+                  }
+                }
+              }
+            }
+            if (edges < minEdges || (edges == minEdges && corners < minCorners)) {
+              minEdges = edges
+              minCorners = corners
+              minSolution = solution
+            }
+          }
+          if (minEdges < 999999) {
+            minSolution.start = puzzle.start
+            draw(minSolution, 'puzzle'+j)
+          } else {
+            draw(puzzle, 'puzzle'+j)
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

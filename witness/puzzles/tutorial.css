@@ -1,0 +1,80 @@
+@keyframes line-succ {
+  from {fill: #FFFFFF;}
+  to {fill: #FFFFFF;}
+}
+@keyframes line-fail {
+  from {fill: #000000;}
+  to {fill: #000000;}
+}
+.cursor {
+  fill: #A69191;
+  stroke: black;
+  stroke-width: 1px;
+  stroke-opacity: 0.4;
+}
+.center {
+  height: 58px;
+  width: 58px;
+  background: #0000FF;
+}
+.corner {
+  height: 24px;
+  width: 24px;
+  background: #0000AA;
+}
+.verti {
+  height: 58px;
+  width: 24px;
+  background: #0000AA;
+}
+.horiz {
+  height: 24px;
+  width: 58px;
+  background: #0000AA;
+}
+.start {
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  height: 48px;
+  width: 48px;
+  border-radius: 24px;
+  background: #0000AA;
+}
+.gap {
+  height: 24px;
+  width: 18px;
+  fill: #000033;
+}
+.end_left {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  position: relative;
+  height: 24px;
+  width: 24px;
+  background: #0000AA;
+}
+.end_right {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+  position: relative;
+  height: 24px;
+  width: 24px;
+  background: #0000AA;
+}
+.end_up {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  position: relative;
+  height: 24px;
+  width: 24px;
+  background: #0000AA;
+}
+.end_down {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  position: relative;
+  height: 24px;
+  width: 24px;
+  background: #0000AA;
+}
