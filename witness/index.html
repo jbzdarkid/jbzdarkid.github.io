@@ -49,7 +49,7 @@
       }
       if (window.Worker) {
         try {
-          worker = new Worker('solve.js');
+          worker = new Worker('engine/solve.js');
         } catch (e) {}
       }
       // Callback from the worker, after validating a puzzle it provides
