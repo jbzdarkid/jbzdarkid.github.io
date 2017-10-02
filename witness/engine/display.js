@@ -158,6 +158,7 @@ function draw(puzzle, target='puzzle') {
   while (table.rows.length > 0) {
     table.deleteRow(0)
   }
+  console.trace(puzzle)
   table.setAttribute('json', puzzle.serialize()) // Used to validate a traced solution later
 
   for (var x=0; x<puzzle.grid.length; x++) {
