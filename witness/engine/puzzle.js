@@ -12,7 +12,7 @@ class Puzzle {
     this.pillar = pillar
   }
 
-  static deserialize(json) {
+  /* static deserialize(json) {
     var parsed = JSON.parse(json)
     var puzzle = new Puzzle()
     puzzle.grid = parsed.grid
@@ -27,7 +27,7 @@ class Puzzle {
 
   serialize() {
     return JSON.stringify(this)
-  }
+  }*/
 
   newGrid(width, height) { // FIXME: Should this just be puzzle.clearGrid?
     var grid = []

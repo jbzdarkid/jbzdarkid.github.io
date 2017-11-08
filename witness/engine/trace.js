@@ -16,7 +16,7 @@ function _getVisualCell(x, y) {
   return document.getElementById(data.table+'_'+x+'_'+y)
 }
 
-function trace(elem) {
+function trace(elem, puzzle) {
   if (document.pointerLockElement == null) { // Started tracing a solution
     document.styleSheets[0].deleteRule(0)
     document.styleSheets[0].insertRule(".line {fill: #6D4D4A}", 0)
@@ -32,7 +32,7 @@ function trace(elem) {
     }
 
     var table = document.getElementById(data.table)
-    data.puzzle = Puzzle.deserialize(table.getAttribute('json'))
+    data.puzzle = puzzle
 
     // These aren't really arrays, they live update during iteration
     for (var cell of table.getElementsByTagName('td')) {
