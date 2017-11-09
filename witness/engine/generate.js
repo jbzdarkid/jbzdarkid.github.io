@@ -136,9 +136,7 @@ function validPuzzle(style) {
     var puzzle = randomPuzzle(style)
     solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
     console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: ')
-    if (solutions.length == 0) {
-      console.info('Impossible')
-    } else if (solutions.length < style['difficulty'][0]) {
+    if (solutions.length < style['difficulty'][0]) {
       console.info('Too Hard')
     } else if (solutions.length > style['difficulty'][1]) {
       console.info('Too Easy')
