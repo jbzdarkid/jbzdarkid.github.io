@@ -132,7 +132,7 @@
         setSeed(parseInt(location.hash.substring(1)))
         var puzzle = randomPuzzle(style)
         draw(puzzle)
-        worker.postMessage(puzzle)
+        worker.postMessage(puzzle.serialize())
       }
     </script>
   </body>
