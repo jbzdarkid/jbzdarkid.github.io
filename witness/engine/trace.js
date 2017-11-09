@@ -27,12 +27,12 @@ function trace(elem, puzzle) {
       'table':parent.id.split('_')[0],
       'x':parseInt(parent.id.split('_')[1]),
       'y':parseInt(parent.id.split('_')[2]),
+      'puzzle':puzzle,
       'subx':width/2,
       'suby':height/2,
     }
 
     var table = document.getElementById(data.table)
-    data.puzzle = puzzle
 
     // These aren't really arrays, they live update during iteration
     for (var cell of table.getElementsByTagName('td')) {

@@ -12,23 +12,6 @@ class Puzzle {
     this.pillar = pillar
   }
 
-  /* static deserialize(json) {
-    var parsed = JSON.parse(json)
-    var puzzle = new Puzzle()
-    puzzle.grid = parsed.grid
-    puzzle.start = parsed.start
-    puzzle.end = parsed.end
-    puzzle.dots = parsed.dots
-    puzzle.gaps = parsed.gaps
-    puzzle.regionCache = parsed.regionCache
-    puzzle.pillar = parsed.pillar
-    return puzzle
-  }
-
-  serialize() {
-    return JSON.stringify(this)
-  }*/
-
   newGrid(width, height) { // FIXME: Should this just be puzzle.clearGrid?
     var grid = []
     for (var i=0; i<width; i++) {

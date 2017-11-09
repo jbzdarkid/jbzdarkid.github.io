@@ -1,6 +1,6 @@
 onmessage = function(e) {
   self.importScripts('puzzle.js', 'validate.js', 'polyominos.js')
-  var puzzle = Puzzle.deserialize(e.data)
+  var puzzle = e.data
   var solutions = []
   solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
   console.trace(solutions[0])
