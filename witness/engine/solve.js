@@ -3,7 +3,6 @@ onmessage = function(e) {
   var puzzle = Puzzle.deserialize(e.data)
   var solutions = []
   solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
-  console.trace(solutions[0])
   postMessage(solutions)
 }
 
