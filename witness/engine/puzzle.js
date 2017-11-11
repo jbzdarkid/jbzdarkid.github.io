@@ -5,22 +5,22 @@ class Region {
     for (var i=0; i<grid.length; i++) {
       this.cells.push(0)
     }
+    this.regionSize = 0
     this.hasTriangles = false
     this.invalidTriangles = []
     this.activeNegations = 0
     this.colors = {}
-    this.elements = {
-      'poly':[],
-      'ylop':[],
-      'dot':[],
-      'gap':[],
-    }
+    this.ylops = []
+    this.polys = []
+    this.polyCount = 0
+    // TODO: Dots and Gaps
   }
 
   clone() {
     var clone = new Region(this.grid)
     clone.grid = _copyGrid(this.grid)
     clone.cells = this.cells.slice()
+    clone.regionSize = this.regionSize
     clone.hasTriangles = this.hasTriangles
     clone.invalidTriangles = this.invalidTriangles.slice()
     clone.activeNegations = this.activeNegations
@@ -33,17 +33,15 @@ class Region {
         'other':this.colors[color]['other']
       }
     }
-    clone.elements = {
-      'poly': this.elements['poly'].slice(),
-      'ylop': this.elements['ylop'].slice(),
-      'dot': this.elements['dot'].slice(),
-      'gap': this.elements['gap'].slice()
-    }
+    clone.ylops = this.ylops.slice()
+    clone.polys = this.polys.slice()
+    clone.polyCount = this.polyCount
     return clone
   }
 
   addCell(x, y) {
     this.cells[x] |= (1 << y)
+    this.regionSize++
     var cell = this.grid[x][y]
     if (cell != undefined) {
       if (cell.color != undefined) {
@@ -58,6 +56,7 @@ class Region {
           this.colors[cell.color]['other']++
         }
       }
+      // Square, Star, and Nonce require no additional actions
       if (cell.type == 'triangle') {
         this.hasTriangles = true
         var count = 0
@@ -69,20 +68,25 @@ class Region {
           // console.log('Triangle at grid['+x+']['+y+'] has', count, 'borders')
           this.invalidTriangles.push({'x':x, 'y':y})
         }
-      } else if (cell.type == 'square' || cell.type == 'star') {
-        // No need to list these
-      } else if (cell.type == 'nonce') {
-        // Nonces are always valid
       } else if (cell.type == 'nega') {
         this.activeNegations++
-      } else if (cell.type != undefined) {
-        this.elements[cell.type].push(cell)
+      } else if (cell.type == 'poly') {
+        this.polyCount += cell.size
+        cell.x = x
+        cell.y = y
+        this.polys.push(cell)
+      } else if (cell.type == 'ylop') {
+        this.polyCount += -cell.size
+        cell.x = x
+        cell.y = y
+        this.ylops.push(cell)
       }
     }
   }
 
   removeCell(x, y) {
     this.cells[x] &= ~(1 << y)
+    // Does not change regionSize
     var cell = this.grid[x][y]
     if (cell != undefined) {
       if (cell.color != undefined) {
@@ -94,6 +98,7 @@ class Region {
           this.colors[cell.color]['other']--
         }
       }
+      // Square, Star, and Nonce require no additional actions
       if (cell.type == 'triangle') {
         var newList = []
         for (var triangle of this.invalidTriangles) {
@@ -102,22 +107,26 @@ class Region {
           }
         }
         this.invalidTriangles = newList
-      } else if (cell.type == 'square' || cell.type == 'star') {
-        // No need to list these
-      } else if (cell.type == 'nonce') {
-        // Nonces are always valid
       } else if (cell.type == 'nega') {
         this.activeNegations--
-      } else if (cell.type != undefined) {
-        if (this.elements[cell.type] == undefined) {
-          console.log(cell.type, this.elements[cell.type])
-        }
+      } else if (cell.type == 'poly') {
+        this.polyCount -= cell.size
         var newList = []
-        for (var elem of this.elements[cell.type]) {
-          if (elem.x == x || elem.y == y) continue
-          newList.push(elem)
+        for (var poly of this.polys) {
+          if (poly.x != x || poly.y != y) {
+            newList.push(poly)
+          }
         }
-        this.elements[cell.type] = newList
+        this.polys = newList
+      } else if (cell.type == 'ylop') {
+        this.polyCount -= -cell.size
+        var newList = []
+        for (var ylop of this.ylops) {
+          if (ylop.x != x || ylop.y != y) {
+            newList.push(ylop)
+          }
+        }
+        this.ylops = newList
       }
     }
   }
