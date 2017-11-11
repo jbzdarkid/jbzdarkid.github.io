@@ -27,7 +27,7 @@ function trace(elem, puzzle) {
       'table':parent.id.split('_')[0],
       'x':parseInt(parent.id.split('_')[1]),
       'y':parseInt(parent.id.split('_')[2]),
-      'puzzle':puzzle,
+      'puzzle':puzzle.clone(),
       'subx':width/2,
       'suby':height/2,
     }
