@@ -219,6 +219,6 @@ tests = [
     puzzle.grid[1][1] = {'type':'star', 'color':'red'}
     puzzle.grid[3][1] = {'type':'nega', 'color':'red'}
     puzzle.grid[3][3] = {'type':'nega', 'color':'red'}
-    return {'puzzle':puzle, 'solutions':0}
+    return {'puzzle':puzzle, 'solutions':0}
   }
 ]
