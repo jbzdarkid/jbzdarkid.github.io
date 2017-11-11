@@ -5,7 +5,6 @@ class Region {
     for (var i=0; i<grid.length; i++) {
       this.cells.push(0)
     }
-    this.regionSize = 0
     this.hasTriangles = false
     this.invalidTriangles = []
     this.activeNegations = 0
@@ -20,7 +19,6 @@ class Region {
     var clone = new Region(this.grid)
     clone.grid = _copyGrid(this.grid)
     clone.cells = this.cells.slice()
-    clone.regionSize = this.regionSize
     clone.hasTriangles = this.hasTriangles
     clone.invalidTriangles = this.invalidTriangles.slice()
     clone.activeNegations = this.activeNegations
@@ -41,7 +39,6 @@ class Region {
 
   addCell(x, y) {
     this.cells[x] |= (1 << y)
-    this.regionSize++
     var cell = this.grid[x][y]
     if (cell != undefined) {
       if (cell.color != undefined) {
@@ -130,11 +127,11 @@ class Region {
       }
     }
   }
-/*
+
+  // Probably not necessary, good to have though
   getCell(x, y) {
     return (this.cells[x] & (1 << y)) != 0
   }
-*/
 }
 
 Region.prototype.toString = function() {
