@@ -42,7 +42,7 @@ tests = [
     puzzle.grid[1][1] = {'type':'square', 'color':'red'}
     puzzle.grid[1][3] = {'type':'square', 'color':'blue'}
     puzzle.grid[5][3] = {'type':'poly', 'color': 'yellow', 'size':1, 'shape':'O', 'rot':0}
-    return {'puzzle':puzzle, 'solutions':41}
+    return {'puzzle':puzzle, 'solutions':40}
   }, function () {
     var puzzle = new Puzzle(3, 3)
     puzzle.grid[1][1] = {'type':'nega', 'color':'white'}
