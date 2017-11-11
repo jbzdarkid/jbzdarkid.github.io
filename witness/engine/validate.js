@@ -47,7 +47,7 @@ function isValid(puzzle) {
 // Checks if a region (series of cells) is valid.
 // Since the path must be complete at this point, returns only true or false
 function _regionCheck(puzzle, r0, r1) {
-  // console.log('Validating region of length', region.length)
+  // console.log('Validating region of length', r0.length)
   var hasNega = false
   for (var pos of r0) {
     var cell = puzzle.getCell(pos.x, pos.y)
@@ -56,7 +56,7 @@ function _regionCheck(puzzle, r0, r1) {
       break
     }
   }
-  if (hasNega) {
+  if (r1.activeNegations > 0) {
     // Iterate over all possible ways of applying negations
     var combinations = _combinations(puzzle, r0, r1)
     nextCombination: for (var combination of combinations) {
@@ -76,18 +76,20 @@ function _regionCheck(puzzle, r0, r1) {
       // Verify that each negation is valid, i.e. removes an incorrect element
       for (var negation of combination) {
         r1c.addCell(negation.target.x, negation.target.y)
+        r1c.grid[negation.source.x][negation.source.y].type = 'nonce'
         r1c.addCell(negation.source.x, negation.source.y)
 
         new_puzzle.setCell(negation.target.x, negation.target.y, negation.target.cell)
         negation.source.cell.type = 'nonce'
         new_puzzle.setCell(negation.source.x, negation.source.y, negation.source.cell)
         var isValid = _regionCheck(new_puzzle, r0, r1c)
-        new_puzzle.setCell(negation.target.x, negation.target.y, false)
-        negation.source.cell.type = 'nega'
         new_puzzle.setCell(negation.source.x, negation.source.y, false)
+        negation.source.cell.type = 'nega'
+        new_puzzle.setCell(negation.target.x, negation.target.y, false)
 
-        r1c.removeCell(negation.target.x, negation.target.y)
         r1c.removeCell(negation.source.x, negation.source.y)
+        r1c.grid[negation.source.x][negation.source.y].type = 'nega'
+        r1c.removeCell(negation.target.x, negation.target.y)
         if (isValid) {
           // Grid is still valid with element removed so the negation is invalid
           continue nextCombination

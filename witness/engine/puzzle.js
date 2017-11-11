@@ -72,7 +72,7 @@ class Region {
       } else if (cell.type == 'square' || cell.type == 'star') {
         // No need to list these
       } else if (cell.type == 'nonce') {
-        // FIXME: Nonce is deprecated
+        // Nonces are always valid
       } else if (cell.type == 'nega') {
         this.activeNegations++
       } else if (cell.type != undefined) {
@@ -105,7 +105,7 @@ class Region {
       } else if (cell.type == 'square' || cell.type == 'star') {
         // No need to list these
       } else if (cell.type == 'nonce') {
-        // FIXME: Nonce is deprecated
+        // Nonces are always valid
       } else if (cell.type == 'nega') {
         this.activeNegations--
       } else if (cell.type != undefined) {
