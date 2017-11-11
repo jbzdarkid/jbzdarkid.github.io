@@ -96,11 +96,11 @@ function _onMouseMove(e) {
   var dx = e.movementX
   var dy = e.movementY
   // Option 1: Raw
-  data.subx += sens*dx
-  data.suby += sens*dy
+  // data.subx += sens*dx
+  // data.suby += sens*dy
   // Option 2: Capped
-  // data.subx += sens*Math.sign(dx)*Math.min(Math.abs(dx), 10)
-  // data.suby += sens*Math.sign(dy)*Math.min(Math.abs(dy), 10)
+  data.subx += sens*Math.sign(dx)*Math.min(Math.abs(dx), 10)
+  data.suby += sens*Math.sign(dy)*Math.min(Math.abs(dy), 10)
   // Option 3: Quadratic
   // data.subx += sens*Math.sign(dx)*Math.sqrt(Math.abs(dx))
   // data.suby += sens*Math.sign(dy)*Math.sqrt(Math.abs(dy))
