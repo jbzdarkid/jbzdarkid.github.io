@@ -129,6 +129,49 @@ function _regionCheck(puzzle, r0, r1) {
 
   // For polyominos, we construct a grid to place them on
   // The grid is 1 inside the region, and undefined outside.
+  var polys = []
+  var ylops = []
+  var polyCount = 0
+  for (var pos of r0) {
+    var cell = puzzle.getCell(pos.x, pos.y)
+    if (cell != 0) {
+      if (cell.type == 'poly') {
+        polys.push(cell)
+        polyCount += cell.size
+      } else if (cell.type == 'ylop') {
+        ylops.push(cell)
+        polyCount -= cell.size
+      }
+    }
+  }
+  if (polys.length + ylops.length > 0) { // Some polys/ylops exist in the region
+    if (polyCount < 0) {
+      // console.log('More onimoylops than polyominos by', -polyCount)
+      return false
+    } else if (polyCount > 0 && polyCount < r0.length) {
+      // console.log('Combined size of polyominos', polyCount, 'does not match region size', region.length)
+      return false
+    }
+    var savedGrid = puzzle.copyGrid()
+    puzzle.grid = puzzle.newGrid(puzzle.grid.length, puzzle.grid[0].length, puzzle.pillar)
+    // If polyCount == 0, then ylops cancel polys, and we should present the
+    // region as nonexistant, thus forcing all the shapes to cancel.
+    if (polyCount == 0) {
+      r0 = []
+    }
+    for (var cell of r0) {
+      puzzle.setCell(cell.x, cell.y, true)
+    }
+    if (!_polyFit(polys, ylops, puzzle.grid)) {
+      // console.log('Region does not match polyomino shapes', polys, ylops)
+      puzzle.grid = savedGrid
+      return false
+    }
+    puzzle.grid = savedGrid
+  }
+  /*
+  // For polyominos, we construct a grid to place them on
+  // The grid is 1 inside the region, and undefined outside.
   if (r1.polys.length + r1.ylops.length > 0) { // Some polys/ylops exist in the region
     var regionSize = r1.length
     if (r1.polyCount < 0) {
@@ -155,6 +198,7 @@ function _regionCheck(puzzle, r0, r1) {
     }
     puzzle.grid = savedGrid
   }
+  */
   // console.info('Region valid', region)
   return true
 }
