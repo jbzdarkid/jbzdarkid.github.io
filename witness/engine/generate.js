@@ -17,25 +17,33 @@ function randomPuzzle(style) {
   var puzzle = new Puzzle(width, height)
 
   // FIXME: Both start and end must be on corners
-  puzzle.start.x = 2*_randint(width)
-  puzzle.start.y = 2*_randint(height)
-  switch (_randint(4)) {
-    case 0: // Top
-      puzzle.end.x = 0
-      puzzle.end.y = 2*_randint(height)
-      break
-    case 1: // Left
-      puzzle.end.x = 2*_randint(height)
-      puzzle.end.y = 0
-      break
-    case 2: // Bottom
-      puzzle.end.x = 2*width
-      puzzle.end.y = 2*_randint(height)
-      break
-    case 3: // Right
-      puzzle.end.x = 2*_randint(height)
-      puzzle.end.y = 2*height
-      break
+  if (style['start']) {
+    puzzle.start = style['start']
+  } else {
+    puzzle.start.x = 2*_randint(width)
+    puzzle.start.y = 2*_randint(height)
+  }
+  if (style['end']) {
+    puzzle.end = style['end']
+  } else {
+    switch (_randint(4)) {
+      case 0: // Top
+        puzzle.end.x = 0
+        puzzle.end.y = 2*_randint(height)
+        break
+      case 1: // Left
+        puzzle.end.x = 2*_randint(height)
+        puzzle.end.y = 0
+        break
+      case 2: // Bottom
+        puzzle.end.x = 2*width
+        puzzle.end.y = 2*_randint(height)
+        break
+      case 3: // Right
+        puzzle.end.x = 2*_randint(height)
+        puzzle.end.y = 2*height
+        break
+    }
   }
 
   var edges = []
