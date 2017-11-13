@@ -1,3 +1,147 @@
+class Region {
+  constructor(grid) {
+    this.grid = grid
+    this.cells = []
+    for (var i=0; i<grid.length; i++) {
+      this.cells.push(0)
+    }
+    this.hasTriangles = false
+    this.invalidTriangles = []
+    this.activeNegations = 0
+    this.colors = {}
+    this.ylops = []
+    this.polys = []
+    this.polyCount = 0
+    // TODO: Dots and Gaps
+  }
+
+  clone() {
+    var clone = new Region(this.grid)
+    clone.grid = _copyGrid(this.grid)
+    clone.cells = this.cells.slice()
+    clone.hasTriangles = this.hasTriangles
+    clone.invalidTriangles = this.invalidTriangles.slice()
+    clone.activeNegations = this.activeNegations
+    clone.colors = {}
+    for (var color of Object.keys(this.colors)) {
+      var objects = this.colors[color]
+      clone.colors[color] = {
+        'squares':this.colors[color]['squares'],
+        'stars':this.colors[color]['stars'],
+        'other':this.colors[color]['other']
+      }
+    }
+    clone.ylops = this.ylops.slice()
+    clone.polys = this.polys.slice()
+    clone.polyCount = this.polyCount
+    return clone
+  }
+
+  addCell(x, y) {
+    this.cells[x] |= (1 << y)
+    var cell = this.grid[x][y]
+    if (cell != undefined) {
+      if (cell.color != undefined) {
+        if (this.colors[cell.color] == undefined) {
+          this.colors[cell.color] = {'squares':0, 'stars':0, 'other':0}
+        }
+        if (cell.type == 'square') {
+          this.colors[cell.color]['squares']++
+        } else if (cell.type == 'star') {
+          this.colors[cell.color]['stars']++
+        } else {
+          this.colors[cell.color]['other']++
+        }
+      }
+      // Square, Star, and Nonce require no additional actions
+      if (cell.type == 'triangle') {
+        this.hasTriangles = true
+        var count = 0
+        if (this.grid[x-1][y]) count++
+        if (this.grid[x+1][y]) count++
+        if (this.grid[x][y-1]) count++
+        if (this.grid[x][y+1]) count++
+        if (count != cell.count) {
+          // console.log('Triangle at grid['+x+']['+y+'] has', count, 'borders')
+          this.invalidTriangles.push({'x':x, 'y':y})
+        }
+      } else if (cell.type == 'nega') {
+        this.activeNegations++
+      } else if (cell.type == 'poly') {
+        this.polyCount += cell.size
+        cell.x = x
+        cell.y = y
+        this.polys.push(cell)
+      } else if (cell.type == 'ylop') {
+        this.polyCount += -cell.size
+        cell.x = x
+        cell.y = y
+        this.ylops.push(cell)
+      }
+    }
+  }
+
+  removeCell(x, y) {
+    this.cells[x] &= ~(1 << y)
+    // Does not change regionSize
+    var cell = this.grid[x][y]
+    if (cell != undefined) {
+      if (cell.color != undefined) {
+        if (cell.type == 'square') {
+          this.colors[cell.color]['squares']--
+        } else if (cell.type == 'star') {
+          this.colors[cell.color]['stars']--
+        } else {
+          this.colors[cell.color]['other']--
+        }
+      }
+      // Square, Star, and Nonce require no additional actions
+      if (cell.type == 'triangle') {
+        var newList = []
+        for (var triangle of this.invalidTriangles) {
+          if (triangle.x != x || triangle.y != y) {
+            newList.push(triangle)
+          }
+        }
+        this.invalidTriangles = newList
+      } else if (cell.type == 'nega') {
+        this.activeNegations--
+      } else if (cell.type == 'poly') {
+        this.polyCount -= cell.size
+        var newList = []
+        for (var poly of this.polys) {
+          if (poly.x != x || poly.y != y) {
+            newList.push(poly)
+          }
+        }
+        this.polys = newList
+      } else if (cell.type == 'ylop') {
+        this.polyCount -= -cell.size
+        var newList = []
+        for (var ylop of this.ylops) {
+          if (ylop.x != x || ylop.y != y) {
+            newList.push(ylop)
+          }
+        }
+        this.ylops = newList
+      }
+    }
+  }
+
+  // Probably not necessary, good to have though
+  getCell(x, y) {
+    return (this.cells[x] & (1 << y)) != 0
+  }
+}
+
+Region.prototype.toString = function() {
+  var ret = ""
+  for (var row of this.cells) {
+    ret += row.toString()
+  }
+  return ret
+}
+
 class Puzzle {
   constructor(width, height, pillar=false) {
     if (pillar) {
@@ -95,36 +239,37 @@ class Puzzle {
     */
   }
 
-  _innerLoop(x, y, region, potentialRegions) {
+  _innerLoop(x, y, region, region2, potentialRegions) {
     delete potentialRegions[x+'_'+y]
     if (this.getCell(x, y) == true) return
     region.push({'x':x, 'y':y})
+    region2.addCell(x, y)
     this.setCell(x, y, true)
 
     if (this.getCell(x-2, y) == false) { // Unvisited cell left
       if (this.getCell(x-1, y) == false) { // Connected
-        this._innerLoop(x-2, y, region, potentialRegions)
+        this._innerLoop(x-2, y, region, region2, potentialRegions)
       } else { // Disconnected, potential new region
         potentialRegions[(x-2)+'_'+y] = true
       }
     }
     if (this.getCell(x+2, y) == false) { // Unvisited cell right
       if (this.getCell(x+1, y) == false) { // Connected
-        this._innerLoop(x+2, y, region, potentialRegions)
+        this._innerLoop(x+2, y, region, region2, potentialRegions)
       } else { // Disconnected, potential new region
         potentialRegions[(x+2)+'_'+y] = true
       }
     }
     if (this.getCell(x, y-2) == false) { // Unvisited cell above
       if (this.getCell(x, y-1) == false) { // Connected
-        this._innerLoop(x, y-2, region, potentialRegions)
+        this._innerLoop(x, y-2, region, region2, potentialRegions)
       } else { // Disconnected, potential new region
         potentialRegions[x+'_'+(y-2)] = true
       }
     }
     if (this.getCell(x, y+2) == false) { // Unvisited cell below
       if (this.getCell(x, y+1) == false) { // Connected
-        this._innerLoop(x, y+2, region, potentialRegions)
+        this._innerLoop(x, y+2, region, region2, potentialRegions)
       } else { // Disconnected, potential new region
         potentialRegions[x+'_'+(y+2)] = true
       }
@@ -146,8 +291,9 @@ class Puzzle {
       var x = parseInt(pos.split('_')[0])
       var y = parseInt(pos.split('_')[1])
       var region = []
-      this._innerLoop(x, y, region, potentialRegions)
-      regions.push(region)
+      var region2 = new Region(savedGrid)
+      this._innerLoop(x, y, region, region2, potentialRegions)
+      regions.push([region, region2])
     }
     this.grid = savedGrid
     return regions

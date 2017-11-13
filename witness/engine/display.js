@@ -158,7 +158,6 @@ function draw(puzzle, target='puzzle') {
   while (table.rows.length > 0) {
     table.deleteRow(0)
   }
-  table.setAttribute('json', puzzle.serialize()) // Used to validate a traced solution later
 
   for (var x=0; x<puzzle.grid.length; x++) {
     var row = table.insertRow(x)
@@ -194,7 +193,7 @@ function draw(puzzle, target='puzzle') {
 
       if (x == puzzle.start.x && y == puzzle.start.y) {
         var div = document.createElement('div')
-        div.onclick = function() {trace(this)}
+        div.onclick = function() {trace(this, puzzle)}
         div.id = cell.id
         div.className = 'start trace'
         if (puzzle.grid[x][y] == true) {

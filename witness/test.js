@@ -214,5 +214,11 @@ tests = [
     puzzle.start = {'x':2, 'y':2}
     puzzle.end = {'x':0, 'y':2}
     return {'puzzle':puzzle, 'solutions':5}
+  }, function() {
+    var puzzle = new Puzzle(2, 2)
+    puzzle.grid[1][1] = {'type':'star', 'color':'red'}
+    puzzle.grid[3][1] = {'type':'nega', 'color':'red'}
+    puzzle.grid[3][3] = {'type':'nega', 'color':'red'}
+    return {'puzzle':puzzle, 'solutions':0}
   }
 ]

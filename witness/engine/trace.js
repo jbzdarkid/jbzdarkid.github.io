@@ -16,7 +16,7 @@ function _getVisualCell(x, y) {
   return document.getElementById(data.table+'_'+x+'_'+y)
 }
 
-function trace(elem) {
+function trace(elem, puzzle) {
   if (document.pointerLockElement == null) { // Started tracing a solution
     document.styleSheets[0].deleteRule(0)
     document.styleSheets[0].insertRule(".line {fill: #6D4D4A}", 0)
@@ -27,12 +27,12 @@ function trace(elem) {
       'table':parent.id.split('_')[0],
       'x':parseInt(parent.id.split('_')[1]),
       'y':parseInt(parent.id.split('_')[2]),
+      'puzzle':puzzle.clone(),
       'subx':width/2,
       'suby':height/2,
     }
 
     var table = document.getElementById(data.table)
-    data.puzzle = Puzzle.deserialize(table.getAttribute('json'))
 
     // These aren't really arrays, they live update during iteration
     for (var cell of table.getElementsByTagName('td')) {
@@ -96,11 +96,11 @@ function _onMouseMove(e) {
   var dx = e.movementX
   var dy = e.movementY
   // Option 1: Raw
-  data.subx += sens*dx
-  data.suby += sens*dy
+  // data.subx += sens*dx
+  // data.suby += sens*dy
   // Option 2: Capped
-  // data.subx += sens*Math.sign(dx)*Math.min(Math.abs(dx), 10)
-  // data.suby += sens*Math.sign(dy)*Math.min(Math.abs(dy), 10)
+  data.subx += sens*Math.sign(dx)*Math.min(Math.abs(dx), 10)
+  data.suby += sens*Math.sign(dy)*Math.min(Math.abs(dy), 10)
   // Option 3: Quadratic
   // data.subx += sens*Math.sign(dx)*Math.sqrt(Math.abs(dx))
   // data.suby += sens*Math.sign(dy)*Math.sqrt(Math.abs(dy))
