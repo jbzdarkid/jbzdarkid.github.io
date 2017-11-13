@@ -48,14 +48,6 @@ function isValid(puzzle) {
 // Since the path must be complete at this point, returns only true or false
 function _regionCheck(puzzle, r0, r1) {
   // console.log('Validating region of length', r0.length)
-  var hasNega = false
-  for (var pos of r0) {
-    var cell = puzzle.getCell(pos.x, pos.y)
-    if (cell != false && cell.type == 'nega') {
-      hasNega = true
-      break
-    }
-  }
   if (r1.activeNegations > 0) {
     // Iterate over all possible ways of applying negations
     var combinations = _combinations(puzzle, r0, r1)
