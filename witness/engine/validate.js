@@ -96,23 +96,21 @@ function _regionCheck(puzzle, r0, r1) {
   }
 
   // Check for triangles
-  if (r1.invalidTriangles.length > 0) return false
+  if (r1.invalidTriangles > 0) return false
 
   // Check for color-based elements
-  for (var color of Object.keys(r1.colors)) {
-    var objects = r1.colors[color]
-    if (objects['squares'] > 0) {
-      // Squares can only be in a region with same colored squares
-      for (var color2 of Object.keys(r1.colors)) {
-        if (color2 != color && r1.colors[color2]['squares'] > 0) {
-          // console.log('Found a '+color+' and '+color2+' square in the same region')
-          return false
-        }
+  var squareColor = ''
+  for (var color of Object.keys(r1.colorList)) {
+    if (r1.colors['squares'][color] != 0) {
+      if (squareColor == '') {
+        squareColor = color
+      } else {
+        // console.log('Found a '+squareColor+' and '+color+' square in the same region')
+        return false;
       }
     }
-    if (objects['stars'] > 0) {
-      // Stars must be in a region with exactly one other element of their color
-      var count = objects['squares']+objects['stars']+objects['other']
+    if (r1.colors['stars'][color] != 0) {
+      var count = r1.colors['squares'][color] + r1.colors['stars'][color] + r1.colors['other'][color]
       if (count != 2) {
         // console.log('Found a '+color+' star in a region with '+count+' total '+color+' objects')
         return false

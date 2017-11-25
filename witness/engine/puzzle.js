@@ -6,9 +6,10 @@ class Region {
       this.cells.push(0)
     }
     this.hasTriangles = false
-    this.invalidTriangles = []
+    this.invalidTriangles = 0
     this.activeNegations = 0
-    this.colors = {}
+    this.colors = {'squares':{}, 'stars':{}, 'other':{}}
+    this.colorList = {}
     this.ylops = []
     this.polys = []
     this.polyCount = 0
@@ -20,16 +21,15 @@ class Region {
     clone.puzzle = this.puzzle.clone()
     clone.cells = this.cells.slice()
     clone.hasTriangles = this.hasTriangles
-    clone.invalidTriangles = this.invalidTriangles.slice()
+    clone.invalidTriangles = this.invalidTriangles
     clone.activeNegations = this.activeNegations
-    clone.colors = {}
-    for (var color of Object.keys(this.colors)) {
-      var objects = this.colors[color]
-      clone.colors[color] = {
-        'squares':this.colors[color]['squares'],
-        'stars':this.colors[color]['stars'],
-        'other':this.colors[color]['other']
-      }
+    clone.colors = {'squares':{}, 'stars':{}, 'other':{}}
+    clone.colorList = {}
+    for (var color of Object.keys(this.colorList)) {
+      clone.colorList[color] = true
+      clone.colors['squares'][color] = this.colors['squares'][color]
+      clone.colors['stars'][color] = this.colors['stars'][color]
+      clone.colors['other'][color] = this.colors['other'][color]
     }
     clone.ylops = this.ylops.slice()
     clone.polys = this.polys.slice()
@@ -42,15 +42,18 @@ class Region {
     var cell = this.puzzle.getCell(x, y)
     if (cell != undefined) {
       if (cell.color != undefined) {
-        if (this.colors[cell.color] == undefined) {
-          this.colors[cell.color] = {'squares':0, 'stars':0, 'other':0}
+        if (this.colorList[cell.color] == undefined) {
+          this.colorList[cell.color] = true
+          this.colors['squares'][cell.color] = 0
+          this.colors['stars'][cell.color] = 0
+          this.colors['other'][cell.color] = 0
         }
         if (cell.type == 'square') {
-          this.colors[cell.color]['squares']++
+          this.colors['squares'][cell.color]++
         } else if (cell.type == 'star') {
-          this.colors[cell.color]['stars']++
+          this.colors['stars'][cell.color]++
         } else {
-          this.colors[cell.color]['other']++
+          this.colors['other'][cell.color]++
         }
       }
       // Square, Star, and Nonce require no additional actions
@@ -63,7 +66,7 @@ class Region {
         if (this.puzzle.getCell(x, y+1)) count++
         if (count != cell.count) {
           // console.log('Triangle at grid['+x+']['+y+'] has', count, 'borders')
-          this.invalidTriangles.push({'x':x, 'y':y})
+          this.invalidTriangles++
         }
       } else if (cell.type == 'nega') {
         this.activeNegations++
@@ -88,22 +91,16 @@ class Region {
     if (cell != undefined) {
       if (cell.color != undefined) {
         if (cell.type == 'square') {
-          this.colors[cell.color]['squares']--
+          this.colors['squares'][cell.color]--
         } else if (cell.type == 'star') {
-          this.colors[cell.color]['stars']--
+          this.colors['stars'][cell.color]--
         } else {
-          this.colors[cell.color]['other']--
+          this.colors['other'][cell.color]--
         }
       }
       // Square, Star, and Nonce require no additional actions
       if (cell.type == 'triangle') {
-        var newList = []
-        for (var triangle of this.invalidTriangles) {
-          if (triangle.x != x || triangle.y != y) {
-            newList.push(triangle)
-          }
-        }
-        this.invalidTriangles = newList
+        this.invalidTriangles--
       } else if (cell.type == 'nega') {
         this.activeNegations--
       } else if (cell.type == 'poly') {
