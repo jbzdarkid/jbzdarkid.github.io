@@ -33,7 +33,7 @@ function isValid(puzzle) {
         puzzle.regionCache[key] = undefined
       }
     }
-    
+
     if (!regionValid) {
       // console.log('Region', region, 'unsolvable')
       return false // Since the endpoint is filled, regions can't be improved
@@ -68,7 +68,8 @@ function _regionCheck(puzzle, r0, r1) {
       // Verify that each negation is valid, i.e. removes an incorrect element
       for (var negation of combination) {
         r1c.addCell(negation.target.x, negation.target.y)
-        r1c.grid[negation.source.x][negation.source.y].type = 'nonce'
+        // FIXME: Bad encapsulation -- may break with negas on a pillar
+        r1c.puzzle.grid[negation.source.x][negation.source.y].type = 'nonce'
         r1c.addCell(negation.source.x, negation.source.y)
 
         new_puzzle.setCell(negation.target.x, negation.target.y, negation.target.cell)
@@ -80,7 +81,7 @@ function _regionCheck(puzzle, r0, r1) {
         new_puzzle.setCell(negation.target.x, negation.target.y, false)
 
         r1c.removeCell(negation.source.x, negation.source.y)
-        r1c.grid[negation.source.x][negation.source.y].type = 'nega'
+        r1c.puzzle.grid[negation.source.x][negation.source.y].type = 'nega'
         r1c.removeCell(negation.target.x, negation.target.y)
         if (isValid) {
           // Grid is still valid with element removed so the negation is invalid

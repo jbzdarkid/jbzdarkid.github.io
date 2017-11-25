@@ -1,8 +1,8 @@
 class Region {
-  constructor(grid) {
-    this.grid = grid
+  constructor(puzzle) {
+    this.puzzle = puzzle
     this.cells = []
-    for (var i=0; i<grid.length; i++) {
+    for (var i=0; i<puzzle.grid.length; i++) {
       this.cells.push(0)
     }
     this.hasTriangles = false
@@ -16,8 +16,8 @@ class Region {
   }
 
   clone() {
-    var clone = new Region(this.grid)
-    clone.grid = _copyGrid(this.grid)
+    var clone = new Region(this.puzzle)
+    clone.puzzle = this.puzzle.clone()
     clone.cells = this.cells.slice()
     clone.hasTriangles = this.hasTriangles
     clone.invalidTriangles = this.invalidTriangles.slice()
@@ -39,7 +39,7 @@ class Region {
 
   addCell(x, y) {
     this.cells[x] |= (1 << y)
-    var cell = this.grid[x][y]
+    var cell = this.puzzle.getCell(x, y)
     if (cell != undefined) {
       if (cell.color != undefined) {
         if (this.colors[cell.color] == undefined) {
@@ -57,10 +57,10 @@ class Region {
       if (cell.type == 'triangle') {
         this.hasTriangles = true
         var count = 0
-        if (this.grid[x-1][y]) count++
-        if (this.grid[x+1][y]) count++
-        if (this.grid[x][y-1]) count++
-        if (this.grid[x][y+1]) count++
+        if (this.puzzle.getCell(x-1, y)) count++
+        if (this.puzzle.getCell(x+1, y)) count++
+        if (this.puzzle.getCell(x, y-1)) count++
+        if (this.puzzle.getCell(x, y+1)) count++
         if (count != cell.count) {
           // console.log('Triangle at grid['+x+']['+y+'] has', count, 'borders')
           this.invalidTriangles.push({'x':x, 'y':y})
@@ -84,7 +84,7 @@ class Region {
   removeCell(x, y) {
     this.cells[x] &= ~(1 << y)
     // Does not change regionSize
-    var cell = this.grid[x][y]
+    var cell = this.puzzle.getCell(x, y)
     if (cell != undefined) {
       if (cell.color != undefined) {
         if (cell.type == 'square') {
@@ -142,6 +142,15 @@ Region.prototype.toString = function() {
   return ret
 }
 
+// A 2x2 grid is internally a 5x5:
+// corner, edge, corner, edge, corner
+// edge,   cell, edge,   cell, edge
+// corner, edge, corner, edge, corner
+// edge,   cell, edge,   cell, edge
+// corner, edge, corner, edge, corner
+//
+// Corners and edges will have a value of true if the line passes through them
+// Cells will contain an object if there is an element in them
 class Puzzle {
   constructor(width, height, pillar=false) {
     if (pillar) {
@@ -291,7 +300,10 @@ class Puzzle {
       var x = parseInt(pos.split('_')[0])
       var y = parseInt(pos.split('_')[1])
       var region = []
-      var region2 = new Region(savedGrid)
+      // FIXME: region2 should be perfectly functional with the old puzzle, but I'm stuck here because I need to continue supporting old-style regions
+      var copy = this.clone()
+      copy.grid = savedGrid
+      var region2 = new Region(copy)
       this._innerLoop(x, y, region, region2, potentialRegions)
       regions.push([region, region2])
     }
