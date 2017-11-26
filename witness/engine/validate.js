@@ -148,6 +148,23 @@ function _regionCheck(puzzle, r0, r1) {
   return true
 }
 
+function _combinations2(r1) {
+  // No more negations to use!
+  if (r1.activeNegations == 0) return [[]]
+
+  // Invalid triangles must be negated.
+  if (r1.invalidTriangles > 0) {
+    var source = this.activeNegations.pop()
+    var target = this.invalidTriangles.pop()
+    return [{'source':source, 'target':target}]
+  }
+
+  // polyfit then colors
+
+  // don't worry about if colorcheck is false or not
+
+}
+
 // Returns all the different ways to negate elements.
 function _combinations(puzzle, r0, r1, regionStart=0) {
   // Find the first negation element (may be part of cells already considered)
