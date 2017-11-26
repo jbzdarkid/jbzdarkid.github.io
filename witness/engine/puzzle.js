@@ -5,11 +5,11 @@ class Region {
     for (var i=0; i<puzzle.grid.length; i++) {
       this.cells.push(0)
     }
-    this.hasTriangles = false
+    this.hasTriangles = false // TODO: Temporary until I improve region caching
     this.invalidTriangles = 0
     this.activeNegations = 0
     this.colors = {'squares':{}, 'stars':{}, 'other':{}}
-    this.colorList = {}
+    this.colorCount = {}
     this.ylops = []
     this.polys = []
     this.polyCount = 0
@@ -24,9 +24,9 @@ class Region {
     clone.invalidTriangles = this.invalidTriangles
     clone.activeNegations = this.activeNegations
     clone.colors = {'squares':{}, 'stars':{}, 'other':{}}
-    clone.colorList = {}
-    for (var color of Object.keys(this.colorList)) {
-      clone.colorList[color] = true
+    clone.colorCount = {}
+    for (var color of Object.keys(this.colorCount)) {
+      clone.colorCount[color] = this.colorCount[color]
       clone.colors['squares'][color] = this.colors['squares'][color]
       clone.colors['stars'][color] = this.colors['stars'][color]
       clone.colors['other'][color] = this.colors['other'][color]
@@ -42,12 +42,13 @@ class Region {
     var cell = this.puzzle.getCell(x, y)
     if (cell != undefined) {
       if (cell.color != undefined) {
-        if (this.colorList[cell.color] == undefined) {
-          this.colorList[cell.color] = true
+        if (this.colorCount[cell.color] == undefined) {
+          this.colorCount[cell.color] = 0
           this.colors['squares'][cell.color] = 0
           this.colors['stars'][cell.color] = 0
           this.colors['other'][cell.color] = 0
         }
+        this.colorCount[cell.color]++
         if (cell.type == 'square') {
           this.colors['squares'][cell.color]++
         } else if (cell.type == 'star') {
@@ -90,6 +91,7 @@ class Region {
     var cell = this.puzzle.getCell(x, y)
     if (cell != undefined) {
       if (cell.color != undefined) {
+        this.colorCount[cell.color]--
         if (cell.type == 'square') {
           this.colors['squares'][cell.color]--
         } else if (cell.type == 'star') {

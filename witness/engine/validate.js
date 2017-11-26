@@ -100,7 +100,7 @@ function _regionCheck(puzzle, r0, r1) {
 
   // Check for color-based elements
   var squareColor = ''
-  for (var color of Object.keys(r1.colorList)) {
+  for (var color of Object.keys(r1.colorCount)) {
     if (r1.colors['squares'][color] != 0) {
       if (squareColor == '') {
         squareColor = color
@@ -110,8 +110,7 @@ function _regionCheck(puzzle, r0, r1) {
       }
     }
     if (r1.colors['stars'][color] != 0) {
-      var count = r1.colors['squares'][color] + r1.colors['stars'][color] + r1.colors['other'][color]
-      if (count != 2) {
+      if (r1.colorCount[color] != 2) {
         // console.log('Found a '+color+' star in a region with '+count+' total '+color+' objects')
         return false
       }
