@@ -1,4 +1,3 @@
-console.log('<1>@autosize.js');
 // Auto-size images to fit to screen width
 function resize(document) {
   var width = document.body.clientWidth/5-20;
