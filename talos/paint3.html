@@ -5,11 +5,22 @@
     <meta name="description" content="How to predict paint spawns in The Talos Principle">
     <meta name="tags" content="talos, principle, paint, spawn, rng">
     <script type="text/javascript" src="autosize.js"></script>
+    <script type="text/javascript" src="paint_3_from_4.js"></script>
   </head>
   <body>
     Credit to apple1417 for his research (code finding, spreadsheet work).<br>
     Here are the 9 sets of spawns that can appear. Note that these sets <b>only</b> apply to maps with 3 potential spawn points, not to all maps!<br>
     Sets A, E, and I are twice as likely to appear.<br>
+    Some sets are impossible to get based on Paint4 set. Select a Paint4 set below to see what is possible.<br>
+    <table><tr>
+      <td style="text-align: center">Paint 4 Set:</td>
+      <td><button type="button" style="width: 50px" onclick="updateRows()">Any</button></td>
+      <td><button type="button" style="width: 50px" onclick="updateRows(0)">0</button></td>
+      <td><button type="button" style="width: 50px" onclick="updateRows(1)">1</button></td>
+      <td><button type="button" style="width: 50px" onclick="updateRows(2)">2</button></td>
+      <td><button type="button" style="width: 50px" onclick="updateRows(3)">3</button></td>
+      <td><button type="button" style="width: 50px" onclick="updateRows(4)">4</button></td>
+    </tr></table>
     <table width="100%"><tr>
       <td></td>
       <td style="text-align: center; font-size: 1.5em">A1</td>
@@ -17,63 +28,63 @@
       <td style="text-align: center; font-size: 1.5em">B1</td>
       <td style="text-align: center; font-size: 1.5em">B2</td>
       <td style="text-align: center; font-size: 1.5em">B3</td>
-    </tr><tr>
+    </tr><tr id="A">
       <td style="text-align: center; font-size: 1.5em">A&nbsp;</td> <!-- 0, 9, 12, 15 -->
       <td><a href="http://i.imgur.com/lmUBdT7.png"><img src="http://i.imgur.com/StACHjZ.jpg"></a></td>
       <td><a href="http://i.imgur.com/tKjmDAg.png"><img src="http://i.imgur.com/4EUf8aI.jpg"></a></td>
       <td><a href="http://i.imgur.com/a1lynOP.png"><img src="http://i.imgur.com/HQWxehk.jpg"></a></td>
       <td><a href="http://i.imgur.com/Fio0ePD.png"><img src="http://i.imgur.com/VCSJKgn.jpg"></a></td>
       <td><a href="http://i.imgur.com/ktRqUbQ.png"><img src="http://i.imgur.com/Bwcjqdq.jpg"></a></td>
-    </tr><tr>
+    </tr><tr id="B">
       <td style="text-align: center; font-size: 1.5em">B&nbsp;</td> <!-- 10, 13 -->
       <td><a href="http://i.imgur.com/lmUBdT7.png"><img src="http://i.imgur.com/StACHjZ.jpg"></a></td>
       <td><a href="http://i.imgur.com/tKjmDAg.png"><img src="http://i.imgur.com/4EUf8aI.jpg"></a></td>
       <td><a href="http://i.imgur.com/a1lynOP.png"><img src="http://i.imgur.com/HQWxehk.jpg"></a></td>
       <td><a href="http://i.imgur.com/nX4VmLv.png"><img src="http://i.imgur.com/2yjE14w.jpg"></a></td>
       <td><a href="http://i.imgur.com/4ZMz73k.png"><img src="http://i.imgur.com/xb1fGlw.jpg"></a></td>
-    </tr><tr>
+    </tr><tr id="C">
       <td style="text-align: center; font-size: 1.5em">C&nbsp;</td> <!-- 11, 14 -->
       <td><a href="http://i.imgur.com/lmUBdT7.png"><img src="http://i.imgur.com/StACHjZ.jpg"></a></td>
       <td><a href="http://i.imgur.com/tKjmDAg.png"><img src="http://i.imgur.com/4EUf8aI.jpg"></a></td>
       <td><a href="http://i.imgur.com/a1lynOP.png"><img src="http://i.imgur.com/HQWxehk.jpg"></a></td>
       <td><a href="http://i.imgur.com/bP3xKJ1.png"><img src="http://i.imgur.com/DBIDXE9.jpg"></a></td>
       <td><a href="http://i.imgur.com/EuwoUvR.png"><img src="http://i.imgur.com/ZcImOzr.jpg"></a></td>
-    </tr><tr>
+    </tr><tr id="D">
       <td style="text-align: center; font-size: 1.5em">D&nbsp;</td> <!-- 3, 6 -->
       <td><a href="http://i.imgur.com/mnK2XP7.png"><img src="http://i.imgur.com/MnNf2d8.jpg"></a></td>
       <td><a href="http://i.imgur.com/9XKlU0e.png"><img src="http://i.imgur.com/Dgz83om.jpg"></a></td>
       <td><a href="http://i.imgur.com/NW0faIh.png"><img src="http://i.imgur.com/f8eb8jy.jpg"></a></td>
       <td><a href="http://i.imgur.com/Fio0ePD.png"><img src="http://i.imgur.com/VCSJKgn.jpg"></a></td>
       <td><a href="http://i.imgur.com/4ZMz73k.png"><img src="http://i.imgur.com/xb1fGlw.jpg"></a></td>
-    </tr><tr>
+    </tr><tr id="E">
       <td style="text-align: center; font-size: 1.5em">E&nbsp;</td> <!-- 1, 4, 7, 16 -->
       <td><a href="http://i.imgur.com/mnK2XP7.png"><img src="http://i.imgur.com/MnNf2d8.jpg"></a></td>
       <td><a href="http://i.imgur.com/9XKlU0e.png"><img src="http://i.imgur.com/Dgz83om.jpg"></a></td>
       <td><a href="http://i.imgur.com/NW0faIh.png"><img src="http://i.imgur.com/f8eb8jy.jpg"></a></td>
       <td><a href="http://i.imgur.com/nX4VmLv.png"><img src="http://i.imgur.com/2yjE14w.jpg"></a></td>
       <td><a href="http://i.imgur.com/EuwoUvR.png"><img src="http://i.imgur.com/ZcImOzr.jpg"></a></td>
-    </tr><tr>
+    </tr><tr id="F">
       <td style="text-align: center; font-size: 1.5em">F&nbsp;</td> <!-- 2, 5 -->
       <td><a href="http://i.imgur.com/mnK2XP7.png"><img src="http://i.imgur.com/MnNf2d8.jpg"></a></td>
       <td><a href="http://i.imgur.com/9XKlU0e.png"><img src="http://i.imgur.com/Dgz83om.jpg"></a></td>
       <td><a href="http://i.imgur.com/NW0faIh.png"><img src="http://i.imgur.com/f8eb8jy.jpg"></a></td>
       <td><a href="http://i.imgur.com/bP3xKJ1.png"><img src="http://i.imgur.com/DBIDXE9.jpg"></a></td>
       <td><a href="http://i.imgur.com/ktRqUbQ.png"><img src="http://i.imgur.com/Bwcjqdq.jpg"></a></td>
-    </tr><tr>
+    </tr><tr  id="G">
       <td style="text-align: center; font-size: 1.5em">G&nbsp;</td> <!-- 18, 21 -->
       <td><a href="http://i.imgur.com/eylub9Y.png"><img src="http://i.imgur.com/fubQ8rF.jpg"></a></td>
       <td><a href="http://i.imgur.com/DwGAUgk.png"><img src="http://i.imgur.com/I83XwbH.jpg"></a></td>
       <td><a href="http://i.imgur.com/G8DlRqY.png"><img src="http://i.imgur.com/wKNpd4D.jpg"></a></td>
       <td><a href="http://i.imgur.com/Fio0ePD.png"><img src="http://i.imgur.com/VCSJKgn.jpg"></a></td>
       <td><a href="http://i.imgur.com/EuwoUvR.png"><img src="http://i.imgur.com/ZcImOzr.jpg"></a></td>
-    </tr><tr>
+    </tr><tr  id="H">
       <td style="text-align: center; font-size: 1.5em">H&nbsp;</td> <!-- 19, 22 -->
       <td><a href="http://i.imgur.com/eylub9Y.png"><img src="http://i.imgur.com/fubQ8rF.jpg"></a></td>
       <td><a href="http://i.imgur.com/DwGAUgk.png"><img src="http://i.imgur.com/I83XwbH.jpg"></a></td>
       <td><a href="http://i.imgur.com/G8DlRqY.png"><img src="http://i.imgur.com/wKNpd4D.jpg"></a></td>
       <td><a href="http://i.imgur.com/nX4VmLv.png"><img src="http://i.imgur.com/2yjE14w.jpg"></a></td>
       <td><a href="http://i.imgur.com/ktRqUbQ.png"><img src="http://i.imgur.com/Bwcjqdq.jpg"></a></td>
-    </tr><tr>
+    </tr><tr id="I">
       <td style="text-align: center; font-size: 1.5em">I&nbsp;</td> <!-- 8, 17, 20, 23 -->
       <td><a href="http://i.imgur.com/eylub9Y.png"><img src="http://i.imgur.com/fubQ8rF.jpg"></a></td>
       <td><a href="http://i.imgur.com/DwGAUgk.png"><img src="http://i.imgur.com/I83XwbH.jpg"></a></td>
