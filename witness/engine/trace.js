@@ -153,7 +153,7 @@ function _collision() {
   var deltaMod = 3 // Fraction of movement to redirect in the other direction
 
   // Intersection collision
-  // If next_elem is null, we're at an insersection but pushing against an outer wall,
+  // If next_elem is null, we're at an intersection but pushing against an outer wall,
   // so we fall through to wall collision.
   var smoothing = 5 // Pixels around the exact center where no collision occurs
   if (elem.className.includes('corner') || elem.className.includes('start')) {

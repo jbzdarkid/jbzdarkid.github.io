@@ -276,6 +276,7 @@ function draw(puzzle, target='puzzle') {
   }
   for (var gap of puzzle.gaps) {
     var cell = document.getElementById(target+'_'+gap.x+'_'+gap.y)
+    if (cell.className.startsWith('gap')) continue
     cell.className = 'gap '+cell.className
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     var width = parseInt(window.getComputedStyle(cell).width)

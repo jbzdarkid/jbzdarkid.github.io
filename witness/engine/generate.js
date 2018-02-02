@@ -135,6 +135,188 @@ function randomPuzzle(style) {
   return puzzle
 }
 
+function randomLeftDoorPoly() {
+  var size = _randint(3)
+    if (size == 0) {
+      var shape = ['I', 'L'][_randint(2)]
+    } else if (size == 1) {
+      /*
+      RRR ####
+
+            #
+      RRU ###
+
+           ##
+      RUR ##
+
+           #
+           #
+      RUU ##
+      */
+      var shape = ['I', 'L', 'S', 'J', 'L', 'Z', 'J', 'I'][_randint(8)]
+    } else if (size == 2) {
+      /*
+      RRRR #####
+
+              #
+      RRRU ####
+
+             ##
+      RRUR ###
+
+             #
+             #
+      RRUU ###
+
+            ###
+      RURR ##
+
+             #
+            ##
+      RURU ##
+
+            ##
+            #
+      RUUR ##
+
+            #
+            #
+            #
+      RUUU ##
+      */
+      
+      var shape = ['L', 'M', 'V', 'M', 'W', 'S', 'J', 'L', 'Z', 'W', 'N', 'V', 'N', 'J'][_randint(14)]
+    }
+  return {'size':size+3, 'shape':shape, 'rot':_randint(4)}
+}
+
+function randomLeftDoor() {
+  var height = 4
+  var width = 4
+  var puzzle = new Puzzle(width, height)
+  while (true) {
+    var star1 = {'x':2*_randint(4)+1, 'y':2*_randint(4)+1}
+    var star2 = {'x':2*_randint(4)+1, 'y':2*_randint(4)+1}
+    if (star1.x == star2.x && star1.y == star2.y) continue
+    // Manhattan distance
+    if (Math.abs(star1.x - star2.x) + Math.abs(star1.y - star2.y) < 6)
+      continue
+    
+    var poly1 = {'x':2*_randint(4)+1, 'y':2*_randint(4)+1}
+    var poly2 = {'x':2*_randint(4)+1, 'y':2*_randint(4)+1}
+    if (poly1.x == star1.x && poly1.y == star1.y) continue
+    if (poly1.x == star2.x && poly1.y == star2.y) continue
+    if (poly2.x == star1.x && poly2.y == star1.y) continue
+    if (poly2.x == star2.x && poly2.y == star2.y) continue
+    if (poly2.x == poly1.x && poly2.y == poly1.y) continue
+    
+    Object.assign(poly1, randomLeftDoorPoly())
+    Object.assign(poly2, randomLeftDoorPoly())
+    
+    for (var i=0; i<8; i++) {
+      if (_randint(2) == 0) {
+        puzzle.gaps.push({'x':_randint(4)*2+1, 'y':_randint(5)*2})
+      } else {
+        puzzle.gaps.push({'x':_randint(5)*2, 'y':_randint(4)*2+1})
+      }
+    }
+    
+    break
+  }
+  var colors = [PURPLE, RED, ORANGE, GREEN, BLUE]
+  var color1 = colors.splice(_randint(colors.length), 1)
+  var color2 = colors.splice(_randint(colors.length), 1)
+
+  star1.type = 'star'
+  star2.type = 'star'
+  poly1.type = 'poly'
+  poly2.type = 'poly'
+  star1.color = color1
+  star2.color = color1
+  poly1.color = color2
+  poly2.color = color2
+
+  puzzle.grid[star1.x][star1.y] = star1
+  puzzle.grid[star2.x][star2.y] = star2
+  puzzle.grid[poly1.x][poly1.y] = poly1
+  puzzle.grid[poly2.x][poly2.y] = poly2
+  
+  puzzle.start = {'x':8, 'y':0}
+  puzzle.end = {'x':0, 'y':8}
+  return puzzle
+}
+
+function randomRightDoor() {
+  var height = 4
+  var width = 4
+  var puzzle = new Puzzle(width, height)
+  
+  var edges = []
+  var corners = []
+  var cells = []
+  for (var x=0; x<2*width+1; x++) {
+    for (var y=0; y<2*height+1; y++) {
+      if (x%2 == 0 && y%2 == 0) {
+        corners.push({'x':x, 'y':y})
+      } else if (x%2 == 1 && y%2 == 1) {
+        cells.push({'x':x, 'y':y})
+      } else {
+        edges.push({'x':x, 'y':y})
+      }
+    }
+  }
+  
+  while (true) {
+    var square1 = cells.splice(_randint(cells.length), 1)[0]
+    var square2 = cells.splice(_randint(cells.length), 1)[0]
+    var square3 = cells.splice(_randint(cells.length), 1)[0]
+    var square4 = cells.splice(_randint(cells.length), 1)[0]
+    
+    corners.splice(24, 1) // Start point is illegal
+    corners.splice(0, 1) // End point is illegal
+    puzzle.dots.push(corners.splice(_randint(corners.length), 1)[0])
+    puzzle.dots.push(corners.splice(_randint(corners.length), 1)[0])
+
+    for (var i=0; i<8; i++) {
+      var edge = _randint(edges.length)
+      console.log(edges.slice(edge, edge+1))
+      puzzle.gaps.push(edges.slice(edge, edge+1)[0])
+    }
+    
+    break
+  }
+  var colors = [PURPLE, RED, ORANGE, GREEN, BLUE]
+  var color1 = colors.splice(_randint(colors.length), 1)
+  var color2 = colors.splice(_randint(colors.length), 1)
+
+  puzzle.grid[square1.x][square1.y] = {'type':'square', 'color':color1}
+  puzzle.grid[square2.x][square2.y] = {'type':'square', 'color':color1}
+  puzzle.grid[square3.x][square3.y] = {'type':'square', 'color':color2}
+  puzzle.grid[square4.x][square4.y] = {'type':'square', 'color':color2}
+  
+  puzzle.start = {'x':8, 'y':8}
+  puzzle.end = {'x':0, 'y':0}
+  return puzzle
+}
+
+function validDoor(side) {
+  var solutions = []
+  while (true) {
+    solutions = []
+    var puzzleSeed = seed
+    if (side == 'left')
+      var puzzle = randomLeftDoor()
+    else
+      var puzzle = randomRightDoor()
+    solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
+    console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: ')
+    if (solutions.length > 0) {
+      break
+    }
+  }
+  return {'puzzle':puzzle, 'solutions':solutions, 'seed':puzzleSeed}
+}
+
 function validPuzzle(style) {
   var solutions = []
   // Require a puzzle with not too many solutions

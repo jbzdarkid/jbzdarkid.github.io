@@ -10,6 +10,7 @@ function getPolyomino(size=null, shape=null, rot=null) {
   } else if (rot == 'all') {
     return POLYOMINOS[size][shape]
   } else {
+    rot %= POLYOMINOS[size][shape].length
     return [POLYOMINOS[size][shape][rot]]
   }
 }
