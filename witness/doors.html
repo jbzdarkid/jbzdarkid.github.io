@@ -37,17 +37,10 @@
       <script>document.getElementById('sens').value = localStorage.sensitivity</script>
     </div>
 
-    <table>
-      <tr>
-        <td>
-          <table id="left" cellspacing="0" cellpadding="0"></table>
-        </td>
-        <td width="30px"></td>
-        <td>
-          <table id="right" cellspacing="0" cellpadding="0"></table>
-        </td>
-      </tr>
-    </table>
+    <div style="width: 40%; margin:auto">
+      <table style="float:left" id="left" cellspacing="0" cellpadding="0"></table>
+      <table style="float:right" id="right" cellspacing="0" cellpadding="0"></table>
+    </div>
     <script>
       function newDoors() {
         var puzzleDataL = validDoor('left')
