@@ -153,7 +153,7 @@ function _triangle(elem) {
 }
 
 function draw(puzzle, target='puzzle') {
-  // console.log('Drawing', puzzle)
+  console.log('Drawing', puzzle, 'into', target)
   var table = document.getElementById(target)
   while (table.rows.length > 0) {
     table.deleteRow(0)

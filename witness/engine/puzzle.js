@@ -155,11 +155,11 @@ class Puzzle {
     if (pillar) {
       height -= 0.5
     }
-    this.grid  = this.newGrid(2*width+1, 2*height+1)
+    this.grid = this.newGrid(2*width+1, 2*height+1)
     this.start = {'x':2*width, 'y':0}
-    this.end   = {'x':0, 'y':2*height}
-    this.dots  = []
-    this.gaps  = []
+    this.end = {'x':0, 'y':2*height}
+    this.dots = []
+    this.gaps = []
     this.regionCache = {}
     this.pillar = pillar
   }
@@ -202,26 +202,37 @@ class Puzzle {
 
   // Wrap a value around at the width of the grid.
   _mod(val) {
-    if (this.pillar) {
-      var mod = this.grid[0].length
-      return ((val % mod) + mod) % mod
-    } else {
-      return val
-    }
+    var mod = this.grid[0].length
+    return ((val % mod) + mod) % mod
   }
 
   getCell(x, y) {
     if (x < 0 || x >= this.grid.length) return undefined
-    return this.grid[x][this._mod(y)]
+    if (this.pillar) {
+      y = this._mod(y)
+    } else {
+      if (y < 0 || y >= this.grid[x].length) return undefined
+    }
+    return this.grid[x][y]
   }
 
   setCell(x, y, value) {
-    if (x < 0 || x >= this.grid.length) throw 'grid['+x+']['+y+'] is out of bounds'
-    this.grid[x][this._mod(y)] = value
+    // throw 'grid['+x+']['+y+'] is out of bounds'
+    if (x < 0 || x >= this.grid.length) return
+    if (this.pillar) {
+      y = this._mod(y)
+    } else {
+      if (y < 0 || y >= this.grid[x].length) return
+    }
+    this.grid[x][y] = value
   }
 
   isEndpoint(x, y) {
-    return (x == this.end.x && this._mod(y) == this.end.y)
+    if (x != this.end.x) return false
+    if (this.pillar) {
+      y = this._mod(y)
+    }
+    return y == this.end.y
   }
 
   clone() {

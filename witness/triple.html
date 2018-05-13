@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/2000/xhtml">
+  <head>
+    <style>
+      .line {fill: #6D4D4A} /* Always at index 0 */
+      @font-face {src: url('Constantia.ttf')}
+      * {
+        font-family: Constantia;
+        font-variant: small-caps;
+        font-weight: bold;
+        font-size: 28px;
+      }
+      table {
+        position: relative;
+        top: 10%;
+        margin: auto;
+      }
+    </style>
+    <link rel="stylesheet" type="text/css" href="style1.css" id="stylesheet">
+    <script type="text/javascript" src="engine/polyominos.js"></script>
+    <script type="text/javascript" src="engine/utilities.js"></script>
+    <script type="text/javascript" src="engine/puzzle.js"></script>
+    <script type="text/javascript" src="engine/generate.js"></script>
+    <script type="text/javascript" src="engine/solve.js"></script>
+    <script type="text/javascript" src="engine/validate.js"></script>
+    <script type="text/javascript" src="engine/display.js"></script>
+    <script type="text/javascript" src="engine/trace.js"></script>
+    <title>The Witness Challenge Triple Panels</title>
+  </head>
+  <body>
+    <div style="text-align: center;">
+      <button id="hint" onclick="showHint()">Hide Invalid</button>
+      <button id="soln" onclick="showSolution()">Show Solution</button>
+      <button id="new" onclick="newTriple()">Generate New</button>
+    </div>
+    <div style="text-align: center">
+      <label for="sens">Mouse Speed 2D</label>
+      <input id="sens" type="range" min="0.1" max="1.3" step="0.1" onchange="localStorage.sensitivity = this.value"/>
+      <script>document.getElementById('sens').value = localStorage.sensitivity</script>
+    </div>
+
+    <div style="width: 75%; margin:auto">
+      <table style="float:left" id="left" cellspacing="0" cellpadding="0"></table>
+      <table style="float:left" id="center" cellspacing="0" cellpadding="0"></table>
+      <table style="float:right" id="right" cellspacing="0" cellpadding="0"></table>
+    </div>
+    <script>
+      function newTriple() {
+        var valid = validTriple()
+        var invalid1 = invalidTriple()
+        var invalid2 = invalidTriple()
+        var puzzles = ['left']
+        puzzles.splice(_randint(2), 0, 'right')
+        puzzles.splice(_randint(3), 0, 'center')
+        console.log(puzzles)
+        draw(valid.puzzle, puzzles[0])
+        draw(invalid1.puzzle, puzzles[1])
+        draw(invalid2.puzzle, puzzles[2])
+        window['showHint'] = function() {
+          document.getElementById(puzzles[1]).style.opacity = 0.5
+          window['showHint'] = function() {
+          document.getElementById(puzzles[2]).style.opacity = 0.5
+          }
+        }
+        window['showSolution'] = function() {
+          draw(valid.solutions[0], puzzles[0])
+        }
+        location.hash = valid['seed']
+      }
+      if (location.hash == "") {
+        seed = Math.floor(Math.random() * (1 << 30))
+      } else {
+        seed = parseInt(location.hash.substring(1))
+      }
+      setSeed(seed)
+      newTriple()
+    </script>
+  </body>
+</html>

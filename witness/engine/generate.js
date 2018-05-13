@@ -266,25 +266,22 @@ function randomRightDoor() {
     }
   }
   
-  while (true) {
-    var square1 = cells.splice(_randint(cells.length), 1)[0]
-    var square2 = cells.splice(_randint(cells.length), 1)[0]
-    var square3 = cells.splice(_randint(cells.length), 1)[0]
-    var square4 = cells.splice(_randint(cells.length), 1)[0]
-    
-    corners.splice(24, 1) // Start point is illegal
-    corners.splice(0, 1) // End point is illegal
-    puzzle.dots.push(corners.splice(_randint(corners.length), 1)[0])
-    puzzle.dots.push(corners.splice(_randint(corners.length), 1)[0])
+  var square1 = cells.splice(_randint(cells.length), 1)[0]
+  var square2 = cells.splice(_randint(cells.length), 1)[0]
+  var square3 = cells.splice(_randint(cells.length), 1)[0]
+  var square4 = cells.splice(_randint(cells.length), 1)[0]
+  
+  corners.splice(24, 1) // Start point is illegal
+  corners.splice(0, 1) // End point is illegal
+  puzzle.dots.push(corners.splice(_randint(corners.length), 1)[0])
+  puzzle.dots.push(corners.splice(_randint(corners.length), 1)[0])
 
-    for (var i=0; i<8; i++) {
-      var edge = _randint(edges.length)
-      console.log(edges.slice(edge, edge+1))
-      puzzle.gaps.push(edges.slice(edge, edge+1)[0])
-    }
-    
-    break
+  for (var i=0; i<8; i++) {
+    var edge = _randint(edges.length)
+    console.log(edges.slice(edge, edge+1))
+    puzzle.gaps.push(edges.slice(edge, edge+1)[0])
   }
+
   var colors = [PURPLE, RED, ORANGE, GREEN, BLUE]
   var color1 = colors.splice(_randint(colors.length), 1)
   var color2 = colors.splice(_randint(colors.length), 1)
@@ -296,6 +293,84 @@ function randomRightDoor() {
   
   puzzle.start = {'x':8, 'y':8}
   puzzle.end = {'x':0, 'y':0}
+  return puzzle
+}
+
+function removeLs(puzzle, square1, square2) {
+  if (square1.x == square2.x && Math.abs(square1.y - square2.y) == 2) {
+    if (!puzzle.getCell(square1.x-2, square1.y)) {
+      puzzle.setCell(square1.x-2, square1.y, {'type':'nonce'})
+    }
+    if (!puzzle.getCell(square1.x+2, square1.y)) {
+      puzzle.setCell(square1.x+2, square1.y, {'type':'nonce'})
+    }
+    if (!puzzle.getCell(square2.x-2, square2.y)) {
+      puzzle.setCell(square2.x-2, square2.y, {'type':'nonce'})
+    }
+    if (!puzzle.getCell(square2.x+2, square2.y)) {
+      puzzle.setCell(square2.x+2, square2.y, {'type':'nonce'})
+    }
+  }
+  if (Math.abs(square1.x - square2.x) == 2 && square1.y == square2.y) {
+    if (!puzzle.getCell(square1.x, square1.y-2)) {
+      puzzle.setCell(square1.x, square1.y-2, {'type':'nonce'})
+    }
+    if (!puzzle.getCell(square1.x, square1.y+2)) {
+      puzzle.setCell(square1.x, square1.y+2, {'type':'nonce'})
+    }
+    if (!puzzle.getCell(square2.x, square2.y-2)) {
+      puzzle.setCell(square2.x, square2.y-2, {'type':'nonce'})
+    }
+    if (!puzzle.getCell(square2.x, square2.y+2)) {
+      puzzle.setCell(square2.x, square2.y+2, {'type':'nonce'})
+    }
+  }
+}
+
+function randomTriple() {
+  var height = 4
+  var width = 4
+  var puzzle = new Puzzle(width, height)
+  
+  var edges = []
+  var corners = []
+  var cells = []
+  for (var x=0; x<2*width+1; x++) {
+    for (var y=0; y<2*height+1; y++) {
+      if (x%2 == 0 && y%2 == 0) {
+        corners.push({'x':x, 'y':y})
+      } else if (x%2 == 1 && y%2 == 1) {
+        cells.push({'x':x, 'y':y})
+      } else {
+        edges.push({'x':x, 'y':y})
+      }
+    }
+  }
+  
+  var square1 = cells.splice(_randint(cells.length), 1)[0]
+  var square2 = cells.splice(_randint(cells.length), 1)[0]
+  var square3 = cells.splice(_randint(cells.length), 1)[0]
+  var square4 = cells.splice(_randint(cells.length), 1)[0]
+  puzzle.grid[square1.x][square1.y] = {'type':'square', 'color':'green'}
+  puzzle.grid[square2.x][square2.y] = {'type':'square', 'color':'green'}
+  puzzle.grid[square3.x][square3.y] = {'type':'square', 'color':'purple'}
+  puzzle.grid[square4.x][square4.y] = {'type':'square', 'color':'purple'}
+  removeLs(puzzle, square1, square3)
+  removeLs(puzzle, square1, square4)
+  removeLs(puzzle, square2, square3)
+  removeLs(puzzle, square2, square4)
+
+  var placedWhites = 0
+  while(placedWhites < 5) {
+    // if (cells.length == 0)
+    var square = cells.splice(_randint(cells.length), 1)[0]
+    if (!puzzle.grid[square.x][square.y]) {
+      puzzle.grid[square.x][square.y] = {'type':'square', 'color':'white'}
+      placedWhites++
+    }
+  }
+  puzzle.start = {'x':8, 'y':0}
+  puzzle.end = {'x':0, 'y':8}
   return puzzle
 }
 
@@ -311,6 +386,36 @@ function validDoor(side) {
     solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
     console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: ')
     if (solutions.length > 0) {
+      break
+    }
+  }
+  return {'puzzle':puzzle, 'solutions':solutions, 'seed':puzzleSeed}
+}
+
+function validTriple() {
+  var solutions = []
+  while (true) {
+    solutions = []
+    var puzzleSeed = seed
+    var puzzle = randomTriple()
+    solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
+    console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: ')
+    if (solutions.length > 0) {
+      break
+    }
+  }
+  return {'puzzle':puzzle, 'solutions':solutions, 'seed':puzzleSeed}
+}
+
+function invalidTriple() {
+  var solutions = []
+  while (true) {
+    solutions = []
+    var puzzleSeed = seed
+    var puzzle = randomTriple()
+    solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
+    console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: ')
+    if (solutions.length == 0) {
       break
     }
   }
