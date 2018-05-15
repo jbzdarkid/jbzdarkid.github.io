@@ -361,8 +361,7 @@ function randomTriple() {
   removeLs(puzzle, square2, square4)
 
   var placedWhites = 0
-  while(placedWhites < 5) {
-    // if (cells.length == 0)
+  while(placedWhites < 5 && cells.length > 0) {
     var square = cells.splice(_randint(cells.length), 1)[0]
     if (!puzzle.grid[square.x][square.y]) {
       puzzle.grid[square.x][square.y] = {'type':'square', 'color':'white'}
