@@ -196,7 +196,6 @@ function _moveCursor(dx, dy) {
     }
   }
   if (_getVisualCell(data.x - 1, data.y) == null) { // Against top wall
-    console.log('<185>')
     if (data.suby + dy < cursorSize) { // Pushing moves you right
       data.subx += dx - (data.suby + dy - cursorSize) / deltaModOuterWall
       data.suby = cursorSize

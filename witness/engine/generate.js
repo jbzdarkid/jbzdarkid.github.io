@@ -20,8 +20,8 @@ function randomPuzzle(style) {
   if (style['start']) {
     puzzle.start = style['start']
   } else {
-    puzzle.start.x = 2*_randint(width)
-    puzzle.start.y = 2*_randint(height)
+    puzzle.start.x = 2 * _randint(width)
+    puzzle.start.y = 2 * _randint(height)
   }
   if (style['end']) {
     puzzle.end = style['end']
@@ -29,19 +29,19 @@ function randomPuzzle(style) {
     switch (_randint(4)) {
       case 0: // Top
         puzzle.end.x = 0
-        puzzle.end.y = 2*_randint(height)
+        puzzle.end.y = 2 * _randint(height)
         break
       case 1: // Left
-        puzzle.end.x = 2*_randint(height)
+        puzzle.end.x = 2 * _randint(height)
         puzzle.end.y = 0
         break
       case 2: // Bottom
-        puzzle.end.x = 2*width
-        puzzle.end.y = 2*_randint(height)
+        puzzle.end.x = 2 * width
+        puzzle.end.y = 2 * _randint(height)
         break
       case 3: // Right
-        puzzle.end.x = 2*_randint(height)
-        puzzle.end.y = 2*height
+        puzzle.end.x = 2 * _randint(height)
+        puzzle.end.y = 2 * height
         break
     }
   }
@@ -49,11 +49,11 @@ function randomPuzzle(style) {
   var edges = []
   var corners = []
   var cells = []
-  for (var x=0; x<2*width+1; x++) {
-    for (var y=0; y<2*height+1; y++) {
-      if (x%2 == 0 && y%2 == 0) {
+  for (var x = 0; x < 2 * width + 1; x++) {
+    for (var y = 0; y < 2 * height + 1; y++) {
+      if (x % 2 == 0 && y % 2 == 0) {
         corners.push({'x':x, 'y':y})
-      } else if (x%2 == 1 && y%2 == 1) {
+      } else if (x % 2 == 1 && y % 2 == 1) {
         cells.push({'x':x, 'y':y})
       } else {
         edges.push({'x':x, 'y':y})
