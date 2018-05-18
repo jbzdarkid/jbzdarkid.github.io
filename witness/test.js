@@ -243,6 +243,11 @@ tests = [
     puzzle.grid[3][1] = {'type':'nega', 'color':'white'}
     puzzle.grid[3][3] = {'type':'square', 'color':'red'}
     puzzle.grid[3][5] = {'type':'square', 'color':'red'}
-    return {'puzzle':puzzle, 'solutions':7}
+    console.clear()
+    var region = [{'x':1, 'y':1}, {'x':1, 'y':3}, {'x':3, 'y':1}]
+    var c = _combinations(puzzle, region, regionStart=0)
+    console.log(c)
+    console.log(_regionCheck(puzzle, region))
+    // return {'puzzle':puzzle, 'solutions':7}
   }
 ]

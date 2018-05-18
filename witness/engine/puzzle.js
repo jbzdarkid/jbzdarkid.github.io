@@ -258,37 +258,36 @@ class Puzzle {
     */
   }
 
-  _innerLoop(x, y, region, region2, potentialRegions) {
+  _innerLoop(x, y, region, potentialRegions) {
     delete potentialRegions[x+'_'+y]
     if (this.getCell(x, y) == true) return
     region.push({'x':x, 'y':y})
-    region2.addCell(x, y)
     this.setCell(x, y, true)
 
     if (this.getCell(x-2, y) == false) { // Unvisited cell left
       if (this.getCell(x-1, y) == false) { // Connected
-        this._innerLoop(x-2, y, region, region2, potentialRegions)
+        this._innerLoop(x-2, y, region, potentialRegions)
       } else { // Disconnected, potential new region
         potentialRegions[(x-2)+'_'+y] = true
       }
     }
     if (this.getCell(x+2, y) == false) { // Unvisited cell right
       if (this.getCell(x+1, y) == false) { // Connected
-        this._innerLoop(x+2, y, region, region2, potentialRegions)
+        this._innerLoop(x+2, y, region, potentialRegions)
       } else { // Disconnected, potential new region
         potentialRegions[(x+2)+'_'+y] = true
       }
     }
     if (this.getCell(x, y-2) == false) { // Unvisited cell above
       if (this.getCell(x, y-1) == false) { // Connected
-        this._innerLoop(x, y-2, region, region2, potentialRegions)
+        this._innerLoop(x, y-2, region, potentialRegions)
       } else { // Disconnected, potential new region
         potentialRegions[x+'_'+(y-2)] = true
       }
     }
     if (this.getCell(x, y+2) == false) { // Unvisited cell below
       if (this.getCell(x, y+1) == false) { // Connected
-        this._innerLoop(x, y+2, region, region2, potentialRegions)
+        this._innerLoop(x, y+2, region, potentialRegions)
       } else { // Disconnected, potential new region
         potentialRegions[x+'_'+(y+2)] = true
       }
@@ -310,15 +309,10 @@ class Puzzle {
       var x = parseInt(pos.split('_')[0])
       var y = parseInt(pos.split('_')[1])
       var region = []
-      // FIXME: region2 should be perfectly functional with the old puzzle, but I'm stuck here because I need to continue supporting old-style regions
-      var copy = this.clone()
-      copy.grid = savedGrid
-      var region2 = new Region(copy)
-      this._innerLoop(x, y, region, region2, potentialRegions)
-      regions.push([region, region2])
+      this._innerLoop(x, y, region, potentialRegions)
+      regions.push(region)
     }
     this.grid = savedGrid
     return regions
   }
 }
-
