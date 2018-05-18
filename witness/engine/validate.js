@@ -21,12 +21,27 @@ function isValid(puzzle) {
     }
   }
   // Check that individual regions are valid
-  for (var region of puzzle.getRegions()) {
-    var key = JSON.stringify(region) // TODO: Perf test this vs the int region method
+  var regions = puzzle.getRegions() // 6 seconds
+  for (var region of regions) {
+    // TODO: There's a chance that regions aren't generated in the same order each time,
+    // so I might be missing out on more caching.
+    var key = JSON.stringify(region) // TODO: Perf?
     var regionValid = puzzle.regionCache[key]
-    if (regionValid == undefined || true) {
+    if (regionValid == undefined) {
       // console.log('Cache miss for region', region, 'key', key)
-      regionValid = _regionCheck(puzzle, region)
+      var hasNega = false
+      for (var pos of region) {
+        var cell = puzzle.getCell(pos.x, pos.y)
+        if (cell != false && cell.type == 'nega') {
+          hasNega = true
+          break
+        }
+      }
+      if (hasNega) {
+        regionValid = _regionCheckNegations(puzzle, region)
+      } else {
+        regionValid = _regionCheck(puzzle, region)
+      }
       puzzle.regionCache[key] = regionValid
       // FIXME: Can't cache regions with triangles because the edges matter, not just the cells.
       for (var pos of region) {
@@ -47,67 +62,58 @@ function isValid(puzzle) {
   return true
 }
 
+function _regionCheckNegations(puzzle, region) {
+  // console.log('Validating region of length', region.length)
+  // Iterate over all possible ways of applying negations
+  var combinations = _combinations(puzzle, region)
+  for (var combination of combinations) {
+    // console.log('Validating combination', combination)
+    for (var negation of combination) {
+      puzzle.setCell(negation.source.x, negation.source.y, false)
+      puzzle.setCell(negation.target.x, negation.target.y, false)
+    }
+    if (!_regionCheck(puzzle, region)) {
+      // console.log('Region is invalid with negations applied, so the combination is invalid')
+      for (var negation of combination) {
+        puzzle.setCell(negation.source.x, negation.source.y, negation.source.cell)
+        puzzle.setCell(negation.target.x, negation.target.y, negation.target.cell)
+      }
+      continue
+    }
+    
+    var combinationIsValid = true
+    // Verify that each negation is valid, i.e. removes an incorrect element
+    for (var negation of combination) {
+      // console.log('Un-doing negation', negation, 'and re-validating')
+      puzzle.setCell(negation.target.x, negation.target.y, negation.target.cell)
+      negation.source.cell.type = 'nonce'
+      puzzle.setCell(negation.source.x, negation.source.y, negation.source.cell)
+      var regionCheck = _regionCheckNegations(puzzle, region)
+      puzzle.setCell(negation.target.x, negation.target.y, false)
+      negation.source.cell.type = 'nega'
+      puzzle.setCell(negation.source.x, negation.source.y, false)
+      
+      if (regionCheck) {
+        // console.log('Region still valid with element removed, so the combination is invalid')
+        combinationIsValid = false
+        break
+      }
+    }
+    for (var negation of combination) {
+      puzzle.setCell(negation.source.x, negation.source.y, negation.source.cell)
+      puzzle.setCell(negation.target.x, negation.target.y, negation.target.cell)
+    }
+    if (combinationIsValid) {
+      // console.log('Valid combination: ', combination)
+      return true
+    }
+  }
+  // console.log('Unable to find valid negation, but negation symbols exist')
+  return false
+}
 // Checks if a region (series of cells) is valid.
 // Since the path must be complete at this point, returns only true or false
 function _regionCheck(puzzle, region) {
-  // console.log('Validating region of length', region.length)
-  var hasNega = false
-  for (var pos of region) {
-    var cell = puzzle.getCell(pos.x, pos.y)
-    if (cell != false && cell.type == 'nega') {
-      hasNega = true
-      break
-    }
-  }
-  if (hasNega) {
-    // Iterate over all possible ways of applying negations
-    var combinations = _combinations(puzzle, region)
-    for (var combination of combinations) {
-      // console.log('Validating combination', combination)
-      for (var negation of combination) {
-        puzzle.setCell(negation.source.x, negation.source.y, false)
-        puzzle.setCell(negation.target.x, negation.target.y, false)
-      }
-      if (!_regionCheck(puzzle, region)) {
-        // console.log('Region is invalid with negations applied, so the combination is invalid')
-        for (var negation of combination) {
-          puzzle.setCell(negation.source.x, negation.source.y, negation.source.cell)
-          puzzle.setCell(negation.target.x, negation.target.y, negation.target.cell)
-        }
-        continue
-      }
-      
-      var combinationIsValid = true
-      // Verify that each negation is valid, i.e. removes an incorrect element
-      for (var negation of combination) {
-        // console.log('Un-doing negation', negation, 'and re-validating')
-        puzzle.setCell(negation.target.x, negation.target.y, negation.target.cell)
-        negation.source.cell.type = 'nonce'
-        puzzle.setCell(negation.source.x, negation.source.y, negation.source.cell)
-        var regionCheck = _regionCheck(puzzle, region)
-        puzzle.setCell(negation.target.x, negation.target.y, false)
-        negation.source.cell.type = 'nega'
-        puzzle.setCell(negation.source.x, negation.source.y, false)
-        
-        if (regionCheck) {
-          // console.log('Region still valid with element removed, so the combination is invalid')
-          combinationIsValid = false
-          break
-        }
-      }
-      for (var negation of combination) {
-        puzzle.setCell(negation.source.x, negation.source.y, negation.source.cell)
-        puzzle.setCell(negation.target.x, negation.target.y, negation.target.cell)
-      }
-      if (combinationIsValid) {
-        // console.log('Valid combination: ', combination)
-        return true
-      }
-    }
-    // console.log('Unable to find valid negation, but negation symbols exist')
-    return false
-  }
-
   // Check for triangles
   for (var pos of region) {
     if (puzzle.getCell(pos.x, pos.y).type == 'triangle') {
