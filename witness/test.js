@@ -220,5 +220,29 @@ tests = [
     puzzle.grid[3][1] = {'type':'nega', 'color':'red'}
     puzzle.grid[3][3] = {'type':'nega', 'color':'red'}
     return {'puzzle':puzzle, 'solutions':0}
+  }, function() {
+    var puzzle = new Puzzle(2, 2)
+    puzzle.grid[1][1] = {'type':'nega', 'color':'white'}
+    puzzle.grid[1][3] = {'type':'square', 'color':'blue'}
+    puzzle.grid[3][1] = {'type':'square', 'color':'red'}
+    puzzle.grid[3][3] = {'type':'square', 'color':'red'}
+    return {'puzzle':puzzle, 'solutions':5}
+  }, function() {
+    var puzzle = new Puzzle(2, 3)
+    puzzle.grid[1][1] = {'type':'nega', 'color':'white'}
+    puzzle.grid[1][3] = {'type':'square', 'color':'blue'}
+    puzzle.grid[1][5] = {'type':'star', 'color':'blue'}
+    puzzle.grid[3][3] = {'type':'square', 'color':'red'}
+    puzzle.grid[3][5] = {'type':'square', 'color':'red'}
+    return {'puzzle':puzzle, 'solutions':6}
+  }, function() {
+    var puzzle = new Puzzle(2, 3)
+    puzzle.grid[1][1] = {'type':'nega', 'color':'white'}
+    puzzle.grid[1][3] = {'type':'square', 'color':'blue'}
+    puzzle.grid[1][5] = {'type':'star', 'color':'blue'}
+    puzzle.grid[3][1] = {'type':'nega', 'color':'white'}
+    puzzle.grid[3][3] = {'type':'square', 'color':'red'}
+    puzzle.grid[3][5] = {'type':'square', 'color':'red'}
+    return {'puzzle':puzzle, 'solutions':7}
   }
 ]

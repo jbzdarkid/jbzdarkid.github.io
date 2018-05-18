@@ -101,9 +101,9 @@ function randomPuzzle(style) {
       } else if (type == 'triangles') {
         var pos = cells.splice(_randint(cells.length), 1)[0]
         var rng = _randint(100)
-        var count = 1
-        if (rng >= 50) count = 2
-        if (rng >= 85) count = 3
+        var count = 1 // 51%
+        if (rng > 50) count = 2 // 25%
+        if (rng > 85) count = 3 // 14%
         puzzle.grid[pos.x][pos.y] = {'type':'triangle', 'color':ORANGE, 'count':count}
       } else { // Polyominos
         var size = _randint(Math.min(width, height))+1
