@@ -50,7 +50,7 @@ function isValid(puzzle) {
 // Checks if a region (series of cells) is valid.
 // Since the path must be complete at this point, returns only true or false
 function _regionCheck(puzzle, region) {
-  console.log('Validating region of length', region.length)
+  // console.log('Validating region of length', region.length)
   var hasNega = false
   for (var pos of region) {
     var cell = puzzle.getCell(pos.x, pos.y)
@@ -63,13 +63,13 @@ function _regionCheck(puzzle, region) {
     // Iterate over all possible ways of applying negations
     var combinations = _combinations(puzzle, region)
     for (var combination of combinations) {
-      console.log('Validating combination', combination)
+      // console.log('Validating combination', combination)
       for (var negation of combination) {
         puzzle.setCell(negation.source.x, negation.source.y, false)
         puzzle.setCell(negation.target.x, negation.target.y, false)
       }
       if (!_regionCheck(puzzle, region)) {
-        console.log('Region is invalid with negations applied, so the combination is invalid')
+        // console.log('Region is invalid with negations applied, so the combination is invalid')
         for (var negation of combination) {
           puzzle.setCell(negation.source.x, negation.source.y, negation.source.cell)
           puzzle.setCell(negation.target.x, negation.target.y, negation.target.cell)
@@ -77,10 +77,10 @@ function _regionCheck(puzzle, region) {
         continue
       }
       
-      combinationIsValid = true
+      var combinationIsValid = true
       // Verify that each negation is valid, i.e. removes an incorrect element
       for (var negation of combination) {
-        console.log('Un-doing negation', negation, 'and re-validating')
+        // console.log('Un-doing negation', negation, 'and re-validating')
         puzzle.setCell(negation.target.x, negation.target.y, negation.target.cell)
         negation.source.cell.type = 'nonce'
         puzzle.setCell(negation.source.x, negation.source.y, negation.source.cell)
@@ -90,7 +90,7 @@ function _regionCheck(puzzle, region) {
         puzzle.setCell(negation.source.x, negation.source.y, false)
         
         if (regionCheck) {
-          console.log('Region still valid with element removed, so the combination is invalid')
+          // console.log('Region still valid with element removed, so the combination is invalid')
           combinationIsValid = false
           break
         }
@@ -100,11 +100,11 @@ function _regionCheck(puzzle, region) {
         puzzle.setCell(negation.target.x, negation.target.y, negation.target.cell)
       }
       if (combinationIsValid) {
-        console.log('Valid combination: ', combination)
+        // console.log('Valid combination: ', combination)
         return true
       }
     }
-    console.log('Unable to find valid negation, but negation symbols exist')
+    // console.log('Unable to find valid negation, but negation symbols exist')
     return false
   }
 
@@ -205,7 +205,7 @@ function _regionCheck(puzzle, region) {
     }
     puzzle.grid = savedGrid
   }
-  console.info('Region', region, 'is valid')
+  // console.info('Region', region, 'is valid')
   return true
 }
 
