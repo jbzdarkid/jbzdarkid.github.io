@@ -209,7 +209,7 @@ function draw(puzzle, target='puzzle') {
         div.id = cell.id
         div.className = 'start trace'
         if (puzzle.grid[x][y] == true) {
-          div.style.background = FOREGROUND
+          div.style.background = LINE_SUCC
         }
         cell.style.position = 'relative'
         cell.removeAttribute('class')

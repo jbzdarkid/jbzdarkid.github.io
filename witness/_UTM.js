@@ -173,12 +173,12 @@ var tests = [
     grid[7][1] = {'type':'square', 'color':'white'}
     grid[7][7] = {'type':'square', 'color':'white'}
     return {'grid':grid, 'start':{'x':8, 'y':8}, 'end':{'x':4, 'y':0}, 'gaps':[{'x':5, 'y':8}]}
-  }, function() {
-    var grid = _newGrid(4, 4)
-    grid[1][7] = {'type':'poly','color':'yellow','size':4,'shape':'I','rot':1}
-    grid[7][5] = {'type':'poly','color':'yellow','size':4,'shape':'J','rot':1}
-    return {'grid':grid, 'start':{'x':8, 'y':8}, 'end':{'x':0, 'y':0}}
   },*/ function() {
+    var puzzle = new Puzzle(4, 4)
+    puzzle.grid[1][7] = {'type':'poly','color':'yellow','size':4,'shape':'I','rot':1}
+    puzzle.grid[7][5] = {'type':'poly','color':'yellow','size':4,'shape':'J','rot':1}
+    return puzzle
+  }/*, function() {
     var puzzle = new Puzzle(2, 6, true)
     for (var x=0; x<puzzle.grid.length; x+=2) {
       for (var y=0; y<puzzle.grid[x].length; y+=2) {
@@ -250,7 +250,7 @@ var tests = [
     puzzle.start = {'x':8, 'y':4}
     puzzle.end = {'x':0, 'y':10}
     return puzzle
-  }/*, function() {
+  }, function() {
     var puzzle = new Puzzle(5, 5)
     puzzle.grid[1][1] = {'type':'triangle', 'color':'orange', 'count':3}
     puzzle.grid[1][9] = {'type':'triangle', 'color':'orange', 'count':3}
@@ -469,7 +469,7 @@ function loadTests() {
       console.log('Minimum solution out of', solutions.length, 'has', minEdges, 'edges and', minCorners, 'corners:', minSolution)
       if (minSolution != undefined) {
         minSolution.start = puzzle.start
-        draw(minSolution, 'test'+i)
+        draw(minSolution, 'test'+i) // TODO: This prevents tracing on the puzzle
       } else {
         draw(puzzle, 'test'+i)
       }
