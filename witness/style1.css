@@ -1,6 +1,6 @@
 @keyframes line-succ {
   from {fill: #FFF;}
-  to {fill: #999;}
+  to {fill: #DDD;}
 }
 @keyframes line-fail {
   from {fill: #000;}

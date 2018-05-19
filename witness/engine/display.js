@@ -297,7 +297,7 @@ function draw(puzzle, target='puzzle') {
     var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
     rect.setAttribute('width', 18)
     rect.setAttribute('height', 24)
-    rect.setAttribute('fill', '#1F1313')
+    rect.setAttribute('fill', BACKGROUND)
     var transform = 'translate('+(width-18)/2+', '+(height-24)/2+')'
     if (gap.x%2 == 1) {
       // 9, 12 being the center of the rectangle
