@@ -166,16 +166,28 @@ function draw(puzzle, target='puzzle') {
       // Basic cell types, flagging only certain elements as 'trace', as in 'traceable'
       if (x%2 == 0 && y%2 == 0) {
         cell.className = 'corner trace'
+        cell.setAttribute('height', 24)
+        cell.setAttribute('width', 24)
+        cell.style.background = FOREGROUND
       } else if (x%2 == 0 && y%2 == 1) {
         cell.className = 'horiz trace'
+        cell.setAttribute('height', 24)
+        cell.setAttribute('width', 58)
+        cell.style.background = FOREGROUND
       } else if (x%2 == 1 && y%2 == 0) {
         cell.className = 'verti trace'
+        cell.setAttribute('height', 58)
+        cell.setAttribute('width', 24)
+        cell.style.background = FOREGROUND
       } else if (x%2 == 1 && y%2 == 1) {
         cell.className = 'center'
+        cell.setAttribute('height', 58)
+        cell.setAttribute('width', 58)
+        cell.style.background = BACKGROUND
       }
       // If there's a solution present for the grid, draw it (poorly)
       if (puzzle.grid[x][y] == true) {
-        cell.style.background = '#4F1A1A'
+        cell.style.background = LINE_SUCC
       }
       // Grid corners are rounded on non-pillar puzzles
       if (!puzzle.pillar) {
@@ -197,7 +209,7 @@ function draw(puzzle, target='puzzle') {
         div.id = cell.id
         div.className = 'start trace'
         if (puzzle.grid[x][y] == true) {
-          div.style.background = '#4F1A1A'
+          div.style.background = FOREGROUND
         }
         cell.style.position = 'relative'
         cell.removeAttribute('class')
@@ -227,7 +239,7 @@ function draw(puzzle, target='puzzle') {
       if (x == puzzle.end.x) {
         cell.className = 'end_left trace'
         cell.id = target+'_'+puzzle.end.x+'_'+(puzzle.end.y-1)
-        cell.style.background = table.rows[puzzle.end.x].cells[puzzle.end.y+1].style.background
+        cell.style.background = FOREGROUND
       }
     }
   } else if (puzzle.end.y == puzzle.grid[puzzle.end.x].length-1) {
@@ -236,7 +248,7 @@ function draw(puzzle, target='puzzle') {
       if (x == puzzle.end.x) {
         cell.className = 'end_right trace'
         cell.id = target+'_'+puzzle.end.x+'_'+(puzzle.end.y+1)
-        cell.style.background = table.rows[puzzle.end.x].cells[puzzle.end.y].style.background
+        cell.style.background = FOREGROUND
       }
     }
   } else if (puzzle.end.x == 0) {
@@ -246,7 +258,7 @@ function draw(puzzle, target='puzzle') {
       if (x == puzzle.end.y) {
         cell.className = 'end_up trace'
         cell.id =  target+'_'+(puzzle.end.x-1)+'_'+puzzle.end.y
-        cell.style.background = table.rows[puzzle.end.x+1].cells[puzzle.end.y].style.background
+        cell.style.background = FOREGROUND
       }
     }
   } else if (puzzle.end.x == puzzle.grid.length-1) {
@@ -256,7 +268,7 @@ function draw(puzzle, target='puzzle') {
       if (x == puzzle.end.y) {
         cell.className = 'end_down trace'
         cell.id =  target+'_'+(puzzle.end.x+1)+'_'+puzzle.end.y
-        cell.style.background = table.rows[puzzle.end.x].cells[puzzle.end.y].style.background
+        cell.style.background = FOREGROUND
       }
     }
   }

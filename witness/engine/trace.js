@@ -19,7 +19,7 @@ function _getVisualCell(x, y) {
 function trace(elem, puzzle) {
   if (document.pointerLockElement == null) { // Started tracing a solution
     document.styleSheets[0].deleteRule(0)
-    document.styleSheets[0].insertRule(".line {fill: #6D4D4A}", 0)
+    document.styleSheets[0].insertRule(".line {fill: #BBB}", 0)
     var parent = elem.parentNode
     var width = parseInt(window.getComputedStyle(parent).width)
     var height = parseInt(window.getComputedStyle(parent).height)

@@ -1,37 +1,21 @@
 @keyframes line-succ {
-  from {fill: #FFFFFF;}
-  to {fill: #4F1A1A;}
+  from {fill: #FFF;}
+  to {fill: #999;}
 }
 @keyframes line-fail {
-  from {fill: #000000;}
-  to {fill: #161729;}
+  from {fill: #000;}
+  to {fill: #333;}
 }
 .cursor {
-  fill: #A69191;
+  fill: #FFF;
   stroke: black;
   stroke-width: 2px;
   stroke-opacity: 0.4;
 }
-.center {
-  height: 58px;
-  width: 58px;
-  background: #1F1313;
-}
-.corner {
-  height: 24px;
-  width: 24px;
-  background: #3B3B3B;
-}
-.verti {
-  height: 58px;
-  width: 24px;
-  background: #3B3B3B;
-}
-.horiz {
-  height: 24px;
-  width: 58px;
-  background: #3B3B3B;
-}
+.center { background: #000; }
+.verti { background: #666; }
+.horiz { background: #666; }
+.corner { background: #666; }
 .start {
   position: absolute;
   top: -12px;
@@ -39,7 +23,7 @@
   height: 48px;
   width: 48px;
   border-radius: 24px;
-  background: #3B3B3B;
+  background: #666;
 }
 .end_left {
   border-top-left-radius: 12px;
@@ -47,7 +31,7 @@
   position: relative;
   height: 24px;
   width: 24px;
-  background: #3B3B3B;
+  background: #666;
 }
 .end_right {
   border-top-right-radius: 12px;
@@ -55,7 +39,7 @@
   position: relative;
   height: 24px;
   width: 24px;
-  background: #3B3B3B;
+  background: #666;
 }
 .end_up {
   border-top-left-radius: 12px;
@@ -63,7 +47,7 @@
   position: relative;
   height: 24px;
   width: 24px;
-  background: #3B3B3B;
+  background: #666;
 }
 .end_down {
   border-bottom-left-radius: 12px;
@@ -71,5 +55,5 @@
   position: relative;
   height: 24px;
   width: 24px;
-  background: #3B3B3B;
+  background: #666;
 }
