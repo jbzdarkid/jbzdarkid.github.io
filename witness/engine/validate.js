@@ -21,16 +21,14 @@ function isValid(puzzle) {
     }
   }
   // Check that individual regions are valid
-  var regions = puzzle.getRegions() // 6 seconds
+  var regions = puzzle.getRegions()
   for (var region of regions) {
-    // TODO: There's a chance that regions aren't generated in the same order each time,
-    // so I might be missing out on more caching.
-    var key = JSON.stringify(region) // TODO: Perf?
+    var key = region.hash()
     var regionValid = puzzle.regionCache[key]
     if (regionValid == undefined) {
       // console.log('Cache miss for region', region, 'key', key)
       var hasNega = false
-      for (var pos of region) {
+      for (var pos of region.cells) {
         var cell = puzzle.getCell(pos.x, pos.y)
         if (cell != false && cell.type == 'nega') {
           hasNega = true
@@ -44,7 +42,7 @@ function isValid(puzzle) {
       }
       puzzle.regionCache[key] = regionValid
       // FIXME: Can't cache regions with triangles because the edges matter, not just the cells.
-      for (var pos of region) {
+      for (var pos of region.cells) {
         if (puzzle.getCell(pos.x, pos.y).type == 'triangle') {
           puzzle.regionCache[key] = undefined
           break
@@ -115,7 +113,7 @@ function _regionCheckNegations(puzzle, region) {
 // Since the path must be complete at this point, returns only true or false
 function _regionCheck(puzzle, region) {
   // Check for triangles
-  for (var pos of region) {
+  for (var pos of region.cells) {
     if (puzzle.getCell(pos.x, pos.y).type == 'triangle') {
       var count = 0
       if (puzzle.getCell(pos.x - 1, pos.y)) count++
@@ -131,7 +129,7 @@ function _regionCheck(puzzle, region) {
 
   // Check for color-based elements
   var colors = {}
-  for (var pos of region) {
+  for (var pos of region.cells) {
     var cell = puzzle.getCell(pos.x, pos.y)
     if (cell != 0) {
       if (colors[cell.color] == undefined) {
@@ -174,7 +172,7 @@ function _regionCheck(puzzle, region) {
   var polys = []
   var ylops = []
   var polyCount = 0
-  for (var pos of region) {
+  for (var pos of region.cells) {
     var cell = puzzle.getCell(pos.x, pos.y)
     if (cell != 0) {
       if (cell.type == 'poly') {
@@ -190,7 +188,7 @@ function _regionCheck(puzzle, region) {
     if (polyCount < 0) {
       // console.log('More onimoylops than polyominos by', -polyCount)
       return false
-    } else if (polyCount > 0 && polyCount < region.length) {
+    } else if (polyCount > 0 && polyCount < region.cells.length) {
       // console.log('Combined size of polyominos', polyCount, 'does not match region size', region.length)
       return false
     }
@@ -199,9 +197,9 @@ function _regionCheck(puzzle, region) {
     // If polyCount == 0, then ylops cancel polys, and we should present the
     // region as nonexistant, thus forcing all the shapes to cancel.
     if (polyCount == 0) {
-      region = []
+      region = new Region()
     }
-    for (var cell of region) {
+    for (var cell of region.cells) {
       puzzle.setCell(cell.x, cell.y, true)
     }
     if (!_polyFit(polys, ylops, puzzle.grid)) {
@@ -219,8 +217,8 @@ function _regionCheck(puzzle, region) {
 function _combinations(puzzle, region, regionStart=0) {
   // Find the first negation element (may be part of cells already considered)
   var nega = undefined
-  for (var i=0; i<region.length; i++) {
-    var pos = region[i]
+  for (var i=0; i<region.cells.length; i++) {
+    var pos = region.cells[i]
     var cell = puzzle.getCell(pos.x, pos.y)
     if (cell == false) continue
     if (cell.type == 'nega') {
@@ -236,8 +234,8 @@ function _combinations(puzzle, region, regionStart=0) {
 
   var combinations = []
   // All elements before regionStart have been considered, so don't try negating them again.
-  for (var i=regionStart; i<region.length; i++) {
-    var pos = region[i]
+  for (var i=regionStart; i<region.cells.length; i++) {
+    var pos = region.cells[i]
     var cell = puzzle.getCell(pos.x, pos.y)
     if (cell == false) continue
     puzzle.setCell(pos.x, pos.y, false)

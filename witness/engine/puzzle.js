@@ -1,144 +1,37 @@
 class Region {
-  constructor(puzzle) {
-    this.puzzle = puzzle
-    this.cells = []
-    for (var i=0; i<puzzle.grid.length; i++) {
-      this.cells.push(0)
+  constructor(length) {
+    this.grid = []
+    for (var i=0; i<length; i++) {
+      this.grid.push(0)
     }
-    this.hasTriangles = false // TODO: Temporary until I improve region caching
-    this.invalidTriangles = 0
-    this.activeNegations = 0
-    this.colors = {'squares':{}, 'stars':{}, 'other':{}}
-    this.colorCount = {}
-    this.ylops = []
-    this.polys = []
-    this.polyCount = 0
-    // TODO: Dots and Gaps
+    this.cells = []
   }
 
   clone() {
-    var clone = new Region(this.puzzle)
-    clone.puzzle = this.puzzle.clone()
-    clone.cells = this.cells.slice()
-    clone.hasTriangles = this.hasTriangles
-    clone.invalidTriangles = this.invalidTriangles
-    clone.activeNegations = this.activeNegations
-    clone.colors = {'squares':{}, 'stars':{}, 'other':{}}
-    clone.colorCount = {}
-    for (var color of Object.keys(this.colorCount)) {
-      clone.colorCount[color] = this.colorCount[color]
-      clone.colors['squares'][color] = this.colors['squares'][color]
-      clone.colors['stars'][color] = this.colors['stars'][color]
-      clone.colors['other'][color] = this.colors['other'][color]
-    }
-    clone.ylops = this.ylops.slice()
-    clone.polys = this.polys.slice()
-    clone.polyCount = this.polyCount
+    var clone = new Region(this.grid.length)
+    this.grid = this.grid.slice()
+    this.cells = this.cells.slice()
     return clone
   }
 
-  addCell(x, y) {
-    this.cells[x] |= (1 << y)
-    var cell = this.puzzle.getCell(x, y)
-    if (cell != undefined) {
-      if (cell.color != undefined) {
-        if (this.colorCount[cell.color] == undefined) {
-          this.colorCount[cell.color] = 0
-          this.colors['squares'][cell.color] = 0
-          this.colors['stars'][cell.color] = 0
-          this.colors['other'][cell.color] = 0
-        }
-        this.colorCount[cell.color]++
-        if (cell.type == 'square') {
-          this.colors['squares'][cell.color]++
-        } else if (cell.type == 'star') {
-          this.colors['stars'][cell.color]++
-        } else {
-          this.colors['other'][cell.color]++
-        }
-      }
-      // Square, Star, and Nonce require no additional actions
-      if (cell.type == 'triangle') {
-        this.hasTriangles = true
-        var count = 0
-        if (this.puzzle.getCell(x-1, y)) count++
-        if (this.puzzle.getCell(x+1, y)) count++
-        if (this.puzzle.getCell(x, y-1)) count++
-        if (this.puzzle.getCell(x, y+1)) count++
-        if (count != cell.count) {
-          // console.log('Triangle at grid['+x+']['+y+'] has', count, 'borders')
-          this.invalidTriangles++
-        }
-      } else if (cell.type == 'nega') {
-        this.activeNegations++
-      } else if (cell.type == 'poly') {
-        this.polyCount += cell.size
-        cell.x = x
-        cell.y = y
-        this.polys.push(cell)
-      } else if (cell.type == 'ylop') {
-        this.polyCount += -cell.size
-        cell.x = x
-        cell.y = y
-        this.ylops.push(cell)
-      }
-    }
+  setCell(x, y) {
+    if (this.getCell(x, y)) return
+    this.grid[x] |= (1 << y)
+    this.cells.push({'x':x, 'y':y})
   }
-
-  removeCell(x, y) {
-    this.cells[x] &= ~(1 << y)
-    // Does not change regionSize
-    var cell = this.puzzle.getCell(x, y)
-    if (cell != undefined) {
-      if (cell.color != undefined) {
-        this.colorCount[cell.color]--
-        if (cell.type == 'square') {
-          this.colors['squares'][cell.color]--
-        } else if (cell.type == 'star') {
-          this.colors['stars'][cell.color]--
-        } else {
-          this.colors['other'][cell.color]--
-        }
-      }
-      // Square, Star, and Nonce require no additional actions
-      if (cell.type == 'triangle') {
-        this.invalidTriangles--
-      } else if (cell.type == 'nega') {
-        this.activeNegations--
-      } else if (cell.type == 'poly') {
-        this.polyCount -= cell.size
-        var newList = []
-        for (var poly of this.polys) {
-          if (poly.x != x || poly.y != y) {
-            newList.push(poly)
-          }
-        }
-        this.polys = newList
-      } else if (cell.type == 'ylop') {
-        this.polyCount -= -cell.size
-        var newList = []
-        for (var ylop of this.ylops) {
-          if (ylop.x != x || ylop.y != y) {
-            newList.push(ylop)
-          }
-        }
-        this.ylops = newList
-      }
-    }
-  }
-
-  // Probably not necessary, good to have though
+  
   getCell(x, y) {
     return (this.cells[x] & (1 << y)) != 0
   }
-}
-
-Region.prototype.toString = function() {
-  var ret = ""
-  for (var row of this.cells) {
-    ret += row.toString()
+  
+  popCell() {
+    this.grid[x] &= ~(1 << y)
+    return this.cells.pop()
   }
-  return ret
+  
+  hash() {
+    return this.grid.join('_');
+  }
 }
 
 // A 2x2 grid is internally a 5x5:
@@ -259,37 +152,36 @@ class Puzzle {
   }
 
   _innerLoop(x, y, region, potentialRegions) {
-    delete potentialRegions[x+'_'+y]
     if (this.getCell(x, y) == true) return
-    region.push({'x':x, 'y':y})
+    region.setCell(x, y)
     this.setCell(x, y, true)
 
-    if (this.getCell(x-2, y) == false) { // Unvisited cell left
-      if (this.getCell(x-1, y) == false) { // Connected
-        this._innerLoop(x-2, y, region, potentialRegions)
+    if (this.getCell(x - 2, y) == false) { // Unvisited cell left
+      if (this.getCell(x - 1, y) == false) { // Connected
+        this._innerLoop(x - 2, y, region, potentialRegions)
       } else { // Disconnected, potential new region
-        potentialRegions[(x-2)+'_'+y] = true
+        potentialRegions.push({'x':x - 2, 'y':y})
       }
     }
-    if (this.getCell(x+2, y) == false) { // Unvisited cell right
-      if (this.getCell(x+1, y) == false) { // Connected
-        this._innerLoop(x+2, y, region, potentialRegions)
+    if (this.getCell(x + 2, y) == false) { // Unvisited cell right
+      if (this.getCell(x + 1, y) == false) { // Connected
+        this._innerLoop(x + 2, y, region, potentialRegions)
       } else { // Disconnected, potential new region
-        potentialRegions[(x+2)+'_'+y] = true
+        potentialRegions.push({'x':x + 2, 'y':y})
       }
     }
-    if (this.getCell(x, y-2) == false) { // Unvisited cell above
-      if (this.getCell(x, y-1) == false) { // Connected
-        this._innerLoop(x, y-2, region, potentialRegions)
+    if (this.getCell(x, y - 2) == false) { // Unvisited cell above
+      if (this.getCell(x, y - 1) == false) { // Connected
+        this._innerLoop(x, y - 2, region, potentialRegions)
       } else { // Disconnected, potential new region
-        potentialRegions[x+'_'+(y-2)] = true
+        potentialRegions.push({'x':x, 'y':y - 2})
       }
     }
-    if (this.getCell(x, y+2) == false) { // Unvisited cell below
-      if (this.getCell(x, y+1) == false) { // Connected
-        this._innerLoop(x, y+2, region, potentialRegions)
+    if (this.getCell(x, y + 2) == false) { // Unvisited cell below
+      if (this.getCell(x, y + 1) == false) { // Connected
+        this._innerLoop(x, y + 2, region, potentialRegions)
       } else { // Disconnected, potential new region
-        potentialRegions[x+'_'+(y+2)] = true
+        potentialRegions.push({'x':x, 'y':y + 2})
       }
     }
   }
@@ -302,14 +194,12 @@ class Puzzle {
         this.grid[x][y] = false
       }
     }
-    var potentialRegions = {'1_1': true}
+    var potentialRegions = [{'x':1, 'y':1}]
     var regions = []
-    while (Object.keys(potentialRegions).length > 0) {
-      var pos = Object.keys(potentialRegions)[0]
-      var x = parseInt(pos.split('_')[0])
-      var y = parseInt(pos.split('_')[1])
-      var region = []
-      this._innerLoop(x, y, region, potentialRegions)
+    while (potentialRegions.length > 0) {
+      var pos = potentialRegions.pop()
+      var region = new Region(this.grid.length)
+      this._innerLoop(pos.x, pos.y, region, potentialRegions)
       regions.push(region)
     }
     this.grid = savedGrid
