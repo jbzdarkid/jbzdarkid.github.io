@@ -156,8 +156,7 @@ class Puzzle {
     this.setCell(x, y, true)
 
     var i = x
-    while(true) {
-      if (this.getCell(i - 2, y) != false) break
+    while(this.getCell(i - 2, y) == false) {
       if (this.getCell(i - 1, y) == true) {
         potentialRegions.push({'x':i - 2, y})
         break
@@ -168,8 +167,7 @@ class Puzzle {
     }
     
     var j = x
-    while(true) {
-      if (this.getCell(j + 2, y) != false) break
+    while(this.getCell(j + 2, y) == false) {
       if (this.getCell(j + 1, y) == true) {
         potentialRegions.push({'x':j + 2, y})
         break
@@ -197,6 +195,40 @@ class Puzzle {
       }
     }
   }
+  /*
+  _innerLoop(x, y, region, potentialRegions) {
+    region.setCell(x, y)
+    this.setCell(x, y, true)
+
+    if (this.getCell(x, y - 2) == false) { // Unvisited cell left
+      if (this.getCell(x, y - 1) == false) { // Connected
+        this._innerLoop(x, y - 2, region, potentialRegions)
+      } else { // Disconnected, potential new region
+        potentialRegions.push({'x':x, 'y':y - 2})
+      }
+    }
+    if (this.getCell(x, y + 2) == false) { // Unvisited cell right
+      if (this.getCell(x, y + 1) == false) { // Connected
+        this._innerLoop(x, y + 2, region, potentialRegions)
+      } else { // Disconnected, potential new region
+        potentialRegions.push({'x':x, 'y':y + 2})
+      }
+    }
+    if (this.getCell(x - 2, y) == false) { // Unvisited cell above
+      if (this.getCell(x - 1, y) == false) { // Connected
+        this._innerLoop(x - 2, y, region, potentialRegions)
+      } else { // Disconnected, potential new region
+        potentialRegions.push({'x':x - 2, 'y':y})
+      }
+    }
+    if (this.getCell(x + 2, y) == false) { // Unvisited cell below
+      if (this.getCell(x + 1, y) == false) { // Connected
+        this._innerLoop(x + 2, y, region, potentialRegions)
+      } else { // Disconnected, potential new region
+        potentialRegions.push({'x':x + 2, 'y':y})
+      }
+    }
+  }*/
 
   getRegions() {
     var savedGrid = this.copyGrid()
