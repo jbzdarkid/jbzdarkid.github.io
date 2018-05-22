@@ -52,7 +52,7 @@ function isValid(puzzle) {
     
     if (!regionValid) {
       // console.log('Region', region, 'unsolvable')
-      return false // Since the endpoint is filled, regions can't be improved
+      return false
     }
   }
   // All checks passed
@@ -109,6 +109,49 @@ function _regionCheckNegations(puzzle, region) {
   // console.log('Unable to find valid negation, but negation symbols exist')
   return false
 }
+
+// Returns all the different ways to negate elements.
+function _combinations(puzzle, region, regionStart=0) {
+  // Find the first negation element (may be part of cells already considered)
+  var nega = undefined
+  for (var i=0; i<region.cells.length; i++) {
+    var pos = region.cells[i]
+    var cell = puzzle.getCell(pos.x, pos.y)
+    if (cell == false) continue
+    if (cell.type == 'nega') {
+      nega = {'x':pos.x, 'y':pos.y, 'cell':cell}
+      puzzle.setCell(nega.x, nega.y, false)
+      break
+    }
+  }
+  if (nega == undefined) {
+    // No more negation elements -> No ways to combine negation elements
+    return [[]]
+  }
+
+  var combinations = []
+  // All elements before regionStart have been considered, so don't try negating them again.
+  for (var i=regionStart; i<region.cells.length; i++) {
+    var pos = region.cells[i]
+    var cell = puzzle.getCell(pos.x, pos.y)
+    if (cell == false) continue
+    puzzle.setCell(pos.x, pos.y, false)
+    // Find all combinations of later items
+    for (var comb of _combinations(puzzle, region, i+1)) {
+      // Combine this negation with each later combination
+      combinations.push([{
+        'source':{'x':nega.x, 'y':nega.y, 'cell':nega.cell},
+        'target':{'x':pos.x, 'y':pos.y, 'cell':cell}
+      }].concat(comb))
+    }
+    // Restore the negated element
+    puzzle.setCell(pos.x, pos.y, cell)
+  }
+  // Restore the negation symbol
+  puzzle.setCell(nega.x, nega.y, nega.cell)
+  return combinations
+}
+
 // Checks if a region (series of cells) is valid.
 // Since the path must be complete at this point, returns only true or false
 function _regionCheck(puzzle, region) {
@@ -202,57 +245,12 @@ function _regionCheck(puzzle, region) {
     for (var cell of region.cells) {
       puzzle.setCell(cell.x, cell.y, true)
     }
-    if (!_polyFit(polys, ylops, puzzle.grid)) {
-      // console.log('Region does not match polyomino shapes', polys, ylops)
-      puzzle.grid = savedGrid
-      return false
-    }
+    var polyFits = _polyFit(polys, ylops, puzzle.grid)
     puzzle.grid = savedGrid
+    return polyFits
   }
   // console.info('Region', region, 'is valid')
   return true
-}
-
-// Returns all the different ways to negate elements.
-function _combinations(puzzle, region, regionStart=0) {
-  // Find the first negation element (may be part of cells already considered)
-  var nega = undefined
-  for (var i=0; i<region.cells.length; i++) {
-    var pos = region.cells[i]
-    var cell = puzzle.getCell(pos.x, pos.y)
-    if (cell == false) continue
-    if (cell.type == 'nega') {
-      nega = {'x':pos.x, 'y':pos.y, 'cell':cell}
-      puzzle.setCell(nega.x, nega.y, false)
-      break
-    }
-  }
-  if (nega == undefined) {
-    // No more negation elements -> No ways to combine negation elements
-    return [[]]
-  }
-
-  var combinations = []
-  // All elements before regionStart have been considered, so don't try negating them again.
-  for (var i=regionStart; i<region.cells.length; i++) {
-    var pos = region.cells[i]
-    var cell = puzzle.getCell(pos.x, pos.y)
-    if (cell == false) continue
-    puzzle.setCell(pos.x, pos.y, false)
-    // Find all combinations of later items
-    for (var comb of _combinations(puzzle, region, i+1)) {
-      // Combine this negation with each later combination
-      combinations.push([{
-        'source':{'x':nega.x, 'y':nega.y, 'cell':nega.cell},
-        'target':{'x':pos.x, 'y':pos.y, 'cell':cell}
-      }].concat(comb))
-    }
-    // Restore the negated element
-    puzzle.setCell(pos.x, pos.y, cell)
-  }
-  // Restore the negation symbol
-  puzzle.setCell(nega.x, nega.y, nega.cell)
-  return combinations
 }
 
 // Returns whether or not a set of polyominos fit into a region.
