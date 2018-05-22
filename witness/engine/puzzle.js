@@ -155,32 +155,45 @@ class Puzzle {
     region.setCell(x, y)
     this.setCell(x, y, true)
 
-    if (this.getCell(x, y - 2) == false) { // Unvisited cell left
-      if (this.getCell(x, y - 1) == false) { // Connected
-        this._innerLoop(x, y - 2, region, potentialRegions)
-      } else { // Disconnected, potential new region
-        potentialRegions.push({'x':x, 'y':y - 2})
+    var i = x
+    while(true) {
+      if (this.getCell(i - 2, y) != false) break
+      if (this.getCell(i - 1, y) == true) {
+        potentialRegions.push({'x':i - 2, y})
+        break
+      }
+      i -= 2
+      region.setCell(i, y)
+      this.setCell(i, y, true)
+    }
+    
+    var j = x
+    while(true) {
+      if (this.getCell(j + 2, y) != false) break
+      if (this.getCell(j + 1, y) == true) {
+        potentialRegions.push({'x':j + 2, y})
+        break
+      }
+      j += 2
+      region.setCell(j, y)
+      this.setCell(j, y, true)
+    }
+    
+    for (var above = i; above <= j; above += 2) {
+      if (this.getCell(above, y - 2) != false) continue
+      if (this.getCell(above, y - 1) == true) {
+        potentialRegions.push({'x':above, 'y':y - 2})
+      } else {
+        this._innerLoop(above, y - 2, region, potentialRegions)
       }
     }
-    if (this.getCell(x, y + 2) == false) { // Unvisited cell right
-      if (this.getCell(x, y + 1) == false) { // Connected
-        this._innerLoop(x, y + 2, region, potentialRegions)
-      } else { // Disconnected, potential new region
-        potentialRegions.push({'x':x, 'y':y + 2})
-      }
-    }
-    if (this.getCell(x - 2, y) == false) { // Unvisited cell above
-      if (this.getCell(x - 1, y) == false) { // Connected
-        this._innerLoop(x - 2, y, region, potentialRegions)
-      } else { // Disconnected, potential new region
-        potentialRegions.push({'x':x - 2, 'y':y})
-      }
-    }
-    if (this.getCell(x + 2, y) == false) { // Unvisited cell below
-      if (this.getCell(x + 1, y) == false) { // Connected
-        this._innerLoop(x + 2, y, region, potentialRegions)
-      } else { // Disconnected, potential new region
-        potentialRegions.push({'x':x + 2, 'y':y})
+    
+    for (var below = i; below <= j; below += 2) {
+      if (this.getCell(below, y + 2) != false) continue
+      if (this.getCell(below, y + 1) == true) {
+        potentialRegions.push({'x':below, 'y':y + 2})
+      } else {
+        this._innerLoop(below, y + 2, region, potentialRegions)
       }
     }
   }
@@ -197,7 +210,7 @@ class Puzzle {
     var regions = []
     while (potentialRegions.length > 0) {
       var pos = potentialRegions.pop()
-      if (this.getCell(pos.x, pos.y) == true) continue
+      if (this.getCell(pos.x, pos.y) != false) continue
       var region = new Region(this.grid.length)
       this._innerLoop(pos.x, pos.y, region, potentialRegions)
       regions.push(region)
