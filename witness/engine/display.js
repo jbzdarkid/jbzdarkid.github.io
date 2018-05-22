@@ -233,13 +233,17 @@ function draw(puzzle, target='puzzle') {
 
   // FIXME: puzzle.end is correct (new syntax), but table references are reversed x/y
   table.rows[puzzle.end.x].cells[puzzle.end.y].style.borderRadius = '0px'
+  var end_color = FOREGROUND
+  if (puzzle.grid[puzzle.end.x][puzzle.end.y]) {
+    end_color = LINE_SUCC
+  }
   if (puzzle.end.y == 0) {
     for (var x=0; x<puzzle.grid.length; x++) {
       var cell = table.rows[x].insertCell(0)
       if (x == puzzle.end.x) {
         cell.className = 'end_left trace'
         cell.id = target+'_'+puzzle.end.x+'_'+(puzzle.end.y-1)
-        cell.style.background = FOREGROUND
+        cell.style.background = end_color
       }
     }
   } else if (puzzle.end.y == puzzle.grid[puzzle.end.x].length-1) {
@@ -248,7 +252,7 @@ function draw(puzzle, target='puzzle') {
       if (x == puzzle.end.x) {
         cell.className = 'end_right trace'
         cell.id = target+'_'+puzzle.end.x+'_'+(puzzle.end.y+1)
-        cell.style.background = FOREGROUND
+        cell.style.background = end_color
       }
     }
   } else if (puzzle.end.x == 0) {
@@ -257,8 +261,8 @@ function draw(puzzle, target='puzzle') {
       var cell = row.insertCell(x)
       if (x == puzzle.end.y) {
         cell.className = 'end_up trace'
-        cell.id =  target+'_'+(puzzle.end.x-1)+'_'+puzzle.end.y
-        cell.style.background = FOREGROUND
+        cell.id = target+'_'+(puzzle.end.x-1)+'_'+puzzle.end.y
+        cell.style.background = end_color
       }
     }
   } else if (puzzle.end.x == puzzle.grid.length-1) {
@@ -267,8 +271,8 @@ function draw(puzzle, target='puzzle') {
       var cell = row.insertCell(x)
       if (x == puzzle.end.y) {
         cell.className = 'end_down trace'
-        cell.id =  target+'_'+(puzzle.end.x+1)+'_'+puzzle.end.y
-        cell.style.background = FOREGROUND
+        cell.id = target+'_'+(puzzle.end.x+1)+'_'+puzzle.end.y
+        cell.style.background = end_color
       }
     }
   }
