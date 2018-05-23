@@ -25,8 +25,9 @@ class Region {
   }
   
   popCell() {
-    this.grid[x] &= ~(1 << y)
-    return this.cells.pop()
+    var cell = this.cells.pop()
+    this.grid[cell.x] &= ~(1 << cell.y)
+    return cell
   }
   
   merge(other) {

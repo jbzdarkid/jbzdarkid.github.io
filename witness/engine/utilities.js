@@ -88,6 +88,13 @@ GREEN = '#58864C'
 BLUE = '#5697A2'
 PURPLE = '#785DAE'
 
+// Bright colors are go
+RED = 'red'
+ORANGE = 'orange'
+GREEN = 'green'
+BLUE = 'blue'
+PURPLE = 'purple'
+
 BACKGROUND = '#000'
 FOREGROUND = '#666'
 LINE_SUCC = '#DDD'

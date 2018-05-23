@@ -158,7 +158,7 @@ function _moveCursor(dx, dy) {
     width /= 2
   }
   // Fraction of movement to redirect in the other direction
-  var deltaModInnerWall = 2
+  var deltaModInnerWall = 3
   var deltaModOuterWall = 3
   // Ratio of movement to be considered turning at an intersection
   var turnMod = 2
