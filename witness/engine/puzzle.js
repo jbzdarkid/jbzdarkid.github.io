@@ -32,6 +32,13 @@ class Region {
   hash() {
     return this.grid.join('_');
   }
+  
+  merge(other) {
+    this.cells = this.cells.concat(other.cells)
+    for (var i=0; i<this.grid.length; i++) {
+      this.grid[i] += other.grid[i]
+    }
+  }
 }
 
 // A 2x2 grid is internally a 5x5:
@@ -151,8 +158,25 @@ class Puzzle {
     */
   }
 
-  /*
   _innerLoop(x, y, region) {
+    region.setCell(x, y)
+    this.setCell(x, y, true)
+
+    if (this.getCell(x, y + 2) == false && this.getCell(x, y + 1) == false) {
+      this._innerLoop(x, y + 2, region)
+    }
+    if (this.getCell(x + 2, y) == false && this.getCell(x + 1, y) == false) {
+      this._innerLoop(x + 2, y, region)
+    }
+    if (this.getCell(x, y - 2) == false && this.getCell(x, y - 1) == false) {
+      this._innerLoop(x, y - 2, region)
+    }
+    if (this.getCell(x - 2, y) == false && this.getCell(x - 1, y) == false) {
+      this._innerLoop(x - 2, y, region)
+    }
+  }
+
+  _innerLoop2(x, y, region) {
     region.setCell(x, y)
     this.setCell(x, y, true)
 
@@ -173,34 +197,66 @@ class Puzzle {
     for (var above = i; above <= j; above += 2) {
       if (this.getCell(above, y - 2) != false) continue
       if (this.getCell(above, y - 1) != true) {
-        this._innerLoop(above, y - 2, region)
+        this._innerLoop2(above, y - 2, region)
       }
     }
     
     for (var below = i; below <= j; below += 2) {
       if (this.getCell(below, y + 2) != false) continue
       if (this.getCell(below, y + 1) != true) {
-        this._innerLoop(below, y + 2, region)
+        this._innerLoop2(below, y + 2, region)
       }
     }
   }
-  */
-  _innerLoop(x, y, region) {
-    region.setCell(x, y)
-    this.setCell(x, y, true)
 
-    if (this.getCell(x, y + 2) == false && this.getCell(x, y + 1) == false) {
-      this._innerLoop(x, y + 2, region)
+  _innerLoop3() {
+    var regions = [new Region(this.grid.length)]
+    var color = 0
+    var regionMap = [[]]
+
+    for (var x = 1; x < this.grid.length; x += 2) {
+      for (var y = 1; y < this.grid[x].length; y += 2) {
+        if (y > 1 && this.getCell(x, y - 1) == false) {
+          color = this.getCell(x, y - 2)
+          if (x > 1 && this.getCell(x - 1, y) == false) {
+            var otherColor = this.getCell(x - 2, y)
+            if (otherColor < color) {
+              regionMap[otherColor].push(color)
+            } else if (color < otherColor) {
+              regionMap[color].push(otherColor)
+            }
+          }
+        } else if (x > 1 && this.getCell(x - 1, y) == false) {
+          color = this.getCell(x - 2, y)
+        } else {
+          color = regions.length
+          regions.push(new Region(this.grid.length))
+          regionMap.push([])
+        }
+        regions[color].setCell(x, y)
+        this.setCell(x, y, color)
+      }
     }
-    if (this.getCell(x + 2, y) == false && this.getCell(x + 1, y) == false) {
-      this._innerLoop(x + 2, y, region)
+
+    for (var i = regionMap.length - 1; i >= 0; i--) {
+      if (regionMap[i] == undefined) continue
+      var toVisit = regionMap[i]
+      while(toVisit.length > 0) {
+        var j = toVisit.pop()
+        if (regionMap[j] == undefined) continue
+        toVisit = toVisit.concat(regionMap[j])
+        regions[i].merge(regions[j])
+      }
     }
-    if (this.getCell(x, y - 2) == false && this.getCell(x, y - 1) == false) {
-      this._innerLoop(x, y - 2, region)
+
+    // Clean the regions list
+    var len = regions.length
+    for (var i=0; i < len; i++) {
+      if (regions[i] != undefined) regions.push(regions[i])
     }
-    if (this.getCell(x - 2, y) == false && this.getCell(x - 1, y) == false) {
-      this._innerLoop(x - 2, y, region)
-    }
+    regions.splice(0, len)
+
+    return regions
   }
 
   getRegions() {
