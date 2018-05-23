@@ -29,10 +29,6 @@ class Region {
     return this.cells.pop()
   }
   
-  hash() {
-    return this.grid.join('_');
-  }
-  
   merge(other) {
     this.cells = this.cells.concat(other.cells)
     for (var i=0; i<this.grid.length; i++) {

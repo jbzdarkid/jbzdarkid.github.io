@@ -23,7 +23,7 @@ function isValid(puzzle) {
   // Check that individual regions are valid
   var regions = puzzle.getRegions()
   for (var region of regions) {
-    var key = region.hash()
+    var key = region.grid.toString()
     var regionValid = puzzle.regionCache[key]
     if (regionValid == undefined) {
       // console.log('Cache miss for region', region, 'key', key)
