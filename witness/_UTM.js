@@ -174,7 +174,7 @@ var tests = [
     grid[7][7] = {'type':'square', 'color':'white'}
     return {'grid':grid, 'start':{'x':8, 'y':8}, 'end':{'x':4, 'y':0}, 'gaps':[{'x':5, 'y':8}]}
   },*/ function() {
-    var puzzle = new Puzzle(4, 4)
+    var puzzle = new Puzzle(4, 7)
     puzzle.grid[1][7] = {'type':'poly','color':'yellow','size':4,'shape':'I','rot':1}
     puzzle.grid[7][5] = {'type':'poly','color':'yellow','size':4,'shape':'J','rot':1}
     return puzzle
@@ -420,7 +420,7 @@ function loadTests() {
       if (puzzle['gaps'] == undefined) {
         puzzle['gaps'] = []
       }
-      solve(puzzle, puzzle.start, solutions)
+      solve(puzzle, puzzle.start.x, puzzle.start.y, solutions)
       console.log('Solved', puzzle)
       var minEdges = 999999
       var minCorners = 999999
@@ -459,7 +459,6 @@ function loadTests() {
             }
           }
         }
-        if (edges == 16) {console.log(solution)}
         if (edges < minEdges || (edges == minEdges && corners < minCorners)) {
           minEdges = edges
           minCorners = corners

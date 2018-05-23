@@ -60,7 +60,7 @@ function loadTests() {
       if (puzzle['gaps'] == undefined) {
         puzzle['gaps'] = []
       }
-      solve(puzzle, puzzle.start, solutions)
+      solve(puzzle, puzzle.start.x, puzzle.start.y, solutions)
       console.log('Solved', puzzle)
       var minEdges = 999999
       var minCorners = 999999

@@ -2,52 +2,52 @@ onmessage = function(e) {
   self.importScripts('puzzle.js', 'validate.js', 'polyominos.js')
   var puzzle = Puzzle.deserialize(e.data)
   var solutions = []
-  solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
+  solve(puzzle, puzzle.start.x, puzzle.start.y, solutions)
   postMessage(solutions)
 }
 
 // Generates a solution via DFS recursive backtracking
-function solve(puzzle, pos, solutions) {
+function solve(puzzle, x, y, solutions) {
   // if (solutions.length > 0) return
-  if (puzzle.isEndpoint(pos.x, pos.y)) {
+  if (puzzle.isEndpoint(x, y)) {
     // Reached the end point, validate solution and tail recurse
-    var temp = puzzle.clone()
-    temp.grid[puzzle.end.x][puzzle.end.y] = true
-    if (isValid(temp)) {
-      solutions.push(temp)
+    puzzle.setCell(x, y, true)
+    if (isValid(puzzle)) {
+      solutions.push(puzzle.clone())
     }
+    puzzle.setCell(x, y, false)
     return
   }
   // Extend path down
-  if (puzzle.getCell(pos.x+2, pos.y) == false) {
-    puzzle.setCell(pos.x++, pos.y, true)
-    puzzle.setCell(pos.x++, pos.y, true)
-    solve(puzzle, pos, solutions)
-    puzzle.setCell(--pos.x, pos.y, false)
-    puzzle.setCell(--pos.x, pos.y, false)
+  if (puzzle.getCell(x+2, y) == false) {
+    puzzle.setCell(x++, y, true)
+    puzzle.setCell(x++, y, true)
+    solve(puzzle, x, y, solutions)
+    puzzle.setCell(--x, y, false)
+    puzzle.setCell(--x, y, false)
   }
   // Extend path right
-  if (puzzle.getCell(pos.x, pos.y+2) == false) {
-    puzzle.setCell(pos.x, pos.y++, true)
-    puzzle.setCell(pos.x, pos.y++, true)
-    solve(puzzle, pos, solutions)
-    puzzle.setCell(pos.x, --pos.y, false)
-    puzzle.setCell(pos.x, --pos.y, false)
+  if (puzzle.getCell(x, y+2) == false) {
+    puzzle.setCell(x, y++, true)
+    puzzle.setCell(x, y++, true)
+    solve(puzzle, x, y, solutions)
+    puzzle.setCell(x, --y, false)
+    puzzle.setCell(x, --y, false)
   }
   // Extend path up
-  if (puzzle.getCell(pos.x-2, pos.y) == false) {
-    puzzle.setCell(pos.x--, pos.y, true)
-    puzzle.setCell(pos.x--, pos.y, true)
-    solve(puzzle, pos, solutions)
-    puzzle.setCell(++pos.x, pos.y, false)
-    puzzle.setCell(++pos.x, pos.y, false)
+  if (puzzle.getCell(x-2, y) == false) {
+    puzzle.setCell(x--, y, true)
+    puzzle.setCell(x--, y, true)
+    solve(puzzle, x, y, solutions)
+    puzzle.setCell(++x, y, false)
+    puzzle.setCell(++x, y, false)
   }
   // Extend path left
-  if (puzzle.getCell(pos.x, pos.y-2) == false) {
-    puzzle.setCell(pos.x, pos.y--, true)
-    puzzle.setCell(pos.x, pos.y--, true)
-    solve(puzzle, pos, solutions)
-    puzzle.setCell(pos.x, ++pos.y, false)
-    puzzle.setCell(pos.x, ++pos.y, false)
+  if (puzzle.getCell(x, y-2) == false) {
+    puzzle.setCell(x, y--, true)
+    puzzle.setCell(x, y--, true)
+    solve(puzzle, x, y, solutions)
+    puzzle.setCell(x, ++y, false)
+    puzzle.setCell(x, ++y, false)
   }
 }

@@ -385,7 +385,7 @@ function validDoor(side) {
       var puzzle = randomLeftDoor()
     else
       var puzzle = randomRightDoor()
-    solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
+    solve(puzzle, puzzle.start.x, puzzle.start.y, solutions)
     console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: ')
     if (solutions.length > 0) {
       break
@@ -400,7 +400,7 @@ function validTriple() {
     solutions = []
     var puzzleSeed = seed
     var puzzle = randomTriple()
-    solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
+    solve(puzzle, puzzle.start.x, puzzle.start.y, solutions)
     console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: ')
     if (solutions.length > 0) {
       break
@@ -415,7 +415,7 @@ function invalidTriple() {
     solutions = []
     var puzzleSeed = seed
     var puzzle = randomTriple()
-    solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
+    solve(puzzle, puzzle.start.x, puzzle.start.y, solutions)
     console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: ')
     if (solutions.length == 0) {
       break
@@ -431,7 +431,7 @@ function validPuzzle(style) {
     solutions = []
     var puzzleSeed = seed
     var puzzle = randomPuzzle(style)
-    solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
+    solve(puzzle, puzzle.start.x, puzzle.start.y, solutions)
     console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: ')
     if (solutions.length < style['difficulty'][0]) {
       console.info('Too Hard')

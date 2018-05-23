@@ -228,7 +228,7 @@ function loadTests() {
       if (puzzle['gaps'] == undefined) {
         puzzle['gaps'] = []
       }
-      solve(puzzle, {'x':puzzle.start.x, 'y':puzzle.start.y}, solutions)
+      solve(puzzle, puzzle.start.x, puzzle.start.y, solutions)
       console.log('Solved', puzzle, 'found', solutions.length, 'solutions')
       console.log('Drawing solution', index % solutions.length+1, 'of', solutions.length)
       draw(solutions[index % solutions.length], 'test'+i)
