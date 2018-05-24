@@ -192,7 +192,7 @@ function draw(puzzle, target='puzzle') {
       }
       // If there's a solution present for the grid, draw it (poorly)
       if (puzzle.grid[x][y] == true) {
-        cell.style.background = LINE_SUCC
+        cell.style.background = LINE_SUCCESS
       }
       // Grid corners are rounded on non-pillar puzzles
       if (!puzzle.pillar) {
@@ -221,7 +221,7 @@ function draw(puzzle, target='puzzle') {
         div.className = 'start trace'
         var start_color = FOREGROUND
         if (puzzle.grid[x][y] == true) {
-          start_color = LINE_SUCC
+          start_color = LINE_SUCCESS
         }
         div.style.background = start_color
 
@@ -249,7 +249,7 @@ function draw(puzzle, target='puzzle') {
   table.rows[puzzle.end.x].cells[puzzle.end.y].style.borderRadius = '0px'
   var end_color = FOREGROUND
   if (puzzle.grid[puzzle.end.x][puzzle.end.y]) {
-    end_color = LINE_SUCC
+    end_color = LINE_SUCCESS
   }
   if (puzzle.end.y == 0) {
     for (var x=0; x<puzzle.grid.length; x++) {

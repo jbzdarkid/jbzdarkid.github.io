@@ -1,20 +1,6 @@
 <html xmlns="http://www.w3.org/2000/xhtml">
   <head>
-    <style>
-      @font-face {
-        font-family: Constantia;
-        src: url('Constantia.ttf');
-      }
-      * {font-family: Constantia}
-      html, body {width: 100%}
-      table {
-        position: relative;
-        top: 10%;
-        margin: auto;
-      }
-    </style>
-    <link rel="stylesheet" type="text/css" href="style1.css" id="stylesheet">
-    <!-- document.getElementById("stylesheet").href = 'style2.css' -->
+    <link rel="stylesheet" type="text/css" href="style.css" id="stylesheet">
     <script type="text/javascript" src="engine/polyominos.js"></script>
     <script type="text/javascript" src="engine/utilities.js"></script>
     <script type="text/javascript" src="engine/puzzle.js"></script>
@@ -26,8 +12,7 @@
     <title>Random tests or something</title>
   </head>
   <body>
-
-    <div style="text-align: center; font-size: 30">Test cases</div>
+    <div style="text-align: center"><label style="font-size: 30">Test cases</label></div>
     <div style="text-align: center;">
       <button id="load" onclick="loadTests()">Load tests</button>
     </div>

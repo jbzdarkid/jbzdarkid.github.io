@@ -1,22 +1,6 @@
 <html xmlns="http://www.w3.org/2000/xhtml">
   <head>
-    <style>
-      .line {fill: #6D4D4A} /* Always at index 0 */
-      @font-face {src: url('Constantia.ttf')}
-      * {
-        font-family: Constantia;
-        font-variant: small-caps;
-        font-weight: bold;
-        font-size: 28px;
-      }
-      table {
-        position: relative;
-        top: 10%;
-        margin: auto;
-      }
-    </style>
-    <link rel="stylesheet" type="text/css" href="style1.css" id="stylesheet">
-    <!-- document.getElementById("stylesheet").href = 'style2.css' -->
+    <link rel="stylesheet" type="text/css" href="style.css" id="stylesheet">
     <script type="text/javascript" src="engine/polyominos.js"></script>
     <script type="text/javascript" src="engine/utilities.js"></script>
     <script type="text/javascript" src="engine/puzzle.js"></script>
@@ -29,7 +13,7 @@
   </head>
   <body>
 
-    <div style="text-align: center; font-size: 72">Random puzzles from The Witness</div>
+    <div style="text-align: center><label style="font-size: 72">Random puzzles from The Witness</label></div>
     <div style="text-align: center;">
       <button disabled id="hint" onclick="showHint()">Show Hint</button>
       <button disabled id="soln" onclick="showSolution()">Show Solution</button>
