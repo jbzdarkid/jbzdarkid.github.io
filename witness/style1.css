@@ -1,8 +1,8 @@
 @keyframes line-succ {
-  from {fill: #FFF;}
-  to {fill: #DDD;}
+  from {fill: #AAA;}
+  to {fill: #FFF;}
 }
 @keyframes line-fail {
-  from {fill: #000;}
-  to {fill: #333;}
+  from {fill: #AAA;}
+  to {fill: #000;}
 }

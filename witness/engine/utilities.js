@@ -95,9 +95,33 @@ GREEN = 'green'
 BLUE = 'blue'
 PURPLE = 'purple'
 
-BACKGROUND = '#000'
-FOREGROUND = '#666'
-LINE_SUCC = '#DDD'
-LINE_FAIL = '#333'
+// Light scheme
+BACKGROUND = '#0A8'
+FOREGROUND = '#344'
+// Dark scheme
+// BACKGROUND = '#272010'
+// FOREGROUND = '#70551A'
+
+LINE_SUCC = '#FFF'
+LINE_FAIL = '#000'
 CURSOR = '#FFF'
+
+
+/*
+Light:
+Background is a light teal 009999
+Foreground is a dark teal 223333
+Stones are White/Black
+Dots are black
+Colored dots are green 99EE99 and orange
+Stars are yellow?
+
+Dark:
+Background is a dark brown 222200
+Foreground is a mid brown 665511
+Dots are Orange
+
+
+
+*/
 

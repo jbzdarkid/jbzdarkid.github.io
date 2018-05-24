@@ -158,6 +158,11 @@ function draw(puzzle, target='puzzle') {
   while (table.rows.length > 0) {
     table.deleteRow(0)
   }
+  table.setAttribute('cellspacing', '0px')
+  table.setAttribute('cellpadding', '0px')
+  table.style.padding = 25
+  table.style.background = BACKGROUND
+  table.style.border = '10px solid black'
 
   for (var x=0; x<puzzle.grid.length; x++) {
     var row = table.insertRow(x)
@@ -258,6 +263,7 @@ function draw(puzzle, target='puzzle') {
         cell.style.width = 24
         cell.id = target+'_'+puzzle.end.x+'_'+(puzzle.end.y-1)
         cell.style.background = end_color
+        table.style.paddingLeft = '10px'
       }
     }
   } else if (puzzle.end.y == puzzle.grid[puzzle.end.x].length-1) {
@@ -272,6 +278,7 @@ function draw(puzzle, target='puzzle') {
         cell.style.width = 24
         cell.id = target+'_'+puzzle.end.x+'_'+(puzzle.end.y+1)
         cell.style.background = end_color
+        table.style.paddingRight = '10px'
       }
     }
   } else if (puzzle.end.x == 0) {
@@ -287,6 +294,7 @@ function draw(puzzle, target='puzzle') {
         cell.style.width = 24
         cell.id = target+'_'+(puzzle.end.x-1)+'_'+puzzle.end.y
         cell.style.background = end_color
+        table.style.paddingTop = '10px'
       }
     }
   } else if (puzzle.end.x == puzzle.grid.length-1) {
@@ -302,6 +310,7 @@ function draw(puzzle, target='puzzle') {
         cell.style.width = 24
         cell.id = target+'_'+(puzzle.end.x+1)+'_'+puzzle.end.y
         cell.style.background = end_color
+        table.style.paddingBottom = '10px'
       }
     }
   }
