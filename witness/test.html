@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/2000/xhtml">
   <head>
     <style>
-      .line {fill: #BBB} /* Always at index 0 */
+      .line {fill: #BBB;}
       @font-face {src: url('Constantia.ttf')}
       * {
         font-family: Constantia;
@@ -52,7 +52,7 @@
           try {
             var solutions = []
             var puzzleData = tests[j]()
-            solve(puzzleData.puzzle, puzzleData.puzzle.start, solutions)
+            solve(puzzleData.puzzle, puzzleData.puzzle.start.x, puzzleData.puzzle.start.y, solutions)
             if (solutions.length != puzzleData.solutions) {
               console.log('Puzzle has', solutions.length, 'solutions, should have', puzzleData.solutions)
               console.log(solutions)

@@ -207,10 +207,19 @@ function draw(puzzle, target='puzzle') {
         var div = document.createElement('div')
         div.onclick = function() {trace(this, puzzle)}
         div.id = cell.id
+        div.style.position = 'absolute'
+        div.style.top = -12
+        div.style.left = -12
+        div.style.height = 48
+        div.style.width = 48
+        div.style.borderRadius = '24px'
         div.className = 'start trace'
+        var start_color = FOREGROUND
         if (puzzle.grid[x][y] == true) {
-          div.style.background = LINE_SUCC
+          start_color = LINE_SUCC
         }
+        div.style.background = start_color
+
         cell.style.position = 'relative'
         cell.removeAttribute('class')
         cell.id += '_parent'
@@ -242,6 +251,11 @@ function draw(puzzle, target='puzzle') {
       var cell = table.rows[x].insertCell(0)
       if (x == puzzle.end.x) {
         cell.className = 'end_left trace'
+        cell.style.borderTopLeftRadius = '12px'
+        cell.style.borderBottomLeftRadius = '12px'
+        cell.style.position = 'relative'
+        cell.style.height = 24
+        cell.style.width = 24
         cell.id = target+'_'+puzzle.end.x+'_'+(puzzle.end.y-1)
         cell.style.background = end_color
       }
@@ -251,6 +265,11 @@ function draw(puzzle, target='puzzle') {
       var cell = table.rows[x].insertCell(-1)
       if (x == puzzle.end.x) {
         cell.className = 'end_right trace'
+        cell.style.borderTopRightRadius = '12px'
+        cell.style.borderBottomRightRadius = '12px'
+        cell.style.position = 'relative'
+        cell.style.height = 24
+        cell.style.width = 24
         cell.id = target+'_'+puzzle.end.x+'_'+(puzzle.end.y+1)
         cell.style.background = end_color
       }
@@ -261,6 +280,11 @@ function draw(puzzle, target='puzzle') {
       var cell = row.insertCell(x)
       if (x == puzzle.end.y) {
         cell.className = 'end_up trace'
+        cell.style.borderTopLeftRadius = '12px'
+        cell.style.borderTopRightRadius = '12px'
+        cell.style.position = 'relative'
+        cell.style.height = 24
+        cell.style.width = 24
         cell.id = target+'_'+(puzzle.end.x-1)+'_'+puzzle.end.y
         cell.style.background = end_color
       }
@@ -271,6 +295,11 @@ function draw(puzzle, target='puzzle') {
       var cell = row.insertCell(x)
       if (x == puzzle.end.y) {
         cell.className = 'end_down trace'
+        cell.style.borderBottomLeftRadius = '12px'
+        cell.style.borderBottomRightRadius = '12px'
+        cell.style.position = 'relative'
+        cell.style.height = 24
+        cell.style.width = 24
         cell.id = target+'_'+(puzzle.end.x+1)+'_'+puzzle.end.y
         cell.style.background = end_color
       }

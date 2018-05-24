@@ -18,8 +18,6 @@ function _getVisualCell(x, y) {
 
 function trace(elem, puzzle) {
   if (document.pointerLockElement == null) { // Started tracing a solution
-    document.styleSheets[0].deleteRule(0)
-    document.styleSheets[0].insertRule(".line {fill: #999}", 0)
     var parent = elem.parentNode
     var width = parseInt(window.getComputedStyle(parent).width)
     var height = parseInt(window.getComputedStyle(parent).height)
@@ -31,6 +29,13 @@ function trace(elem, puzzle) {
       'subx':width/2,
       'suby':height/2,
     }
+    
+    for (var i = 0; i < document.styleSheets[0].cssRules.length; i++) {
+      var rule = document.styleSheets[0].cssRules[i]
+      if (rule.selectorText == '.' + data['table']) {
+        document.styleSheets[0].deleteRule(i)
+      }
+    }
 
     var table = document.getElementById(data.table)
 
@@ -38,8 +43,9 @@ function trace(elem, puzzle) {
     for (var cell of table.getElementsByTagName('td')) {
       // Remove leftover color from a previous trace
       cell.className = cell.className.split('-')[0]
+      // TODO: Change shown solution to work natively with trace.
       // Remove leftover color from a shown solution
-      cell.style.removeProperty('background') 
+      // cell.style.removeProperty('background') 
     }
     var lines = table.getElementsByClassName('line')
     while (lines.length > 0) {
@@ -67,12 +73,11 @@ function trace(elem, puzzle) {
         }
       }
 
-      document.styleSheets[0].deleteRule(0)
-      if (isValid(data.puzzle)) {
-        document.styleSheets[0].insertRule(".line {animation: 1s 1 forwards line-succ}", 0)
-      } else {
-        document.styleSheets[0].insertRule(".line {animation: 1s 1 forwards line-fail}", 0)
-      }
+      var animation = '.' + data['table'] + ' {animation: 1s 1 forwards '
+      animation += isValid(data.puzzle) ? 'line-succ' : 'line-fail'
+      animation += '}'
+      console.log(document.styleSheets[0])
+      document.styleSheets[0].insertRule(animation)
     }
     document.exitPointerLock()
   }
@@ -366,6 +371,7 @@ function _draw(elem, subx, suby) {
     svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     svg.setAttribute('viewBox', '0 0 '+width+' '+height)
   }
+  // Remove all cursor and line elements
   while (svg.getElementsByClassName('cursor').length > 0) {
     svg.getElementsByClassName('cursor')[0].remove()
   }
@@ -375,6 +381,10 @@ function _draw(elem, subx, suby) {
   var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
   circ.setAttribute('r', cursorSize)
   circ.setAttribute('class', 'cursor')
+  circ.setAttribute('fill', CURSOR)
+  circ.setAttribute('stroke', 'black')
+  circ.setAttribute('stroke-width', '2px')
+  circ.setAttribute('stroke-opacity', '0.4')
   circ.setAttribute('cx', subx)
   circ.setAttribute('cy', suby)
   var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
@@ -382,15 +392,15 @@ function _draw(elem, subx, suby) {
   rect.setAttribute('width', 0)
   rect.setAttribute('rx', 0)
   rect.setAttribute('ry', 0)
-  rect.setAttribute('class', 'line')
+  rect.setAttribute('class', 'line ' + data['table'])
   rect.setAttribute('transform', '')
   var circ2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
   circ2.setAttribute('r', cursorSize)
   circ2.setAttribute('cx', width/2)
   circ2.setAttribute('cy', height/2)
-  circ2.setAttribute('class', 'line')
+  circ2.setAttribute('class', 'line ' + data['table'])
   var rect2 = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-  rect2.setAttribute('class', 'line')
+  rect2.setAttribute('class', 'line ' + data['table'])
 
   var enter_dir = elem.className.split('-')[1]
   var exit_dir = elem.className.split('-')[2]
