@@ -11,8 +11,13 @@
     <script type="text/javascript" src="test.js"></script>
     <title>Random tests or something</title>
   </head>
-  <body>
-
+  <body onload="recolor();">
+    <div style="position:absolute; float:left">
+      <label for="theme">Dark theme:</label>
+      <input style="transform:scale(2)" id="theme" type="checkbox" onchange="localStorage.theme = this.checked; location.reload()">
+      <script>document.getElementById('theme').checked = (localStorage.theme == "true")</script>
+    </label>
+    </div>
     <div style="text-align: center"><label style="font-size: 72">Test Cases</label></div>
     <div style="text-align: center">
       <label for="sens">Mouse Speed 2D</label>
@@ -35,12 +40,12 @@
             var solutions = []
             var puzzleData = tests[j]()
             solve(puzzleData.puzzle, puzzleData.puzzle.start.x, puzzleData.puzzle.start.y, solutions)
+            draw(puzzleData.puzzle, 'test'+j)
             if (solutions.length != puzzleData.solutions) {
               console.log('Puzzle has', solutions.length, 'solutions, should have', puzzleData.solutions)
               console.log(solutions)
-              document.getElementById('test'+j).parentElement.bgColor = 'red'
+              document.getElementById('test'+j).style.borderColor = 'red'
             }
-            draw(puzzleData.puzzle, 'test'+j)
           } catch (e) {
             document.getElementById('test'+j).innerHTML = e.stack || 'ERROR: '+e
           }

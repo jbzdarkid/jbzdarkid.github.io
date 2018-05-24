@@ -162,7 +162,7 @@ function draw(puzzle, target='puzzle') {
   table.setAttribute('cellpadding', '0px')
   table.style.padding = 25
   table.style.background = BACKGROUND
-  table.style.border = '10px solid black'
+  table.style.border = BORDER
 
   for (var x=0; x<puzzle.grid.length; x++) {
     var row = table.insertRow(x)

@@ -81,13 +81,6 @@ var styles = {
   },
 }
 
-// From the random panels
-RED = '#923A5E'
-ORANGE = '#C5714F'
-GREEN = '#58864C'
-BLUE = '#5697A2'
-PURPLE = '#785DAE'
-
 // Bright colors are go
 RED = 'red'
 ORANGE = 'orange'
@@ -95,17 +88,32 @@ GREEN = 'green'
 BLUE = 'blue'
 PURPLE = 'purple'
 
-// Light scheme
-BACKGROUND = '#0A8'
-FOREGROUND = '#344'
-// Dark scheme
-// BACKGROUND = '#272010'
-// FOREGROUND = '#70551A'
+if (localStorage.theme == "true") { // Dark scheme
+  BACKGROUND = '#221' // '#000'
+  FOREGROUND = '#751' // '#873'
+  BORDER = '10px solid #666'
+  LINE_DEFAULT = '#888' // '#FD8'
+  LINE_SUCCESS = '#BBB' // '#FA0'
+  LINE_FAIL = '#000'
+  CURSOR = '#FFF'
+  recolor = function() {
+    document.body.style.background = '#000'
+    document.body.style.color = '#CCC'
+  }
+} else { // Light scheme
+  BACKGROUND = '#0A8'
+  FOREGROUND = '#344'
+  BORDER = '10px solid #000'
+  LINE_DEFAULT = '#AAA'
+  LINE_SUCCESS = '#FFF'
+  LINE_FAIL = '#000'
+  CURSOR = '#FFF'
+  recolor = function() {
+    document.body.style.background = '#FFF'
+    document.body.style.color = '#000'
+  }
+}
 
-LINE_DEFAULT = '#AAA'
-LINE_SUCCESS = '#FFF'
-LINE_FAIL = '#000'
-CURSOR = '#FFF'
 
 var animations = '@keyframes line-success { \
   from {fill: ' + LINE_DEFAULT + ';} \
