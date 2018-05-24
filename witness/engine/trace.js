@@ -21,6 +21,13 @@ function trace(elem, puzzle) {
     var parent = elem.parentNode
     var width = parseInt(window.getComputedStyle(parent).width)
     var height = parseInt(window.getComputedStyle(parent).height)
+    var animations = undefined
+    for (var styleSheet of document.styleSheets) {
+      if (styleSheet.title == 'animations') {
+        animations = styleSheet
+        break
+      }
+    }
     data = {
       'table':parent.id.split('_')[0],
       'x':parseInt(parent.id.split('_')[1]),
@@ -28,12 +35,13 @@ function trace(elem, puzzle) {
       'puzzle':puzzle.clone(),
       'subx':width/2,
       'suby':height/2,
+      'animations':animations,
     }
     
-    for (var i = 0; i < document.styleSheets[0].cssRules.length; i++) {
-      var rule = document.styleSheets[0].cssRules[i]
-      if (rule.selectorText == '.' + data['table']) {
-        document.styleSheets[0].deleteRule(i)
+    for (var i = 0; i < data.animations.cssRules.length; i++) {
+      var rule = data.animations.cssRules[i]
+      if (rule.selectorText == '.' + data.table) {
+        data.animations.deleteRule(i)
       }
     }
 
@@ -73,11 +81,10 @@ function trace(elem, puzzle) {
         }
       }
 
-      var animation = '.' + data['table'] + ' {animation: 1s 1 forwards '
-      animation += isValid(data.puzzle) ? 'line-succ' : 'line-fail'
+      var animation = '.' + data.table + ' {animation: 1s 1 forwards '
+      animation += isValid(data.puzzle) ? 'line-success' : 'line-fail'
       animation += '}'
-      console.log(document.styleSheets[0])
-      document.styleSheets[0].insertRule(animation)
+      data.animations.insertRule(animation)
     }
     document.exitPointerLock()
   }
@@ -392,15 +399,18 @@ function _draw(elem, subx, suby) {
   rect.setAttribute('width', 0)
   rect.setAttribute('rx', 0)
   rect.setAttribute('ry', 0)
-  rect.setAttribute('class', 'line ' + data['table'])
+  rect.setAttribute('class', 'line ' + data.table)
+  rect.setAttribute('fill', LINE_DEFAULT)
   rect.setAttribute('transform', '')
   var circ2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
   circ2.setAttribute('r', cursorSize)
   circ2.setAttribute('cx', width/2)
   circ2.setAttribute('cy', height/2)
-  circ2.setAttribute('class', 'line ' + data['table'])
+  circ2.setAttribute('class', 'line ' + data.table)
+  circ2.setAttribute('fill', LINE_DEFAULT)
   var rect2 = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-  rect2.setAttribute('class', 'line ' + data['table'])
+  rect2.setAttribute('class', 'line ' + data.table)
+  rect2.setAttribute('fill', LINE_DEFAULT)
 
   var enter_dir = elem.className.split('-')[1]
   var exit_dir = elem.className.split('-')[2]

@@ -102,10 +102,24 @@ FOREGROUND = '#344'
 // BACKGROUND = '#272010'
 // FOREGROUND = '#70551A'
 
-LINE_SUCC = '#FFF'
+LINE_DEFAULT = '#AAA'
+LINE_SUCCESS = '#FFF'
 LINE_FAIL = '#000'
 CURSOR = '#FFF'
 
+var animations = '@keyframes line-success { \
+  from {fill: ' + LINE_DEFAULT + ';} \
+  to {fill: ' + LINE_SUCCESS + ';} \
+} \
+@keyframes line-fail { \
+  from {fill: ' + LINE_DEFAULT + ';} \
+  to {fill: ' + LINE_FAIL + ';} \
+}';
+var style = document.createElement('style')
+style.type = 'text/css'
+style.title = 'animations'
+style.appendChild(document.createTextNode(animations))
+document.head.appendChild(style)
 
 /*
 Light:

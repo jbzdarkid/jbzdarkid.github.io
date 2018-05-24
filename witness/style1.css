@@ -1,8 +1,10 @@
-@keyframes line-succ {
-  from {fill: #AAA;}
-  to {fill: #FFF;}
+@font-face {src: url('Constantia.ttf')}
+label, button {
+  font-family: Constantia;
+  font-variant: small-caps;
+  font-weight: bold;
+  font-size: 28px;
 }
-@keyframes line-fail {
-  from {fill: #AAA;}
-  to {fill: #000;}
+table {
+  margin:auto;
 }
