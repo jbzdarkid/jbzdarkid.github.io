@@ -9,7 +9,7 @@ function isValid(puzzle) {
   for (var dot of puzzle.dots) {
     if (!puzzle.getCell(dot.x, dot.y)) {
       // console.log('Dot at grid['+dot.x+']['+dot.y+'] is not covered')
-      return false
+      puzzle.valid = false
     }
   }
   // Check that all gaps are not covered
@@ -17,7 +17,7 @@ function isValid(puzzle) {
   for (var gap of puzzle.gaps) {
     if (puzzle.getCell(gap.x, gap.y)) {
       // console.log('Gap at grid['+gap.x+']['+gap.y+'] is covered')
-      return false
+      puzzle.valid = false
     }
   }
   // Check that individual regions are valid
