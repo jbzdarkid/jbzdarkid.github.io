@@ -81,8 +81,10 @@ function trace(elem, puzzle) {
         }
       }
 
+      validate(data.puzzle)
+
       var animation = '.' + data.table + ' {animation: 1s 1 forwards '
-      animation += isValid(data.puzzle) ? 'line-success' : 'line-fail'
+      animation += data.puzzle.valid ? 'line-success' : 'line-fail'
       animation += '}'
       data.animations.insertRule(animation)
     }

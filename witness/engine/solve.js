@@ -12,8 +12,7 @@ function solve(puzzle, x, y, solutions) {
   if (puzzle.isEndpoint(x, y)) {
     // Reached the end point, validate solution and tail recurse
     puzzle.setCell(x, y, true)
-    puzzle.valid = true
-    isValid(puzzle)
+    validate(puzzle)
     if (puzzle.valid) {
       solutions.push(puzzle.clone())
     }

@@ -1,7 +1,11 @@
 // Puzzle = {grid, start, end, dots, gaps}
-// Determines if the current grid state is solvable.
-function isValid(puzzle) {
+// Determines if the current grid state is solvable. Modifies the puzzle element with:
+// valid: Whether or not the puzzle is valid
+// negations: Negation symbols and their targets (for the purpose of darkening)
+// invalids: Symbols which are invalid (for the purpose of flashing)
+function validate(puzzle) {
   // console.log('Validating', puzzle)
+  puzzle.valid = true // Assume valid until we find an invalid element
 
   // Check that all dots are covered
   // FIXME: Check for invalid dot placement?
@@ -24,10 +28,9 @@ function isValid(puzzle) {
   var regions = puzzle.getRegions()
   for (var region of regions) {
     var key = region.grid.toString()
-    region.valid = puzzle.regionCache[key]
-    if (region.valid == undefined) {
+    regionValid = puzzle.regionCache[key]
+    if (regionValid == undefined) {
       // console.log('Cache miss for region', region, 'key', key)
-      region.valid = true
       var hasNega = false
       for (var pos of region.cells) {
         var cell = puzzle.getCell(pos.x, pos.y)
@@ -37,11 +40,11 @@ function isValid(puzzle) {
         }
       }
       if (hasNega) {
-        region.valid = _regionCheckNegations(puzzle, region)
+        regionValid = _regionCheckNegations(puzzle, region)
       } else {
-        region.valid = _regionCheck(puzzle, region)
+        regionValid = _regionCheck(puzzle, region)
       }
-      puzzle.regionCache[key] = region.valid
+      puzzle.regionCache[key] = regionValid
       // FIXME: Can't cache regions with triangles because the edges matter, not just the cells.
       for (var pos of region.cells) {
         if (puzzle.getCell(pos.x, pos.y).type == 'triangle') {
@@ -51,7 +54,7 @@ function isValid(puzzle) {
       }
     }
     
-    puzzle.valid &= region.valid
+    puzzle.valid &= regionValid
   }
 }
 
