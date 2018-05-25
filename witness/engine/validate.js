@@ -50,14 +50,8 @@ function isValid(puzzle) {
       }
     }
     
-    if (!regionValid) {
-      // console.log('Region', region, 'unsolvable')
-      return false
-    }
+    puzzle.valid &= regionValid
   }
-  // All checks passed
-  // console.info('Puzzle', puzzle, 'is valid')
-  return true
 }
 
 function _regionCheckNegations(puzzle, region) {
