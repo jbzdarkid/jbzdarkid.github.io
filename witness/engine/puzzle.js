@@ -272,20 +272,17 @@ class Puzzle {
       regions.push(region)
       
       // Find the next open cell
-      var x = pos.x
-      var y = pos.y
-      while (this.getCell(x, y) != false) {
-        if (y < this.grid.length) {
-          y += 2
-        } else if (x < this.grid.length) {
-          x += 2
-          y = 1
-        } else {
+      while (this.getCell(pos.x, pos.y) != false) {
+        pos.x += 2
+        if (pos.x >= this.grid.length) {
+          pos.y += 2
+          pos.x = 1
+        }
+        if (pos.y >= this.grid[pos.x].length) {
           this.grid = savedGrid
           return regions
         }
       }
-      pos = {'x':x, 'y':y}
     }
   }
 }

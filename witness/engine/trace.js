@@ -51,6 +51,9 @@ function trace(elem, puzzle) {
     for (var cell of table.getElementsByTagName('td')) {
       // Remove leftover color from a previous trace
       cell.className = cell.className.split('-')[0]
+      if (cell.children.length == 1) {
+        cell.children[0].style.opacity = 1.0
+      }
       // TODO: Change shown solution to work natively with trace.
       // Remove leftover color from a shown solution
       // cell.style.removeProperty('background') 
@@ -82,6 +85,10 @@ function trace(elem, puzzle) {
       }
 
       validate(data.puzzle)
+      for (var pos of data.puzzle.negations) {
+        var cell = document.getElementById(data.table+'_'+pos.x+'_'+pos.y)
+        cell.children[0].style.opacity = 0.5
+      }
 
       var animation = '.' + data.table + ' {animation: 1s 1 forwards '
       animation += data.puzzle.valid ? 'line-success' : 'line-fail'

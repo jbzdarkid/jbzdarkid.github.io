@@ -81,6 +81,8 @@ var styles = {
   },
 }
 
+window.DISABLE_CACHE = false
+
 // Bright colors are go
 RED = 'red'
 ORANGE = 'orange'

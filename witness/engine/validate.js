@@ -6,6 +6,7 @@
 function validate(puzzle) {
   // console.log('Validating', puzzle)
   puzzle.valid = true // Assume valid until we find an invalid element
+  puzzle.negations = []
 
   // Check that all dots are covered
   // FIXME: Check for invalid dot placement?
@@ -28,8 +29,8 @@ function validate(puzzle) {
   var regions = puzzle.getRegions()
   for (var region of regions) {
     var key = region.grid.toString()
-    regionValid = puzzle.regionCache[key]
-    if (regionValid == undefined) {
+    var regionValid = puzzle.regionCache[key]
+    if (regionValid == undefined || window.DISABLE_CACHE) {
       // console.log('Cache miss for region', region, 'key', key)
       var hasNega = false
       for (var pos of region.cells) {
@@ -40,7 +41,9 @@ function validate(puzzle) {
         }
       }
       if (hasNega) {
-        regionValid = _regionCheckNegations(puzzle, region)
+        var data = _regionCheckNegations(puzzle, region)
+        puzzle.negations = puzzle.negations.concat(data.negations)
+        regionValid = data.valid
       } else {
         regionValid = _regionCheck(puzzle, region)
       }
@@ -53,7 +56,6 @@ function validate(puzzle) {
         }
       }
     }
-    
     puzzle.valid &= regionValid
   }
 }
@@ -89,7 +91,7 @@ function _regionCheckNegations(puzzle, region) {
       negation.source.cell.type = 'nega'
       puzzle.setCell(negation.source.x, negation.source.y, false)
       
-      if (regionCheck) {
+      if (regionCheck.valid) {
         // console.log('Region still valid with element removed, so the combination is invalid')
         combinationIsValid = false
         break
@@ -101,11 +103,23 @@ function _regionCheckNegations(puzzle, region) {
     }
     if (combinationIsValid) {
       // console.log('Valid combination: ', combination)
-      return true
+      var cells = []
+      for (var negation of combination) {
+        cells.push(negation.source)
+        cells.push(negation.target)
+      }
+      return {'valid':true, 'negations':cells}
     }
   }
   // console.log('Unable to find valid negation, but negation symbols exist')
-  return false
+  var cells = []
+  if (combinations.length > 0) {
+    for (var negation of combinations[0]) { // TODO: Random negation?
+      cells.push(negation.source)
+      cells.push(negation.target)
+    }
+  }
+  return {'valid':false, 'negations':cells}
 }
 
 // Returns all the different ways to negate elements.
