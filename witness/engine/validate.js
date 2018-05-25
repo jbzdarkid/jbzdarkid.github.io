@@ -24,9 +24,10 @@ function isValid(puzzle) {
   var regions = puzzle.getRegions()
   for (var region of regions) {
     var key = region.grid.toString()
-    var regionValid = puzzle.regionCache[key]
-    if (regionValid == undefined) {
+    region.valid = puzzle.regionCache[key]
+    if (region.valid == undefined) {
       // console.log('Cache miss for region', region, 'key', key)
+      region.valid = true
       var hasNega = false
       for (var pos of region.cells) {
         var cell = puzzle.getCell(pos.x, pos.y)
@@ -36,11 +37,11 @@ function isValid(puzzle) {
         }
       }
       if (hasNega) {
-        regionValid = _regionCheckNegations(puzzle, region)
+        region.valid = _regionCheckNegations(puzzle, region)
       } else {
-        regionValid = _regionCheck(puzzle, region)
+        region.valid = _regionCheck(puzzle, region)
       }
-      puzzle.regionCache[key] = regionValid
+      puzzle.regionCache[key] = region.valid
       // FIXME: Can't cache regions with triangles because the edges matter, not just the cells.
       for (var pos of region.cells) {
         if (puzzle.getCell(pos.x, pos.y).type == 'triangle') {
@@ -50,7 +51,7 @@ function isValid(puzzle) {
       }
     }
     
-    puzzle.valid &= regionValid
+    puzzle.valid &= region.valid
   }
 }
 
