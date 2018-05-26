@@ -13,10 +13,10 @@
   </head>
   <body>
 
-    <div style="text-align: center><label style="font-size: 72">Random puzzles from The Witness</label></div>
+    <div style="text-align: center"><label style="font-size: 72">Random puzzles from The Witness</label></div>
     <div style="text-align: center;">
-      <button disabled id="hint" onclick="showHint()">Show Hint</button>
-      <button disabled id="soln" onclick="showSolution()">Show Solution</button>
+      <button id="hint" onclick="showHint()">Show Hint</button>
+      <button id="soln" onclick="showSolution()">Show Solution</button>
     </div>
     <div style="text-align: center">
       <label for="sens">Mouse Speed 2D</label>
@@ -26,64 +26,6 @@
 
     <table id="puzzle" cellspacing="0" cellpadding="0"></table>
     <script>
-      // Initialize our worker (multithreaded processing class) with defaults
-      // to allow for cases where multithreading isn't enabled.
-      var worker = {
-        'postMessage': function(msg) {window.onmessage({'data':msg})}
-      }
-      if (window.Worker) {
-        try {
-          worker = new Worker('engine/solve.js');
-        } catch (e) {}
-      }
-      // Callback from the worker, after validating a puzzle it provides
-      // a solution. We use this to create showHint() and showSolution()
-      worker.onmessage = function(e) {
-        var solutions = e.data
-        if (solutions == undefined || solutions.length == 0) {
-          console.log('%cWarning: This puzzle has no solution. Solve at your own risk!', 'color:red; font-size: large')
-          return
-        }
-        var solution = solutions[_randint(solutions.length)]
-        var hints = []
-        for (var x=0; x<solution.grid.length; x++) {
-          for (var y=0; y<solution.grid[x].length; y++) {
-            if (x%2 + y%2 == 1 && !solution.grid[x][y]) {
-              hints.push({'x':x, 'y':y})
-            }
-          }
-        }
-        window['showHint'] = function() {
-          if (hints.length <= 0) return
-          var goodHints = []
-          var badHints = []
-          for (var hint of hints) {
-            // FIXME: This is terrible encapsulation
-            var elem = document.getElementById("puzzle_"+hint.x+"_"+hint.y)
-            if (!elem.className.endsWith("trace")) {
-              // User's solution will be broken by this hint
-              goodHints.push(hint)
-            } else {
-              badHints.push(hint)
-            }
-          }
-          if (goodHints.length > 0) {
-            var hint = goodHints.splice(_randint(goodHints.length), 1)[0]
-          } else {
-            var hint = badHints.splice(_randint(badHints.length), 1)[0]
-          }
-          puzzle.gaps.push(hint)
-          solution.gaps.push(hint)
-          draw(puzzle)
-          hints = badHints.concat(goodHints)
-        }
-        window['showSolution'] = function() {
-          draw(solution)
-        }
-        document.getElementById('hint').disabled = false
-        document.getElementById('soln').disabled = false
-      }
-
       // Main startup code, detect style + puzzle id, generate, validate, and display puzzle.
       if ('style' in urlParams) {
         if (urlParams['style'] in styles) {
@@ -103,20 +45,28 @@
         var style = styles[day]
         location.search = 'style='+day
       }
+      var puzzle, solution
       if (location.hash == "") {
-        // If no seed is provided, try to find a valid puzzle with given style
+        // If no seed is provided, choose a random one
         setSeed(Math.floor(Math.random() * (1 << 30)))
-        var puzzleData = validPuzzle(style)
-        draw(puzzleData['puzzle'])
-        worker.onmessage({'data':puzzleData['solutions']})
-        location.hash = puzzleData['seed']
-      } else {
-        // A seed was provided, so draw the puzzle then validate it async
+      } else { // A seed was provided
         setSeed(parseInt(location.hash.substring(1)))
-        var puzzle = randomPuzzle(style)
-        draw(puzzle)
-        worker.postMessage(puzzle.serialize())
       }
+      var puzzleData = validPuzzle(style)
+      draw(puzzleData.puzzle)
+      location.hash = puzzleData.seed
+      var solution = puzzleData.solutions[_randint(puzzleData.solutions.length)]
+      var hints = solution.hints()
+
+      window.showHint = function() {
+        if (hints.length <= 0) return
+        hints = puzzleData.puzzle.showHint(hints)
+        draw(puzzleData.puzzle)
+      }
+      window.showSolution = function() {
+        draw(solution)
+      }
+
     </script>
   </body>
 </html>

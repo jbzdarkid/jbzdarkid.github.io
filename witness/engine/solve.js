@@ -1,11 +1,3 @@
-onmessage = function(e) {
-  self.importScripts('puzzle.js', 'validate.js', 'polyominos.js')
-  var puzzle = Puzzle.deserialize(e.data)
-  var solutions = []
-  solve(puzzle, puzzle.start.x, puzzle.start.y, solutions)
-  postMessage(solutions)
-}
-
 // Generates a solution via DFS recursive backtracking
 function solve(puzzle, x, y, solutions) {
   // if (solutions.length > 0) return
