@@ -81,11 +81,28 @@ var styles = {
   },
 }
 
+var tracks = {
+  'start': new Audio('audio/panel_start_tracing.ogg'),
+  'success': new Audio('audio/panel_success.ogg'),
+  'fail': new Audio('audio/panel_failure.ogg'),
+  'abort': new Audio('audio/panel_abort_tracing.ogg')
+}
+
+function PLAY_SOUND(track) {
+  console.log('Playing sound:', track)
+  for (var audio of Object.values(tracks)) {
+    audio.pause()
+    audio.currentTime = 0
+  }
+  tracks[track].volume = 0.1
+  tracks[track].play()
+}
+
 window.DISABLE_CACHE = false
 
 // Bright colors are go
-RED = 'red'
-ORANGE = 'orange'
+RED = 'black'
+ORANGE = 'white'
 GREEN = 'green'
 BLUE = 'blue'
 PURPLE = 'purple'

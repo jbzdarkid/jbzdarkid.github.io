@@ -1,6 +1,7 @@
 var cursorSize = 12
 var data
 
+
 // FIXME: likely bad encapsulation
 function _getVisualCell(x, y) {
   if (y < 0) {
@@ -18,6 +19,7 @@ function _getVisualCell(x, y) {
 
 function trace(elem, puzzle) {
   if (document.pointerLockElement == null) { // Started tracing a solution
+    PLAY_SOUND('start')
     var parent = elem.parentNode
     var width = parseInt(window.getComputedStyle(parent).width)
     var height = parseInt(window.getComputedStyle(parent).height)
@@ -91,9 +93,17 @@ function trace(elem, puzzle) {
       }
 
       var animation = '.' + data.table + ' {animation: 1s 1 forwards '
-      animation += data.puzzle.valid ? 'line-success' : 'line-fail'
+      if (data.puzzle.valid) {
+        PLAY_SOUND('success')
+        animation += 'line-success'
+      } else {
+        PLAY_SOUND('fail')
+        animation += 'line-fail'
+      }
       animation += '}'
       data.animations.insertRule(animation)
+    } else {
+      PLAY_SOUND('abort')
     }
     document.exitPointerLock()
   }
