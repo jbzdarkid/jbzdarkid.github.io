@@ -155,6 +155,42 @@ class Puzzle {
     */
   }
 
+  // Called from a solution
+  hints() {
+    var hints = []
+    for (var x=0; x<this.grid.length; x++) {
+      for (var y=0; y<this.grid[x].length; y++) {
+        if (x%2 + y%2 == 1 && !this.getCell(x, y)) {
+          hints.push({'x':x, 'y':y})
+        }
+      }
+    }
+    return hints
+  }
+  
+  // hints are passed from a solution
+  // Returns updated list of hints, less the one that was shown.
+  showHint(hints) {
+    var goodHints = []
+    var badHints = []
+    for (var hint of hints) {
+      var elem = document.getElementById("puzzle_"+hint.x+"_"+hint.y)
+      if (!elem.className.endsWith("trace")) {
+        // Solution will be broken by this hint
+        goodHints.push(hint)
+      } else {
+        badHints.push(hint)
+      }
+    }
+    if (goodHints.length > 0) {
+      var hint = goodHints.splice(_randint(goodHints.length), 1)[0]
+    } else {
+      var hint = badHints.splice(_randint(badHints.length), 1)[0]
+    }
+    this.gaps.push(hint)
+    return badHints.concat(goodHints)
+  }
+
   _innerLoop(x, y, region) {
     region.setCell(x, y)
     this.setCell(x, y, true)
