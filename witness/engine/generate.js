@@ -80,15 +80,15 @@ function randomPuzzle(style) {
       } else if (type == 'gaps') {
         puzzle.gaps.push(edges.splice(_randint(edges.length), 1)[0])
       } else if (type == 'negations') {
-        var color = [PURPLE, RED, ORANGE, GREEN, BLUE][_randint(style['colors'])]
+        var color = [WHITE, BLACK, RED, BLUE][_randint(style['colors'])]
         var pos = cells.splice(_randint(cells.length), 1)[0]
         puzzle.grid[pos.x][pos.y] = {'type':'nega', 'color':color}
       } else if (type == 'squares') {
-        var color = [RED, ORANGE, GREEN, BLUE, PURPLE][_randint(style['colors'])]
+        var color = [BLACK, RED, BLUE, WHITE][_randint(style['colors'])]
         var pos = cells.splice(_randint(cells.length), 1)[0]
         puzzle.grid[pos.x][pos.y] = {'type':'square', 'color':color}
       } else if (type == 'stars') {
-        var color = [RED, ORANGE, GREEN, BLUE, PURPLE][_randint(style['colors'])]
+        var color = [ORANGE, WHITE, BLACK, RED, BLUE][_randint(style['colors'])]
         var pos = cells.splice(_randint(cells.length), 1)[0]
         puzzle.grid[pos.x][pos.y] = {'type':'star', 'color':color}
         // If the distribution has more stars, place another of the same color
@@ -111,7 +111,7 @@ function randomPuzzle(style) {
         var shape = shapes[_randint(shapes.length)]
         var numRotations = getPolyomino(size, shape)
         var rotation = _randint(numRotations)
-        var color = [ORANGE, GREEN, BLUE, PURPLE, RED][_randint(style['colors'])]
+        var color = [YELLOW, RED, BLUE, WHITE][_randint(style['colors'])]
         var obj = {'color':color, 'size':size, 'shape':shape, 'rot':rotation}
         if (type == 'polyominos') {
           Object.assign(obj, {'type':'poly'})
@@ -122,13 +122,13 @@ function randomPuzzle(style) {
           }
           Object.assign(obj, {'type':'poly', 'rot':'all'})
         } else if (type == 'onimoylops') {
-          Object.assign(obj, {'type':'ylop', 'color':'blue'})
+          Object.assign(obj, {'type':'ylop', 'color':BLUE})
         } else if (type == 'ronimoylops') {
           if (numRotations == 1) {
             i--
             continue
           }
-          Object.assign(obj, {'type':'ylop', 'color':'blue', 'rot':'all'})
+          Object.assign(obj, {'type':'ylop', 'color':BLUE, 'rot':'all'})
         }
         var pos = cells.splice(_randint(cells.length), 1)[0]
         puzzle.grid[pos.x][pos.y] = obj
@@ -187,7 +187,7 @@ function randomLeftDoorPoly() {
             #
       RUUU ##
       */
-      
+
       var shape = ['L', 'M', 'V', 'M', 'W', 'S', 'J', 'L', 'Z', 'W', 'N', 'V', 'N', 'J'][_randint(14)]
     }
   return {'size':size+3, 'shape':shape, 'rot':_randint(4)}
@@ -204,7 +204,7 @@ function randomLeftDoor() {
     // Manhattan distance
     if (Math.abs(star1.x - star2.x) + Math.abs(star1.y - star2.y) < 6)
       continue
-    
+
     var poly1 = {'x':2*_randint(4)+1, 'y':2*_randint(4)+1}
     var poly2 = {'x':2*_randint(4)+1, 'y':2*_randint(4)+1}
     if (poly1.x == star1.x && poly1.y == star1.y) continue
@@ -212,10 +212,10 @@ function randomLeftDoor() {
     if (poly2.x == star1.x && poly2.y == star1.y) continue
     if (poly2.x == star2.x && poly2.y == star2.y) continue
     if (poly2.x == poly1.x && poly2.y == poly1.y) continue
-    
+
     Object.assign(poly1, randomLeftDoorPoly())
     Object.assign(poly2, randomLeftDoorPoly())
-    
+
     for (var i=0; i<8; i++) {
       if (_randint(2) == 0) {
         puzzle.gaps.push({'x':_randint(4)*2+1, 'y':_randint(5)*2})
@@ -223,10 +223,10 @@ function randomLeftDoor() {
         puzzle.gaps.push({'x':_randint(5)*2, 'y':_randint(4)*2+1})
       }
     }
-    
+
     break
   }
-  var colors = [PURPLE, RED, ORANGE, GREEN, BLUE]
+  var colors = [BLACK, RED, BLUE, WHITE]
   var color1 = colors.splice(_randint(colors.length), 1)
   var color2 = colors.splice(_randint(colors.length), 1)
 
@@ -243,7 +243,7 @@ function randomLeftDoor() {
   puzzle.grid[star2.x][star2.y] = star2
   puzzle.grid[poly1.x][poly1.y] = poly1
   puzzle.grid[poly2.x][poly2.y] = poly2
-  
+
   puzzle.start = {'x':8, 'y':0}
   puzzle.end = {'x':0, 'y':8}
   return puzzle
@@ -253,7 +253,7 @@ function randomRightDoor() {
   var height = 4
   var width = 4
   var puzzle = new Puzzle(width, height)
-  
+
   var edges = []
   var corners = []
   var cells = []
@@ -268,12 +268,12 @@ function randomRightDoor() {
       }
     }
   }
-  
+
   var square1 = cells.splice(_randint(cells.length), 1)[0]
   var square2 = cells.splice(_randint(cells.length), 1)[0]
   var square3 = cells.splice(_randint(cells.length), 1)[0]
   var square4 = cells.splice(_randint(cells.length), 1)[0]
-  
+
   corners.splice(24, 1) // Start point is illegal
   corners.splice(0, 1) // End point is illegal
   puzzle.dots.push(corners.splice(_randint(corners.length), 1)[0])
@@ -293,7 +293,7 @@ function randomRightDoor() {
   puzzle.grid[square2.x][square2.y] = {'type':'square', 'color':color1}
   puzzle.grid[square3.x][square3.y] = {'type':'square', 'color':color2}
   puzzle.grid[square4.x][square4.y] = {'type':'square', 'color':color2}
-  
+
   puzzle.start = {'x':8, 'y':8}
   puzzle.end = {'x':0, 'y':0}
   return puzzle
@@ -334,7 +334,7 @@ function randomTriple() {
   var height = 4
   var width = 4
   var puzzle = new Puzzle(width, height)
-  
+
   var edges = []
   var corners = []
   var cells = []
@@ -349,7 +349,7 @@ function randomTriple() {
       }
     }
   }
-  
+
   var square1 = cells.splice(_randint(cells.length), 1)[0]
   var square2 = cells.splice(_randint(cells.length), 1)[0]
   var square3 = cells.splice(_randint(cells.length), 1)[0]

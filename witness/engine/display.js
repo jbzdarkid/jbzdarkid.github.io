@@ -118,7 +118,7 @@ function _ylop(elem) {
     rect2.setAttribute('width', size/2)
     rect2.setAttribute('fill', BACKGROUND)
     svg.appendChild(rect2)
-    }
+  }
   return svg
 }
 

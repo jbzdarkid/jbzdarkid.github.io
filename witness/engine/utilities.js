@@ -100,12 +100,12 @@ function PLAY_SOUND(track) {
 
 window.DISABLE_CACHE = false
 
-// Bright colors are go
-RED = 'black'
-ORANGE = 'white'
-GREEN = 'green'
+WHITE = 'white'
+BLACK = 'black'
+RED = 'red'
 BLUE = 'blue'
-PURPLE = 'purple'
+ORANGE = 'orange'
+YELLOW = 'yellow'
 
 if (localStorage.theme == "true") { // Dark scheme
   BACKGROUND = '#221' // '#000'
