@@ -434,15 +434,16 @@ function _draw(elem, subx, suby) {
   var enter_dir = elem.className.split('-')[1]
   var exit_dir = elem.className.split('-')[2]
   if (elem.className.includes('start')) {
+    console.log(subx, suby, width, height)
     // Tracing from the start element, special case
-    if (subx > width) {
-      circ.setAttribute('cx', parseInt(circ.getAttribute('cx')) - width/2)
+    if (subx > width*3/4) {
+      circ.setAttribute('cx', parseFloat(circ.getAttribute('cx')) - width/2)
     }
-    if (suby > height) {
-      circ.setAttribute('cy', parseInt(circ.getAttribute('cy')) - height/2)
+    if (suby > height*3/4) {
+      circ.setAttribute('cy', parseFloat(circ.getAttribute('cy')) - height/2)
     }
-    circ.setAttribute('cx', parseInt(circ.getAttribute('cx')) + cursorSize)
-    circ.setAttribute('cy', parseInt(circ.getAttribute('cy')) + cursorSize)
+    circ.setAttribute('cx', parseFloat(circ.getAttribute('cx')) + cursorSize)
+    circ.setAttribute('cy', parseFloat(circ.getAttribute('cy')) + cursorSize)
 
     circ2.setAttribute('r', cursorSize*2)
     svg.appendChild(circ2)
