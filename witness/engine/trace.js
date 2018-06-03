@@ -41,16 +41,16 @@ function trace(elem, puzzle) {
     for (var i = 0; i < data.animations.cssRules.length; i++) {
       var rule = data.animations.cssRules[i]
       if (rule.selectorText == '.' + data.table) {
-        data.animations.deleteRule(i)
+        data.animations.deleteRule(i--)
       }
     }
 
     var table = document.getElementById(data.table)
-
     // These aren't really arrays, they live update during iteration
     for (var cell of table.getElementsByTagName('td')) {
       // Remove leftover color from a previous trace
       cell.className = cell.className.split('-')[0]
+      // Restore opacity of negated elements
       if (cell.children.length == 1) {
         cell.children[0].style.opacity = 1.0
       }
@@ -66,8 +66,8 @@ function trace(elem, puzzle) {
     while (circles.length > 0) {
       circles[0].remove()
     }
-    // Redraw the start so the line appears. FIXME: Animation?
-    // _draw(elem, data.subx, data.suby)
+    // Color the start point. TODO: Animate
+    elem.children[0].style.background = LINE_DEFAULT
 
     elem.requestPointerLock()
   } else { // Stopped tracing a solution
