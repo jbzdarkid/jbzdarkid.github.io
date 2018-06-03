@@ -1,10 +1,8 @@
-@font-face {src: url('Constantia.ttf')}
+@font-face { src: url('Constantia.ttf'); }
 label, button {
   font-family: Constantia;
   font-variant: small-caps;
   font-weight: bold;
   font-size: 28px;
 }
-table {
-  margin:auto;
-}
+table { margin:auto; }
