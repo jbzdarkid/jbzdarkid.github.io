@@ -210,22 +210,25 @@ function draw(puzzle, target='puzzle') {
 
       if (x == puzzle.start.x && y == puzzle.start.y) {
         var div = document.createElement('div')
-        div.id = cell.id
-        div.style.position = 'absolute'
-        div.style.top = -12
-        div.style.left = -12
+        // Resize, round, and color
         div.style.height = 48
         div.style.width = 48
         div.style.borderRadius = '50%'
-        div.className = 'start trace'
         var start_color = FOREGROUND
         if (puzzle.grid[x][y] == true) {
           start_color = LINE_SUCCESS
         }
         div.style.background = start_color
-
-        cell.style.position = 'relative'
+        // Shift into place
+        div.style.top = -12
+        div.style.left = -12
+        div.style.position = 'absolute' // Prevents resizing the rest of the table
+        // div.className = 'start trace'
+        div.className = 'selected_start trace' // Named for the animation
+        div.id = cell.id // Rename the div and cell so that tracing happens on the div
         cell.id += '_parent'
+
+        cell.style.position = 'relative' // Positions div relative to this cell
         cell.appendChild(div)
         cell.onclick = function() {trace(this, puzzle)}
       } else if (puzzle.grid[x][y].type == 'square') {
