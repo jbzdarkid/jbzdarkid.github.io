@@ -19,9 +19,7 @@ function _getVisualCell(x, y) {
 function trace(elem, puzzle) {
   if (document.pointerLockElement == null) { // Started tracing a solution
     PLAY_SOUND('start')
-    var parent = elem.parentNode
-    var width = parseInt(window.getComputedStyle(parent).width)
-    var height = parseInt(window.getComputedStyle(parent).height)
+    var style = window.getComputedStyle(elem)
     var animations = undefined
     for (var styleSheet of document.styleSheets) {
       if (styleSheet.title == 'animations') {
@@ -30,12 +28,12 @@ function trace(elem, puzzle) {
       }
     }
     data = {
-      'table':parent.id.split('_')[0],
-      'x':parseInt(parent.id.split('_')[1]),
-      'y':parseInt(parent.id.split('_')[2]),
+      'table':elem.id.split('_')[0],
+      'x':parseInt(elem.id.split('_')[1]),
+      'y':parseInt(elem.id.split('_')[2]),
       'puzzle':puzzle.clone(),
-      'subx':width/2,
-      'suby':height/2,
+      'subx':parseInt(style.width)/2,
+      'suby':parseInt(style.height)/2,
       'animations':animations,
       'tracing':true,
     }
@@ -69,7 +67,7 @@ function trace(elem, puzzle) {
       circles[0].remove()
     }
     // Redraw the start so the line appears. FIXME: Animation?
-    _draw(elem, data.subx, data.suby)
+    // _draw(elem, data.subx, data.suby)
 
     elem.requestPointerLock()
   } else { // Stopped tracing a solution

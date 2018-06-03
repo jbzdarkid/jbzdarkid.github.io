@@ -210,14 +210,13 @@ function draw(puzzle, target='puzzle') {
 
       if (x == puzzle.start.x && y == puzzle.start.y) {
         var div = document.createElement('div')
-        div.onclick = function() {trace(this, puzzle)}
         div.id = cell.id
         div.style.position = 'absolute'
         div.style.top = -12
         div.style.left = -12
         div.style.height = 48
         div.style.width = 48
-        div.style.borderRadius = '24px'
+        div.style.borderRadius = '50%'
         div.className = 'start trace'
         var start_color = FOREGROUND
         if (puzzle.grid[x][y] == true) {
@@ -226,9 +225,9 @@ function draw(puzzle, target='puzzle') {
         div.style.background = start_color
 
         cell.style.position = 'relative'
-        cell.removeAttribute('class')
         cell.id += '_parent'
         cell.appendChild(div)
+        cell.onclick = function() {trace(this, puzzle)}
       } else if (puzzle.grid[x][y].type == 'square') {
         cell.appendChild(_square(puzzle.grid[x][y]))
       } else if (puzzle.grid[x][y].type == 'star') {
