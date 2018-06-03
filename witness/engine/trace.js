@@ -72,8 +72,14 @@ function trace(elem, puzzle) {
     elem.requestPointerLock()
   } else { // Stopped tracing a solution
     data.tracing = false // Signal the onMouseMove to stop accepting input (race condition)
+    var table = document.getElementById(data.table)
     var curr_elem = _getVisualCell(data.x, data.y)
-    if (curr_elem.className.includes('end')) {
+    if (curr_elem.className.includes('end')) { // Ended a solution in an endpoint
+      var circles = table.getElementsByClassName('cursor')
+      while (circles.length > 0) {
+        circles[0].remove()
+      }
+      // Parse the puzzle from the grid (which lines are traced), and validate it
       for (var x=0; x<data.puzzle.grid.length; x++) {
         for (var y=0; y<data.puzzle.grid[x].length; y++) {
           var elem = _getVisualCell(x, y)
@@ -101,7 +107,11 @@ function trace(elem, puzzle) {
       }
       animation += '}'
       data.animations.insertRule(animation)
-    } else {
+    } else { // Ended not in an endpoint, give the option to resume
+      for (var circle of table.getElementsByClassName('cursor')) {
+        // circle.onclick = function() {trace(this.parentElement.parentElement, puzzle)}
+      }
+
       PLAY_SOUND('abort')
     }
     document.exitPointerLock()
