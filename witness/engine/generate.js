@@ -80,11 +80,11 @@ function randomPuzzle(style) {
       } else if (type == 'gaps') {
         puzzle.gaps.push(edges.splice(_randint(edges.length), 1)[0])
       } else if (type == 'negations') {
-        var color = [WHITE, BLACK, RED, BLUE][_randint(style['colors'])]
+        var color = [WHITE, RED, BLUE, BLACK][_randint(style['colors'])]
         var pos = cells.splice(_randint(cells.length), 1)[0]
         puzzle.grid[pos.x][pos.y] = {'type':'nega', 'color':color}
       } else if (type == 'squares') {
-        var color = [BLACK, RED, BLUE, WHITE][_randint(style['colors'])]
+        var color = [BLACK, WHITE, RED, BLUE][_randint(style['colors'])]
         var pos = cells.splice(_randint(cells.length), 1)[0]
         puzzle.grid[pos.x][pos.y] = {'type':'square', 'color':color}
       } else if (type == 'stars') {

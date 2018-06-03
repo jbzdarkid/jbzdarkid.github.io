@@ -1,7 +1,6 @@
 var cursorSize = 12
 var data
 
-
 // FIXME: likely bad encapsulation
 function _getVisualCell(x, y) {
   if (y < 0) {
@@ -38,6 +37,7 @@ function trace(elem, puzzle) {
       'subx':width/2,
       'suby':height/2,
       'animations':animations,
+      'tracing':true,
     }
     
     for (var i = 0; i < data.animations.cssRules.length; i++) {
@@ -73,6 +73,7 @@ function trace(elem, puzzle) {
 
     elem.requestPointerLock()
   } else { // Stopped tracing a solution
+    data.tracing = false // Signal the onMouseMove to stop accepting input (race condition)
     var curr_elem = _getVisualCell(data.x, data.y)
     if (curr_elem.className.includes('end')) {
       for (var x=0; x<data.puzzle.grid.length; x++) {
@@ -123,6 +124,7 @@ function _lockChange() {
 }
 
 function _onMouseMove(e) {
+  if (!data.tracing) return
   var sens = document.getElementById('sens').value
   dx = e.movementX
   dy = e.movementY
