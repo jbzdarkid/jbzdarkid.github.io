@@ -32,10 +32,10 @@ puzzle = driver.find_element_by_tag_name('table')
 url = driver.current_url
 url = url.replace('file:///home/runner/', 'http://')
 rect = (
-	puzzle.location['x']-25,
-	puzzle.location['y']-25,
-	puzzle.location['x']+puzzle.size['width']+25,
-	puzzle.location['y']+puzzle.size['height']+25
+	puzzle.location['x'],
+	puzzle.location['y'],
+	puzzle.location['x']+puzzle.size['width'],
+	puzzle.location['y']+puzzle.size['height']
 )
 driver.save_screenshot('temp.png')
 driver.quit()
