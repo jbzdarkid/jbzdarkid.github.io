@@ -3,9 +3,53 @@ window.DISABLE_CACHE = true
 var solutions = []
 var currentSolution = 0
 var symbol = 'none'
-var color = 'white'
+var color = 'black'
 
-window.onload = function() {redraw(puzzle)}
+window.onload = function() {
+  redraw(puzzle)
+  var symbolButtons = ['start', 'end', 'gap', 'dot', 'square', 'star', 'nega', 'triangle', 'poly', 'ylop']
+
+  var symbolCell = document.getElementById('symbols')
+  for (var buttonName of symbolButtons) {
+    var buttonElem = document.createElement('button')
+    buttonElem.id = buttonName
+    buttonElem.onclick = function() {symbol = this.id}
+    if (buttonName == 'square') {
+      buttonElem.style.width = '100px'
+      buttonElem.appendChild(_square({'color':color}))
+    } else if (buttonName == 'star') {
+      buttonElem.style.width = '100px'
+      buttonElem.appendChild(_star({'color':color}))
+    } else if (buttonName == 'nega') {
+      buttonElem.style.width = '100px'
+      buttonElem.appendChild(_nega({'color':color}))
+    } else if (buttonName == 'triangle') {
+      buttonElem.style.width = '100px'
+      buttonElem.appendChild(_triangle({'color':color, 'count':1}))
+    } else if (buttonName == 'poly') {
+      buttonElem.style.width = '100px'
+      buttonElem.appendChild(_poly({'color':color, 'size':4, 'shape':'L', 'rot':0}))
+    } else if (buttonName == 'ylop') {
+      buttonElem.style.width = '100px'
+      buttonElem.appendChild(_ylop({'color':color, 'size':4, 'shape':'L', 'rot':0}))
+    } else {
+      buttonElem.innerText = buttonName
+    }
+    symbolCell.appendChild(buttonElem)
+    symbolCell.appendChild(document.createElement('br'))
+  }
+/*            <button onclick="symbol='start';">Start</button><br>
+          <button onclick="symbol='end';">End</button><br>
+          <button onclick="symbol='gap';">Gap</button><br>
+          <button onclick="symbol='dot';">Dot</button><br>
+          <button onclick="symbol='square';">Square</button>
+          <script>previousSibling.innerHtml = _square({'color':'black'});</script><br>
+          <button onclick="symbol='star';">Star</button><br>
+          <button onclick="symbol='nega';">Nega</button><br>
+          <button onclick="symbol='triangle';">Triangle</button><br>
+          <button disabled onclick="selectPoly();">Poly</button>
+*/
+}
 
 function updatePuzzle() {
   redraw(puzzle)
