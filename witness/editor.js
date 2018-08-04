@@ -12,43 +12,38 @@ window.onload = function() {
   var symbolCell = document.getElementById('symbols')
   for (var buttonName of symbolButtons) {
     var buttonElem = document.createElement('button')
+    buttonElem.style.width = '100px'
     buttonElem.id = buttonName
     buttonElem.onclick = function() {symbol = this.id}
-    if (buttonName == 'square') {
-      buttonElem.style.width = '100px'
+    if (buttonName == 'start') {
+      buttonElem.innerText = buttonName
+    } else if (buttonName == 'end') {
+      buttonElem.innerText = buttonName
+    } else if (buttonName == 'gap') {
+      symbolCell.appendChild(document.createElement('br'))
+      buttonElem.innerText = buttonName
+    } else if (buttonName == 'dot') {
+      buttonElem.innerText = buttonName
+    } else if (buttonName == 'square') {
+      symbolCell.appendChild(document.createElement('br'))
       buttonElem.appendChild(_square({'color':color}))
     } else if (buttonName == 'star') {
-      buttonElem.style.width = '100px'
       buttonElem.appendChild(_star({'color':color}))
     } else if (buttonName == 'nega') {
-      buttonElem.style.width = '100px'
+      symbolCell.appendChild(document.createElement('br'))
       buttonElem.appendChild(_nega({'color':color}))
     } else if (buttonName == 'triangle') {
-      buttonElem.style.width = '100px'
       buttonElem.appendChild(_triangle({'color':color, 'count':1}))
     } else if (buttonName == 'poly') {
-      buttonElem.style.width = '100px'
-      buttonElem.appendChild(_poly({'color':color, 'size':4, 'shape':'L', 'rot':0}))
+      symbolCell.appendChild(document.createElement('br'))
+      buttonElem.disabled = true
+      buttonElem.appendChild(_poly({'color':'gray', 'size':4, 'shape':'L', 'rot':0}))
     } else if (buttonName == 'ylop') {
-      buttonElem.style.width = '100px'
-      buttonElem.appendChild(_ylop({'color':color, 'size':4, 'shape':'L', 'rot':0}))
-    } else {
-      buttonElem.innerText = buttonName
+      buttonElem.disabled = true
+      buttonElem.appendChild(_ylop({'color':'gray', 'size':4, 'shape':'L', 'rot':0}))
     }
     symbolCell.appendChild(buttonElem)
-    symbolCell.appendChild(document.createElement('br'))
   }
-/*            <button onclick="symbol='start';">Start</button><br>
-          <button onclick="symbol='end';">End</button><br>
-          <button onclick="symbol='gap';">Gap</button><br>
-          <button onclick="symbol='dot';">Dot</button><br>
-          <button onclick="symbol='square';">Square</button>
-          <script>previousSibling.innerHtml = _square({'color':'black'});</script><br>
-          <button onclick="symbol='star';">Star</button><br>
-          <button onclick="symbol='nega';">Nega</button><br>
-          <button onclick="symbol='triangle';">Triangle</button><br>
-          <button disabled onclick="selectPoly();">Poly</button>
-*/
 }
 
 function updatePuzzle() {
