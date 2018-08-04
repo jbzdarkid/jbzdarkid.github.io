@@ -1,0 +1,66 @@
+<html xmlns="http://www.w3.org/2000/xhtml">
+  <head>
+    <link rel="stylesheet" type="text/css" href="style.css" id="stylesheet">
+    <script type="text/javascript" src="engine/polyominos.js"></script>
+    <script type="text/javascript" src="engine/utilities.js"></script>
+    <script type="text/javascript" src="engine/puzzle.js"></script>
+    <script type="text/javascript" src="engine/solve.js"></script>
+    <script type="text/javascript" src="engine/validate.js"></script>
+    <script type="text/javascript" src="engine/display.js"></script>
+    <script type="text/javascript" src="engine/trace.js"></script>
+    <script type="text/javascript" src="editor.js"></script>
+    <title>Create a puzzle</title>
+  </head>
+  <body>
+    <div style="text-align: center">
+      <label id="puzzleName" onclick="rename();" style="font-size: 72">Unnamed Puzzle</label>
+    </div><div style="text-align: center">
+      <button disabled onclick="meta('rename');">Rename</button>
+      <button disabled onclick="meta('new');">New</button>
+      <button disabled onclick="meta('load');">Load</button>
+      <button disabled onclick="meta('import');">Import</button>
+      <button disabled onclick="meta('export');">Export</button>
+    </div><div style="text-align: center">
+      <label for="sens">Mouse Speed 2D</label>
+      <input id="sens" type="range" min="0.1" max="1.3" step="0.1" onchange="localStorage.sensitivity = this.value"/>
+      <script>document.getElementById('sens').value = localStorage.sensitivity</script>
+    </div>
+
+    
+    <table id="meta">
+      <tr>
+        <td>
+          <button onclick="symbol='start';">Start</button><br>
+          <button onclick="symbol='end';">End</button><br>
+          <button onclick="symbol='gap';">Gap</button><br>
+          <button onclick="symbol='dot';">Dot</button><br>
+          <button onclick="symbol='square';">Square</button><br>
+          <button onclick="symbol='star';">Star</button><br>
+          <button onclick="symbol='nega';">Nega</button><br>
+          <button onclick="symbol='triangle';">Triangle</button><br>
+          <button disabled onclick="selectPoly();">Poly</button>
+        </td><td>
+          <table id="puzzle" cellpadding="30"></table>
+        </td><td>
+          <button onclick="color='black';">Black</button><br>
+          <button onclick="color='white';">White</button><br>
+          <button onclick="color='red';">Red</button><br>
+          <button onclick="color='orange';">Orange</button><br>
+          <button onclick="color='yellow';">Yellow</button><br>
+          <button onclick="color='green';">Green</button><br>
+          <button onclick="color='blue';">Blue</button><br>
+          <button onclick="color='purple';">Purple</button><br>
+          <button disabled onclick="selectColor();">Custom</button>
+        </td>
+      </tr><tr>
+        <td colspan="3" style="text-align: center">
+          <label>Number of solutions:</label>
+          <label id="solutionCount"></label>
+          <label>&nbsp;</label>
+          <button onclick="drawSolution(-1)">&larr;</button>
+          <button onclick="drawSolution(1)">&rarr;</button>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
