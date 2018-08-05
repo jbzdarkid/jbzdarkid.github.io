@@ -8,7 +8,6 @@ var color = 'black'
 window.onload = function() {
   redraw(puzzle)
   var symbolButtons = ['start', 'end', 'gap', 'dot', 'square', 'star', 'nega', 'triangle', 'poly', 'ylop']
-
   var symbolCell = document.getElementById('symbols')
   for (var buttonName of symbolButtons) {
     var buttonElem = document.createElement('button')
@@ -43,6 +42,18 @@ window.onload = function() {
       buttonElem.appendChild(_ylop({'color':'gray', 'size':4, 'shape':'L', 'rot':0}))
     }
     symbolCell.appendChild(buttonElem)
+  }
+  
+  var colorButtons = ['black', 'white', 'red', 'orange', 'yellow', 'green', 'blue', 'purple', 'custom']
+  var colorCell = document.getElementById('colors')
+  for (var colorName of colorButtons) {
+    var colorElem = document.createElement('button')
+    colorElem.style.width = '200px'
+    colorElem.id = colorName
+    colorElem.onclick = function() {color = this.id}
+    colorElem.appendChild(_crayon({'color':colorName}))
+    colorCell.appendChild(colorElem)
+    colorCell.appendChild(document.createElement('br'))
   }
 }
 

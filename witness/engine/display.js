@@ -144,6 +144,37 @@ function _triangle(elem) {
   return svg
 }
 
+function _crayon(elem) {
+  var height = 35
+  var width = 125 + height/2
+  var border = 2
+
+  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height)
+  var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
+  var points = [
+    '0 ' + (height/2),
+    (height/2) + ' 0',
+    width + ' 0',
+    width + ' ' + (height-border),
+    (width-border) + ' ' + (height-border),
+    (width-border) + ' ' + border,
+    (height/2) + ' ' + border,
+    (height/2) + ' ' + (height-border),
+    width + ' ' + (height-border),
+    width + ' ' + height,
+    (height/2) + ' ' + height,
+  ]
+  poly.setAttribute('points', points.join(', '))
+  poly.setAttribute('fill', elem.color)
+  svg.appendChild(poly)
+  var txt = document.createElementNS('http://www.w3.org/2000/svg', 'text')
+  txt.setAttribute('transform', 'translate(25, 25)')
+  txt.innerHTML = elem.color
+  svg.appendChild(txt)
+  return svg
+}
+
 function draw(puzzle, target='puzzle') {
   console.log('Drawing', puzzle, 'into', target)
   var table = document.getElementById(target)
