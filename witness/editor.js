@@ -7,6 +7,10 @@ var color = 'black'
 
 window.onload = function() {
   redraw(puzzle)
+  drawButtons()
+}
+
+function drawButtons() {
   var symbolButtons = [
     {'type':'start'},
     {'type':'end'},
@@ -46,7 +50,7 @@ window.onload = function() {
     var colorElem = document.createElement('button')
     colorElem.style.width = '200px'
     colorElem.id = colorName
-    colorElem.onclick = function() {color = this.id}
+    colorElem.onclick = function() {color = this.id; drawButtons()}
     colorElem.appendChild(_crayon({'color':colorName}))
     colorCell.appendChild(colorElem)
     colorCell.appendChild(document.createElement('br'))
