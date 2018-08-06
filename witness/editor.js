@@ -10,7 +10,7 @@ window.onload = function() {
   var symbolButtons = [
     {'type':'start'},
     {'type':'end'},
-    {'type':'gap', 'height':84, 'width':84},
+    {'type':'gap', 'height':84, 'width':84, 'rot':0},
     {'type':'dot', 'height':84, 'width':84},
     {'type':'square'},
     {'type':'star'},

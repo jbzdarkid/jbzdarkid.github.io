@@ -251,12 +251,24 @@ function _gap(params) {
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
   svg.setAttribute('viewBox', '0 0 '+params.width+' '+params.height)
   var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-  rect.setAttribute('width', 20)
-  rect.setAttribute('height', 24)
-  rect.setAttribute('fill', FOREGROUND)
-  if (params.rot == 1) rect.setAttribute('transform', 'translate(24) rotate(90)')
-  svg.appendChild(rect.cloneNode())
-  rect.setAttribute('x', 38)
-  svg.appendChild(rect)
+  if (params.rot == 0) {
+    rect.setAttribute('x', (params.width-58)/2)
+    rect.setAttribute('y', (params.height-24)/2)
+    rect.setAttribute('width', 20)
+    rect.setAttribute('height', 24)
+    rect.setAttribute('fill', FOREGROUND)
+    svg.appendChild(rect.cloneNode())
+    rect.setAttribute('x', (params.width+18)/2)
+    svg.appendChild(rect)
+  } else { // if (params.rot == 1) {
+    rect.setAttribute('x', (params.width-24)/2)
+    rect.setAttribute('y', (params.height-58)/2)
+    rect.setAttribute('width', 24)
+    rect.setAttribute('height', 20)
+    rect.setAttribute('fill', FOREGROUND)
+    svg.appendChild(rect.cloneNode())
+    rect.setAttribute('y', (params.height+18)/2)
+    svg.appendChild(rect)
+  }
   return svg
 }
