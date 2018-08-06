@@ -9,6 +9,8 @@ function drawSymbol(params) {
     return _ylop(params)
   } else if (params.type == 'nega') {
     return _nega(params)
+  } else if (params.type == 'nonce') {
+    return document.createElement('null')
   } else if (params.type == 'triangle') {
     return _triangle(params)
   } else if (params.type == 'crayon') {
