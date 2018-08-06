@@ -77,7 +77,7 @@ function draw(puzzle, target='puzzle') {
         cell.style.position = 'relative' // Positions div relative to this cell
         cell.appendChild(div)
         cell.onclick = function() {trace(this, puzzle)}
-      } else if (puzzle.grid[x][y]) {
+      } else if (typeof puzzle.grid[x][y] == 'object') {
         cell.appendChild(drawSymbol(puzzle.grid[x][y]))
       }
     }

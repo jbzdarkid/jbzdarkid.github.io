@@ -7,39 +7,41 @@ var color = 'black'
 
 window.onload = function() {
   redraw(puzzle)
-  var symbolButtons = ['start', 'end', 'gap', 'dot', 'square', 'star', 'nega', 'triangle', 'poly', 'ylop']
+  var symbolButtons = [
+    {'type':'start'},
+    {'type':'end'},
+    {'type':'gap'},
+    {'type':'dot'},
+    {'type':'square'},
+    {'type':'star'},
+    {'type':'nega'},
+    {'type':'triangle', 'count':1},
+    {'type':'poly', 'size':4, 'shape':'L', 'rot':0},
+    {'type':'ylop', 'size':4, 'shape':'L', 'rot':0},
+  ]
   var symbolCell = document.getElementById('symbols')
-  for (var buttonName of symbolButtons) {
+  for (var params of symbolButtons) {
+    if (['gap', 'square', 'nega', 'poly'].includes(params.type)) {
+      symbolCell.appendChild(document.createElement('br'))
+    }
+    params['color'] = color
+
     var buttonElem = document.createElement('button')
     buttonElem.style.width = '100px'
-    buttonElem.id = buttonName
+    // buttonElem.style.height = '100px'
+    buttonElem.id = params.type
     buttonElem.onclick = function() {symbol = this.id}
-    if (buttonName == 'start') {
-      buttonElem.innerText = buttonName
-    } else if (buttonName == 'end') {
-      buttonElem.innerText = buttonName
-    } else if (buttonName == 'gap') {
-      symbolCell.appendChild(document.createElement('br'))
-      buttonElem.innerText = buttonName
-    } else if (buttonName == 'dot') {
-      buttonElem.innerText = buttonName
-    } else if (buttonName == 'square') {
-      symbolCell.appendChild(document.createElement('br'))
-      buttonElem.appendChild(_square({'color':color}))
-    } else if (buttonName == 'star') {
-      buttonElem.appendChild(_star({'color':color}))
-    } else if (buttonName == 'nega') {
-      symbolCell.appendChild(document.createElement('br'))
-      buttonElem.appendChild(_nega({'color':color}))
-    } else if (buttonName == 'triangle') {
-      buttonElem.appendChild(_triangle({'color':color, 'count':1}))
-    } else if (buttonName == 'poly') {
-      symbolCell.appendChild(document.createElement('br'))
+
+    // TODO: Remove this once poly/ylop are implemented
+    if (params.type == 'poly' || params.type == 'ylop') {
       buttonElem.disabled = true
-      buttonElem.appendChild(_poly({'color':'gray', 'size':4, 'shape':'L', 'rot':0}))
-    } else if (buttonName == 'ylop') {
-      buttonElem.disabled = true
-      buttonElem.appendChild(_ylop({'color':'gray', 'size':4, 'shape':'L', 'rot':0}))
+      params.color = 'gray'
+    }
+    try { // TODO: Remove this once all symbol types are implemented
+      buttonElem.appendChild(drawSymbol(params))
+    } catch(e) {
+      console.log(e)
+      buttonElem.innerText = params.type
     }
     symbolCell.appendChild(buttonElem)
   }

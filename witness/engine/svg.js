@@ -15,6 +15,10 @@ function drawSymbol(params) {
     return _triangle(params)
   } else if (params.type == 'crayon') {
     return _crayon(params)
+  } else if (params.type == 'start') {
+    return _start(params)
+  } else if (params.type == 'end') {
+    return _end(params)
   } else {
     throw 'Unknown symbol type in params: ' + JSON.stringify(params)
   }
@@ -194,5 +198,36 @@ function _crayon(params) {
   txt.setAttribute('transform', 'translate(25, 25)')
   txt.innerHTML = params.color
   svg.appendChild(txt)
+  return svg
+}
+
+function _start(params) {
+  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  svg.setAttribute('viewBox', '0 0 84 84')
+  var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+  circ.setAttribute('r', 24)
+  circ.setAttribute('fill', FOREGROUND)
+  circ.setAttribute('cx', 42)
+  circ.setAttribute('cy', 42)
+  svg.appendChild(circ)
+  return svg
+}
+
+function _end(params) {
+  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  svg.setAttribute('viewBox', '0 0 84 84')
+  var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+  circ.setAttribute('r', 12)
+  circ.setAttribute('fill', FOREGROUND)
+  circ.setAttribute('cx', 42)
+  circ.setAttribute('cy', 39)
+  svg.appendChild(circ)
+  var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+  rect.setAttribute('width', 24)
+  rect.setAttribute('height', 18)
+  rect.setAttribute('fill', FOREGROUND)
+  rect.setAttribute('x', 30)
+  rect.setAttribute('y', 39)
+  svg.appendChild(rect)
   return svg
 }
