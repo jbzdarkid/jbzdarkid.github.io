@@ -14,7 +14,7 @@ function drawSymbol(params) {
   } else if (params.type == 'crayon') {
     return _crayon(params)
   } else {
-    throw 'Unknown symbol type in params: ' + params
+    throw 'Unknown symbol type in params: ' + JSON.stringify(params)
   }
 }
 
