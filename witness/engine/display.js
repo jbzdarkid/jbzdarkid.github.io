@@ -155,36 +155,19 @@ function draw(puzzle, target='puzzle') {
 
   for (var dot of puzzle.dots) {
     var cell = document.getElementById(target+'_'+dot.x+'_'+dot.y)
-    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-    var width = parseInt(window.getComputedStyle(cell).width)
-    var height = parseInt(window.getComputedStyle(cell).height)
-    svg.setAttribute('viewBox', '0 0 '+width+' '+height)
-    var hex = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
-    hex.setAttribute('points', '5.2 9, 10.4 0, 5.2 -9, -5.2 -9, -10.4 0, -5.2 9')
-    hex.setAttribute('transform', 'translate('+width/2+', '+height/2+')')
-    hex.setAttribute('fill', 'black')
-    svg.appendChild(hex)
-    cell.appendChild(svg)
+    var params = {'type':'dot', 'color':'black'}
+    params.width = parseInt(window.getComputedStyle(cell).width)
+    params.height = parseInt(window.getComputedStyle(cell).height)
+    cell.appendChild(drawSymbol(params))
   }
   for (var gap of puzzle.gaps) {
     var cell = document.getElementById(target+'_'+gap.x+'_'+gap.y)
     if (cell.className.startsWith('gap')) continue
     cell.className = 'gap '+cell.className
-    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-    var width = parseInt(window.getComputedStyle(cell).width)
-    var height = parseInt(window.getComputedStyle(cell).height)
-    svg.setAttribute('viewBox', '0 0 '+width+' '+height)
-    var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-    rect.setAttribute('width', 18)
-    rect.setAttribute('height', 24)
-    rect.setAttribute('fill', BACKGROUND)
-    var transform = 'translate('+(width-18)/2+', '+(height-24)/2+')'
-    if (gap.x%2 == 1) {
-      // 9, 12 being the center of the rectangle
-      transform += ' rotate(90, 9, 12)'
-    }
-    rect.setAttribute('transform', transform)
-    svg.appendChild(rect)
-    cell.appendChild(svg)
+    var params = {'type':'gap', 'rot': gap.x%2}
+    params.width = parseInt(window.getComputedStyle(cell).width)
+    params.height = parseInt(window.getComputedStyle(cell).height)
+    cell.appendChild(drawSymbol(params))
+    cell.style.background = BACKGROUND
   }
 }

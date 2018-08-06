@@ -10,8 +10,8 @@ window.onload = function() {
   var symbolButtons = [
     {'type':'start'},
     {'type':'end'},
-    {'type':'gap'},
-    {'type':'dot'},
+    {'type':'gap', 'height':84, 'width':84},
+    {'type':'dot', 'height':84, 'width':84},
     {'type':'square'},
     {'type':'star'},
     {'type':'nega'},
@@ -34,15 +34,9 @@ window.onload = function() {
 
     // TODO: Remove this once poly/ylop are implemented
     if (params.type == 'poly' || params.type == 'ylop') {
-      buttonElem.disabled = true
       params.color = 'gray'
     }
-    try { // TODO: Remove this once all symbol types are implemented
-      buttonElem.appendChild(drawSymbol(params))
-    } catch(e) {
-      console.log(e)
-      buttonElem.innerText = params.type
-    }
+    buttonElem.appendChild(drawSymbol(params))
     symbolCell.appendChild(buttonElem)
   }
   

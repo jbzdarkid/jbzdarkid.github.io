@@ -1,6 +1,10 @@
 function drawSymbol(params) {
   if (params.type == 'square') {
     return _square(params)
+  } else if (params.type == 'dot') {
+    return _dot(params)
+  } else if (params.type == 'gap') {
+    return _gap(params) // Maybe not?
   } else if (params.type == 'star') {
     return _star(params)
   } else if (params.type == 'poly') {
@@ -185,8 +189,8 @@ function _crayon(params) {
     width + ' ' + (height-border),
     (width-border) + ' ' + (height-border),
     (width-border) + ' ' + border,
-    (height/2) + ' ' + border,
-    (height/2) + ' ' + (height-border),
+    (height/2+border) + ' ' + border,
+    (height/2+border) + ' ' + (height-border),
     width + ' ' + (height-border),
     width + ' ' + height,
     (height/2) + ' ' + height,
@@ -228,6 +232,31 @@ function _end(params) {
   rect.setAttribute('fill', FOREGROUND)
   rect.setAttribute('x', 30)
   rect.setAttribute('y', 39)
+  svg.appendChild(rect)
+  return svg
+}
+
+function _dot(params) {
+  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  svg.setAttribute('viewBox', '0 0 ' + params.width + ' ' + params.height)
+  var hex = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
+  hex.setAttribute('points', '5.2 9, 10.4 0, 5.2 -9, -5.2 -9, -10.4 0, -5.2 9')
+  hex.setAttribute('transform', 'translate(' + params.width/2 + ', ' + params.height/2 + ')')
+  hex.setAttribute('fill', 'black')
+  svg.appendChild(hex)
+  return svg
+}
+
+function _gap(params) {
+  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  svg.setAttribute('viewBox', '0 0 '+params.width+' '+params.height)
+  var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+  rect.setAttribute('width', 20)
+  rect.setAttribute('height', 24)
+  rect.setAttribute('fill', FOREGROUND)
+  if (params.rot == 1) rect.setAttribute('transform', 'translate(24) rotate(90)')
+  svg.appendChild(rect.cloneNode())
+  rect.setAttribute('x', 38)
   svg.appendChild(rect)
   return svg
 }
