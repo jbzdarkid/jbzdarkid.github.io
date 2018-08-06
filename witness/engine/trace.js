@@ -444,7 +444,6 @@ function _draw(elem, subx, suby) {
   var enter_dir = elem.className.split('-')[1]
   var exit_dir = elem.className.split('-')[2]
   if (elem.className.includes('start')) {
-    console.log(subx, suby, width, height)
     // Tracing from the start element, special case
     if (subx > width*3/4) {
       circ.setAttribute('cx', parseFloat(circ.getAttribute('cx')) - width/2)
