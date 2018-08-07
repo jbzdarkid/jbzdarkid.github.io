@@ -30,11 +30,13 @@ function drawSymbol(params) {
 
 function _square(params) {
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('viewBox', '0 0 58 58')
+  svg.setAttribute('viewBox', '0 0 ' + params.width + ' ' + params.height)
   var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
   rect.setAttribute('transform', 'translate(15, 15)')
-  rect.setAttribute('height', 28)
   rect.setAttribute('width', 28)
+  rect.setAttribute('height', 28)
+  rect.setAttribute('x', params.width/2-28)
+  rect.setAttribute('y', params.height/2-28)
   rect.setAttribute('rx', 7)
   rect.setAttribute('ry', 7)
   rect.setAttribute('fill', params.color)
@@ -44,29 +46,29 @@ function _square(params) {
 
 function _star(params) {
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('viewBox', '0 0 58 58')
+  svg.setAttribute('viewBox', '0 0 ' + params.width + ' ' + params.height)
   var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
   var points = [
-    '0 0', // Top left
-    '1 6.5',
-    '-4.5 10.5',
-    '1 14.5',
-    '0 21', // Bottom left
-    '6.5 20',
-    '10.5 25.5',
-    '14.5 20',
-    '21 21', // Bottom right
-    '20 14.5',
-    '25.5 10.5',
-    '20 6.5',
-    '21 0', // Top right
-    '14.5, 1',
-    '10.5 -4.5',
-    '6.5 1',
+    '-10.5 -10.5', // Top left
+    '-9.5 -4',
+    '-15 0',
+    '-9.5 4',
+    '-10.5 10.5', // Bottom left
+    '-4 9.5',
+    '0 15',
+    '4 9.5',
+    '10.5 10.5', // Bottom right
+    '9.5 4',
+    '15 0',
+    '9.5 -4',
+    '10.5 -10.5', // Top right
+    '4, -9.5',
+    '0 -15',
+    '-4 -9.5',
   ]
   poly.setAttribute('points', points.join(', '))
   poly.setAttribute('fill', params.color)
-  poly.setAttribute('transform', 'translate(18.5, 18.5)')
+  poly.setAttribute('transform', 'translate(' + params.width/2 + ', ' + params.height/2 + ')')
   svg.appendChild(poly)
   return svg
 }
