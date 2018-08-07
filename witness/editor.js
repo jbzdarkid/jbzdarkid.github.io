@@ -14,8 +14,8 @@ function drawButtons() {
   var symbolButtons = [
     {'type':'start'},
     {'type':'end'},
-    {'type':'gap', 'height':84, 'width':84, 'rot':0},
-    {'type':'dot', 'height':84, 'width':84},
+    {'type':'gap', 'rot':0},
+    {'type':'dot'},
     {'type':'square'},
     {'type':'star'},
     {'type':'nega'},
@@ -24,15 +24,21 @@ function drawButtons() {
     {'type':'ylop', 'size':4, 'shape':'L', 'rot':0},
   ]
   var symbolCell = document.getElementById('symbols')
+  while (symbolCell.firstChild) symbolCell.removeChild(symbolCell.firstChild)
   for (var params of symbolButtons) {
     if (['gap', 'square', 'nega', 'poly'].includes(params.type)) {
       symbolCell.appendChild(document.createElement('br'))
     }
-    params['color'] = color
+    params.color = color
+    params.height = 80
+    params.width = 80
+    params.border = 2
 
     var buttonElem = document.createElement('button')
-    buttonElem.style.width = '100px'
-    // buttonElem.style.height = '100px'
+    buttonElem.style.padding = 0
+    buttonElem.style.border = params.border
+    buttonElem.style.height = params.height + 2*params.border
+    buttonElem.style.width = params.width + 2*params.border
     buttonElem.id = params.type
     buttonElem.onclick = function() {symbol = this.id}
 
@@ -46,13 +52,28 @@ function drawButtons() {
   
   var colorButtons = ['black', 'white', 'red', 'orange', 'yellow', 'green', 'blue', 'purple', 'custom']
   var colorCell = document.getElementById('colors')
+  while (colorCell.firstChild) colorCell.removeChild(colorCell.firstChild)
   for (var colorName of colorButtons) {
-    var colorElem = document.createElement('button')
-    colorElem.style.width = '200px'
-    colorElem.id = colorName
-    colorElem.onclick = function() {color = this.id; drawButtons()}
-    colorElem.appendChild(_crayon({'color':colorName}))
-    colorCell.appendChild(colorElem)
+    var buttonElem = document.createElement('button')
+    buttonElem.style.padding = '0px'
+    buttonElem.style.width = '200px'
+    buttonElem.id = colorName
+    buttonElem.onclick = function() {color = this.id; drawButtons()}
+    var crayonSvg = _crayon({'color':colorName})
+    if (colorName == 'custom') {
+      var foreignObj = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject')
+      var input = document.createElement('input')
+      input.setAttribute('type', 'color')
+//      input.style.opacity = 0
+//      input.style.width = '100px'
+//      input.style.height = '30px'
+      foreignObj.appendChild(input)
+      crayonSvg.appendChild(foreignObj)
+      buttonElem.onclick = null
+      input.onchange = function() {color = this.value; drawButtons()}
+    }
+    buttonElem.appendChild(crayonSvg)
+    colorCell.appendChild(buttonElem)
     colorCell.appendChild(document.createElement('br'))
   }
 }

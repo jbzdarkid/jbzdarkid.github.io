@@ -85,17 +85,17 @@ function _poly(params) {
     bounds.ymax = Math.max(bounds.ymax, pos.y)
   }
   var offset = (size+space)/2 // Offset between paramsents to create the gap
-  var center_x = (58 - size - offset * (bounds.xmax + bounds.xmin)) / 2
-  var center_y = (58 - size - offset * (bounds.ymax + bounds.ymin)) / 2
+  var center_x = (params.width - size - offset * (bounds.xmax + bounds.xmin)) / 2
+  var center_y = (params.height - size - offset * (bounds.ymax + bounds.ymin)) / 2
 
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('viewBox', '0 0 58 58')
+  svg.setAttribute('viewBox', '0 0 ' + params.width + ' ' + params.height)
   for (var pos of polyomino) {
     var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
     var transform = 'translate('+(center_y+pos.y*offset)+', '+(center_x+pos.x*offset)+')'
     if (params.rot == 'all') {
-      // -30 degree rotation around (29, 29), the midpoint of the square
-      transform = 'rotate(-30, 29, 29) '+transform
+      // -30 degree rotation around the midpoint of the square
+      transform = 'rotate(-30, ' + params.width/2 + ', ' + params.height/2 + ') ' + transform
     }
     rect.setAttribute('transform', transform)
     rect.setAttribute('height', size)
@@ -120,11 +120,11 @@ function _ylop(params) {
     bounds.ymax = Math.max(bounds.ymax, pos.y)
   }
   var offset = (size+space)/2 // Offset between paramsents to create the gap
-  var center_x = (58 - size - offset * (bounds.xmax + bounds.xmin)) / 2
-  var center_y = (58 - size - offset * (bounds.ymax + bounds.ymin)) / 2
+  var center_x = (params.width - size - offset * (bounds.xmax + bounds.xmin)) / 2
+  var center_y = (params.height - size - offset * (bounds.ymax + bounds.ymin)) / 2
 
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('viewBox', '0 0 58 58')
+  svg.setAttribute('viewBox', '0 0 ' + params.width + ' ' + params.height)
   for (var pos of polyomino) {
     var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
     var points = [
@@ -134,8 +134,8 @@ function _ylop(params) {
     poly.setAttribute('points', points.join(', '))
     var transform = 'translate('+(center_y+pos.y*offset)+', '+(center_x+pos.x*offset)+')'
     if (params.rot == 'all') {
-      // -30 degree rotation around (29, 29), the midpoint of the square
-      transform = 'rotate(-30, 29, 29) '+transform
+      // -30 degree rotation around the midpoint of the square
+      transform = 'rotate(-30, ' + params.width/2 + ', ' + params.height/2 + ') ' + transform
     }
     poly.setAttribute('transform', transform)
     poly.setAttribute('fill', params.color)
@@ -162,12 +162,12 @@ function _nega(params) {
 // FIXME: Sizing looks wrong?
 function _triangle(params) {
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('viewBox', '0 0 58 58')
+  svg.setAttribute('viewBox', '0 0 ' + params.width + ' ' + params.height)
   for (var i=0; i<params.count; i++) {
     var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
     poly.setAttribute('points', '0 0, -8 14, 8 14')
-    var y_offset = (58 - 22*(params.count - 1)) / 2 + 22*i
-    poly.setAttribute('transform', 'translate('+y_offset+', 22)')
+    var x_offset = (params.width - 22*(params.count - 1)) / 2 + 22*i
+    poly.setAttribute('transform', 'translate(' + x_offset + ', ' + (params.height/2 - 7) + ')')
     poly.setAttribute('fill', params.color)
     svg.appendChild(poly)
   }
@@ -206,32 +206,33 @@ function _crayon(params) {
 }
 
 function _start(params) {
+  console.log(JSON.stringify(params))
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('viewBox', '0 0 84 84')
+  svg.setAttribute('viewBox', '0 0 ' + params.height + ' ' + params.width)
   var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
   circ.setAttribute('r', 24)
   circ.setAttribute('fill', FOREGROUND)
-  circ.setAttribute('cx', 42)
-  circ.setAttribute('cy', 42)
+  circ.setAttribute('cx', params.height/2)
+  circ.setAttribute('cy', params.width/2)
   svg.appendChild(circ)
   return svg
 }
 
 function _end(params) {
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('viewBox', '0 0 84 84')
+  svg.setAttribute('viewBox', '0 0 ' + params.height + ' ' + params.width)
   var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
   circ.setAttribute('r', 12)
   circ.setAttribute('fill', FOREGROUND)
-  circ.setAttribute('cx', 42)
-  circ.setAttribute('cy', 39)
+  circ.setAttribute('cx', params.height/2)
+  circ.setAttribute('cy', params.width/2 - 3)
   svg.appendChild(circ)
   var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
   rect.setAttribute('width', 24)
   rect.setAttribute('height', 18)
   rect.setAttribute('fill', FOREGROUND)
-  rect.setAttribute('x', 30)
-  rect.setAttribute('y', 39)
+  rect.setAttribute('x', params.height/2 - 12)
+  rect.setAttribute('y', params.width/2 - 3)
   svg.appendChild(rect)
   return svg
 }

@@ -79,7 +79,8 @@ function draw(puzzle, target='puzzle') {
         cell.appendChild(div)
         cell.onclick = function() {trace(this, puzzle)}
       } else if (typeof puzzle.grid[x][y] == 'object') {
-        cell.appendChild(drawSymbol(puzzle.grid[x][y]))
+        params = Object.assign({'height':58, 'width':58}, puzzle.grid[x][y])
+        cell.appendChild(drawSymbol(params))
       }
     }
   }
