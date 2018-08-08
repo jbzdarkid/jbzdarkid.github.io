@@ -2,8 +2,8 @@ var puzzle = new Puzzle(4, 4)
 window.DISABLE_CACHE = true
 var solutions = []
 var currentSolution = 0
-var symbol = 'none'
 var color = 'black'
+var activeParams = {'type': 'nonce'}
 
 window.onload = function() {
   redraw(puzzle)
@@ -22,6 +22,8 @@ function drawButtons() {
     {'type':'triangle', 'count':1},
     {'type':'poly', 'size':4, 'shape':'L', 'rot':0},
     {'type':'ylop', 'size':4, 'shape':'L', 'rot':0},
+    {'type':'poly', 'size':4, 'shape':'L', 'rot':'all'},
+    {'type':'ylop', 'size':4, 'shape':'L', 'rot':'all'},
   ]
   var symbolCell = document.getElementById('symbols')
   while (symbolCell.firstChild) symbolCell.removeChild(symbolCell.firstChild)
@@ -39,12 +41,10 @@ function drawButtons() {
     buttonElem.style.border = params.border
     buttonElem.style.height = params.height + 2*params.border
     buttonElem.style.width = params.width + 2*params.border
-    buttonElem.id = params.type
-    buttonElem.onclick = function() {symbol = this.id}
-
-    // TODO: Remove this once poly/ylop are implemented
-    if (params.type == 'poly' || params.type == 'ylop') {
-      params.color = 'gray'
+    buttonElem.params = params
+    if (['poly', 'ylop'].includes(params.type)) {
+    } else {
+      buttonElem.onclick = function() {activeParams = Object.assign(activeParams, this.params)}
     }
     buttonElem.appendChild(drawSymbol(params))
     symbolCell.appendChild(buttonElem)
@@ -107,13 +107,13 @@ function _onElementClicked(id)
   var x = parseInt(id.split('_')[1])
   var y = parseInt(id.split('_')[2])
   
-  if (symbol == 'start' || symbol == 'end') {
+  if (['start', 'end'].includes(activeParams.type)) {
     if (x%2 != 0 || y%2 != 0) return
     if (x == 0 || y == 0 || x == puzzle.grid.length - 1 || y == puzzle.grid[x].length - 1) {
-      if (symbol == 'start') puzzle.start = {'x':x, 'y':y}
-      if (symbol == 'end') puzzle.end = {'x':x, 'y':y}
+      if (activeParams.type == 'start') puzzle.start = {'x':x, 'y':y}
+      if (activeParams.type == 'end') puzzle.end = {'x':x, 'y':y}
     }
-  } else if (symbol == 'gap') {
+  } else if (activeParams.type == 'gap') {
     if (x%2 + y%2 != 1) return
     var found = false
     for (var i=0; i < puzzle.gaps.length; i++) {
@@ -124,7 +124,7 @@ function _onElementClicked(id)
       }
     }
     if (!found) puzzle.gaps.push({'x':x, 'y':y})
-  } else if (symbol == 'dot') {
+  } else if (activeParams.type == 'dot') {
     if (x%2 == 1 && y%2 == 1) return
     var found = false
     for (var i=0; i < puzzle.dots.length; i++) {
@@ -135,18 +135,18 @@ function _onElementClicked(id)
       }
     }
     if (!found) puzzle.dots.push({'x':x, 'y':y})
-  } else if (symbol == 'square' || symbol == 'star' || symbol == 'nega') {
+  } else if (['square', 'star', 'nega'].includes(activeParams.type)) {
     if (x%2 != 1 || y%2 != 1) return
     // Only change one thing at a time -- if you change color, don't toggle the symbol
-    if (puzzle.grid[x][y].type == symbol && puzzle.grid[x][y].color == color) {
+    if (puzzle.grid[x][y].type == activeParams.type && puzzle.grid[x][y].color == color) {
       puzzle.grid[x][y] = false
     } else {
-      puzzle.grid[x][y] = {'type':symbol, 'color':color}
+      puzzle.grid[x][y] = {'type':activeParams.type, 'color':color}
     }
-  } else if (symbol == 'triangle') {
+  } else if (activeParams.type == 'triangle') {
     if (x%2 != 1 || y%2 != 1) return
     var count = 0
-    if (puzzle.grid[x][y].type == symbol) {
+    if (puzzle.grid[x][y].type == activeParams.type) {
       count = puzzle.grid[x][y].count
       // Only change one thing at a time -- if you change color, count shouldn't change as well.
       if (color != puzzle.grid[x][y].color) {
@@ -156,7 +156,7 @@ function _onElementClicked(id)
     if (puzzle.grid[x][y].count == 3) {
       puzzle.grid[x][y] = false
     } else {
-      puzzle.grid[x][y] = {'type':symbol, 'color':color, 'count':count+1}
+      puzzle.grid[x][y] = {'type':activeParams.type, 'color':color, 'count':count+1}
     }
   }
   
