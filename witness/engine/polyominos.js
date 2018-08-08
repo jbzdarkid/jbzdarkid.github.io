@@ -15,6 +15,30 @@ function getPolyomino(size=null, shape=null, rot=null) {
   }
 }
 
+function polyominoFromPolyshape(polyshape) {
+  var topLeft = {'x':4, 'y':4}
+  var polyomino = []
+
+  for (var x=0; x<4; x++) {
+    for (var y=0; y<4; y++) {
+      if ((polyshape & (1 << (x*4 + y))) != 0) {
+        polyomino.push({'x':x, 'y':y})
+        if (x < topLeft.x || (x == topLeft.x && y < topLeft.y)) {
+          topLeft = {'x':x, 'y':y}
+        }
+      }
+    }
+  }
+  
+  for (var i=0; i<polyomino.length; i++) {
+    polyomino[i] = {
+      'x':2*(polyomino[i].x - topLeft.x),
+      'y':2*(polyomino[i].y - topLeft.y)
+    }
+  }
+  return polyomino
+}
+
 // IMPORTANT NOTE: When formulating these, the top-left must be 0, 0.
 // That means there can never be any negative x values.
 POLYOMINOS = {

@@ -3,7 +3,7 @@ window.DISABLE_CACHE = true
 var solutions = []
 var currentSolution = 0
 var color = 'black'
-var activeParams = {'type': 'nonce'}
+var activeParams = {'type': 'nonce', 'polyshape': 785}
 
 window.onload = function() {
   redraw(puzzle)
@@ -20,10 +20,10 @@ function drawButtons() {
     {'type':'star'},
     {'type':'nega'},
     {'type':'triangle', 'count':1},
-    {'type':'poly', 'size':4, 'shape':'L', 'rot':0},
-    {'type':'ylop', 'size':4, 'shape':'L', 'rot':0},
-    {'type':'poly', 'size':4, 'shape':'L', 'rot':'all'},
-    {'type':'ylop', 'size':4, 'shape':'L', 'rot':'all'},
+    {'type':'poly', 'rot':0},
+    {'type':'ylop', 'rot':0},
+    {'type':'poly', 'rot':'all'},
+    {'type':'ylop', 'rot':'all'},
   ]
   var symbolCell = document.getElementById('symbols')
   while (symbolCell.firstChild) symbolCell.removeChild(symbolCell.firstChild)
@@ -31,9 +31,11 @@ function drawButtons() {
     if (['gap', 'square', 'nega', 'poly'].includes(params.type)) {
       symbolCell.appendChild(document.createElement('br'))
     }
+    // Deep Copy
+    params = Object.assign(JSON.parse(JSON.stringify(activeParams)), params)
     params.color = color
-    params.height = 80
-    params.width = 80
+    params.height = 76
+    params.width = 76
     params.border = 2
 
     var buttonElem = document.createElement('button')
@@ -43,6 +45,7 @@ function drawButtons() {
     buttonElem.style.width = params.width + 2*params.border
     buttonElem.params = params
     if (['poly', 'ylop'].includes(params.type)) {
+      buttonElem.onclick = function() {shapeChooser(this.params)}
     } else {
       buttonElem.onclick = function() {activeParams = Object.assign(activeParams, this.params)}
     }
@@ -75,6 +78,78 @@ function drawButtons() {
     buttonElem.appendChild(crayonSvg)
     colorCell.appendChild(buttonElem)
     colorCell.appendChild(document.createElement('br'))
+  }
+}
+
+function shapeChooser(params) {
+  var puzzle = document.getElementById('puzzle')
+  puzzle.style.opacity = '0'
+  
+  var anchor = document.createElement('div')
+  document.body.appendChild(anchor)
+  anchor.style.position = 'absolute'
+  anchor.style.top = 0
+  anchor.style.width = '100%'
+  anchor.style.height = '100%'
+  anchor.onmousedown = function() {shapeChooserClick()}
+  
+  var chooser = document.createElement('table')
+  anchor.appendChild(chooser)
+  chooser.id = 'chooser'
+  chooser.params = params
+  chooser.style.textAlign = 'center'
+  chooser.setAttribute('cellspacing', '24px')
+  chooser.setAttribute('cellpadding', '0px')
+  chooser.style.padding = 25
+  chooser.style.background = BACKGROUND
+  chooser.style.border = BORDER
+  chooser.onmousedown = function() {shapeChooserClick(event, this)}
+  for (var x=0; x<4; x++) {
+    var row = chooser.insertRow(x)
+    for (var y=0; y<4; y++) {
+      var cell = row.insertCell(y)
+      cell.id = 'chooser_' + x + '_' + y
+      cell.powerOfTwo = 1 << (x*4 + y)
+      cell.onmousedown = function() {shapeChooserClick(event, this)}
+      cell.style.width = 58
+      cell.style.height = 58
+      if ((chooser.params.polyshape & cell.powerOfTwo) != 0) {
+        cell.clicked = true
+        cell.style.background = color
+      } else {
+        cell.clicked = false
+        cell.style.background = FOREGROUND
+      }
+    }
+  }
+}
+
+function shapeChooserClick(event, cell) {
+  if (cell == undefined) {
+    var chooser = document.getElementById('chooser')
+    var anchor = chooser.parentElement
+    var puzzle = document.getElementById('puzzle')
+
+    activeParams = chooser.params
+    anchor.parentElement.removeChild(anchor)
+    puzzle.style.opacity = null
+    drawButtons()
+    return
+  }
+  // Clicks inside the chooser box are non-closing
+  if (cell.id == 'chooser') {
+    event.stopPropagation()
+    return
+  }
+  var x = cell.id.split('_')[1]
+  var y = cell.id.split('_')[2]
+  cell.clicked = !cell.clicked
+  var chooser = document.getElementById('chooser')
+  chooser.params.polyshape ^= cell.powerOfTwo
+  if (cell.clicked) {
+    cell.style.background = color
+  } else {
+    cell.style.background = FOREGROUND
   }
 }
 
@@ -135,13 +210,13 @@ function _onElementClicked(id)
       }
     }
     if (!found) puzzle.dots.push({'x':x, 'y':y})
-  } else if (['square', 'star', 'nega'].includes(activeParams.type)) {
+  } else if (['square', 'star', 'nega', 'poly', 'ylop'].includes(activeParams.type)) {
     if (x%2 != 1 || y%2 != 1) return
     // Only change one thing at a time -- if you change color, don't toggle the symbol
-    if (puzzle.grid[x][y].type == activeParams.type && puzzle.grid[x][y].color == color) {
+    if (puzzle.grid[x][y].type == JSON.parse(JSON.stringify(activeParams.type)) && puzzle.grid[x][y].color == color) {
       puzzle.grid[x][y] = false
     } else {
-      puzzle.grid[x][y] = {'type':activeParams.type, 'color':color}
+      puzzle.grid[x][y] = JSON.parse(JSON.stringify(Object.assign(activeParams, {'color':color})))
     }
   } else if (activeParams.type == 'triangle') {
     if (x%2 != 1 || y%2 != 1) return
@@ -156,7 +231,7 @@ function _onElementClicked(id)
     if (puzzle.grid[x][y].count == 3) {
       puzzle.grid[x][y] = false
     } else {
-      puzzle.grid[x][y] = {'type':activeParams.type, 'color':color, 'count':count+1}
+      puzzle.grid[x][y] = {'type':JSON.parse(JSON.stringify(activeParams.type)), 'color':color, 'count':count+1}
     }
   }
   

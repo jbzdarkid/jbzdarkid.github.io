@@ -76,8 +76,12 @@ function _star(params) {
 function _poly(params) {
   var size = 10 // Side length of individual squares in the polyomino
   var space = 4 // Gap between squares in the polyomino
-  // Select the first (potentially only) rotation of the paramsent.
-  var polyomino = getPolyomino(params.size, params.shape, params.rot)[0]
+  if (params.polyshape) {
+    var polyomino = polyominoFromPolyshape(params.polyshape)
+  } else {
+    // Select the first (potentially only) rotation of the paramsent.
+    var polyomino = getPolyomino(params.size, params.shape, params.rot)[0]
+  }
 
   var bounds = {'xmin':0, 'xmax':0, 'ymin':0, 'ymax':0}
   for (var pos of polyomino) {
@@ -111,8 +115,12 @@ function _poly(params) {
 function _ylop(params) {
   var size = 12 // Side length of individual squares in the polyomino
   var space = 2 // Gap between squares in the polyomino
-  // Select the first (potentially only) rotation of the paramsent.
-  var polyomino = getPolyomino(params.size, params.shape, params.rot)[0]
+  if (params.polyshape) {
+    var polyomino = polyominoFromPolyshape(params.polyshape)
+  } else {
+    // Select the first (potentially only) rotation of the paramsent.
+    var polyomino = getPolyomino(params.size, params.shape, params.rot)[0]
+  }
 
   var bounds = {'xmin':0, 'xmax':0, 'ymin':0, 'ymax':0}
   for (var pos of polyomino) {
