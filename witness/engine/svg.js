@@ -74,6 +74,7 @@ function _star(params) {
 }
 
 function _poly(params) {
+  if (params.polyshape == 0) return document.createElement('null')
   var size = 10 // Side length of individual squares in the polyomino
   var space = 4 // Gap between squares in the polyomino
   if (params.polyshape) {
@@ -113,6 +114,7 @@ function _poly(params) {
 }
 
 function _ylop(params) {
+  if (params.polyshape == 0) return document.createElement('null')
   var size = 12 // Side length of individual squares in the polyomino
   var space = 2 // Gap between squares in the polyomino
   if (params.polyshape) {
