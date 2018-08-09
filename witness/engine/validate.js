@@ -303,6 +303,7 @@ function _polyFit(polys, ylops, grid) {
           }
           var ret = _polyFit(polys, ylops, grid)
           for (var cell of ylopCells) { // Restore the grid
+            grid[cell.x + x][cell.y + y]--
           }
           if (ret) return true
         }
