@@ -107,29 +107,21 @@ function randomPuzzle(style) {
         puzzle.grid[pos.x][pos.y] = {'type':'triangle', 'color':ORANGE, 'count':count}
       } else { // Polyominos
         var size = _randint(Math.min(width, height))+1
-        var shapes = getPolyomino(size)
-        var shape = shapes[_randint(shapes.length)]
-        var numRotations = getPolyomino(size, shape)
-        var rotation = _randint(numRotations)
-        var color = [YELLOW, RED, BLUE, WHITE][_randint(style['colors'])]
-        var obj = {'color':color, 'size':size, 'shape':shape, 'rot':rotation}
-        if (type == 'polyominos') {
-          Object.assign(obj, {'type':'poly'})
-        } else if (type == 'rpolyominos') {
-          if (numRotations == 1) {
-            i--
-            continue
-          }
-          Object.assign(obj, {'type':'poly', 'rot':'all'})
-        } else if (type == 'onimoylops') {
-          Object.assign(obj, {'type':'ylop', 'color':BLUE})
-        } else if (type == 'ronimoylops') {
-          if (numRotations == 1) {
-            i--
-            continue
-          }
-          Object.assign(obj, {'type':'ylop', 'color':BLUE, 'rot':'all'})
+        var polyshapes = getPolyomino(size)
+        var obj = {'polyshape': polyshapes[_randint(polyshapes.length)]}
+        if (type[0] == 'r') { // rpolyominos or ronimoylops
+          obj['rot'] = 'all'
+        } else {
+          obj['rot'] = _randint(4)
         }
+        obj['color'] = [YELLOW, RED, BLUE, WHITE][_randint(style['colors'])]
+
+        if (['polyominos', 'rpolyominos'].includes(type)) {
+          obj['type'] = 'poly'
+        } else if (['onimoylops', 'ronimoylops'].includes(type)) {
+          obj['type'] = 'ylop'
+        }
+
         var pos = cells.splice(_randint(cells.length), 1)[0]
         puzzle.grid[pos.x][pos.y] = obj
       }
