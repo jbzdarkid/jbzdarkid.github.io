@@ -15,6 +15,16 @@ function getPolyomino(size=null, shape=null, rot=null) {
   }
 }
 
+function getPolySize(polyshape) {
+  var size = 0
+  for (var x=0; x<4; x++) {
+    for (var y=0; y<4; y++) {
+      if (_isSet(polyshape, x, y)) size++
+    }
+  }
+  return size
+}
+
 function _mask(x, y) {
   return 1 << (x*4 + y)
 }

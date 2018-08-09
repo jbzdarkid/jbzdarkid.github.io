@@ -231,10 +231,10 @@ function _regionCheck(puzzle, region) {
     if (cell != 0) {
       if (cell.type == 'poly') {
         polys.push(cell)
-        polyCount += cell.size
+        polyCount += getPolySize(cell.polyshape)
       } else if (cell.type == 'ylop') {
         ylops.push(cell)
-        polyCount -= cell.size
+        polyCount -= getPolySize(cell.polyshape)
       }
     }
   }
@@ -299,11 +299,10 @@ function _polyFit(polys, ylops, grid) {
             }
           }
           for (var cell of ylopCells) { // Place in the grid
-            grid[cell.x+x][cell.y+y]++
+            grid[cell.x + x][cell.y + y]++
           }
           var ret = _polyFit(polys, ylops, grid)
           for (var cell of ylopCells) { // Restore the grid
-            grid[cell.x+x][cell.y+y]--
           }
           if (ret) return true
         }
