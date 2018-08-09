@@ -286,8 +286,9 @@ function _polyFit(polys, ylops, grid) {
 
   if (ylops.length > 0) {
     ylop = ylops.pop()
-    var ylopRotations = getPolyomino(ylop.size, ylop.shape, ylop.rot)
-    for (var ylopCells of ylopRotations) {
+    var ylopRotations = getRotations(ylop.polyshape, ylop.rot)
+    for (var _ylopCells of ylopRotations) {
+      var ylopCells = polyominoFromPolyshape(_ylopCells)
       for (var x=1; x<grid.length; x+=2) {
         nextPos: for (var y=1; y<grid[x].length; y+=2) {
           for (var cell of ylopCells) { // Check if the ylop fits
@@ -329,9 +330,10 @@ function _polyFit(polys, ylops, grid) {
 
   for (var i=0; i<polys.length; i++) {
     var poly = polys.splice(i, 1)[0]
-    var polyRotations = getPolyomino(poly.size, poly.shape, poly.rot)
+    var polyRotations = getRotations(poly.polyshape, poly.rot)
     var polyFits = false
-    nextRotation: for (var polyCells of polyRotations) {
+    nextRotation: for (var _polyCells of polyRotations) {
+      var polyCells = polyominoFromPolyshape(_polyCells)
       for (var cell of polyCells) {
         // Check if the poly is off the grid or extends out of region
         if (cell.x + first.x < 0 || cell.x + first.x > grid.length-1) {

@@ -15,13 +15,37 @@ function getPolyomino(size=null, shape=null, rot=null) {
   }
 }
 
+function _mask(x, y) {
+  return 1 << (x*4 + y)
+}
+function _isSet(polyshape, x, y) {
+  return (polyshape & _mask(x, y)) != 0
+}
+
+function getRotations(polyshape, rot=null) {
+  if (rot != 'all') return [polyshape]
+
+  var rotations = [0, 0, 0, 0]
+  for (var x=0; x<4; x++) {
+    for (var y=0; y<4; y++) {
+      if (_isSet(polyshape, x, y)) {
+        rotations[0] ^= _mask(x, y)
+        rotations[1] ^= _mask(y, 4-x)
+        rotations[2] ^= _mask(4-x, 4-y)
+        rotations[3] ^= _mask(4-y, x)
+      }
+    }
+  }
+  return rotations
+}
+
 function polyominoFromPolyshape(polyshape) {
   var topLeft = {'x':4, 'y':4}
   var polyomino = []
 
   for (var x=0; x<4; x++) {
     for (var y=0; y<4; y++) {
-      if ((polyshape & (1 << (x*4 + y))) != 0) {
+      if (_isSet(polyshape, x, y)) {
         polyomino.push({'x':x, 'y':y})
         if (x < topLeft.x || (x == topLeft.x && y < topLeft.y)) {
           topLeft = {'x':x, 'y':y}
