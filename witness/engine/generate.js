@@ -107,12 +107,14 @@ function randomPuzzle(style) {
         puzzle.grid[pos.x][pos.y] = {'type':'triangle', 'color':ORANGE, 'count':count}
       } else { // Polyominos
         var size = _randint(Math.min(width, height))+1
-        var polyshapes = getPolyomino(size)
-        var obj = {'polyshape': polyshapes[_randint(polyshapes.length)]}
+        var polyshapes = POLYOMINOS[size]
+        var polyshape = polyshapes[_randint(polyshapes.length)]
+        var rotations = getRotations(polyshape, 'all')
+        var obj = {'polyshape': rotations[_randint(4)]}
+
         if (type[0] == 'r') { // rpolyominos or ronimoylops
           obj['rot'] = 'all'
         } else {
-          obj['rot'] = _randint(4)
         }
         obj['color'] = [YELLOW, RED, BLUE, WHITE][_randint(style['colors'])]
 

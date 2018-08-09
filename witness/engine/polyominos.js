@@ -1,20 +1,3 @@
-function getPolyomino(size=null) {
-  if (size == null) {
-    return Object.keys(POLYOMINOS)
-  }
-  if (shape == null) {
-    return Object.keys(POLYOMINOS[size])
-  }
-  if (rot == null) {
-    return POLYOMINOS[size][shape].length
-  } else if (rot == 'all') {
-    return POLYOMINOS[size][shape]
-  } else {
-    rot %= POLYOMINOS[size][shape].length
-    return [POLYOMINOS[size][shape][rot]]
-  }
-}
-
 function getPolySize(polyshape) {
   var size = 0
   for (var x=0; x<4; x++) {

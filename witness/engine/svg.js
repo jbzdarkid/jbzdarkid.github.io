@@ -187,8 +187,8 @@ function _triangle(params) {
 }
 
 function _crayon(params) {
-  var height = 35
-  var width = 125 + height/2
+  var height = params.height
+  var width = params.width
   var border = 2
 
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
@@ -211,8 +211,8 @@ function _crayon(params) {
   poly.setAttribute('fill', params.color)
   svg.appendChild(poly)
   var txt = document.createElementNS('http://www.w3.org/2000/svg', 'text')
-  txt.setAttribute('transform', 'translate(25, 25)')
-  txt.innerHTML = params.color
+  txt.setAttribute('transform', 'translate(' + (height/2 + 10) + ', ' + (height/2 + 6) + ')')
+  txt.innerHTML = params.text
   svg.appendChild(txt)
   return svg
 }

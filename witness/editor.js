@@ -2,15 +2,16 @@ var puzzle = new Puzzle(4, 4)
 window.DISABLE_CACHE = true
 var solutions = []
 var currentSolution = 0
-var color = 'black'
-var activeParams = {'type': 'nonce', 'polyshape': 785}
+var customColor = 'gray'
+var activeParams = {'type': 'nonce', 'color':'black', 'polyshape': 785}
 
 window.onload = function() {
   redraw(puzzle)
-  drawButtons()
+  drawSymbolButtons()
+  drawColorButtons()
 }
 
-function drawButtons() {
+function drawSymbolButtons() {
   var symbolButtons = [
     {'type':'start'},
     {'type':'end'},
@@ -33,7 +34,6 @@ function drawButtons() {
     }
     // Deep Copy
     params = Object.assign(JSON.parse(JSON.stringify(activeParams)), params)
-    params.color = color
     params.height = 76
     params.width = 76
     params.border = 2
@@ -52,30 +52,65 @@ function drawButtons() {
     buttonElem.appendChild(drawSymbol(params))
     symbolCell.appendChild(buttonElem)
   }
-  
-  var colorButtons = ['black', 'white', 'red', 'orange', 'yellow', 'green', 'blue', 'purple', 'custom']
+}
+
+function drawColorButtons() {
+  var colorButtons = [
+    {'text':'black'},
+    {'text':'white'},
+    {'text':'red'},
+    {'text':'orange'},
+    {'text':'yellow'},
+    {'text':'green'},
+    {'text':'blue'},
+    {'text':'purple'},
+    {'text':'custom'}
+  ]
   var colorCell = document.getElementById('colors')
   while (colorCell.firstChild) colorCell.removeChild(colorCell.firstChild)
-  for (var colorName of colorButtons) {
+  for (var params of colorButtons) {
+    params.width = 196
+    params.height = 46
+    params.border = 2
+
     var buttonElem = document.createElement('button')
-    buttonElem.style.padding = '0px'
-    buttonElem.style.width = '200px'
-    buttonElem.id = colorName
-    buttonElem.onclick = function() {color = this.id; drawButtons()}
-    var crayonSvg = _crayon({'color':colorName})
-    if (colorName == 'custom') {
+    buttonElem.style.padding = 0
+    buttonElem.style.border = params.border
+    buttonElem.style.height = params.height + 2*params.border
+    buttonElem.style.width = params.width + 2*params.border
+    if (params.text == 'custom') {
+      params.color = customColor
+      var crayonSvg = _crayon(params)
       var foreignObj = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject')
       var input = document.createElement('input')
       input.setAttribute('type', 'color')
-//      input.style.opacity = 0
-//      input.style.width = '100px'
-//      input.style.height = '30px'
+      input.setAttribute('value', customColor)
+      input.style.opacity = 0
+      input.style.width = params.width
+      input.style.height = params.height
       foreignObj.appendChild(input)
       crayonSvg.appendChild(foreignObj)
-      buttonElem.onclick = null
-      input.onchange = function() {color = this.value; drawButtons()}
+      
+      input.onclick = function() {
+        activeParams.color = customColor
+        drawSymbolButtons()
+      }
+      input.onchange = function() {
+        customColor = this.value
+        activeParams.color = customColor
+        drawSymbolButtons()
+        drawColorButtons()
+      }
+      buttonElem.appendChild(crayonSvg)
+    } else {
+      params.color = params.text
+      buttonElem.params = params
+      buttonElem.onclick = function() {
+        activeParams = Object.assign(activeParams, this.params)
+        drawSymbolButtons()
+      }
+      buttonElem.appendChild(_crayon(params))
     }
-    buttonElem.appendChild(crayonSvg)
     colorCell.appendChild(buttonElem)
     colorCell.appendChild(document.createElement('br'))
   }
@@ -115,7 +150,7 @@ function shapeChooser(params) {
       cell.style.height = 58
       if ((chooser.params.polyshape & cell.powerOfTwo) != 0) {
         cell.clicked = true
-        cell.style.background = color
+        cell.style.background = activeParams.color
       } else {
         cell.clicked = false
         cell.style.background = FOREGROUND
@@ -147,7 +182,7 @@ function shapeChooserClick(event, cell) {
   var chooser = document.getElementById('chooser')
   chooser.params.polyshape ^= cell.powerOfTwo
   if (cell.clicked) {
-    cell.style.background = color
+    cell.style.background = activeParams.color
   } else {
     cell.style.background = FOREGROUND
   }
@@ -213,10 +248,13 @@ function _onElementClicked(id)
   } else if (['square', 'star', 'nega', 'poly', 'ylop'].includes(activeParams.type)) {
     if (x%2 != 1 || y%2 != 1) return
     // Only change one thing at a time -- if you change color, don't toggle the symbol
-    if (puzzle.grid[x][y].type == JSON.parse(JSON.stringify(activeParams.type)) && puzzle.grid[x][y].color == color) {
+    if (puzzle.grid[x][y].type == activeParams.type
+     && puzzle.grid[x][y].color == activeParams.color
+     && puzzle.grid[x][y].polyshape == activeParams.polyshape
+     && puzzle.grid[x][y].rot == activeParams.rot) {
       puzzle.grid[x][y] = false
     } else {
-      puzzle.grid[x][y] = JSON.parse(JSON.stringify(Object.assign(activeParams, {'color':color})))
+      puzzle.grid[x][y] = JSON.parse(JSON.stringify(activeParams))
     }
   } else if (activeParams.type == 'triangle') {
     if (x%2 != 1 || y%2 != 1) return
@@ -224,14 +262,14 @@ function _onElementClicked(id)
     if (puzzle.grid[x][y].type == activeParams.type) {
       count = puzzle.grid[x][y].count
       // Only change one thing at a time -- if you change color, count shouldn't change as well.
-      if (color != puzzle.grid[x][y].color) {
+      if (activeParams.color != puzzle.grid[x][y].color) {
         count--
       }
     }
     if (puzzle.grid[x][y].count == 3) {
       puzzle.grid[x][y] = false
     } else {
-      puzzle.grid[x][y] = {'type':JSON.parse(JSON.stringify(activeParams.type)), 'color':color, 'count':count+1}
+      puzzle.grid[x][y] = JSON.parse(JSON.stringify(Object.assign(activeParams, {'count':count+1})))
     }
   }
   
