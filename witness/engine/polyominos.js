@@ -40,9 +40,9 @@ function getRotations(polyshape, rot=null) {
     for (var y=0; y<4; y++) {
       if (_isSet(polyshape, x, y)) {
         rotations[0] ^= _mask(x, y)
-        rotations[1] ^= _mask(y, 4-x)
-        rotations[2] ^= _mask(4-x, 4-y)
-        rotations[3] ^= _mask(4-y, x)
+        rotations[1] ^= _mask(y, 3-x)
+        rotations[2] ^= _mask(3-x, 3-y)
+        rotations[3] ^= _mask(3-y, x)
       }
     }
   }
