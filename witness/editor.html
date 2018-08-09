@@ -14,13 +14,14 @@
   </head>
   <body>
     <div style="text-align: center">
-      <label id="puzzleName" onclick="rename();" style="font-size: 72">Unnamed Puzzle</label>
+      <label id="puzzleName" onclick="meta('rename');" style="font-size: 72">Unnamed Puzzle</label>
     </div><div style="text-align: center">
       <button disabled onclick="meta('rename');">Rename</button>
       <button disabled onclick="meta('new');">New</button>
       <button disabled onclick="meta('load');">Load</button>
       <button disabled onclick="meta('import');">Import</button>
       <button disabled onclick="meta('export');">Export</button>
+      <button disabled onclick="meta('delete');">Delete</button>
     </div>
     
     <table id="meta">
