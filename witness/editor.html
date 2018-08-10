@@ -12,16 +12,16 @@
     <script type="text/javascript" src="editor.js"></script>
     <title>Create a puzzle</title>
   </head>
-  <body>
-    <div style="text-align: center">
+  <body style="text-align: center">
+    <div>
       <label id="puzzleName" contentEditable=true style="font-size: 72">Unnamed Puzzle</label>
-    </div><div style="text-align: center">
-      <button onclick="meta('new');">New</button>
-      <button onclick="meta('load');">Load</button>
-      <button onclick="meta('import');">Import</button>
-      <button onclick="meta('export');">Export</button>
+    </div><div>
+      <button onclick="newPuzzle()">New</button>
+      <button onclick="loadPuzzle()">Load</button>
+      <button onclick="importPuzzle()">Import</button>
+      <button onclick="exportPuzzle()">Export</button>
       <textarea style="display:none" id="export"></textarea>
-      <button disabled onclick="meta('delete');">Delete</button>
+      <button onclick="deletePuzzleAndLoadNext()">Delete</button>
     </div>
     
     <table id="meta">

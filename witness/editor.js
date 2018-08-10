@@ -4,58 +4,139 @@ var activeParams = {'type': 'nonce', 'color':'black', 'polyshape': 785}
 var puzzle, solutions, currentSolution
 
 window.onload = function() {
-  meta('load')
+  var activePuzzle = window.localStorage.getItem('activePuzzle')
+  try {
+    puzzle = Puzzle.deserialize(window.localStorage.getItem(activePuzzle))
+    updatePuzzle()
+  } catch (e) {
+    console.log(e)
+    newPuzzle()
+  }
   drawSymbolButtons()
   drawColorButtons()
-  document.getElementById('puzzleName').addEventListener('input', function() {meta('save')})
+  document.getElementById('puzzleName').addEventListener('input', function() {savePuzzle()})
 }
 
-function meta(command) {
-  if (command == 'new') {
-    puzzle = new Puzzle(4, 4)
-    solutions = []
-    currentSolution = 0
-    document.getElementById('puzzleName').innerText = "Unnamed Puzzle"
-    console.log(document.getElementById('puzzleName'))
+function newPuzzle() {
+  puzzle = new Puzzle(4, 4)
+  solutions = []
+  currentSolution = 0
+  document.getElementById('puzzleName').innerText = "Unnamed Puzzle"
+  redraw(puzzle)
+}
 
-    redraw(puzzle)
-  } else if (command == 'save') {
-    puzzle.name = document.getElementById('puzzleName').innerText
-    console.log('Saving', puzzle)
-    window.localStorage.setItem('activePuzzle', puzzle.serialize())
-  } else if (command == 'load') {
-    var serialized = window.localStorage.getItem('activePuzzle')
-    if (serialized) {
+function savePuzzle() {
+  console.log('Saving puzzle...')
+  // Delete the old puzzle
+  var activePuzzle = window.localStorage.getItem('activePuzzle')
+  window.localStorage.removeItem(activePuzzle)
+  var puzzleList = JSON.parse(window.localStorage.getItem('puzzleList'))
+  if (!puzzleList) puzzleList = []
+  var index = puzzleList.indexOf(activePuzzle)
+  if (index != -1) puzzleList.splice(index, 1)
+
+  // Save the new version
+  puzzle.name = document.getElementById('puzzleName').innerText
+  // TODO: Some intelligence about showing day / month / etc depending on date age
+  savedPuzzle = puzzle.name + ' on ' + (new Date()).toLocaleString()
+  puzzleList.unshift(savedPuzzle)
+  window.localStorage.setItem('puzzleList', JSON.stringify(puzzleList))
+  window.localStorage.setItem(savedPuzzle, puzzle.serialize())
+  window.localStorage.setItem('activePuzzle', savedPuzzle)
+}
+
+function deletePuzzleAndLoadNext() {
+  var activePuzzle = window.localStorage.getItem('activePuzzle')
+  console.log('Deleting', activePuzzle)
+  window.localStorage.removeItem(activePuzzle)
+
+  var puzzleList = JSON.parse(window.localStorage.getItem('puzzleList'))
+  var index = puzzleList.indexOf(activePuzzle)
+  if (index != -1) puzzleList.splice(index, 1)
+  window.localStorage.setItem('puzzleList', JSON.stringify(puzzleList))
+
+  while (puzzleList.length > 0) {
+    var serialized = window.localStorage.getItem(puzzleList[0])
+    if (!serialized) {
+      puzzleList.shift()
+      continue
+    }
+    try {
       puzzle = Puzzle.deserialize(serialized)
       document.getElementById('puzzleName').innerText = puzzle.name
       updatePuzzle()
-    } else {
-      meta('new')
+      break
+    } catch (e) {
+      console.log(e)
+      puzzleList.shift()
     }
-  } else if (command == 'import') {
-    var serialized = prompt('Paste your puzzle here:')
-    if (serialized) {
-      var savedPuzzle = puzzle
-      try {
-        puzzle = Puzzle.deserialize(serialized)
-        updatePuzzle() // Will throw for most invalid puzzles
-        document.getElementById('puzzleName').innerText = puzzle.name
-      } catch (e) {
-        console.log(e)
-        alert('Not a valid puzzle!')
-        puzzle = savedPuzzle
-        updatePuzzle()
-      }
-    }
-  } else if (command == 'export') {
-    var elem = document.getElementById('export')
-    elem.value = puzzle.serialize()
-    elem.style.display = null
-    elem.select()
-    document.execCommand('copy')
-    elem.style.display = 'none'
-    alert('Puzzle copied to clipboard.')
   }
+
+  if (puzzleList.length == 0) {
+    window.localStorage.clear()
+    newPuzzle()
+    return
+  }
+  window.localStorage.setItem('activePuzzle', puzzleList[0])
+}
+
+function loadPuzzle() {
+  var puzzleList = JSON.parse(window.localStorage.getItem('puzzleList'))
+  if (!puzzleList) return
+
+  document.getElementById('puzzleName').style.opacity = 0
+  
+  var anchor = document.createElement('div')
+  anchor.id = 'anchor'
+  anchor.style.position = 'absolute'
+  anchor.style.top = 20
+  anchor.style.width = '100%'
+  document.body.appendChild(anchor)
+  
+  var loadList = document.createElement('select')
+  anchor.appendChild(loadList)
+  for (var puzzleName of puzzleList) {
+    var option = document.createElement('option')
+    option.innerText = puzzleName
+    loadList.appendChild(option)
+  }
+
+  loadList.value = ''
+  loadList.onchange = function() {
+    console.log(this.value)
+    puzzle = Puzzle.deserialize(window.localStorage.getItem(this.value))
+    updatePuzzle()
+    var anchor = document.getElementById('anchor')
+    anchor.parentElement.removeChild(anchor)
+    document.getElementById('puzzleName').style.opacity = null
+  }
+}
+
+function importPuzzle() {
+  var serialized = prompt('Paste your puzzle here:')
+  if (serialized) {
+    var savedPuzzle = puzzle
+    try {
+      puzzle = Puzzle.deserialize(serialized)
+      updatePuzzle() // Will throw for most invalid puzzles
+      document.getElementById('puzzleName').innerText = puzzle.name
+    } catch (e) {
+      console.log(e)
+      alert('Not a valid puzzle!')
+      puzzle = savedPuzzle
+      updatePuzzle()
+    }
+  }
+}
+
+function exportPuzzle() {
+  var elem = document.getElementById('export')
+  elem.value = puzzle.serialize()
+  elem.style.display = null
+  elem.select()
+  document.execCommand('copy')
+  elem.style.display = 'none'
+  alert('Puzzle copied to clipboard.')
 }
 
 function drawSymbolButtons() {
@@ -231,6 +312,7 @@ function shapeChooserClick(event, cell) {
 }
 
 function updatePuzzle() {
+  document.getElementById('puzzleName').innerText = puzzle.name
   redraw(puzzle)
   solutions = []
   solve(puzzle, puzzle.start.x, puzzle.start.y, solutions)
@@ -336,6 +418,6 @@ function _onElementClicked(id)
     }
   }
 
-  meta('save')
+  savePuzzle()
   updatePuzzle()
 }
