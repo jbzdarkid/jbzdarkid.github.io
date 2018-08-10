@@ -30,7 +30,7 @@ function validate(puzzle) {
   for (var region of regions) {
     var key = region.grid.toString()
     var regionData = puzzle.regionCache[key]
-    if (regionData == undefined || window.DISABLE_CACHE) {
+    if (regionData == undefined) {
       // console.log('Cache miss for region', region, 'key', key)
       var hasNega = false
       for (var pos of region.cells) {
@@ -45,7 +45,9 @@ function validate(puzzle) {
       } else {
         regionData = {'valid':_regionCheck(puzzle, region), 'negations':[]}
       }
-      puzzle.regionCache[key] = regionData
+      if (!window.DISABLE_CACHE) {
+        puzzle.regionCache[key] = regionData
+      }
       // FIXME: Can't cache regions with triangles because the edges matter, not just the cells.
       for (var pos of region.cells) {
         if (puzzle.getCell(pos.x, pos.y).type == 'triangle') {
