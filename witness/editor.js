@@ -7,6 +7,7 @@ window.onload = function() {
   meta('load')
   drawSymbolButtons()
   drawColorButtons()
+  document.getElementById('puzzleName').addEventListener('input', function() {meta('save')})
 }
 
 function meta(command) {
@@ -14,40 +15,40 @@ function meta(command) {
     puzzle = new Puzzle(4, 4)
     solutions = []
     currentSolution = 0
-    document.getElementById('puzzleName').value = "Unnamed Puzzle"
+    document.getElementById('puzzleName').innerText = "Unnamed Puzzle"
+    console.log(document.getElementById('puzzleName'))
 
     redraw(puzzle)
   } else if (command == 'save') {
-    puzzle.name = document.getElementById('puzzleName').value
+    puzzle.name = document.getElementById('puzzleName').innerText
+    console.log('Saving', puzzle)
     window.localStorage.setItem('activePuzzle', puzzle.serialize())
   } else if (command == 'load') {
     var serialized = window.localStorage.getItem('activePuzzle')
     if (serialized) {
       puzzle = Puzzle.deserialize(serialized)
-      document.getElementById('puzzleName').value = puzzle.name
+      document.getElementById('puzzleName').innerText = puzzle.name
       updatePuzzle()
     } else {
       meta('new')
     }
   } else if (command == 'import') {
-    var elem = document.getElementById('importexport')
-    elem.style.display = null
-    elem.select()
-    document.execCommand('paste')
-    elem.style.display = 'none'
-    var savedPuzzle = puzzle
-    try {
-      puzzle = Puzzle.deserialize(window.localStorage.getItem('activePuzzle'))
-      updatePuzzle()
-      document.getElementById('puzzleName').value = puzzle.name
-    } catch (e) {
-      console.log(e)
-      alert('Couldn\'t import:\nClipboard contained an invalid puzzle.')
-      puzzle = savedPuzzle
-      updatePuzzle()
+    var serialized = prompt('Paste your puzzle here:')
+    if (serialized) {
+      var savedPuzzle = puzzle
+      try {
+        puzzle = Puzzle.deserialize(serialized)
+        updatePuzzle() // Will throw for most invalid puzzles
+        document.getElementById('puzzleName').innerText = puzzle.name
+      } catch (e) {
+        console.log(e)
+        alert('Not a valid puzzle!')
+        puzzle = savedPuzzle
+        updatePuzzle()
+      }
     }
   } else if (command == 'export') {
-    var elem = document.getElementById('importexport')
+    var elem = document.getElementById('export')
     elem.value = puzzle.serialize()
     elem.style.display = null
     elem.select()

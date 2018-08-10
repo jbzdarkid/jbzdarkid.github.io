@@ -14,14 +14,14 @@
   </head>
   <body>
     <div style="text-align: center">
-      <label id="puzzleName" contentEditable=true onchange="meta('save')" style="font-size: 72">Unnamed Puzzle</label>
+      <label id="puzzleName" contentEditable=true style="font-size: 72">Unnamed Puzzle</label>
     </div><div style="text-align: center">
       <button onclick="meta('new');">New</button>
       <button onclick="meta('load');">Load</button>
       <button onclick="meta('import');">Import</button>
       <button onclick="meta('export');">Export</button>
+      <textarea style="display:none" id="export"></textarea>
       <button disabled onclick="meta('delete');">Delete</button>
-      <textarea style="display:none" id="importexport"></textarea>
     </div>
     
     <table id="meta">

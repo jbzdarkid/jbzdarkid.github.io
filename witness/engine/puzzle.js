@@ -64,6 +64,7 @@ class Puzzle {
   static deserialize(json) {
     var parsed = JSON.parse(json)
     var puzzle = new Puzzle()
+    puzzle.name = parsed.name
     puzzle.grid = parsed.grid
     puzzle.start = parsed.start
     puzzle.end = parsed.end
