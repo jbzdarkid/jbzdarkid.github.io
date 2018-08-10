@@ -1,14 +1,60 @@
-var puzzle = new Puzzle(4, 4)
 window.DISABLE_CACHE = true
-var solutions = []
-var currentSolution = 0
 var customColor = 'gray'
 var activeParams = {'type': 'nonce', 'color':'black', 'polyshape': 785}
+var puzzle, solutions, currentSolution
 
 window.onload = function() {
-  redraw(puzzle)
+  meta('load')
   drawSymbolButtons()
   drawColorButtons()
+}
+
+function meta(command) {
+  if (command == 'new') {
+    puzzle = new Puzzle(4, 4)
+    solutions = []
+    currentSolution = 0
+    document.getElementById('puzzleName').value = "Unnamed Puzzle"
+
+    redraw(puzzle)
+  } else if (command == 'save') {
+    puzzle.name = document.getElementById('puzzleName').value
+    window.localStorage.setItem('activePuzzle', puzzle.serialize())
+  } else if (command == 'load') {
+    var serialized = window.localStorage.getItem('activePuzzle')
+    if (serialized) {
+      puzzle = Puzzle.deserialize(serialized)
+      document.getElementById('puzzleName').value = puzzle.name
+      updatePuzzle()
+    } else {
+      meta('new')
+    }
+  } else if (command == 'import') {
+    var elem = document.getElementById('importexport')
+    elem.style.display = null
+    elem.select()
+    document.execCommand('paste')
+    elem.style.display = 'none'
+    var savedPuzzle = puzzle
+    try {
+      puzzle = Puzzle.deserialize(window.localStorage.getItem('activePuzzle'))
+      updatePuzzle()
+      document.getElementById('puzzleName').value = puzzle.name
+    } catch (e) {
+      console.log(e)
+      alert('Couldn\'t import:\nClipboard contained an invalid puzzle.')
+      puzzle = savedPuzzle
+      updatePuzzle()
+    }
+  } else if (command == 'export') {
+    var elem = document.getElementById('importexport')
+    elem.value = puzzle.serialize()
+    elem.style.display = null
+    elem.select()
+    document.execCommand('copy')
+    elem.style.display = 'none'
+    alert('Puzzle copied to clipboard.')
+  }
 }
 
 function drawSymbolButtons() {
@@ -32,7 +78,6 @@ function drawSymbolButtons() {
     if (['gap', 'square', 'nega', 'poly'].includes(params.type)) {
       symbolCell.appendChild(document.createElement('br'))
     }
-    // Deep Copy
     params = Object.assign(JSON.parse(JSON.stringify(activeParams)), params)
     params.height = 76
     params.width = 76
@@ -241,7 +286,19 @@ function _onElementClicked(id)
       }
     }
     if (!found) puzzle.dots.push({'x':x, 'y':y})
-  } else if (['square', 'star', 'nega', 'poly', 'ylop'].includes(activeParams.type)) {
+  } else if (['square', 'star', 'nega'].includes(activeParams.type)) {
+    if (x%2 != 1 || y%2 != 1) return
+    // Only change one thing at a time -- if you change color, don't toggle the symbol
+    if (puzzle.grid[x][y].type == activeParams.type
+     && puzzle.grid[x][y].color == activeParams.color) {
+      puzzle.grid[x][y] = false
+    } else {
+      puzzle.grid[x][y] = {
+        'type': activeParams.type,
+        'color': activeParams.color,
+      }
+    }
+  } else if (['poly', 'ylop'].includes(activeParams.type)) {
     if (x%2 != 1 || y%2 != 1) return
     // Only change one thing at a time -- if you change color, don't toggle the symbol
     if (puzzle.grid[x][y].type == activeParams.type
@@ -250,7 +307,12 @@ function _onElementClicked(id)
      && puzzle.grid[x][y].rot == activeParams.rot) {
       puzzle.grid[x][y] = false
     } else {
-      puzzle.grid[x][y] = JSON.parse(JSON.stringify(activeParams))
+      puzzle.grid[x][y] = {
+        'type': activeParams.type,
+        'color': activeParams.color,
+        'polyshape': activeParams.polyshape,
+        'rot': activeParams.rot,
+      }
     }
   } else if (activeParams.type == 'triangle') {
     if (x%2 != 1 || y%2 != 1) return
@@ -265,9 +327,14 @@ function _onElementClicked(id)
     if (puzzle.grid[x][y].count == 3) {
       puzzle.grid[x][y] = false
     } else {
-      puzzle.grid[x][y] = JSON.parse(JSON.stringify(Object.assign(activeParams, {'count':count+1})))
+      puzzle.grid[x][y] = {
+        'type': activeParams.type,
+        'color': activeParams.color,
+        'count': count+1,
+      }
     }
   }
-  
+
+  meta('save')
   updatePuzzle()
 }
