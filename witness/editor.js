@@ -45,7 +45,10 @@ function drawSymbolButtons() {
     buttonElem.style.width = params.width + 2*params.border
     buttonElem.params = params
     if (['poly', 'ylop'].includes(params.type)) {
-      buttonElem.onclick = function() {shapeChooser(this.params)}
+      buttonElem.onclick = function() {
+        shapeChooser()
+        activeParams = Object.assign(activeParams, this.params)
+      }
     } else {
       buttonElem.onclick = function() {activeParams = Object.assign(activeParams, this.params)}
     }
@@ -116,25 +119,19 @@ function drawColorButtons() {
   }
 }
 
-function shapeChooser(params) {
+function shapeChooser() {
   var puzzle = document.getElementById('puzzle')
-  puzzle.style.opacity = '0'
+  puzzle.style.opacity = 0
   
-  var anchor = document.createElement('div')
-  document.body.appendChild(anchor)
-  anchor.style.position = 'absolute'
-  anchor.style.top = 0
-  anchor.style.width = '100%'
-  anchor.style.height = '100%'
-  anchor.onmousedown = function() {shapeChooserClick()}
+  document.body.onmousedown = function() {shapeChooserClick()}
   
   var chooser = document.createElement('table')
-  anchor.appendChild(chooser)
+  puzzle.parentElement.insertBefore(chooser, puzzle)
   chooser.id = 'chooser'
-  chooser.params = params
-  chooser.style.textAlign = 'center'
   chooser.setAttribute('cellspacing', '24px')
   chooser.setAttribute('cellpadding', '0px')
+  chooser.style.zIndex = 1 // Position in front of the puzzle
+  chooser.style.position = 'absolute'
   chooser.style.padding = 25
   chooser.style.background = BACKGROUND
   chooser.style.border = BORDER
@@ -148,7 +145,7 @@ function shapeChooser(params) {
       cell.onmousedown = function() {shapeChooserClick(event, this)}
       cell.style.width = 58
       cell.style.height = 58
-      if ((chooser.params.polyshape & cell.powerOfTwo) != 0) {
+      if ((activeParams.polyshape & cell.powerOfTwo) != 0) {
         cell.clicked = true
         cell.style.background = activeParams.color
       } else {
@@ -162,13 +159,11 @@ function shapeChooser(params) {
 function shapeChooserClick(event, cell) {
   if (cell == undefined) {
     var chooser = document.getElementById('chooser')
-    var anchor = chooser.parentElement
     var puzzle = document.getElementById('puzzle')
 
-    activeParams = chooser.params
-    anchor.parentElement.removeChild(anchor)
+    chooser.parentElement.removeChild(chooser)
+    document.body.onmousedown = null
     puzzle.style.opacity = null
-    drawButtons()
     return
   }
   // Clicks inside the chooser box are non-closing
@@ -180,12 +175,13 @@ function shapeChooserClick(event, cell) {
   var y = cell.id.split('_')[2]
   cell.clicked = !cell.clicked
   var chooser = document.getElementById('chooser')
-  chooser.params.polyshape ^= cell.powerOfTwo
+  activeParams.polyshape ^= cell.powerOfTwo
   if (cell.clicked) {
     cell.style.background = activeParams.color
   } else {
     cell.style.background = FOREGROUND
   }
+  drawSymbolButtons()
 }
 
 function updatePuzzle() {
