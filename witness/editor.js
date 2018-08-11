@@ -376,28 +376,27 @@ function _onElementClicked(id)
       if (activeParams.type == 'start') puzzle.start = {'x':x, 'y':y}
       if (activeParams.type == 'end') puzzle.end = {'x':x, 'y':y}
     }
-  } else if (activeParams.type == 'gap') {
+  } else if (['gap', 'dot'].includes(activeParams.type)) {
     if (x%2 + y%2 != 1) return
-    var found = false
+    var foundGap = false
     for (var i=0; i < puzzle.gaps.length; i++) {
       if (puzzle.gaps[i].x == x && puzzle.gaps[i].y == y) {
         puzzle.gaps.splice(i, 1)
-        found = true
+        foundGap = true
         break
       }
     }
-    if (!found) puzzle.gaps.push({'x':x, 'y':y})
-  } else if (activeParams.type == 'dot') {
-    if (x%2 == 1 && y%2 == 1) return
-    var found = false
+    var foundDot = false
     for (var i=0; i < puzzle.dots.length; i++) {
       if (puzzle.dots[i].x == x && puzzle.dots[i].y == y) {
         puzzle.dots.splice(i, 1)
-        found = true
+        foundDot = true
         break
       }
     }
-    if (!found) puzzle.dots.push({'x':x, 'y':y})
+    console.log(foundGap, foundDot)
+    if (activeParams.type == 'gap' && !foundGap) puzzle.gaps.push({'x':x, 'y':y})
+    if (activeParams.type == 'dot' && !foundDot) puzzle.dots.push({'x':x, 'y':y})
   } else if (['square', 'star', 'nega'].includes(activeParams.type)) {
     if (x%2 != 1 || y%2 != 1) return
     // Only change one thing at a time -- if you change color, don't toggle the symbol
