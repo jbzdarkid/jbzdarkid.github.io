@@ -106,22 +106,23 @@ function randomPuzzle(style) {
         if (rng > 85) count = 3 // 14%
         puzzle.grid[pos.x][pos.y] = {'type':'triangle', 'color':ORANGE, 'count':count}
       } else { // Polyominos
-        var size = _randint(Math.min(width, height))+1
+        var obj = {}
+        if (['polyominos', 'rpolyominos'].includes(type)) {
+          var size = _randint(Math.min(width, height))+1
+          obj.type = 'poly'
+        } else if (['onimoylops', 'ronimoylops'].includes(type)) {
+          var size = _randint(Math.min(width, height)-1)+1
+          obj.type = 'ylop'
+        }
         var polyshapes = POLYOMINOS[size]
         var polyshape = polyshapes[_randint(polyshapes.length)]
         var rotations = getRotations(polyshape, 'all')
-        var obj = {'polyshape': rotations[_randint(4)]}
+        obj.polyshape = rotations[_randint(4)]
 
         if (type[0] == 'r') { // rpolyominos or ronimoylops
-          obj['rot'] = 'all'
+          obj.rot = 'all'
         }
-        obj['color'] = [YELLOW, RED, BLUE, WHITE][_randint(style['colors'])]
-
-        if (['polyominos', 'rpolyominos'].includes(type)) {
-          obj['type'] = 'poly'
-        } else if (['onimoylops', 'ronimoylops'].includes(type)) {
-          obj['type'] = 'ylop'
-        }
+        obj.color = [YELLOW, RED, BLUE, WHITE][_randint(style['colors'])]
 
         var pos = cells.splice(_randint(cells.length), 1)[0]
         puzzle.grid[pos.x][pos.y] = obj
