@@ -5,42 +5,76 @@ var puzzle, solutions, currentSolution
 
 window.onload = function() {
   var activePuzzle = window.localStorage.getItem('activePuzzle')
-  try {
-    puzzle = Puzzle.deserialize(window.localStorage.getItem(activePuzzle))
-    updatePuzzle()
-  } catch (e) {
-    console.log(e)
-    newPuzzle()
-  }
+  var serialized = window.localStorage.getItem(activePuzzle)
+  if (!_tryUpdatePuzzle(serialized)) newPuzzle()
+
   drawSymbolButtons()
   drawColorButtons()
-  document.getElementById('puzzleName').addEventListener('input', function() {savePuzzle()})
+  var puzzleName = document.getElementById('puzzleName')
+  puzzleName.addEventListener('input', function() {savePuzzle()})
+  puzzleName.addEventListener('keypress', function(event) {
+    if (event.key == "Enter") {
+      event.preventDefault()
+      this.blur()
+    }
+  })
+}
+
+function _addPuzzleToList(puzzleName) {
+  var puzzleList = JSON.parse(window.localStorage.getItem('puzzleList'))
+  if (!puzzleList) puzzleList = []
+  puzzleList.unshift(puzzleName)
+  window.localStorage.setItem('puzzleList', JSON.stringify(puzzleList))
+}
+
+function _removePuzzleFromList(puzzleName) {
+  console.log('Removing puzzle', puzzleName)
+  var puzzleList = JSON.parse(window.localStorage.getItem('puzzleList'))
+  if (!puzzleList) puzzleList = []
+  var index = puzzleList.indexOf(puzzleName)
+  if (index != -1) {
+    puzzleList.splice(index, 1)
+    window.localStorage.setItem('puzzleList', JSON.stringify(puzzleList))
+  }
+}
+
+function _tryUpdatePuzzle(serialized) {
+  if (!serialized) return false
+  var savedPuzzle = puzzle
+  try {
+    puzzle = Puzzle.deserialize(serialized)
+    updatePuzzle() // Will throw for most invalid puzzles
+    document.getElementById('puzzleName').innerText = puzzle.name
+    return true
+  } catch (e) {
+    console.log(e)
+    puzzle = savedPuzzle
+    updatePuzzle()
+    return false
+  }
 }
 
 function newPuzzle() {
   puzzle = new Puzzle(4, 4)
   solutions = []
   currentSolution = 0
-  document.getElementById('puzzleName').innerText = "Unnamed Puzzle"
+  document.getElementById('puzzleName').innerText = 'Unnamed Puzzle'
+  window.localStorage.setItem('activePuzzle', '')
   redraw(puzzle)
 }
 
 function savePuzzle() {
   console.log('Saving puzzle...')
-  // Delete the old puzzle
+  // Delete the old puzzle & add the current
   var activePuzzle = window.localStorage.getItem('activePuzzle')
   window.localStorage.removeItem(activePuzzle)
-  var puzzleList = JSON.parse(window.localStorage.getItem('puzzleList'))
-  if (!puzzleList) puzzleList = []
-  var index = puzzleList.indexOf(activePuzzle)
-  if (index != -1) puzzleList.splice(index, 1)
+  _removePuzzleFromList(activePuzzle)
 
   // Save the new version
   puzzle.name = document.getElementById('puzzleName').innerText
   // TODO: Some intelligence about showing day / month / etc depending on date age
-  savedPuzzle = puzzle.name + ' on ' + (new Date()).toLocaleString()
-  puzzleList.unshift(savedPuzzle)
-  window.localStorage.setItem('puzzleList', JSON.stringify(puzzleList))
+  var savedPuzzle = puzzle.name + ' on ' + (new Date()).toLocaleString()
+  _addPuzzleToList(savedPuzzle)
   window.localStorage.setItem(savedPuzzle, puzzle.serialize())
   window.localStorage.setItem('activePuzzle', savedPuzzle)
 }
@@ -49,27 +83,13 @@ function deletePuzzleAndLoadNext() {
   var activePuzzle = window.localStorage.getItem('activePuzzle')
   console.log('Deleting', activePuzzle)
   window.localStorage.removeItem(activePuzzle)
+  _removePuzzleFromList(activePuzzle)
 
   var puzzleList = JSON.parse(window.localStorage.getItem('puzzleList'))
-  var index = puzzleList.indexOf(activePuzzle)
-  if (index != -1) puzzleList.splice(index, 1)
-  window.localStorage.setItem('puzzleList', JSON.stringify(puzzleList))
-
   while (puzzleList.length > 0) {
     var serialized = window.localStorage.getItem(puzzleList[0])
-    if (!serialized) {
-      puzzleList.shift()
-      continue
-    }
-    try {
-      puzzle = Puzzle.deserialize(serialized)
-      document.getElementById('puzzleName').innerText = puzzle.name
-      updatePuzzle()
-      break
-    } catch (e) {
-      console.log(e)
-      puzzleList.shift()
-    }
+    if (_tryUpdatePuzzle(serialized)) break
+    puzzleList.shift()
   }
 
   if (puzzleList.length == 0) {
@@ -84,12 +104,12 @@ function loadPuzzle() {
   var puzzleList = JSON.parse(window.localStorage.getItem('puzzleList'))
   if (!puzzleList) return
 
-  document.getElementById('puzzleName').style.opacity = 0
+  document.getElementById('puzzleMeta').style.opacity = 0
   
   var anchor = document.createElement('div')
   anchor.id = 'anchor'
   anchor.style.position = 'absolute'
-  anchor.style.top = 20
+  anchor.style.top = 100
   anchor.style.width = '100%'
   document.body.appendChild(anchor)
   
@@ -101,32 +121,31 @@ function loadPuzzle() {
     loadList.appendChild(option)
   }
 
-  loadList.value = ''
+  loadList.value = '' // Forces onchange to fire for any selection
   loadList.onchange = function() {
-    console.log(this.value)
-    puzzle = Puzzle.deserialize(window.localStorage.getItem(this.value))
-    updatePuzzle()
+    _removePuzzleFromList(this.value)
+    _addPuzzleToList(this.value)
+    
+    var serialized = window.localStorage.getItem(this.value)
+    if (!_tryUpdatePuzzle(serialized)) {
+      _removePuzzleFromList(this.value)
+    }
+
     var anchor = document.getElementById('anchor')
     anchor.parentElement.removeChild(anchor)
-    document.getElementById('puzzleName').style.opacity = null
+    document.getElementById('puzzleMeta').style.opacity = null
   }
 }
 
 function importPuzzle() {
   var serialized = prompt('Paste your puzzle here:')
-  if (serialized) {
-    var savedPuzzle = puzzle
-    try {
-      puzzle = Puzzle.deserialize(serialized)
-      updatePuzzle() // Will throw for most invalid puzzles
-      document.getElementById('puzzleName').innerText = puzzle.name
-    } catch (e) {
-      console.log(e)
-      alert('Not a valid puzzle!')
-      puzzle = savedPuzzle
-      updatePuzzle()
-    }
+  if (!_tryUpdatePuzzle(serialized)) {
+    alert('Not a valid puzzle!')
+    return
   }
+  var savedPuzzle = puzzle.name + ' on ' + (new Date()).toLocaleString()
+  _addPuzzleToList(savedPuzzle)
+  window.localStorage.setItem(savedPuzzle, serialized)
 }
 
 function exportPuzzle() {
