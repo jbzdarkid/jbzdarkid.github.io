@@ -156,22 +156,23 @@ function _ylop(params) {
   return svg
 }
 
-// FIXME: Exact sizing
+// Adjusted 1 pixel down because it looks better
 function _nega(params) {
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('viewBox', '0 0 50 50')
-  for (var rot of [60, 180, 300]) {
+  svg.setAttribute('viewBox', '0 0 ' + params.width + ' ' + params.height)
+  for (var degrees of [60, 180, 300]) {
     var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-    rect.setAttribute('transform', 'translate(22, 27) rotate('+rot+', 3, 0)')
-    rect.setAttribute('height', 12)
+    rect.setAttribute('height', 10.5)
     rect.setAttribute('width', 6)
+    rect.setAttribute('x', (params.width-6)/2)
+    rect.setAttribute('y', (params.height + 2)/2)
+    rect.setAttribute('transform', 'rotate(' + degrees + ', ' + params.width/2 + ', ' + (params.height/2 + 1) + ')')
     rect.setAttribute('fill', params.color)
     svg.appendChild(rect)
   }
   return svg
 }
 
-// FIXME: Sizing looks wrong?
 function _triangle(params) {
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
   svg.setAttribute('viewBox', '0 0 ' + params.width + ' ' + params.height)
