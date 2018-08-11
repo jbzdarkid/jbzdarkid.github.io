@@ -140,7 +140,8 @@ function loadPuzzle() {
 function importPuzzle() {
   var serialized = prompt('Paste your puzzle here:')
   if (!_tryUpdatePuzzle(serialized)) {
-    alert('Not a valid puzzle!')
+    // Only alert if user tried to enter data
+    if (serialized) alert('Not a valid puzzle!')
     return
   }
   var savedPuzzle = puzzle.name + ' on ' + (new Date()).toLocaleString()
