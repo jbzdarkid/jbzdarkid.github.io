@@ -219,7 +219,7 @@ function drawColorButtons() {
   while (colorCell.firstChild) colorCell.removeChild(colorCell.firstChild)
   for (var params of colorButtons) {
     params.width = 196
-    params.height = 46
+    params.height = 50
     params.border = 2
 
     var buttonElem = document.createElement('button')
