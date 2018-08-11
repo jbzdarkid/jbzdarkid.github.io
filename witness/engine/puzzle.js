@@ -1,17 +1,3 @@
-var pointMap = []
-for (var x=0; x<20; x++) {
-  pointMap[x] = []
-  for (var y=0; y<20; y++) {
-    pointMap[x][y] = {'x':x, 'y':y}
-  }
-}
-
-function point(x, y) {
-//  return {'x':x, 'y':y}
-  if (x < 0 || y < 0) return {'x':x, 'y':y}
-  else return pointMap[x][y]
-}
-
 class Region {
   constructor(length) {
     this.grid = []
@@ -67,8 +53,8 @@ class Puzzle {
       height -= 0.5
     }
     this.grid = this.newGrid(2*width+1, 2*height+1)
-    this.start = point(2*width, 0)
-    this.end = point(0, 2*height)
+    this.start = {'x':2*width, 'y':0}
+    this.end = {'x':0, 'y':2*height}
     this.dots = []
     this.gaps = []
     this.regionCache = {}
@@ -176,7 +162,7 @@ class Puzzle {
     for (var x=0; x<this.grid.length; x++) {
       for (var y=0; y<this.grid[x].length; y++) {
         if (x%2 + y%2 == 1 && !this.getCell(x, y)) {
-          hints.push(point(x, y))
+          hints.push({'x':x, 'y':y})
         }
       }
     }
@@ -316,7 +302,7 @@ class Puzzle {
       }
     }
     var regions = []
-    var pos = point(1, 1)
+    var pos = {'x':1, 'y':1}
     while (true) {
       var region = new Region(this.grid.length)
       this._innerLoop(pos.x, pos.y, region)
@@ -324,9 +310,9 @@ class Puzzle {
       
       // Find the next open cell
       while (this.getCell(pos.x, pos.y) != false) {
-        pos = point(x+2, y)
+        pos.x += 2
         if (pos.x >= this.grid.length) {
-          pos = point(1, y+2)
+          pos = {'x':1, 'y':pos.y+2}
         }
         if (pos.y >= this.grid[pos.x].length) {
           this.grid = savedGrid
