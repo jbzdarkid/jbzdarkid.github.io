@@ -114,7 +114,6 @@ function randomPuzzle(style) {
 
         if (type[0] == 'r') { // rpolyominos or ronimoylops
           obj['rot'] = 'all'
-        } else {
         }
         obj['color'] = [YELLOW, RED, BLUE, WHITE][_randint(style['colors'])]
 
