@@ -56,9 +56,13 @@ var styles = {
     }
   },
   'friday':{
-    'width':5, 'height':5, 'colors':3, 'difficulty':[1, 9999],
-    'pillar':1,
-    'distribution':{}
+    'width':5, 'height':5, 'colors':2, 'difficulty':[1, 99999999],
+//    'pillar':1,
+    'distribution':{
+      'onimoylops':1,
+      'polyominos':3,
+      'squares':4
+    }
   },
   'saturday':{
     'width':5, 'height':5, 'colors':3, 'difficulty':[1, 9999],
