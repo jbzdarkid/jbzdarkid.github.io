@@ -269,8 +269,15 @@ function shapeChooser() {
   var puzzle = document.getElementById('puzzle')
   puzzle.style.opacity = 0
   
-  document.body.onmousedown = function() {shapeChooserClick()}
-  
+  var anchor = document.createElement('div')
+  anchor.id = 'anchor'
+  anchor.style.width = '99%'
+  anchor.style.height = '100%'
+  anchor.style.position = 'absolute'
+  anchor.style.top = 0
+  anchor.onmousedown = function() {shapeChooserClick(event)}
+  document.body.appendChild(anchor)
+
   var chooser = document.createElement('table')
   puzzle.parentElement.insertBefore(chooser, puzzle)
   chooser.id = 'chooser'
@@ -305,11 +312,13 @@ function shapeChooser() {
 function shapeChooserClick(event, cell) {
   if (cell == undefined) {
     var chooser = document.getElementById('chooser')
+    var anchor = document.getElementById('anchor')
     var puzzle = document.getElementById('puzzle')
 
     chooser.parentElement.removeChild(chooser)
-    document.body.onmousedown = null
+    anchor.parentElement.removeChild(anchor)
     puzzle.style.opacity = null
+    event.stopPropagation()
     return
   }
   // Clicks inside the chooser box are non-closing
