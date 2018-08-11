@@ -11,13 +11,13 @@ window.onload = function() {
   drawSymbolButtons()
   drawColorButtons()
   var puzzleName = document.getElementById('puzzleName')
-  puzzleName.addEventListener('input', function() {savePuzzle()})
-  puzzleName.addEventListener('keypress', function(event) {
+  puzzleName.oninput = function() {savePuzzle()}
+  puzzleName.onkeypress = function(event) {
     if (event.key == "Enter") {
       event.preventDefault()
       this.blur()
     }
-  })
+  }
 }
 
 function _addPuzzleToList(puzzleName) {
@@ -64,7 +64,6 @@ function newPuzzle() {
 }
 
 function savePuzzle() {
-  console.log('Saving puzzle...')
   // Delete the old puzzle & add the current
   var activePuzzle = window.localStorage.getItem('activePuzzle')
   window.localStorage.removeItem(activePuzzle)
@@ -72,6 +71,7 @@ function savePuzzle() {
 
   // Save the new version
   puzzle.name = document.getElementById('puzzleName').innerText
+  console.log('Saving puzzle', puzzle.name)
   // TODO: Some intelligence about showing day / month / etc depending on date age
   var savedPuzzle = puzzle.name + ' on ' + (new Date()).toLocaleString()
   _addPuzzleToList(savedPuzzle)
@@ -275,7 +275,7 @@ function shapeChooser() {
   anchor.style.height = '100%'
   anchor.style.position = 'absolute'
   anchor.style.top = 0
-  anchor.onmousedown = function() {shapeChooserClick(event)}
+  anchor.onmousedown = function(event) {shapeChooserClick(event)}
   document.body.appendChild(anchor)
 
   var chooser = document.createElement('table')
@@ -288,14 +288,14 @@ function shapeChooser() {
   chooser.style.padding = 25
   chooser.style.background = BACKGROUND
   chooser.style.border = BORDER
-  chooser.onmousedown = function() {shapeChooserClick(event, this)}
+  chooser.onmousedown = function(event) {shapeChooserClick(event, this)}
   for (var x=0; x<4; x++) {
     var row = chooser.insertRow(x)
     for (var y=0; y<4; y++) {
       var cell = row.insertCell(y)
       cell.id = 'chooser_' + x + '_' + y
       cell.powerOfTwo = 1 << (x*4 + y)
-      cell.onmousedown = function() {shapeChooserClick(event, this)}
+      cell.onmousedown = function(event) {shapeChooserClick(event, this)}
       cell.style.width = 58
       cell.style.height = 58
       if ((activeParams.polyshape & cell.powerOfTwo) != 0) {
