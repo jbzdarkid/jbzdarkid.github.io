@@ -10,7 +10,8 @@
     <script type="text/javascript" src="engine/svg.js"></script>
     <script type="text/javascript" src="engine/display.js"></script>
     <script type="text/javascript" src="engine/trace.js"></script>
-    <title>Random puzzles or something</title>
+    <script type="text/javascript" src="index.js"></script>
+    <title>Random puzzles from The Witness</title>
   </head>
   <body>
     <div style="text-align: center"><label style="font-size: 72">Random puzzles from The Witness</label></div>
@@ -25,48 +26,5 @@
     </div>
 
     <table id="puzzle" cellspacing="0" cellpadding="0"></table>
-    <script>
-      // Main startup code, detect style + puzzle id, generate, validate, and display puzzle.
-      if ('style' in urlParams) {
-        if (urlParams['style'] in styles) {
-          var style = styles[urlParams['style']]
-        } else {
-          var style = JSON.parse(urlParams['style'])
-        }
-      } else {
-        var day = [
-          'sunday',
-          'monday',
-          'tuesday',
-          'wednesday',
-          'thursday',
-          'friday',
-          'saturday'][(new Date()).getDay()]
-        var style = styles[day]
-        location.search = 'style='+day
-      }
-      var puzzle, solution
-      if (location.hash == "") {
-        // If no seed is provided, choose a random one
-        setSeed(Math.floor(Math.random() * (1 << 30)))
-      } else { // A seed was provided
-        setSeed(parseInt(location.hash.substring(1)))
-      }
-      var puzzleData = validPuzzle(style)
-      draw(puzzleData.puzzle)
-      location.hash = puzzleData.seed
-      var solution = puzzleData.solutions[_randint(puzzleData.solutions.length)]
-      var hints = solution.hints()
-
-      window.showHint = function() {
-        if (hints.length <= 0) return
-        hints = puzzleData.puzzle.showHint(hints)
-        draw(puzzleData.puzzle)
-      }
-      window.showSolution = function() {
-        draw(solution)
-      }
-
-    </script>
   </body>
 </html>

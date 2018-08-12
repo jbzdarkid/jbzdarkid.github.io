@@ -162,6 +162,10 @@ function exportPuzzle() {
   alert('Puzzle copied to clipboard.')
 }
 
+function playPuzzle() {
+  window.location.href = 'index.html?puzzle=' + puzzle.serialize()
+}
+
 function drawSymbolButtons() {
   var symbolButtons = [
     {'type':'start'},

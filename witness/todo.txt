@@ -1,5 +1,4 @@
 Bug fixes:
-- Import into solver ("Play") // New-Load-Delete-Import-Export-Play
 - Buttons should be tds, so that background can highlight (pseudo-border)
 - Disable auto-validation, allow larger puzzle sizes
 - Make poly only prompt for shape on second click

@@ -25,66 +25,6 @@ var urlParams
        urlParams[decode(match[1])] = decode(match[2])
 })()
 
-var styles = {
-  'monday':{
-    'width':4, 'height':4, 'colors':2, 'difficulty':[50, 100],
-    'distribution':{
-      'squares':4,
-      'stars':4,
-    }
-  },
-  'tuesday':{
-    'width':4, 'height':4, 'colors':2, 'difficulty':[1, 9999],
-    'distribution':{
-      'stars':5,
-      'negations':1,
-      'dots':25,
-    }
-  },
-  'wednesday':{
-    'width':4, 'height':4, 'colors':1, 'difficulty':[1, 9999],
-    'distribution':{
-      'polyominos':3,
-      'triangles':2,
-    }
-  },
-  'thursday':{
-    'width':5, 'height':5, 'colors':1, 'difficulty':[1, 9999],
-    'distribution':{
-      'triangles':12,
-      'negations':2,
-    }
-  },
-  'friday':{
-    'width':5, 'height':5, 'colors':2, 'difficulty':[0, 99999999],
-//    'pillar':1,
-    'distribution':{
-      'onimoylops':1,
-      'polyominos':2,
-      'squares':6
-    }
-  },
-  'saturday':{
-    'width':5, 'height':5, 'colors':3, 'difficulty':[1, 9999],
-    'symmetry':1,
-    'distribution': {}
-  },
-  'sunday':{
-//    'width':6, 'height':6, 'colors':1, 'difficulty':[1, 9999],
-    'width':5, 'height':5, 'colors':1, 'difficulty':[1, 9999],
-    'pillar':1, 'symmetry':1,
-    'distribution':{
-      'triangles':1,
-      'polyominos':1,
-      'stars':1,
-      'squares':1,
-      'negations':1,
-      'dots':1,
-      'gaps':1,
-    }
-  },
-}
-
 var tracks = {
   'start': new Audio('/witness/audio/panel_start_tracing.ogg'),
   'success': new Audio('/witness/audio/panel_success.ogg'),
