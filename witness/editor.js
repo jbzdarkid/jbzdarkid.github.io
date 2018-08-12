@@ -185,8 +185,8 @@ function drawSymbolButtons() {
   for (var button of symbolTable.getElementsByTagName('button')) {
     var params = symbolData[button.id]
     params.id = button.id
-    params.height = 66
-    params.width = 66
+    params.height = 64
+    params.width = 64
     params.border = 2
     if (activeParams.id == button.id) {
       button.parentElement.style.background = 'black'
@@ -221,16 +221,29 @@ function drawSymbolButtons() {
 }
 
 function drawColorButtons() {
-  var colorButtons = [
-    {'color':'black'},
-    {'color':'white'},
-    {'color':'red'},
-    {'color':'orange'},
-    {'color':'yellow'},
-    {'color':'green'},
-    {'color':'blue'},
-    {'color':'purple'}
-  ]
+  var colorTable = document.getElementById('colorButtons')
+  for (var button of colorTable.getElementsByTagName('button')) {
+    var params = {'width':196, 'height':45, 'border':2}
+    params.text = button.id
+    params.color = button.id
+    if (activeParams.color == button.id) {
+      button.parentElement.style.background = 'black'
+    } else {
+      button.parentElement.style.background = null
+    }
+    button.style.padding = 0
+    button.style.border = params.border
+    button.style.height = params.height + 2*params.border
+    button.style.width = params.width + 2*params.border
+    button.params = params
+    button.onclick = function() {
+      activeParams = Object.assign(activeParams, this.params)
+      drawColorButtons()
+    }
+    while (button.firstChild) button.removeChild(button.firstChild)
+    button.appendChild(_crayon(params))
+  }
+  return
   var colorCell = document.getElementById('colors')
   while (colorCell.firstChild) colorCell.removeChild(colorCell.firstChild)
   for (var params of colorButtons) {
@@ -290,7 +303,7 @@ function shapeChooser() {
       cell.style.height = 58
       if ((activeParams.polyshape & cell.powerOfTwo) != 0) {
         cell.clicked = true
-        cell.style.background = activeParams.color
+        cell.style.background = 'black'
       } else {
         cell.clicked = false
         cell.style.background = FOREGROUND
@@ -322,7 +335,7 @@ function shapeChooserClick(event, cell) {
   var chooser = document.getElementById('chooser')
   activeParams.polyshape ^= cell.powerOfTwo
   if (cell.clicked) {
-    cell.style.background = activeParams.color
+    cell.style.background = 'black'
   } else {
     cell.style.background = FOREGROUND
   }
