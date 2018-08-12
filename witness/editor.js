@@ -281,29 +281,6 @@ function drawColorButtons() {
     while (button.firstChild) button.removeChild(button.firstChild)
     button.appendChild(_crayon(params))
   }
-  return
-  var colorCell = document.getElementById('colors')
-  while (colorCell.firstChild) colorCell.removeChild(colorCell.firstChild)
-  for (var params of colorButtons) {
-    params.text = params.color
-    params.width = 196
-    params.height = 50
-    params.border = 2
-
-    var buttonElem = document.createElement('button')
-    buttonElem.style.padding = 0
-    buttonElem.style.border = params.border
-    buttonElem.style.height = params.height + 2*params.border
-    buttonElem.style.width = params.width + 2*params.border
-    buttonElem.params = params
-    buttonElem.onclick = function() {
-      activeParams = Object.assign(activeParams, this.params)
-      drawSymbolButtons()
-    }
-    buttonElem.appendChild(_crayon(params))
-    colorCell.appendChild(buttonElem)
-    colorCell.appendChild(document.createElement('br'))
-  }
 }
 
 function shapeChooser() {
