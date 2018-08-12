@@ -17,6 +17,9 @@ window.onload = function() {
       event.preventDefault()
       this.blur()
     }
+    if (this.innerText.length >= 50) {
+      event.preventDefault()
+    }
   }
 }
 

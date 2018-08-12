@@ -1,5 +1,4 @@
 Bug fixes:
-- Cap length of puzzle name
 - Puzzle name isn't reset on new
 - Custom color is probably not worth it for a 4x4
 - Import into solver ("Play") // New-Load-Delete-Import-Export-Play
