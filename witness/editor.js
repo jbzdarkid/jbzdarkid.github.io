@@ -209,19 +209,19 @@ function drawSymbolButtons() {
 
 function drawColorButtons() {
   var colorButtons = [
-    {'text':'black'},
-    {'text':'white'},
-    {'text':'red'},
-    {'text':'orange'},
-    {'text':'yellow'},
-    {'text':'green'},
-    {'text':'blue'},
-    {'text':'purple'},
-    {'text':'custom'}
+    {'color':'black'},
+    {'color':'white'},
+    {'color':'red'},
+    {'color':'orange'},
+    {'color':'yellow'},
+    {'color':'green'},
+    {'color':'blue'},
+    {'color':'purple'}
   ]
   var colorCell = document.getElementById('colors')
   while (colorCell.firstChild) colorCell.removeChild(colorCell.firstChild)
   for (var params of colorButtons) {
+    params.text = params.color
     params.width = 196
     params.height = 50
     params.border = 2
@@ -231,39 +231,12 @@ function drawColorButtons() {
     buttonElem.style.border = params.border
     buttonElem.style.height = params.height + 2*params.border
     buttonElem.style.width = params.width + 2*params.border
-    if (params.text == 'custom') {
-      params.color = customColor
-      var crayonSvg = _crayon(params)
-      var foreignObj = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject')
-      var input = document.createElement('input')
-      input.setAttribute('type', 'color')
-      input.setAttribute('value', customColor)
-      input.style.opacity = 0
-      input.style.width = params.width
-      input.style.height = params.height
-      foreignObj.appendChild(input)
-      crayonSvg.appendChild(foreignObj)
-      
-      input.onclick = function() {
-        activeParams.color = customColor
-        drawSymbolButtons()
-      }
-      input.onchange = function() {
-        customColor = this.value
-        activeParams.color = customColor
-        drawSymbolButtons()
-        drawColorButtons()
-      }
-      buttonElem.appendChild(crayonSvg)
-    } else {
-      params.color = params.text
-      buttonElem.params = params
-      buttonElem.onclick = function() {
-        activeParams = Object.assign(activeParams, this.params)
-        drawSymbolButtons()
-      }
-      buttonElem.appendChild(_crayon(params))
+    buttonElem.params = params
+    buttonElem.onclick = function() {
+      activeParams = Object.assign(activeParams, this.params)
+      drawSymbolButtons()
     }
+    buttonElem.appendChild(_crayon(params))
     colorCell.appendChild(buttonElem)
     colorCell.appendChild(document.createElement('br'))
   }

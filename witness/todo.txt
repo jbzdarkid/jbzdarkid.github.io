@@ -1,12 +1,11 @@
 Bug fixes:
-- Puzzle name isn't reset on new
-- Custom color is probably not worth it for a 4x4
 - Import into solver ("Play") // New-Load-Delete-Import-Export-Play
 - Buttons should be tds, so that background can highlight (pseudo-border)
 - Disable auto-validation, allow larger puzzle sizes
+- Make poly only prompt for shape on second click
 - Windmill Import instead of export?
 - Zero size polys fail when zero-size negas don't
-
+- White is hard to see / custom button images
 
 Features:
 - Multi start
@@ -17,6 +16,3 @@ Features:
 - Invisible Dots (flash for errors)
 - Dots cancelled by negation
 
-Consider:
-- Custom button images
-- Make poly only prompt for shape on second click
