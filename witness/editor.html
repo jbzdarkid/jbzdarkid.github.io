@@ -23,6 +23,7 @@
       <button onclick="exportPuzzle()">Export</button>
       <textarea style="display:none" id="export"></textarea>
       <button onclick="playPuzzle()">Play</button>
+      <button onclick="resizePuzzle()">Resize</button>
     </div>
     
     <table id="meta">
@@ -50,7 +51,9 @@
             </tr>
           </table>
         </td><td>
-          <table id="puzzle" cellpadding="30"></table>
+          <div id="resize">
+            <table id="puzzle"></table>
+          </div>
         </td><td>
           <table id="colorButtons" cellpadding="4" cellspacing="0">
             <tr><td><button id="black"></button></td></tr>
@@ -63,7 +66,7 @@
             <tr><td><button id="purple"></button></td></tr>
           </table>
         </td>
-      </tr><tr>
+      </tr><!--<tr>
         <td colspan="3" style="text-align: center">
           <label>Number of solutions:</label>
           <label id="solutionCount"></label>
@@ -71,7 +74,7 @@
           <button onclick="drawSolution(-1)">&larr;</button>
           <button onclick="drawSolution(1)">&rarr;</button>
         </td>
-      </tr>
+      </tr>-->
     </table>
   </body>
 </html>

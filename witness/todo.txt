@@ -1,5 +1,6 @@
 Bug fixes:
-- Disable auto-validation, allow larger puzzle sizes
+- Allow larger puzzle sizes via dragging
+- Add "validate" button (with warning / sometimes disabled?)
 - Windmill Import instead of export?
 - Zero size polys fail when zero-size negas don't
 

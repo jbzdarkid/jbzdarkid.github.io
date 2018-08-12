@@ -1,6 +1,6 @@
 window.DISABLE_CACHE = true
 var customColor = 'gray'
-var activeParams = {'id':'', 'type': 'nonce', 'color':'black', 'polyshape': 785}
+var activeParams = {'id':'', 'polyshape': 785}
 var puzzle, solutions, currentSolution
 
 window.onload = function() {
@@ -21,6 +21,11 @@ window.onload = function() {
       event.preventDefault()
     }
   }
+  
+  var resize = document.getElementById('resize')
+  puzzle.onmousedown = function(event) {console.log(event)}
+  puzzle.onmouseup = function(event) {console.log(event)}
+  
 }
 
 function _addPuzzleToList(puzzleName) {
@@ -166,6 +171,39 @@ function playPuzzle() {
   window.location.href = 'index.html?puzzle=' + puzzle.serialize()
 }
 
+function resizePuzzle() {
+  var width = parseInt(prompt('New width:'))*2 + 1
+  if (width <= 0 || width == undefined) return
+  var height = parseInt(prompt('New height:'))*2 + 1
+  if (height <= 0 || height == undefined) return
+
+  // Assming "from right/from bottom" for now...
+  for (var row of puzzle.grid) {
+    while (row.length > width) row.pop()
+    while (row.length < width) row.push(false)
+  }
+  while (puzzle.grid.length > height) puzzle.grid.pop()
+  while (puzzle.grid.length < height) {
+    puzzle.grid.push((new Array(width)).fill(false))
+  }
+  var newDots = []
+  for (var dot of puzzle.dots) {
+    if (dot.x < width && dot.y < height) newDots.push(dot)
+  }
+  puzzle.dots = newDots
+  var newGaps = []
+  for (var gap of puzzle.gaps) {
+    if (gap.x < width && gap.y < height) newGaps.push(gap)
+  }
+  puzzle.gaps = newGaps
+  if (puzzle.start.x >= width) puzzle.start.x = width - 1
+  if (puzzle.start.y >= height) puzzle.start.y = height - 1
+  if (puzzle.end.x >= width) puzzle.end.x = width - 1
+  if (puzzle.end.y >= height) puzzle.end.y = height - 1
+  savePuzzle()
+  updatePuzzle()
+}
+
 function drawSymbolButtons() {
   var symbolData = {
     'start': {'type':'start'},
@@ -223,7 +261,7 @@ function drawSymbolButtons() {
 function drawColorButtons() {
   var colorTable = document.getElementById('colorButtons')
   for (var button of colorTable.getElementsByTagName('button')) {
-    var params = {'width':196, 'height':45, 'border':2}
+    var params = {'width':146, 'height':45, 'border':2}
     params.text = button.id
     params.color = button.id
     if (activeParams.color == button.id) {
@@ -346,9 +384,8 @@ function updatePuzzle() {
   document.getElementById('puzzleName').innerText = puzzle.name
   redraw(puzzle)
   solutions = []
-  solve(puzzle, puzzle.start.x, puzzle.start.y, solutions)
-  
-  document.getElementById('solutionCount').innerText = solutions.length
+//  solve(puzzle, puzzle.start.x, puzzle.start.y, solutions)
+//  document.getElementById('solutionCount').innerText = solutions.length
   currentSolution = -1
 }
 
@@ -379,7 +416,8 @@ function _onElementClicked(id)
       if (activeParams.type == 'end') puzzle.end = {'x':x, 'y':y}
     }
   } else if (['gap', 'dot'].includes(activeParams.type)) {
-    if (x%2 + y%2 != 1) return
+    if (x%2 == 1 && y%2 == 1) return
+    if (activeParams.type == 'gap' && x%2 == 0 && y%2 == 0) return
     var foundGap = false
     for (var i=0; i < puzzle.gaps.length; i++) {
       if (puzzle.gaps[i].x == x && puzzle.gaps[i].y == y) {
@@ -396,7 +434,6 @@ function _onElementClicked(id)
         break
       }
     }
-    console.log(foundGap, foundDot)
     if (activeParams.type == 'gap' && !foundGap) puzzle.gaps.push({'x':x, 'y':y})
     if (activeParams.type == 'dot' && !foundDot) puzzle.dots.push({'x':x, 'y':y})
   } else if (['square', 'star', 'nega'].includes(activeParams.type)) {
