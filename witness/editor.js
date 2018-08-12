@@ -1,6 +1,6 @@
 window.DISABLE_CACHE = true
 var customColor = 'gray'
-var activeParams = {'type': 'nonce', 'color':'black', 'polyshape': 785}
+var activeParams = {'id':'', 'type': 'nonce', 'color':'black', 'polyshape': 785}
 var puzzle, solutions, currentSolution
 
 window.onload = function() {
@@ -167,47 +167,56 @@ function playPuzzle() {
 }
 
 function drawSymbolButtons() {
-  var symbolButtons = [
-    {'type':'start'},
-    {'type':'end'},
-    {'type':'gap', 'rot':0},
-    {'type':'dot'},
-    {'type':'square'},
-    {'type':'star'},
-    {'type':'nega'},
-    {'type':'triangle', 'count':1},
-    {'type':'poly', 'rot':0},
-    {'type':'ylop', 'rot':0},
-    {'type':'poly', 'rot':'all'},
-    {'type':'ylop', 'rot':'all'},
-  ]
-  var symbolCell = document.getElementById('symbols')
-  while (symbolCell.firstChild) symbolCell.removeChild(symbolCell.firstChild)
-  for (var params of symbolButtons) {
-    if (['gap', 'square', 'nega', 'poly'].includes(params.type)) {
-      symbolCell.appendChild(document.createElement('br'))
-    }
-    params = Object.assign(JSON.parse(JSON.stringify(activeParams)), params)
-    params.height = 76
-    params.width = 76
+  var symbolData = {
+    'start': {'type':'start'},
+    'end': {'type':'end'},
+    'gap': {'type':'gap', 'rot':0},
+    'dot': {'type':'dot'},
+    'square': {'type':'square'},
+    'star': {'type':'star'},
+    'nega': {'type':'nega'},
+    'triangle': {'type':'triangle', 'count':1},
+    'poly': {'type':'poly', 'rot':0, 'polyshape':785},
+    'rpoly': {'type':'poly', 'rot':'all', 'polyshape':785},
+    'ylop': {'type':'ylop', 'rot':0, 'polyshape':785},
+    'rylop': {'type':'ylop', 'rot':'all', 'polyshape':785},
+  }
+  var symbolTable = document.getElementById('symbolButtons')
+  for (var button of symbolTable.getElementsByTagName('button')) {
+    var params = symbolData[button.id]
+    params.id = button.id
+    params.height = 66
+    params.width = 66
     params.border = 2
-
-    var buttonElem = document.createElement('button')
-    buttonElem.style.padding = 0
-    buttonElem.style.border = params.border
-    buttonElem.style.height = params.height + 2*params.border
-    buttonElem.style.width = params.width + 2*params.border
-    buttonElem.params = params
-    if (['poly', 'ylop'].includes(params.type)) {
-      buttonElem.onclick = function() {
-        shapeChooser()
-        activeParams = Object.assign(activeParams, this.params)
+    if (activeParams.id == button.id) {
+      button.parentElement.style.background = 'black'
+    } else {
+      button.parentElement.style.background = null
+    }
+    button.style.padding = 0
+    button.style.border = params.border
+    button.style.height = params.height + 2*params.border
+    button.style.width = params.width + 2*params.border
+    button.params = params
+    if (['poly', 'rpoly', 'ylop', 'rylop'].includes(button.id)) {
+      button.params.polyshape = activeParams.polyshape
+      button.onclick = function() {
+        if (activeParams.id == this.id) {
+          activeParams = Object.assign(activeParams, this.params)
+          shapeChooser()
+        } else {
+          activeParams = Object.assign(activeParams, this.params)
+          drawSymbolButtons()
+        }
       }
     } else {
-      buttonElem.onclick = function() {activeParams = Object.assign(activeParams, this.params)}
+      button.onclick = function() {
+        activeParams = Object.assign(activeParams, this.params)
+        drawSymbolButtons()
+      }
     }
-    buttonElem.appendChild(drawSymbol(params))
-    symbolCell.appendChild(buttonElem)
+    while (button.firstChild) button.removeChild(button.firstChild)
+    button.appendChild(drawSymbol(params))
   }
 }
 
