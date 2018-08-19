@@ -1,15 +1,14 @@
 Bug fixes:
-- Allow larger puzzle sizes via dragging
 - Add "validate" button (with warning / sometimes disabled?)
-- Windmill Import instead of export?
+- Pixel rounding error when placing gap in the right column. Seems to be a chrome bug.
 - Zero size polys fail when zero-size negas don't
 
 Features:
 - Multi start
 - Multi end
 - Symmetry
+- Windmill Import
 - Colored Symmetry
 - Colored Dots
 - Invisible Dots (flash for errors)
 - Dots cancelled by negation
-

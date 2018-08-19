@@ -6,3 +6,4 @@ label, button, select, option {
   font-size: 28px;
 }
 table { margin:auto; }
+.resize { position: absolute; }

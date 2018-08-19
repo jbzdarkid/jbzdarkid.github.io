@@ -2,11 +2,15 @@ window.DISABLE_CACHE = true
 var customColor = 'gray'
 var activeParams = {'id':'', 'polyshape': 785}
 var puzzle, solutions, currentSolution
+var dragging = false
 
 window.onload = function() {
   var activePuzzle = window.localStorage.getItem('activePuzzle')
   var serialized = window.localStorage.getItem(activePuzzle)
-  if (!_tryUpdatePuzzle(serialized)) newPuzzle()
+
+  // Load an empty puzzle so that we have a fall-back
+  newPuzzle()
+  _tryUpdatePuzzle(serialized)
 
   drawSymbolButtons()
   drawColorButtons()
@@ -22,10 +26,118 @@ window.onload = function() {
     }
   }
   
-  var resize = document.getElementById('resize')
-  puzzle.onmousedown = function(event) {console.log(event)}
-  puzzle.onmouseup = function(event) {console.log(event)}
+  for (var resize of document.getElementsByClassName('resize')) {
+    resize.onmousedown = function(event) {dragStart(event, this)}
+  }
+}
+
+function dragStart(event, elem) {
+  dragging = {'x':event.clientX, 'y':event.clientY}
+
+  var anchor = document.createElement('div')
+  document.body.appendChild(anchor)
+
+  anchor.id = 'anchor'
+  anchor.style.position = 'absolute'
+  anchor.style.top = 0
+  anchor.style.width = '99%'
+  anchor.style.height = '100%'
+  anchor.style.cursor = elem.style.cursor
+  anchor.onmousemove = function(event) {dragMove(event, elem)}
+  anchor.onmouseup = function() {
+    dragging = false
+    var anchor = document.getElementById('anchor')
+    anchor.parentElement.removeChild(anchor)
+  }
+}
+
+function dragMove(event, elem) {
+  if (!dragging) return
+
+  // Inverted because the table is stored inverted
+  var dy = Math.round((event.clientX - dragging.x) / 58)
+  var dx = Math.round((dragging.y - event.clientY) / 58)
+  var height = puzzle.grid.length
+  var width = puzzle.grid[0].length
   
+  if (dx != 0 || dy != 0) {
+    if (width < 0 || height < 0) return
+    // TODO: Maximum grid dimensions?
+    // Set a new reference point for future drag operations
+    dragging.x = event.clientX
+    dragging.y = event.clientY
+  }
+  
+  if (elem.id == 'resize-topleft') resizePuzzle(dx, -dy, elem.id)
+  if (elem.id == 'resize-top') resizePuzzle(dx, 0, elem.id)
+  if (elem.id == 'resize-topright') resizePuzzle(dx, dy, elem.id)
+  if (elem.id == 'resize-right') resizePuzzle(0, dy, elem.id)
+  if (elem.id == 'resize-bottomright') resizePuzzle(-dx, dy, elem.id)
+  if (elem.id == 'resize-bottom') resizePuzzle(-dx, 0, elem.id)
+  if (elem.id == 'resize-bottomleft') resizePuzzle(-dx, -dy, elem.id)
+  if (elem.id == 'resize-left') resizePuzzle(0, -dy, elem.id)
+}
+
+// Caution: Will loop forever if height is modified in a non top/bottom elem
+// Similarly for width & left/right
+function resizePuzzle(dx, dy, id) {
+  var height = puzzle.grid.length + 2 * dx
+  var width = puzzle.grid[0].length + 2 * dy
+  
+  for (var row of puzzle.grid) {
+    while (row.length > width) {
+      if (id.includes('left')) row.shift()
+      if (id.includes('right')) row.pop()
+    }
+    while (row.length < width) {
+      if (id.includes('left')) row.unshift(false)
+      if (id.includes('right')) row.push(false)
+    }
+  }
+  while (puzzle.grid.length > height) {
+    if (id.includes('top')) puzzle.grid.shift()
+    if (id.includes('bottom')) puzzle.grid.pop()
+  }
+  while (puzzle.grid.length < height) {
+    var newRow = (new Array(width)).fill(false)
+    if (id.includes('top')) puzzle.grid.unshift(newRow)
+    if (id.includes('bottom')) puzzle.grid.push(newRow)
+  }
+  
+  var newDots = []
+  for (var dot of puzzle.dots) {
+    if (id.includes('left')) dot.y += 2 * dy
+    if (id.includes('top')) dot.x += 2 * dx
+    if (dot.x < height && dot.y < width) newDots.push(dot)
+  }
+  puzzle.dots = newDots
+  var newGaps = []
+  for (var gap of puzzle.gaps) {
+    if (id.includes('left')) gap.y += 2 * dy
+    if (id.includes('top')) gap.y += 2 * dx
+    if (gap.y < width) newGaps.push(gap)
+  }
+  puzzle.gaps = newGaps
+
+  if (id.includes('left')) {
+    puzzle.start.y += 2 * dy
+    puzzle.end.y += 2 * dy
+  }
+  if (id.includes('top')) {
+    puzzle.start.x += 2 * dx
+    puzzle.end.x += 2 * dx
+  }
+  if (puzzle.start.x < 0) puzzle.start.x = 0
+  if (puzzle.start.x >= height) puzzle.start.x = height - 1
+  if (puzzle.start.y < 0) puzzle.start.y = 0
+  if (puzzle.start.y >= width) puzzle.start.y = width - 1
+  if (puzzle.end.x < 0) puzzle.end.x = 0
+  if (puzzle.end.x >= height) puzzle.end.x = height - 1
+  if (puzzle.end.y < 0) puzzle.end.y = 0
+  if (puzzle.end.y >= width) puzzle.end.y = width - 1
+
+  savePuzzle()
+  updatePuzzle()
 }
 
 function _addPuzzleToList(puzzleName) {
@@ -169,39 +281,6 @@ function exportPuzzle() {
 
 function playPuzzle() {
   window.location.href = 'index.html?puzzle=' + puzzle.serialize()
-}
-
-function resizePuzzle() {
-  var width = parseInt(prompt('New width:'))*2 + 1
-  if (width <= 0 || width == undefined) return
-  var height = parseInt(prompt('New height:'))*2 + 1
-  if (height <= 0 || height == undefined) return
-
-  // Assming "from right/from bottom" for now...
-  for (var row of puzzle.grid) {
-    while (row.length > width) row.pop()
-    while (row.length < width) row.push(false)
-  }
-  while (puzzle.grid.length > height) puzzle.grid.pop()
-  while (puzzle.grid.length < height) {
-    puzzle.grid.push((new Array(width)).fill(false))
-  }
-  var newDots = []
-  for (var dot of puzzle.dots) {
-    if (dot.x < width && dot.y < height) newDots.push(dot)
-  }
-  puzzle.dots = newDots
-  var newGaps = []
-  for (var gap of puzzle.gaps) {
-    if (gap.x < width && gap.y < height) newGaps.push(gap)
-  }
-  puzzle.gaps = newGaps
-  if (puzzle.start.x >= width) puzzle.start.x = width - 1
-  if (puzzle.start.y >= height) puzzle.start.y = height - 1
-  if (puzzle.end.x >= width) puzzle.end.x = width - 1
-  if (puzzle.end.y >= height) puzzle.end.y = height - 1
-  savePuzzle()
-  updatePuzzle()
 }
 
 function drawSymbolButtons() {
