@@ -8,9 +8,10 @@ window.onload = function() {
   var activePuzzle = window.localStorage.getItem('activePuzzle')
   var serialized = window.localStorage.getItem(activePuzzle)
 
-  // Load an empty puzzle so that we have a fall-back
-  newPuzzle()
-  _tryUpdatePuzzle(serialized)
+  newPuzzle() // Load an empty puzzle so that we have a fall-back
+  if (_tryUpdatePuzzle(serialized)) {
+    window.localStorage.setItem('activePuzzle', activePuzzle)
+  }
 
   drawSymbolButtons()
   drawColorButtons()
@@ -148,14 +149,13 @@ function _addPuzzleToList(puzzleName) {
 }
 
 function _removePuzzleFromList(puzzleName) {
-  console.log('Removing puzzle', puzzleName)
+  // console.log('Removing puzzle', puzzleName)
   var puzzleList = JSON.parse(window.localStorage.getItem('puzzleList'))
   if (!puzzleList) puzzleList = []
   var index = puzzleList.indexOf(puzzleName)
-  if (index != -1) {
-    puzzleList.splice(index, 1)
-    window.localStorage.setItem('puzzleList', JSON.stringify(puzzleList))
-  }
+  if (index == -1) return
+  puzzleList.splice(index, 1)
+  window.localStorage.setItem('puzzleList', JSON.stringify(puzzleList))
 }
 
 function _tryUpdatePuzzle(serialized) {
@@ -191,7 +191,7 @@ function savePuzzle() {
 
   // Save the new version
   puzzle.name = document.getElementById('puzzleName').innerText
-  console.log('Saving puzzle', puzzle.name)
+  // console.log('Saving puzzle', puzzle.name)
   // TODO: Some intelligence about showing day / month / etc depending on date age
   var savedPuzzle = puzzle.name + ' on ' + (new Date()).toLocaleString()
   _addPuzzleToList(savedPuzzle)
@@ -201,7 +201,7 @@ function savePuzzle() {
 
 function deletePuzzleAndLoadNext() {
   var activePuzzle = window.localStorage.getItem('activePuzzle')
-  console.log('Deleting', activePuzzle)
+  // console.log('Deleting', activePuzzle)
   window.localStorage.removeItem(activePuzzle)
   _removePuzzleFromList(activePuzzle)
 
@@ -245,10 +245,11 @@ function loadPuzzle() {
   loadList.onchange = function() {
     _removePuzzleFromList(this.value)
     _addPuzzleToList(this.value)
+    window.localStorage.setItem('activePuzzle', this.value)
     
     var serialized = window.localStorage.getItem(this.value)
     if (!_tryUpdatePuzzle(serialized)) {
-      _removePuzzleFromList(this.value)
+      deletePuzzleAndLoadNext()
     }
 
     var anchor = document.getElementById('anchor')
