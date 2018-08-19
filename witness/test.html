@@ -7,7 +7,7 @@
     <script type="text/javascript" src="engine/solve.js"></script>
     <script type="text/javascript" src="engine/validate.js"></script>
     <script type="text/javascript" src="engine/svg.js"></script>
-    <script type="text/javascript" src="engine/display.js"></script>
+    <script type="text/javascript" src="engine/display2.js"></script>
     <script type="text/javascript" src="engine/trace.js"></script>
     <script type="text/javascript" src="test.js"></script>
     <title>Random tests or something</title>
@@ -33,9 +33,9 @@
         var row = table.insertRow()
         for (var j=i; j<i+3 && j < tests.length; j++) {
           var cell = row.insertCell()
-          var subtable = document.createElement('table')
-          subtable.id = 'test'+j
-          cell.appendChild(subtable)
+          var puzzle = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+          puzzle.id = 'test'+j
+          cell.appendChild(puzzle)
 
           try {
             var solutions = []

@@ -75,16 +75,16 @@ function _poly(svg, params) {
     bounds.ymax = Math.max(bounds.ymax, pos.y)
   }
   var offset = (size+space)/2 // Offset between paramsents to create the gap
-  var center_x = (params.width - size - offset * (bounds.xmax + bounds.xmin)) / 2
-  var center_y = (params.height - size - offset * (bounds.ymax + bounds.ymin)) / 2
+  var center_x = (params.width - size - offset * (bounds.xmax + bounds.xmin)) / 2 + params.x
+  var center_y = (params.height - size - offset * (bounds.ymax + bounds.ymin)) / 2 + params.y
 
   for (var pos of polyomino) {
     var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
     svg.appendChild(rect)
-    var transform = 'translate('+(center_y+pos.y*offset)+', '+(center_x+pos.x*offset)+')'
+    var transform = 'translate('+(center_x+pos.x*offset)+', '+(center_y+pos.y*offset)+')'
     if (params.rot == 'all') {
       // -30 degree rotation around the midpoint of the square
-      transform = 'rotate(-30, ' + params.width/2 + ', ' + params.height/2 + ') ' + transform
+      transform = 'rotate(-30, ' + (params.width/2 + params.x) + ', ' + (params.height/2 + params.y) + ') ' + transform
     }
     rect.setAttribute('transform', transform)
     rect.setAttribute('height', size)
@@ -107,8 +107,8 @@ function _ylop(svg, params) {
     bounds.ymax = Math.max(bounds.ymax, pos.y)
   }
   var offset = (size+space)/2 // Offset between paramsents to create the gap
-  var center_x = (params.width - size - offset * (bounds.xmax + bounds.xmin)) / 2
-  var center_y = (params.height - size - offset * (bounds.ymax + bounds.ymin)) / 2
+  var center_x = (params.width - size - offset * (bounds.xmax + bounds.xmin)) / 2 + params.x
+  var center_y = (params.height - size - offset * (bounds.ymax + bounds.ymin)) / 2 + params.y
 
   for (var pos of polyomino) {
     var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
@@ -118,10 +118,10 @@ function _ylop(svg, params) {
       '3 3', '3 9', '9 9', '9 3', '0 3',
     ]
     poly.setAttribute('points', points.join(', '))
-    var transform = 'translate('+(center_y+pos.y*offset)+', '+(center_x+pos.x*offset)+')'
+    var transform = 'translate('+(center_x+pos.x*offset)+', '+(center_y+pos.y*offset)+')'
     if (params.rot == 'all') {
       // -30 degree rotation around the midpoint of the square
-      transform = 'rotate(-30, ' + params.width/2 + ', ' + params.height/2 + ') ' + transform
+      transform = 'rotate(-30, ' + (params.width/2 + params.x) + ', ' + (params.height/2 + params.y) + ') ' + transform
     }
     poly.setAttribute('transform', transform)
     poly.setAttribute('fill', params.color)
@@ -135,9 +135,9 @@ function _nega(svg, params) {
     svg.appendChild(rect)
     rect.setAttribute('height', 10.5)
     rect.setAttribute('width', 6)
-    rect.setAttribute('x', (params.width-6)/2)
-    rect.setAttribute('y', (params.height + 2)/2)
-    rect.setAttribute('transform', 'rotate(' + degrees + ', ' + params.width/2 + ', ' + (params.height/2 + 1) + ')')
+    rect.setAttribute('x', params.width/2 - 3 + params.x)
+    rect.setAttribute('y', params.height/2 + 1 + params.y)
+    rect.setAttribute('transform', 'rotate(' + degrees + ', ' + (params.width/2 + params.x) + ', ' + (params.height/2 + 1 + params.y) + ')')
     rect.setAttribute('fill', params.color)
   }
 }
@@ -147,8 +147,9 @@ function _triangle(svg, params) {
     var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
     svg.appendChild(poly)
     poly.setAttribute('points', '0 0, -8 14, 8 14')
-    var x_offset = (params.width - 22*(params.count - 1)) / 2 + 22*i
-    poly.setAttribute('transform', 'translate(' + x_offset + ', ' + (params.height/2 - 7) + ')')
+    var x_offset = params.width/2 - 11*(params.count - 1) + 22*i + params.x
+    var y_offset = params.height/2 - 7 + params.y
+    poly.setAttribute('transform', 'translate(' + x_offset + ', ' + y_offset + ')')
     poly.setAttribute('fill', params.color)
   }
 }
@@ -225,7 +226,7 @@ function _dot(svg, params) {
   var hex = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
   svg.appendChild(hex)
   hex.setAttribute('points', '5.2 9, 10.4 0, 5.2 -9, -5.2 -9, -10.4 0, -5.2 9')
-  hex.setAttribute('transform', 'translate(' + params.width/2 + ', ' + params.height/2 + ')')
+  hex.setAttribute('transform', 'translate(' + (params.width/2 + params.x) + ', ' + (params.height/2 + params.y) + ')')
   hex.setAttribute('fill', 'black')
 }
 
