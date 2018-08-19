@@ -70,7 +70,10 @@ if (location.hash == "") {
 if ('puzzle' in urlParams) {
   var puzzleData = {'solutions': []}
   puzzleData.puzzle = Puzzle.deserialize(urlParams.puzzle)
-  solve(puzzleData.puzzle, puzzleData.puzzle.start.x, puzzleData.puzzle.start.y, puzzleData.solutions)
+  // Only verify 5x5 (11x11 internally) and smaller
+  if (puzzleData.puzzle.grid.length * puzzleData.puzzle.grid[0].length <= 121) {
+    solve(puzzleData.puzzle, puzzleData.puzzle.start.x, puzzleData.puzzle.start.y, puzzleData.solutions)
+  }
 } else {
   if ('style' in urlParams) {
     if (urlParams.style in styles) {
