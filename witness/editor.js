@@ -358,7 +358,8 @@ function drawColorButtons() {
       drawColorButtons()
     }
     while (button.firstChild) button.removeChild(button.firstChild)
-    button.appendChild(_crayon(params))
+    params.type = 'crayon'
+    button.appendChild(drawSymbol(params))
   }
 }
 

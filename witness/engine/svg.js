@@ -232,24 +232,41 @@ function _dot(svg, params) {
 
 function _gap(svg, params) {
   if (!params.rot) params.rot = 0
-  var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+  var center_x = params.height/2 + params.x
+  var center_y = params.width/2 + params.y
+  var rotate = function(degrees) {return 'rotate(' + degrees + ', ' + center_x + ', ' + center_y + ')'}
+  
+  var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+  circ.setAttribute('r', 12)
+  circ.setAttribute('fill', FOREGROUND)
+  circ.setAttribute('cx', center_x - 41)
+  circ.setAttribute('cy', center_y)
   if (params.rot == 0) {
-    rect.setAttribute('x', (params.width-58)/2)
-    rect.setAttribute('y', (params.height-24)/2)
-    rect.setAttribute('width', 20)
-    rect.setAttribute('height', 24)
-    rect.setAttribute('fill', FOREGROUND)
+    svg.appendChild(circ.cloneNode())
+    circ.setAttribute('transform', rotate(180))
+    svg.appendChild(circ)
+  } else if (params.rot == 1) {
+    circ.setAttribute('transform', rotate(90))
+    svg.appendChild(circ.cloneNode())
+    circ.setAttribute('transform', rotate(270))
+    svg.appendChild(circ)
+  }
+
+  var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+  svg.appendChild(rect)
+  rect.setAttribute('width', 32)
+  rect.setAttribute('height', 24)
+  rect.setAttribute('fill', FOREGROUND)
+  rect.setAttribute('x', center_x - 41)
+  rect.setAttribute('y', center_y - 12)
+  if (params.rot == 0) {
     svg.appendChild(rect.cloneNode())
-    rect.setAttribute('x', (params.width+18)/2)
+    rect.setAttribute('transform', rotate(180))
     svg.appendChild(rect)
-  } else { // if (params.rot == 1) {
-    rect.setAttribute('x', (params.width-24)/2)
-    rect.setAttribute('y', (params.height-58)/2)
-    rect.setAttribute('width', 24)
-    rect.setAttribute('height', 20)
-    rect.setAttribute('fill', FOREGROUND)
+  } else if (params.rot == 1) {
+    rect.setAttribute('transform', rotate(90))
     svg.appendChild(rect.cloneNode())
-    rect.setAttribute('y', (params.height+18)/2)
+    rect.setAttribute('transform', rotate(270))
     svg.appendChild(rect)
   }
 }

@@ -28,6 +28,7 @@ function draw(puzzle, target='puzzle') {
       line.setAttribute('stroke-width', 24)
       line.setAttribute('stroke-linecap', 'round')
       line.setAttribute('stroke', FOREGROUND)
+      line.id = target + '_' + x + '_' + y
       if (x%2 == 1 && y%2 == 0) { // Horizontal
         line.setAttribute('x1', x*41 + 11)
         line.setAttribute('y1', y*41 + 52)
@@ -43,9 +44,9 @@ function draw(puzzle, target='puzzle') {
       }
     }
   }
-  // Draw symbols after so they overlap the lines, if necessary
-  for (var x=0; x<puzzle.grid.length; x++) {
-    for (var y=0; y<puzzle.grid[x].length; y++) {
+  // Draw cell symbols after so they overlap the lines, if necessary
+  for (var x=1; x<puzzle.grid.length; x+=2) {
+    for (var y=1; y<puzzle.grid[x].length; y+=2) {
       if (puzzle.grid[x][y]) {
         var params = JSON.parse(JSON.stringify(puzzle.grid[x][y]))
         params.width = 58
@@ -55,6 +56,23 @@ function draw(puzzle, target='puzzle') {
         drawSymbolWithSvg(svg, params)
       }
     }
+  }
+  
+  for (var dot of puzzle.dots) {
+    var params = {'type':'dot', 'width':58, 'height':58}
+    params.x = dot.x*41 + 23
+    params.y = dot.y*41 + 23
+    drawSymbolWithSvg(svg, params)
+  }
+  
+  for (var gap of puzzle.gaps) {
+    var line = document.getElementById(target + '_' + gap.x + '_' + gap.y)
+    svg.removeChild(line)
+    var params = {'type':'gap', 'width':58, 'height':58}
+    params.x = gap.x*41 + 23
+    params.y = gap.y*41 + 23
+    if (gap.x%2 == 0 && gap.y%2 == 1) params.rot = 1
+    drawSymbolWithSvg(svg, params)
   }
   
   drawSymbolWithSvg(svg, {
