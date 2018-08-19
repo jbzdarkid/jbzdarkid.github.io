@@ -98,7 +98,11 @@ if ('puzzle' in urlParams) {
 window.onload = function() {
   draw(puzzleData.puzzle)
   window.solution = puzzleData.solutions[_randint(puzzleData.solutions.length)]
-  window.hints = solution.hints()
+  if (window.solution != undefined) {
+    document.getElementById('soln').disabled = false
+    document.getElementById('hint').disabled = false
+    window.hints = solution.hints()
+  }
 }
 
 function showHint() {
