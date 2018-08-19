@@ -56,8 +56,7 @@ function _star(svg, params) {
     '0 -15',
     '-4 -9.5',
   ]
-  poly.setAttribute('x', params.width/2 + params.x)
-  poly.setAttribute('y', params.height/2 + params.y)
+  poly.setAttribute('transform', 'translate(' + (params.width/2 + params.x) + ', ' + (params.height/2 + params.y) + ')')
   poly.setAttribute('points', points.join(', '))
   poly.setAttribute('fill', params.color)
 }
@@ -187,25 +186,28 @@ function _start(svg, params) {
   svg.appendChild(circ)
   circ.setAttribute('r', 24)
   circ.setAttribute('fill', FOREGROUND)
-  circ.setAttribute('cx', params.height/2)
-  circ.setAttribute('cy', params.width/2)
+  circ.setAttribute('cx', params.height/2 + params.x)
+  circ.setAttribute('cy', params.width/2 + params.y)
 }
 
 function _end(svg, params) {
+  if (!params.rot) params.rot = 0
   var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
   svg.appendChild(circ)
   circ.setAttribute('r', 12)
   circ.setAttribute('fill', FOREGROUND)
-  circ.setAttribute('cx', params.height/2)
-  circ.setAttribute('cy', params.width/2 - 3)
+  circ.setAttribute('cx', params.height/2 + params.x)
+  circ.setAttribute('cy', params.width/2 - 6 + params.y)
+  circ.setAttribute('transform', 'rotate(' + [0, 90, 180, 270][params.rot] + ')')
   svg.appendChild(circ)
   var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
   svg.appendChild(rect)
   rect.setAttribute('width', 24)
-  rect.setAttribute('height', 18)
+  rect.setAttribute('height', 24)
   rect.setAttribute('fill', FOREGROUND)
-  rect.setAttribute('x', params.height/2 - 12)
-  rect.setAttribute('y', params.width/2 - 3)
+  rect.setAttribute('x', params.height/2 - 12 + params.x)
+  rect.setAttribute('y', params.width/2 - 6 + params.y)
+  circ.setAttribute('transform', 'rotate(' + [0, 90, 180, 270][params.rot] + ')')
 }
 
 function _dot(svg, params) {

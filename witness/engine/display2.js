@@ -6,6 +6,19 @@ function draw(puzzle, target='puzzle') {
   svg.style.width = '100%'
   svg.style.height = '100%'
   while (svg.firstChild) svg.removeElement(firstChild)
+
+  var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+  svg.appendChild(rect)
+  rect.setAttribute('stroke-width', 10)
+  rect.setAttribute('stroke', 'black')
+  rect.setAttribute('fill', BACKGROUND)
+  // Accounting for the border thickness
+  rect.setAttribute('x', 5)
+  rect.setAttribute('y', 5)
+  // 41*(width-1) + 24 (extra edge) + 25*2 (padding) + 10*2 (border)
+  rect.setAttribute('width', 41*puzzle.grid.length + 53)
+  rect.setAttribute('height', 41*puzzle.grid[0].length + 53)
+  
   for (var x=0; x<puzzle.grid.length; x++) {
     for (var y=0; y<puzzle.grid[x].length; y++) {
       var line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
@@ -13,53 +26,44 @@ function draw(puzzle, target='puzzle') {
       line.setAttribute('stroke-linecap', 'round')
       line.setAttribute('stroke', FOREGROUND)
       if (y%2 == 0 && x%2 == 1) { // Horizontal
-        line.setAttribute('x1', (x-1)*41 + 12)
-        line.setAttribute('y1', y*41 + 12)
-        line.setAttribute('x2', (x+1)*41 + 12)
-        line.setAttribute('y2', y*41 + 12)
+        line.setAttribute('x1', x*41 + 11)
+        line.setAttribute('y1', y*41 + 52)
+        line.setAttribute('x2', x*41 + 93)
+        line.setAttribute('y2', y*41 + 52)
         svg.appendChild(line)
       } else if (y%2 == 1 && x%2 == 0) { // Vertical
-        line.setAttribute('x1', x*41 + 12)
-        line.setAttribute('y1', (y-1)*41 + 12)
-        line.setAttribute('x2', x*41 + 12)
-        line.setAttribute('y2', (y+1)*41 + 12)
+        line.setAttribute('x1', x*41 + 52)
+        line.setAttribute('y1', y*41 + 11)
+        line.setAttribute('x2', x*41 + 52)
+        line.setAttribute('y2', y*41 + 93)
         svg.appendChild(line)
       } else if (y%2 == 1 && x%2 == 1) {
-        drawSymbolWithSvg(svg, {
-          'type':'square',
-          'color':'red',
-          'width':58,
-          'height':58,
-          'x':x*41 - 29 + 12,
-          'y':y*41 - 29 + 12,
-        })
+        if (puzzle.grid[x][y]) {
+          var params = JSON.parse(JSON.stringify(puzzle.grid[x][y]))
+          params.width = 58
+          params.height = 58
+          params.x = x*41 + 23
+          params.y = y*41 + 23
+          drawSymbolWithSvg(svg, params)
+        }
       }
     }
   }
   
-  /*
-  for (var x=0; x<puzzle.grid.length; x+=2) {
-    for (var y=0; y<puzzle.grid[x].length; y+=2) {
-      var hline = document.createElementNS('http://www.w3.org/2000/svg', 'line')
-      svg.appendChild(hline)
-      hline.setAttribute('stroke-width', 24)
-      hline.setAttribute('stroke', 'black')
-      hline.setAttribute('stroke-linecap', 'round')
-      hline.setAttribute('x1', x*41 + 12)
-      hline.setAttribute('y1', y*41 + 12)
-      hline.setAttribute('x2', x*41 + 12)
-      hline.setAttribute('y2', (y+2)*41 + 12)
-      
-      var vline = document.createElementNS('http://www.w3.org/2000/svg', 'line')
-      svg.appendChild(vline)
-      vline.setAttribute('stroke-width', 24)
-      vline.setAttribute('stroke', 'black')
-      vline.setAttribute('stroke-linecap', 'round')
-      vline.setAttribute('x1', x*41 + 12)
-      vline.setAttribute('y1', y*41 + 12)
-      vline.setAttribute('x2', (x+2)*41 + 12)
-      vline.setAttribute('y2', y*41 + 12)
-    }
-  }
-  */
+  drawSymbolWithSvg(svg, {
+    'type':'start',
+    'width': 58,
+    'height': 58,
+    'x': puzzle.start.x*41 - 59,
+    'y': puzzle.start.y*41 - 59,
+  })
+
+  drawSymbolWithSvg(svg, {
+    'type':'end',
+    'width': 58,
+    'height': 58,
+    'x': puzzle.end.x*41 + 23,
+    'y': puzzle.end.y*41 + 5,
+  })
+  
 }
