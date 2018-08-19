@@ -286,8 +286,8 @@ function playPuzzle() {
 function drawSymbolButtons() {
   var symbolData = {
     'start': {'type':'start'},
-    'end': {'type':'end'},
-    'gap': {'type':'gap', 'rot':0},
+    'end': {'type':'end', 'y':18},
+    'gap': {'type':'gap'},
     'dot': {'type':'dot'},
     'square': {'type':'square'},
     'star': {'type':'star'},
