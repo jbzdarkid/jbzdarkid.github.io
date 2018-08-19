@@ -1,53 +1,43 @@
-function drawSymbol(params) {
-  if (params.type == 'square') {
-    return _square(params)
-  } else if (params.type == 'dot') {
-    return _dot(params)
-  } else if (params.type == 'gap') {
-    return _gap(params) // Maybe not?
-  } else if (params.type == 'star') {
-    return _star(params)
-  } else if (params.type == 'poly') {
-    return _poly(params)
-  } else if (params.type == 'ylop') {
-    return _ylop(params)
-  } else if (params.type == 'nega') {
-    return _nega(params)
-  } else if (params.type == 'nonce') {
-    return document.createElement('null')
-  } else if (params.type == 'triangle') {
-    return _triangle(params)
-  } else if (params.type == 'crayon') {
-    return _crayon(params)
-  } else if (params.type == 'start') {
-    return _start(params)
-  } else if (params.type == 'end') {
-    return _end(params)
-  } else {
-    throw 'Unknown symbol type in params: ' + JSON.stringify(params)
-  }
-}
-
-function _square(params) {
+function drawSymbol(params/*, width, height*/) {
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
   svg.setAttribute('viewBox', '0 0 ' + params.width + ' ' + params.height)
-  var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-  rect.setAttribute('transform', 'translate(15, 15)')
-  rect.setAttribute('width', 28)
-  rect.setAttribute('height', 28)
-  rect.setAttribute('x', params.width/2-28)
-  rect.setAttribute('y', params.height/2-28)
-  rect.setAttribute('rx', 7)
-  rect.setAttribute('ry', 7)
-  rect.setAttribute('fill', params.color)
-  svg.appendChild(rect)
+  if (!params.x) params.x = 0
+  if (!params.y) params.y = 0
+  drawSymbolWithSvg(svg, params)
   return svg
 }
 
-function _star(params) {
-  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('viewBox', '0 0 ' + params.width + ' ' + params.height)
+function drawSymbolWithSvg(svg, params) {
+  if (params.type == 'square') _square(svg, params)
+  else if (params.type == 'dot') _dot(svg, params)
+  else if (params.type == 'gap') _gap(svg, params)
+  else if (params.type == 'star') _star(svg, params)
+  else if (params.type == 'poly') _poly(svg, params)
+  else if (params.type == 'ylop') _ylop(svg, params)
+  else if (params.type == 'nega') _nega(svg, params)
+  else if (params.type == 'nonce') {} // Do nothing
+  else if (params.type == 'triangle') _triangle(svg, params)
+  else if (params.type == 'crayon') _crayon(svg, params)
+  else if (params.type == 'start') _start(svg, params)
+  else if (params.type == 'end') _end(svg, params)
+  else throw 'Unknown symbol type in params: ' + JSON.stringify(params)
+}
+
+function _square(svg, params) {
+  var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+  svg.appendChild(rect)
+  rect.setAttribute('width', 28)
+  rect.setAttribute('height', 28)
+  rect.setAttribute('x', params.width/2-14 + params.x)
+  rect.setAttribute('y', params.height/2-14 + params.y)
+  rect.setAttribute('rx', 7)
+  rect.setAttribute('ry', 7)
+  rect.setAttribute('fill', params.color)
+}
+
+function _star(svg, params) {
   var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
+  svg.appendChild(poly)
   var points = [
     '-10.5 -10.5', // Top left
     '-9.5 -4',
@@ -66,23 +56,17 @@ function _star(params) {
     '0 -15',
     '-4 -9.5',
   ]
+  poly.setAttribute('x', params.width/2 + params.x)
+  poly.setAttribute('y', params.height/2 + params.y)
   poly.setAttribute('points', points.join(', '))
   poly.setAttribute('fill', params.color)
-  poly.setAttribute('transform', 'translate(' + params.width/2 + ', ' + params.height/2 + ')')
-  svg.appendChild(poly)
-  return svg
 }
 
-function _poly(params) {
-  if (params.polyshape == 0) return document.createElement('null')
+function _poly(svg, params) {
+  if (params.polyshape == 0) return
   var size = 10 // Side length of individual squares in the polyomino
   var space = 4 // Gap between squares in the polyomino
-  if (params.polyshape) {
-    var polyomino = polyominoFromPolyshape(params.polyshape)
-  } else {
-    // Select the first (potentially only) rotation of the paramsent.
-    var polyomino = getPolyomino(params.size, params.shape, params.rot)[0]
-  }
+  var polyomino = polyominoFromPolyshape(params.polyshape)
 
   var bounds = {'xmin':0, 'xmax':0, 'ymin':0, 'ymax':0}
   for (var pos of polyomino) {
@@ -95,10 +79,9 @@ function _poly(params) {
   var center_x = (params.width - size - offset * (bounds.xmax + bounds.xmin)) / 2
   var center_y = (params.height - size - offset * (bounds.ymax + bounds.ymin)) / 2
 
-  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('viewBox', '0 0 ' + params.width + ' ' + params.height)
   for (var pos of polyomino) {
     var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+    svg.appendChild(rect)
     var transform = 'translate('+(center_y+pos.y*offset)+', '+(center_x+pos.x*offset)+')'
     if (params.rot == 'all') {
       // -30 degree rotation around the midpoint of the square
@@ -108,21 +91,14 @@ function _poly(params) {
     rect.setAttribute('height', size)
     rect.setAttribute('width', size)
     rect.setAttribute('fill', params.color)
-    svg.appendChild(rect)
   }
-  return svg
 }
 
-function _ylop(params) {
-  if (params.polyshape == 0) return document.createElement('null')
+function _ylop(svg, params) {
+  if (params.polyshape == 0) return
   var size = 12 // Side length of individual squares in the polyomino
   var space = 2 // Gap between squares in the polyomino
-  if (params.polyshape) {
-    var polyomino = polyominoFromPolyshape(params.polyshape)
-  } else {
-    // Select the first (potentially only) rotation of the paramsent.
-    var polyomino = getPolyomino(params.size, params.shape, params.rot)[0]
-  }
+  var polyomino = polyominoFromPolyshape(params.polyshape)
 
   var bounds = {'xmin':0, 'xmax':0, 'ymin':0, 'ymax':0}
   for (var pos of polyomino) {
@@ -135,10 +111,9 @@ function _ylop(params) {
   var center_x = (params.width - size - offset * (bounds.xmax + bounds.xmin)) / 2
   var center_y = (params.height - size - offset * (bounds.ymax + bounds.ymin)) / 2
 
-  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('viewBox', '0 0 ' + params.width + ' ' + params.height)
   for (var pos of polyomino) {
     var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
+    svg.appendChild(poly)
     var points = [
       '0 0', '12 0', '12 12', '0 12', '0 3',
       '3 3', '3 9', '9 9', '9 3', '0 3',
@@ -151,50 +126,41 @@ function _ylop(params) {
     }
     poly.setAttribute('transform', transform)
     poly.setAttribute('fill', params.color)
-    svg.appendChild(poly)
   }
-  return svg
 }
 
 // Adjusted 1 pixel down because it looks better
-function _nega(params) {
-  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('viewBox', '0 0 ' + params.width + ' ' + params.height)
+function _nega(svg, params) {
   for (var degrees of [60, 180, 300]) {
     var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+    svg.appendChild(rect)
     rect.setAttribute('height', 10.5)
     rect.setAttribute('width', 6)
     rect.setAttribute('x', (params.width-6)/2)
     rect.setAttribute('y', (params.height + 2)/2)
     rect.setAttribute('transform', 'rotate(' + degrees + ', ' + params.width/2 + ', ' + (params.height/2 + 1) + ')')
     rect.setAttribute('fill', params.color)
-    svg.appendChild(rect)
   }
-  return svg
 }
 
-function _triangle(params) {
-  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('viewBox', '0 0 ' + params.width + ' ' + params.height)
+function _triangle(svg, params) {
   for (var i=0; i<params.count; i++) {
     var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
+    svg.appendChild(poly)
     poly.setAttribute('points', '0 0, -8 14, 8 14')
     var x_offset = (params.width - 22*(params.count - 1)) / 2 + 22*i
     poly.setAttribute('transform', 'translate(' + x_offset + ', ' + (params.height/2 - 7) + ')')
     poly.setAttribute('fill', params.color)
-    svg.appendChild(poly)
   }
-  return svg
 }
 
-function _crayon(params) {
+function _crayon(svg, params) {
   var height = params.height
   var width = params.width
   var border = 2
 
-  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height)
   var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
+  svg.appendChild(poly)
   var points = [
     '0 ' + (height/2),
     (height/2) + ' 0',
@@ -210,60 +176,47 @@ function _crayon(params) {
   ]
   poly.setAttribute('points', points.join(', '))
   poly.setAttribute('fill', params.color)
-  svg.appendChild(poly)
   var txt = document.createElementNS('http://www.w3.org/2000/svg', 'text')
+  svg.appendChild(txt)
   txt.setAttribute('transform', 'translate(' + (height/2 + 10) + ', ' + (height/2 + 6) + ')')
   txt.innerHTML = params.text
-  svg.appendChild(txt)
-  return svg
 }
 
-function _start(params) {
-  console.log(JSON.stringify(params))
-  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('viewBox', '0 0 ' + params.height + ' ' + params.width)
+function _start(svg, params) {
   var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+  svg.appendChild(circ)
   circ.setAttribute('r', 24)
   circ.setAttribute('fill', FOREGROUND)
   circ.setAttribute('cx', params.height/2)
   circ.setAttribute('cy', params.width/2)
-  svg.appendChild(circ)
-  return svg
 }
 
-function _end(params) {
-  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('viewBox', '0 0 ' + params.height + ' ' + params.width)
+function _end(svg, params) {
   var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+  svg.appendChild(circ)
   circ.setAttribute('r', 12)
   circ.setAttribute('fill', FOREGROUND)
   circ.setAttribute('cx', params.height/2)
   circ.setAttribute('cy', params.width/2 - 3)
   svg.appendChild(circ)
   var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+  svg.appendChild(rect)
   rect.setAttribute('width', 24)
   rect.setAttribute('height', 18)
   rect.setAttribute('fill', FOREGROUND)
   rect.setAttribute('x', params.height/2 - 12)
   rect.setAttribute('y', params.width/2 - 3)
-  svg.appendChild(rect)
-  return svg
 }
 
-function _dot(params) {
-  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('viewBox', '0 0 ' + params.width + ' ' + params.height)
+function _dot(svg, params) {
   var hex = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
+  svg.appendChild(hex)
   hex.setAttribute('points', '5.2 9, 10.4 0, 5.2 -9, -5.2 -9, -10.4 0, -5.2 9')
   hex.setAttribute('transform', 'translate(' + params.width/2 + ', ' + params.height/2 + ')')
   hex.setAttribute('fill', 'black')
-  svg.appendChild(hex)
-  return svg
 }
 
-function _gap(params) {
-  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('viewBox', '0 0 '+params.width+' '+params.height)
+function _gap(svg, params) {
   var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
   if (params.rot == 0) {
     rect.setAttribute('x', (params.width-58)/2)
@@ -284,5 +237,4 @@ function _gap(params) {
     rect.setAttribute('y', (params.height+18)/2)
     svg.appendChild(rect)
   }
-  return svg
 }
