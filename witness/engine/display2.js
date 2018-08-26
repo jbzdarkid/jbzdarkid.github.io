@@ -82,6 +82,9 @@ function draw(puzzle, target='puzzle') {
     'x': puzzle.start.x*41 + 23,
     'y': puzzle.start.y*41 + 23,
   })
+  svg.lastChild.onclick = svg.lastChild.ontouchstart = function() {
+    trace(this, puzzle)
+  }
 
   var rot = 0
   if (puzzle.end.y == 0) rot = 0
