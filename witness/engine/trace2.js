@@ -1,4 +1,4 @@
-window.BBOX_DEBUG = true
+window.BBOX_DEBUG = false
 
 var data
 
@@ -63,8 +63,7 @@ function trace(elem, puzzle) {
       // Resume tracing from cursor?
       PLAY_SOUND('abort')
     } else {
-
-      // validate(data.puzzle)
+      validate(data.puzzle)
 
       // Mark the negations
       // for (var pos of data.puzzle.negations) {
@@ -114,13 +113,15 @@ function _onMove(dx, dy) {
   var width = (data.pos.x%2 == 0 ? 24 : 58)
   var height = (data.pos.y%2 == 0 ? 24 : 58)
   
-  // Also handles pushing (and some collision)
-  _moveCursor(dx, dy, width, height)
+  // Also handles some collision
+  _pushCursor(dx, dy, width, height)
   
-  // Compute boundary checks (no pushing)
+  // Compute absolute boundary checks (no pushing)
   // _collision()
+  // Move the location to a new cell
+  _move() // Try to implement collision here, so 1 fewer function
 
-  // _redraw()
+  // redraw
   data.cursor.setAttribute('cx', data.x)
   data.cursor.setAttribute('cy', data.y)
   
@@ -130,8 +131,6 @@ function _onMove(dx, dy) {
     data.bboxDebug.setAttribute('width', data.bbox.x2 - data.bbox.x1)
     data.bboxDebug.setAttribute('height', data.bbox.y2 - data.bbox.y1)
   }
-  
-  _move()
 }
 
 function _push(dx, dy, dir, multiplier = 1) {
@@ -171,50 +170,139 @@ function _push(dx, dy, dir, multiplier = 1) {
   return false
 }
 
-function _moveCursor(dx, dy, width, height) {
+function _pushCursor(dx, dy, width, height) {
   // Ratio of movement to be considered turning at an intersection
   var turnMod = 2
+
+  /* TODO: // Endpoint collision
+  if (elem.className.startsWith('end')) {
+    if (elem.className.startsWith('end_left')) {
+      data.subx += dx + Math.abs(dy) / deltaModInnerWall
+    } else if (elem.className.startsWith('end_right')) {
+      data.subx += dx - Math.abs(dy) / deltaModInnerWall
+    } else if (elem.className.startsWith('end_up')) {
+      data.suby += dy + Math.abs(dx) / deltaModInnerWall
+    } else if (elem.className.startsWith('end_down')) {
+      data.suby += dy - Math.abs(dx) / deltaModInnerWall
+    }
+    return
+  }
+  */
   
   // Outer wall collision
   if (data.pos.x == 0) { // Against left wall
-    if (_push(dx, dy, 'left')) return
+    if (data.puzzle.end.x == data.pos.x) { // Endpoint is on the left wall
+      if (data.pos.y < data.puzzle.end.y) { // Above endpoint
+        if (_push(dx, dy, 'left', -1)) return
+      }
+      if (data.pos.y > data.puzzle.end.y) { // Below endpoint
+        if (_push(dx, dy, 'left')) return
+      }
+    } else { // Endpoint is not on the left wall
+      if (_push(dx, dy, 'left')) return
+    }
   } else if (data.pos.x == data.puzzle.grid.length - 1) { // Against right wall
-    if (_push(dx, dy, 'right')) return
+    if (data.puzzle.end.x == data.pos.x) { // Endpoint is on the right wall
+      if (data.pos.y < data.puzzle.end.y) { // Above endpoint
+        if (_push(dx, dy, 'right', -1)) return
+      }
+      if (data.pos.y > data.puzzle.end.y) { // Below endpoint
+        if (_push(dx, dy, 'right')) return
+      }
+    } else { // Endpoint is not on the right wall
+      if (_push(dx, dy, 'right')) return
+    }
   }
   if (data.pos.y == 0) { // Against top wall
-    if (_push(dx, dy, 'top')) return
+    if (data.puzzle.end.y == data.pos.y) { // Endpoint is on the top wall
+      if (data.pos.x < data.puzzle.end.x) { // Left of endpoint
+        if (_push(dx, dy, 'top')) return
+      }
+      if (data.pos.x > data.puzzle.end.x) { // Right of endpoint
+        if (_push(dx, dy, 'top', -1)) return
+      }
+    } else { // Endpoint is not on the top wall
+      if (_push(dx, dy, 'top')) return
+    }
   } else if (data.pos.y == data.puzzle.grid[data.pos.x].length - 1) { // Against bottom wall
-    if (_push(dx, dy, 'bottom')) return
+    if (data.puzzle.end.y == data.pos.y) { // Endpoint is on the bottom wall
+      if (data.pos.x < data.puzzle.end.x) { // Left of endpoint
+        if (_push(dx, dy, 'bottom')) return
+      }
+      if (data.pos.x > data.puzzle.end.x) { // Right of endpoint
+        if (_push(dx, dy, 'bottom', -1)) return
+      }
+    } else { // Endpoint is not on the bottom wall
+      if (_push(dx, dy, 'bottom')) return
+    }
   }
 
-  /*
+  var middle = {
+    'x':(data.bbox.x1 + data.bbox.x2) / 2,
+    'y':(data.bbox.y1 + data.bbox.y2) / 2,
+  }
+  
   // Inner wall collision
-  if (data.pos.x%2 == 0 && data.pos.y%2 == 1) { // Vertical cell
-    if (_push(dx, dy, 'left')) return
-    if (_push(dx, dy, 'right')) return
-  }
   if (data.pos.x%2 == 1 && data.pos.y%2 == 0) { // Horizontal cell
-    if (_push(dx, dy, 'top')) return
-    if (_push(dx, dy, 'bottom')) return
+    if (data.x < middle.x) {
+      if (_push(dx, dy, 'top', -1)) return
+      if (_push(dx, dy, 'bottom', -1)) return
+    } else {
+      if (_push(dx, dy, 'top')) return
+      if (_push(dx, dy, 'bottom')) return
+    }
+  } else if (data.pos.x%2 == 0 && data.pos.y%2 == 1) { // Vertical cell
+    if (data.y < middle.y) {
+      if (_push(dx, dy, 'left')) return
+      if (_push(dx, dy, 'right')) return
+    } else {
+      if (_push(dx, dy, 'left', -1)) return
+      if (_push(dx, dy, 'right', -1)) return
+    }
   }
-
   // Intersection collision
   if (data.pos.x%2 == 0 && data.pos.y%2 == 0) {
-    if (data.x < data.bbox.x1 + 12) { // In left of intersection
+    if (data.x < middle.x) {
       _push(dx, dy, 'top')
       _push(dx, dy, 'bottom')
-      data.x += dx + Math.abs(dy) / 3
-      
-      if (Math.abs(dx) < Math.abs(dy) * turnMod) { // Appears to be turning
-        if (data.x > data.bbox.x1 + 12) {
-          data.y += Math.sign(dy) * (data.subx - 12)
-        }
-        
-        
+      // Overshot the intersection and appears to be trying to turn
+      if (data.x > middle.x && Math.abs(dy) * turnMod > Math.abs(dx)) {
+        data.y += Math.sign(dy) * (data.x - middle.x)
+        data.x = middle.x
       }
+      return
     }
-    
-  */
+    if (data.x > middle.x) {
+      _push(dx, dy, 'top', -1)
+      _push(dx, dy, 'bottom', -1)
+      // Overshot the intersection and appears to be trying to turn
+      if (data.x < middle.x && Math.abs(dy) * turnMod > Math.abs(dx)) {
+        data.y += Math.sign(dy) * (middle.x - data.x)
+        data.x = middle.x
+      }
+      return
+    }
+    if (data.y < middle.y) {
+      _push(dx, dy, 'left', -1)
+      _push(dx, dy, 'right', -1)
+      // Overshot the intersection and appears to be trying to turn
+      if (data.y > middle.y && Math.abs(dx) * turnMod > Math.abs(dy)) {
+        data.x += Math.sign(dx) * (data.y - middle.y)
+        data.y = middle.y
+      }
+      return
+    }
+    if (data.y > middle.y) {
+      _push(dx, dy, 'left')
+      _push(dx, dy, 'right')
+      // Overshot the intersection and appears to be trying to turn
+      if (data.y < middle.y && Math.abs(dx) * turnMod > Math.abs(dy)) {
+        data.x += Math.sign(dx) * (middle.y - data.y)
+        data.y = middle.y
+      }
+      return
+    }
+  }
 
   // Normal movement
   data.x += dx
