@@ -1,4 +1,4 @@
-window.BBOX_DEBUG = true
+window.BBOX_DEBUG = false
 
 class BoundingBox {
   constructor(x1, x2, y1, y2) {
@@ -34,7 +34,10 @@ class BoundingBox {
     this.x2 = this.raw.x2 + (this.endDir == 'right' ? 24 : 0)
     this.y1 = this.raw.y1 + (this.endDir == 'top' ? -24 : 0)
     this.y2 = this.raw.y2 + (this.endDir == 'bottom' ? 24 : 0)
-    this.middle = {'x':(this.x1 + this.x2)/2, 'y':(this.y1 + this.y2)/2}
+    this.middle = {
+      'x':(this.raw.x1 + this.raw.x2)/2,
+      'y':(this.raw.y1 + this.raw.y2)/2
+    }
   }
 }
 
@@ -292,8 +295,7 @@ function _pushCursor(dx, dy, width, height) {
   var turnMod = 2
   if (data.pos.x%2 == 0 && data.pos.y%2 == 0) {
     if (data.x < data.bbox.middle.x) {
-      _push(dx, dy, 'top', 'right')
-      _push(dx, dy, 'bottom', 'right')
+      data.x += dx + Math.abs(dy) / 3 // TODO: _push?
       // Overshot the intersection and appears to be trying to turn
       if (data.x > data.bbox.middle.x && Math.abs(dy) * turnMod > Math.abs(dx)) {
         data.y += Math.sign(dy) * (data.x - data.bbox.middle.x)
@@ -301,8 +303,7 @@ function _pushCursor(dx, dy, width, height) {
       }
       return
     } else if (data.x > data.bbox.middle.x) {
-      _push(dx, dy, 'top', 'left')
-      _push(dx, dy, 'bottom', 'left')
+      data.x += dx - Math.abs(dy) / 3 // TODO: _push?
       // Overshot the intersection and appears to be trying to turn
       if (data.x < data.bbox.middle.x && Math.abs(dy) * turnMod > Math.abs(dx)) {
         data.y += Math.sign(dy) * (data.bbox.middle.x - data.x)
@@ -311,8 +312,7 @@ function _pushCursor(dx, dy, width, height) {
       return
     }
     if (data.y < data.bbox.middle.y) {
-      _push(dx, dy, 'left', 'bottom')
-      _push(dx, dy, 'right', 'bottom')
+      data.y += dy + Math.abs(dx) / 3 // TODO: _push?
       // Overshot the intersection and appears to be trying to turn
       if (data.y > data.bbox.middle.y && Math.abs(dx) * turnMod > Math.abs(dy)) {
         data.x += Math.sign(dx) * (data.y - data.bbox.middle.y)
@@ -320,8 +320,7 @@ function _pushCursor(dx, dy, width, height) {
       }
       return
     } else if (data.y > data.bbox.middle.y) {
-      _push(dx, dy, 'left', 'top')
-      _push(dx, dy, 'right', 'top')
+      data.y += dy - Math.abs(dx) / 3 // TODO: _push?
       // Overshot the intersection and appears to be trying to turn
       if (data.y < data.bbox.middle.y && Math.abs(dx) * turnMod > Math.abs(dy)) {
         data.x += Math.sign(dx) * (data.bbox.middle.y - data.y)
@@ -377,7 +376,7 @@ function _move() {
       data.y = data.bbox.y2 - 12
     }
   }
-  
+
   if (data.pos.x == data.puzzle.end.x && data.pos.y == data.puzzle.end.y) {
     data.bbox.setEnd(data.puzzle.end.dir)
   } else {
