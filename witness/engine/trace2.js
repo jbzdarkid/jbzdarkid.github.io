@@ -46,12 +46,11 @@ var data
 function trace(elem, puzzle) {
   if (document.pointerLockElement == null) { // Started tracing a solution
     PLAY_SOUND('start')
-    var animations = undefined
-    for (var styleSheet of document.styleSheets) {
-      if (styleSheet.title == 'animations') {
-        animations = styleSheet
-        break
-      }
+    // Clean previous state
+    var svg = elem.parentElement
+
+    while (svg.getElementsByClassName('cursor').length > 0) {
+      svg.getElementsByClassName('cursor')[0].remove()
     }
 
     var cursor = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
@@ -61,6 +60,7 @@ function trace(elem, puzzle) {
     cursor.setAttribute('stroke', 'black')
     cursor.setAttribute('stroke-width', '2px')
     cursor.setAttribute('stroke-opacity', '0.4')
+    cursor.setAttribute('class', 'cursor')
     var cx = parseFloat(elem.getAttribute('cx'))
     var cy = parseFloat(elem.getAttribute('cy'))
     cursor.setAttribute('cx', cx)
@@ -72,7 +72,6 @@ function trace(elem, puzzle) {
     bboxDebug.setAttribute('opacity', 0.3)
 
     data = {
-      'animations':animations,
       'tracing':true,
       'bbox':new BoundingBox(cx - 12, cx + 12, cy - 12, cy + 12),
       'bboxDebug':bboxDebug,
@@ -81,47 +80,26 @@ function trace(elem, puzzle) {
       'x':cx,
       'y':cy,
       // Position within puzzle.grid
-      'pos':puzzle.start,
+      'pos':{'x':puzzle.start.x, 'y':puzzle.start.y},
       'puzzle':puzzle,
     }
-    
-    for (var i = 0; i < data.animations.cssRules.length; i++) {
-      var rule = data.animations.cssRules[i]
-      if (rule.selectorText == '.' + data.table) {
-        data.animations.deleteRule(i--)
-      }
-    }
-
     elem.requestPointerLock()
   } else {
     event.stopPropagation()
     // Signal the onMouseMove to stop accepting input (race condition)
     data.tracing = false
 
-    // Extract the traced solution
-
-    if ("not ended in an endpoint" && false) {
+    if (!"ended in an endpoint" && false) {
       // Resume tracing from cursor?
       PLAY_SOUND('abort')
     } else {
       validate(data.puzzle)
 
-      // Mark the negations
-      // for (var pos of data.puzzle.negations) {
-        // var cell = document.getElementById(data.table+'_'+pos.x+'_'+pos.y)
-        // cell.children[0].style.opacity = 0.5
-      // }
-
-      var animation = '.' + data.table + ' {animation: 1s 1 forwards '
-      if (data.puzzle.valid || true) {
+      if (data.puzzle.valid) {
         PLAY_SOUND('success')
-        animation += 'line-success'
       } else {
         PLAY_SOUND('fail')
-        animation += 'line-fail'
       }
-      animation += '}'
-      data.animations.insertRule(animation)
     }
     document.exitPointerLock()
   }
