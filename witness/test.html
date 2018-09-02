@@ -43,9 +43,10 @@
             solve(puzzleData.puzzle, puzzleData.puzzle.start.x, puzzleData.puzzle.start.y, solutions)
             draw(puzzleData.puzzle, 'test'+j)
             if (solutions.length != puzzleData.solutions) {
-              console.log('Puzzle has', solutions.length, 'solutions, should have', puzzleData.solutions)
+              console.log('Puzzle', j, 'has', solutions.length, 'solutions, should have', puzzleData.solutions)
               console.log(solutions)
-              document.getElementById('test'+j).style.borderColor = 'red'
+              var border = document.getElementById('test'+j).firstChild
+              border.setAttribute('stroke', 'red')
             }
           } catch (e) {
             document.getElementById('test'+j).parentElement.innerHTML = e.stack || 'ERROR: '+e
