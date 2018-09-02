@@ -171,35 +171,35 @@ function _onMove(dx, dy) {
 function _push(dx, dy, dir, target_dir) {
   // Fraction of movement to redirect in the other direction
   if (target_dir == 'left' || target_dir == 'top') {
-    var movementRatio = 3
-  } else if (target_dir == 'right' || target_dir == 'bottom') {
     var movementRatio = -3
+  } else if (target_dir == 'right' || target_dir == 'bottom') {
+    var movementRatio = 3
   }
 
   if (dir == 'left') {
-    var overshoot = (data.x + dx) - data.bbox.x1 - 12
-    if (overshoot < 0) {
+    var overshoot = data.bbox.x1 - (data.x + dx) + 12
+    if (overshoot > 0) {
       data.y += dy + overshoot / movementRatio
       data.x = data.bbox.x1 + 12
       return true
     }
   } else if (dir == 'right') {
-    var overshoot = data.bbox.x2 - (data.x + dx) - 12
-    if (overshoot < 0) {
+    var overshoot = (data.x + dx) - data.bbox.x2 + 12
+    if (overshoot > 0) {
       data.y += dy + overshoot / movementRatio
       data.x = data.bbox.x2 - 12
       return true
     }
   } else if (dir == 'top') {
-    var overshoot = (data.y + dy) - data.bbox.y1 - 12
-    if (overshoot < 0) {
+    var overshoot = data.bbox.y1 - (data.y + dy) + 12
+    if (overshoot > 0) {
       data.x += dx + overshoot / movementRatio
       data.y = data.bbox.y1 + 12
       return true
     }
   } else if (dir == 'bottom') {
-    var overshoot = data.bbox.y2 - (data.y + dy) - 12 
-    if (overshoot < 0) {
+    var overshoot = (data.y + dy) - data.bbox.y2 + 12 
+    if (overshoot > 0) {
       data.x += dx + overshoot / movementRatio
       data.y = data.bbox.y2 - 12
       return true
