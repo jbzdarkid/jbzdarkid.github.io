@@ -170,9 +170,9 @@ function _onMove(dx, dy) {
 
 function _push(dx, dy, dir, target_dir) {
   // Fraction of movement to redirect in the other direction
-  if (target_dir == 'right' || target_dir == 'top') {
+  if (target_dir == 'left' || target_dir == 'top') {
     var movementRatio = 3
-  } else if (target_dir == 'left' || target_dir == 'bottom') {
+  } else if (target_dir == 'right' || target_dir == 'bottom') {
     var movementRatio = -3
   }
 
@@ -193,14 +193,14 @@ function _push(dx, dy, dir, target_dir) {
   } else if (dir == 'top') {
     var overshoot = (data.y + dy) - data.bbox.y1 - 12
     if (overshoot < 0) {
-      data.x += dx - overshoot / movementRatio
+      data.x += dx + overshoot / movementRatio
       data.y = data.bbox.y1 + 12
       return true
     }
   } else if (dir == 'bottom') {
     var overshoot = data.bbox.y2 - (data.y + dy) - 12 
     if (overshoot < 0) {
-      data.x += dx - overshoot / movementRatio
+      data.x += dx + overshoot / movementRatio
       data.y = data.bbox.y2 - 12
       return true
     }
