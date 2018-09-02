@@ -208,17 +208,19 @@ function _end(svg, params) {
   circ.setAttribute('cy', params.width/2 + params.y)
 
   if (params.dir == 'left') {
-    rect.setAttribute('y', parseInt(rect.getAttribute('y')) - 12)
-    circ.setAttribute('cy', parseInt(circ.getAttribute('cy')) - 24)
-  } else if (params.dir == 'right') {
-    rect.setAttribute('y', parseInt(rect.getAttribute('y')) + 12)
-    circ.setAttribute('cy', parseInt(circ.getAttribute('cy')) + 24)
-  } else if (params.dir == 'top') {
     rect.setAttribute('x', parseInt(rect.getAttribute('x')) - 12)
     circ.setAttribute('cx', parseInt(circ.getAttribute('cx')) - 24)
-  } else if (params.dir == 'bottom') {
+  } else if (params.dir == 'right') {
     rect.setAttribute('x', parseInt(rect.getAttribute('x')) + 12)
     circ.setAttribute('cx', parseInt(circ.getAttribute('cx')) + 24)
+  } else if (params.dir == 'top') {
+    rect.setAttribute('y', parseInt(rect.getAttribute('y')) - 12)
+    circ.setAttribute('cy', parseInt(circ.getAttribute('cy')) - 24)
+  } else if (params.dir == 'bottom') {
+    rect.setAttribute('y', parseInt(rect.getAttribute('y')) + 12)
+    circ.setAttribute('cy', parseInt(circ.getAttribute('cy')) + 24)
+  } else {
+    console.trace('Endpoint direction not defined!', params)
   }
 }
 

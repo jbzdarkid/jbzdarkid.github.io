@@ -194,6 +194,7 @@ tests = [
       {'x':2, 'y':1}
     ]
     puzzle.end = {'x':0, 'y':2}
+    puzzle.start = {'x':2, 'y':0}
     return {'puzzle':puzzle, 'solutions':2}
   }, function() {
     var puzzle = new Puzzle(1, 2, true)

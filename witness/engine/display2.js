@@ -87,10 +87,15 @@ function draw(puzzle, target='puzzle') {
   }
 
   if (puzzle.end.dir == undefined) {
-    if (puzzle.end.y == 0) puzzle.end.dir = 'left'
-    if (puzzle.end.y == puzzle.grid[puzzle.end.x].length - 1) puzzle.end.dir = 'right'
-    if (puzzle.end.x == 0) puzzle.end.dir = 'top'
-    if (puzzle.end.x == puzzle.grid.length - 1) puzzle.end.dir = 'bottom'
+    if (puzzle.end.x == 0) {
+      puzzle.end.dir = 'left'
+    } else if (puzzle.end.x == puzzle.grid.length - 1) {
+      puzzle.end.dir = 'right'
+    } else if (puzzle.end.y == 0) {
+      puzzle.end.dir = 'top'
+    } else if (puzzle.end.y == puzzle.grid[puzzle.end.x].length - 1) {
+      puzzle.end.dir = 'bottom'
+    }
   }
   drawSymbolWithSvg(svg, {
     'type':'end',
