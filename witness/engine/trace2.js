@@ -1,11 +1,12 @@
-window.BBOX_DEBUG = false
+window.BBOX_DEBUG = true
 
 class BoundingBox {
-  constructor(x1, y1, x2, y2) {
-    this.raw = {'x1':x1, 'y1':y1, 'x2':x2, 'y2':y2}
+  constructor(x1, x2, y1, y2) {
+    this.raw = {'x1':x1, 'x2':x2, 'y1':y1, 'y2':y2}
+    this.endDir = undefined
     this._compute()
   }
-  
+
   shift(dir) {
     if (dir == 'left') {
       this.raw.x2 = this.raw.x1
@@ -22,12 +23,17 @@ class BoundingBox {
     }
     this._compute()
   }
-  
+
+  setEnd(dir) {
+    this.endDir = dir
+    this._compute()
+  }
+
   _compute() {
-    this.x1 = this.raw.x1
-    this.y1 = this.raw.y1
-    this.x2 = this.raw.x2
-    this.y2 = this.raw.y2
+    this.x1 = this.raw.x1 + (this.endDir == 'left' ? -24 : 0)
+    this.x2 = this.raw.x2 + (this.endDir == 'right' ? 24 : 0)
+    this.y1 = this.raw.y1 + (this.endDir == 'top' ? -24 : 0)
+    this.y2 = this.raw.y2 + (this.endDir == 'bottom' ? 24 : 0)
     this.middle = {'x':(this.x1 + this.x2)/2, 'y':(this.y1 + this.y2)/2}
   }
 }
@@ -56,16 +62,16 @@ function trace(elem, puzzle) {
     var cy = parseFloat(elem.getAttribute('cy'))
     cursor.setAttribute('cx', cx)
     cursor.setAttribute('cy', cy)
-    
+
     var bboxDebug = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
     elem.parentElement.appendChild(bboxDebug)
     bboxDebug.setAttribute('fill', 'white')
     bboxDebug.setAttribute('opacity', 0.3)
-    
+
     data = {
       'animations':animations,
       'tracing':true,
-      'bbox':new BoundingBox(cx-12, cy-12, cx+12, cy+12),
+      'bbox':new BoundingBox(cx - 12, cx + 12, cy - 12, cy + 12),
       'bboxDebug':bboxDebug,
       // Cursor element and location
       'cursor': cursor,
@@ -147,12 +153,10 @@ function _onMove(dx, dy) {
   // Also handles some collision
   _pushCursor(dx, dy, width, height)
 
-  // Compute absolute boundary checks (no pushing)
-  // _collision()
-  // Move the location to a new cell
-  _move() // Try to implement collision here, so 1 fewer function
+  // Potentially move the location to a new cell, and make absolute boundary checks
+  _move()
 
-  // redraw
+  // redraw (?)
   data.cursor.setAttribute('cx', data.x)
   data.cursor.setAttribute('cy', data.y)
   
@@ -372,5 +376,11 @@ function _move() {
     } else if (cell == undefined) {
       data.y = data.bbox.y2 - 12
     }
+  }
+  
+  if (data.pos.x == data.puzzle.end.x && data.pos.y == data.puzzle.end.y) {
+    data.bbox.setEnd(data.puzzle.end.dir)
+  } else {
+    data.bbox.setEnd(undefined)
   }
 }
