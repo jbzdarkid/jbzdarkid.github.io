@@ -2,27 +2,33 @@ window.BBOX_DEBUG = false
 
 class BoundingBox {
   constructor(x1, y1, x2, y2) {
-    // this.raw = {'x1':x1, 'y1':y1, 'x2':x2, 'y2':y2}
-    this.x1 = x1
-    this.y1 = y1
-    this.x2 = x2
-    this.y2 = y2
+    this.raw = {'x1':x1, 'y1':y1, 'x2':x2, 'y2':y2}
+    this._compute()
   }
   
   shift(dir) {
     if (dir == 'left') {
-      this.x2 = this.x1
-      this.x1 -= (data.pos.x%2 == 0 ? 24 : 58)
+      this.raw.x2 = this.raw.x1
+      this.raw.x1 -= (data.pos.x%2 == 0 ? 24 : 58)
     } else if (dir == 'right') {
-      this.x1 = this.x2
-      this.x2 += (data.pos.x%2 == 0 ? 24 : 58)
+      this.raw.x1 = this.raw.x2
+      this.raw.x2 += (data.pos.x%2 == 0 ? 24 : 58)
     } else if (dir == 'top') {
-      this.y2 = this.y1
-      this.y1 -= (data.pos.y%2 == 0 ? 24 : 58)
+      this.raw.y2 = this.raw.y1
+      this.raw.y1 -= (data.pos.y%2 == 0 ? 24 : 58)
     } else if (dir == 'bottom') {
-      this.y1 = this.y2
-      this.y2 += (data.pos.y%2 == 0 ? 24 : 58)
+      this.raw.y1 = this.raw.y2
+      this.raw.y2 += (data.pos.y%2 == 0 ? 24 : 58)
     }
+    this._compute()
+  }
+  
+  _compute() {
+    this.x1 = this.raw.x1
+    this.y1 = this.raw.y1
+    this.x2 = this.raw.x2
+    this.y2 = this.raw.y2
+    this.middle = {'x':(this.x1 + this.x2)/2, 'y':(this.y1 + this.y2)/2}
   }
 }
 
@@ -258,14 +264,9 @@ function _pushCursor(dx, dy, width, height) {
     }
   }
 
-  var middle = {
-    'x':(data.bbox.x1 + data.bbox.x2) / 2,
-    'y':(data.bbox.y1 + data.bbox.y2) / 2,
-  }
-
   // Inner wall collision
   if (data.pos.x%2 == 1 && data.pos.y%2 == 0) { // Horizontal cell
-    if (data.x < middle.x) {
+    if (data.x < data.bbox.middle.x) {
       if (_push(dx, dy, 'top', 'left')) return
       if (_push(dx, dy, 'bottom', 'left')) return
     } else {
@@ -273,7 +274,7 @@ function _pushCursor(dx, dy, width, height) {
       if (_push(dx, dy, 'bottom', 'right')) return
     }
   } else if (data.pos.x%2 == 0 && data.pos.y%2 == 1) { // Vertical cell
-    if (data.y < middle.y) {
+    if (data.y < data.bbox.middle.y) {
       if (_push(dx, dy, 'left', 'top')) return
       if (_push(dx, dy, 'right', 'top')) return
     } else {
@@ -286,41 +287,41 @@ function _pushCursor(dx, dy, width, height) {
   // Ratio of movement to be considered turning at an intersection
   var turnMod = 2
   if (data.pos.x%2 == 0 && data.pos.y%2 == 0) {
-    if (data.x < middle.x) {
+    if (data.x < data.bbox.middle.x) {
       _push(dx, dy, 'top', 'right')
       _push(dx, dy, 'bottom', 'right')
       // Overshot the intersection and appears to be trying to turn
-      if (data.x > middle.x && Math.abs(dy) * turnMod > Math.abs(dx)) {
-        data.y += Math.sign(dy) * (data.x - middle.x)
-        data.x = middle.x
+      if (data.x > data.bbox.middle.x && Math.abs(dy) * turnMod > Math.abs(dx)) {
+        data.y += Math.sign(dy) * (data.x - data.bbox.middle.x)
+        data.x = data.bbox.middle.x
       }
       return
-    } else if (data.x > middle.x) {
+    } else if (data.x > data.bbox.middle.x) {
       _push(dx, dy, 'top', 'left')
       _push(dx, dy, 'bottom', 'left')
       // Overshot the intersection and appears to be trying to turn
-      if (data.x < middle.x && Math.abs(dy) * turnMod > Math.abs(dx)) {
-        data.y += Math.sign(dy) * (middle.x - data.x)
-        data.x = middle.x
+      if (data.x < data.bbox.middle.x && Math.abs(dy) * turnMod > Math.abs(dx)) {
+        data.y += Math.sign(dy) * (data.bbox.middle.x - data.x)
+        data.x = data.bbox.middle.x
       }
       return
     }
-    if (data.y < middle.y) {
+    if (data.y < data.bbox.middle.y) {
       _push(dx, dy, 'left', 'bottom')
       _push(dx, dy, 'right', 'bottom')
       // Overshot the intersection and appears to be trying to turn
-      if (data.y > middle.y && Math.abs(dx) * turnMod > Math.abs(dy)) {
-        data.x += Math.sign(dx) * (data.y - middle.y)
-        data.y = middle.y
+      if (data.y > data.bbox.middle.y && Math.abs(dx) * turnMod > Math.abs(dy)) {
+        data.x += Math.sign(dx) * (data.y - data.bbox.middle.y)
+        data.y = data.bbox.middle.y
       }
       return
-    } else if (data.y > middle.y) {
+    } else if (data.y > data.bbox.middle.y) {
       _push(dx, dy, 'left', 'top')
       _push(dx, dy, 'right', 'top')
       // Overshot the intersection and appears to be trying to turn
-      if (data.y < middle.y && Math.abs(dx) * turnMod > Math.abs(dy)) {
-        data.x += Math.sign(dx) * (middle.y - data.y)
-        data.y = middle.y
+      if (data.y < data.bbox.middle.y && Math.abs(dx) * turnMod > Math.abs(dy)) {
+        data.x += Math.sign(dx) * (data.bbox.middle.y - data.y)
+        data.y = data.bbox.middle.y
       }
       return
     }
