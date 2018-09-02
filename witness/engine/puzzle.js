@@ -54,7 +54,7 @@ class Puzzle {
     }
     this.grid = this.newGrid(2*width+1, 2*height+1)
     this.start = {'x':0, 'y':2*height}
-    this.end = {'x':2*width, 'y':0}
+    this.end = {'x':2*width, 'y':0, 'dir':'right'}
     this.dots = []
     this.gaps = []
     this.regionCache = {}

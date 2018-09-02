@@ -87,15 +87,17 @@ function draw(puzzle, target='puzzle') {
   }
 
   var rot = 0
-  if (puzzle.end.y == 0) rot = 0
-  if (puzzle.end.y == puzzle.grid[puzzle.end.x].length - 1) rot = 2
-  if (puzzle.end.x == 0) rot = 1
-  if (puzzle.end.x == puzzle.grid.length - 1) rot = 3
+  if (puzzle.end.dir == undefined) {
+    if (puzzle.end.y == 0) end.dir = 'left'
+    if (puzzle.end.y == puzzle.grid[puzzle.end.x].length - 1) end.dir = 'right'
+    if (puzzle.end.x == 0) end.dir = 'top'
+    if (puzzle.end.x == puzzle.grid.length - 1) end.dir = 'bottom'
+  }
   drawSymbolWithSvg(svg, {
     'type':'end',
     'width': 58,
     'height': 58,
-    'rot': rot,
+    'dir': end.dir,
     'x': puzzle.end.x*41 + 23,
     'y': puzzle.end.y*41 + 23,
   })

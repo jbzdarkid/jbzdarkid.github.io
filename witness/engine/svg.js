@@ -192,20 +192,19 @@ function _start(svg, params) {
 }
 
 function _end(svg, params) {
-  if (!params.rot) params.rot = 0
   var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
   svg.appendChild(circ)
   circ.setAttribute('r', 12)
   circ.setAttribute('fill', FOREGROUND)
   circ.setAttribute('cx', params.height/2 + params.x)
   circ.setAttribute('cy', params.width/2 + params.y)
-  if (params.rot == 0) {
+  if (params.dir == 'left') {
     circ.setAttribute('cy', parseInt(circ.getAttribute('cy')) - 24)
-  } else if (params.rot == 1) {
-    circ.setAttribute('cx', parseInt(circ.getAttribute('cx')) - 24)
-  } else if (params.rot == 2) {
+  } else if (params.dir == 'right') {
     circ.setAttribute('cy', parseInt(circ.getAttribute('cy')) + 24)
-  } else if (params.rot == 3) {
+  } else if (params.dir == 'top') {
+    circ.setAttribute('cx', parseInt(circ.getAttribute('cx')) - 24)
+  } else if (params.dir == 'bottom') {
     circ.setAttribute('cx', parseInt(circ.getAttribute('cx')) + 24)
   }
 
