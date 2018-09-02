@@ -4,7 +4,7 @@ class BoundingBox {
   constructor(x1, x2, y1, y2) {
     this.raw = {'x1':x1, 'x2':x2, 'y1':y1, 'y2':y2}
     this.endDir = undefined
-    this._compute()
+    this._update()
   }
 
   shift(dir) {
@@ -21,20 +21,20 @@ class BoundingBox {
       this.raw.y1 = this.raw.y2
       this.raw.y2 += (data.pos.y%2 == 0 ? 24 : 58)
     }
-    this._compute()
+    this._update()
   }
 
   setEnd(dir) {
     this.endDir = dir
-    this._compute()
+    this._update()
   }
 
-  _compute() {
+  _update() {
     this.x1 = this.raw.x1 + (this.endDir == 'left' ? -24 : 0)
     this.x2 = this.raw.x2 + (this.endDir == 'right' ? 24 : 0)
     this.y1 = this.raw.y1 + (this.endDir == 'top' ? -24 : 0)
     this.y2 = this.raw.y2 + (this.endDir == 'bottom' ? 24 : 0)
-    this.middle = {
+    this.middle = { // Note: Middle of the raw object
       'x':(this.raw.x1 + this.raw.x2)/2,
       'y':(this.raw.y1 + this.raw.y2)/2
     }
