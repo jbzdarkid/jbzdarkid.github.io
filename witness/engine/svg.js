@@ -192,22 +192,6 @@ function _start(svg, params) {
 }
 
 function _end(svg, params) {
-  var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-  svg.appendChild(circ)
-  circ.setAttribute('r', 12)
-  circ.setAttribute('fill', FOREGROUND)
-  circ.setAttribute('cx', params.height/2 + params.x)
-  circ.setAttribute('cy', params.width/2 + params.y)
-  if (params.dir == 'left') {
-    circ.setAttribute('cy', parseInt(circ.getAttribute('cy')) - 24)
-  } else if (params.dir == 'right') {
-    circ.setAttribute('cy', parseInt(circ.getAttribute('cy')) + 24)
-  } else if (params.dir == 'top') {
-    circ.setAttribute('cx', parseInt(circ.getAttribute('cx')) - 24)
-  } else if (params.dir == 'bottom') {
-    circ.setAttribute('cx', parseInt(circ.getAttribute('cx')) + 24)
-  }
-
   var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
   svg.appendChild(rect)
   rect.setAttribute('width', 24)
@@ -215,10 +199,27 @@ function _end(svg, params) {
   rect.setAttribute('fill', FOREGROUND)
   rect.setAttribute('x', params.height/2 - 12 + params.x)
   rect.setAttribute('y', params.width/2 - 12 + params.y)
-  if (params.rot == 0) rect.setAttribute('y', parseInt(rect.getAttribute('y')) - 12)
-  if (params.rot == 1) rect.setAttribute('x', parseInt(rect.getAttribute('x')) - 12)
-  if (params.rot == 2) rect.setAttribute('y', parseInt(rect.getAttribute('y')) + 12)
-  if (params.rot == 3) rect.setAttribute('x', parseInt(rect.getAttribute('x')) + 12)
+
+  var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+  svg.appendChild(circ)
+  circ.setAttribute('r', 12)
+  circ.setAttribute('fill', FOREGROUND)
+  circ.setAttribute('cx', params.height/2 + params.x)
+  circ.setAttribute('cy', params.width/2 + params.y)
+
+  if (params.dir == 'left') {
+    rect.setAttribute('y', parseInt(rect.getAttribute('y')) - 12)
+    circ.setAttribute('cy', parseInt(circ.getAttribute('cy')) - 24)
+  } else if (params.dir == 'right') {
+    rect.setAttribute('y', parseInt(rect.getAttribute('y')) + 12)
+    circ.setAttribute('cy', parseInt(circ.getAttribute('cy')) + 24)
+  } else if (params.dir == 'top') {
+    rect.setAttribute('x', parseInt(rect.getAttribute('x')) - 12)
+    circ.setAttribute('cx', parseInt(circ.getAttribute('cx')) - 24)
+  } else if (params.dir == 'bottom') {
+    rect.setAttribute('x', parseInt(rect.getAttribute('x')) + 12)
+    circ.setAttribute('cx', parseInt(circ.getAttribute('cx')) + 24)
+  }
 }
 
 function _dot(svg, params) {
