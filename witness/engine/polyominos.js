@@ -29,7 +29,7 @@ function getRotations(polyshape, rot=null) {
       }
     }
   }
-  
+
   return rotations
 }
 
@@ -49,7 +49,7 @@ function polyominoFromPolyshape(polyshape) {
       }
     }
   }
-  
+
   for (var i=0; i<polyomino.length; i++) {
     polyomino[i] = {
       'x':2*(polyomino[i].x - topLeft.x),

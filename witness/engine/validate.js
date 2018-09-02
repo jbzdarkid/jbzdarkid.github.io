@@ -79,7 +79,7 @@ function _regionCheckNegations(puzzle, region) {
       }
       continue
     }
-    
+
     var combinationIsValid = true
     // Verify that each negation is valid, i.e. removes an incorrect element
     for (var negation of combination) {
@@ -91,7 +91,7 @@ function _regionCheckNegations(puzzle, region) {
       puzzle.setCell(negation.target.x, negation.target.y, false)
       negation.source.cell.type = 'nega'
       puzzle.setCell(negation.source.x, negation.source.y, false)
-      
+
       if (regionCheck.valid) {
         // console.log('Region still valid with element removed, so the combination is invalid')
         combinationIsValid = false

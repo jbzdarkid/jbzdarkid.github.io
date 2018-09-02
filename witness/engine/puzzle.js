@@ -19,17 +19,17 @@ class Region {
     this.grid[x] |= (1 << y)
     this.cells.push({'x':x, 'y':y})
   }
-  
+
   getCell(x, y) {
     return (this.cells[x] & (1 << y)) != 0
   }
-  
+
   popCell() {
     var cell = this.cells.pop()
     this.grid[cell.x] &= ~(1 << cell.y)
     return cell
   }
-  
+
   merge(other) {
     this.cells = this.cells.concat(other.cells)
     for (var i=0; i<this.grid.length; i++) {
@@ -168,7 +168,7 @@ class Puzzle {
     }
     return hints
   }
-  
+
   // hints are passed from a solution
   // Returns updated list of hints, less the one that was shown.
   showHint(hints) {
@@ -220,21 +220,21 @@ class Puzzle {
       region.setCell(i, y)
       this.setCell(i, y, true)
     }
-    
+
     var j = x
     while(this.getCell(j + 2, y) == false && this.getCell(j + 1, y) == false) {
       j += 2
       region.setCell(j, y)
       this.setCell(j, y, true)
     }
-    
+
     for (var above = i; above <= j; above += 2) {
       if (this.getCell(above, y - 2) != false) continue
       if (this.getCell(above, y - 1) != true) {
         this._innerLoop2(above, y - 2, region)
       }
     }
-    
+
     for (var below = i; below <= j; below += 2) {
       if (this.getCell(below, y + 2) != false) continue
       if (this.getCell(below, y + 1) != true) {
@@ -307,7 +307,7 @@ class Puzzle {
       var region = new Region(this.grid.length)
       this._innerLoop(pos.x, pos.y, region)
       regions.push(region)
-      
+
       // Find the next open cell
       while (this.getCell(pos.x, pos.y) != false) {
         pos.x += 2

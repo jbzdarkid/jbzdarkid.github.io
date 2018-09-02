@@ -25,7 +25,7 @@ window.onload = function() {
       event.preventDefault()
     }
   }
-  
+
   for (var resize of document.getElementsByClassName('resize')) {
     resize.onmousedown = function(event) {dragStart(event, this)}
   }
@@ -59,7 +59,7 @@ function dragMove(event, elem) {
   var dx = Math.round((dragging.y - event.clientY) / 58)
   var height = puzzle.grid.length
   var width = puzzle.grid[0].length
-  
+
   if (dx != 0 || dy != 0) {
     if (width < 0 || height < 0) return
     // TODO: Maximum grid dimensions?
@@ -67,7 +67,7 @@ function dragMove(event, elem) {
     dragging.x = event.clientX
     dragging.y = event.clientY
   }
-  
+
   if (elem.id == 'resize-topleft') resizePuzzle(dx, -dy, elem.id)
   if (elem.id == 'resize-top') resizePuzzle(dx, 0, elem.id)
   if (elem.id == 'resize-topright') resizePuzzle(dx, dy, elem.id)
@@ -83,7 +83,7 @@ function dragMove(event, elem) {
 function resizePuzzle(dx, dy, id) {
   var height = puzzle.grid.length + 2 * dx
   var width = puzzle.grid[0].length + 2 * dy
-  
+
   for (var row of puzzle.grid) {
     while (row.length > width) {
       if (id.includes('left')) row.shift()
@@ -103,7 +103,7 @@ function resizePuzzle(dx, dy, id) {
     if (id.includes('top')) puzzle.grid.unshift(newRow)
     if (id.includes('bottom')) puzzle.grid.push(newRow)
   }
-  
+
   var newDots = []
   for (var dot of puzzle.dots) {
     if (id.includes('left')) dot.y += 2 * dy
@@ -225,14 +225,14 @@ function loadPuzzle() {
   if (!puzzleList) return
 
   document.getElementById('puzzleMeta').style.opacity = 0
-  
+
   var anchor = document.createElement('div')
   anchor.id = 'anchor'
   anchor.style.position = 'absolute'
   anchor.style.top = 100
   anchor.style.width = '100%'
   document.body.appendChild(anchor)
-  
+
   var loadList = document.createElement('select')
   anchor.appendChild(loadList)
   for (var puzzleName of puzzleList) {
@@ -245,7 +245,7 @@ function loadPuzzle() {
   loadList.onchange = function() {
     _removePuzzleFromList(this.value)
     _addPuzzleToList(this.value)
-    
+
     var serialized = window.localStorage.getItem(this.value)
     if (!_tryUpdatePuzzle(serialized)) {
       _removePuzzleFromList(this.value)
@@ -366,7 +366,7 @@ function drawColorButtons() {
 function shapeChooser() {
   var puzzle = document.getElementById('puzzle')
   puzzle.style.opacity = 0
-  
+
   var anchor = document.createElement('div')
   anchor.id = 'anchor'
   anchor.style.width = '99%'
@@ -465,7 +465,7 @@ function _onElementClicked(id)
 {
   var x = parseInt(id.split('_')[1])
   var y = parseInt(id.split('_')[2])
-  
+
   if (['start', 'end'].includes(activeParams.type)) {
     if (x%2 != 0 || y%2 != 0) return
     if (x == 0 || y == 0 || x == puzzle.grid.length - 1 || y == puzzle.grid[x].length - 1) {

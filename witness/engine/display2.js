@@ -21,7 +21,7 @@ function draw(puzzle, target='puzzle') {
   rect.setAttribute('y', 5)
   rect.setAttribute('width', pixelWidth - 10) // Removing border
   rect.setAttribute('height', pixelHeight - 10) // Removing border
-  
+
   for (var x=0; x<puzzle.grid.length; x++) {
     for (var y=0; y<puzzle.grid[x].length; y++) {
       var line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
@@ -57,14 +57,14 @@ function draw(puzzle, target='puzzle') {
       }
     }
   }
-  
+
   for (var dot of puzzle.dots) {
     var params = {'type':'dot', 'width':58, 'height':58}
     params.x = dot.x*41 + 23
     params.y = dot.y*41 + 23
     drawSymbolWithSvg(svg, params)
   }
-  
+
   for (var gap of puzzle.gaps) {
     var line = document.getElementById(target + '_' + gap.x + '_' + gap.y)
     svg.removeChild(line)
@@ -74,7 +74,7 @@ function draw(puzzle, target='puzzle') {
     if (gap.x%2 == 0 && gap.y%2 == 1) params.rot = 1
     drawSymbolWithSvg(svg, params)
   }
-  
+
   drawSymbolWithSvg(svg, {
     'type':'start',
     'width': 58,

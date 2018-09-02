@@ -237,7 +237,7 @@ function _gap(svg, params) {
   var center_x = params.height/2 + params.x
   var center_y = params.width/2 + params.y
   var rotate = function(degrees) {return 'rotate(' + degrees + ', ' + center_x + ', ' + center_y + ')'}
-  
+
   var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
   circ.setAttribute('r', 12)
   circ.setAttribute('fill', FOREGROUND)
