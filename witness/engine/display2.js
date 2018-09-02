@@ -82,8 +82,8 @@ function draw(puzzle, target='puzzle') {
     'x': puzzle.start.x*41 + 23,
     'y': puzzle.start.y*41 + 23,
   })
-  svg.lastChild.onclick = svg.lastChild.ontouchstart = function() {
-    trace(this, puzzle)
+  svg.lastChild.onclick = svg.lastChild.ontouchstart = function(event) {
+    trace(this, event, puzzle)
   }
 
   if (puzzle.end.dir == undefined) {

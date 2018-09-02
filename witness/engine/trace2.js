@@ -43,18 +43,25 @@ class BoundingBox {
 
 var data
 
-function trace(elem, puzzle) {
+function _clearGrid(svg) {
+  while (svg.getElementsByClassName('cursor').length > 0) {
+    svg.getElementsByClassName('cursor')[0].remove()
+  }
+
+  while (svg.getElementsByClassName('line').length > 0) {
+    svg.getElementsByClassName('line')[0].remove()
+  }
+}
+
+function trace(elem, event, puzzle) {
   if (document.pointerLockElement == null) { // Started tracing a solution
     PLAY_SOUND('start')
     // Clean previous state
     var svg = elem.parentElement
-
-    while (svg.getElementsByClassName('cursor').length > 0) {
-      svg.getElementsByClassName('cursor')[0].remove()
-    }
+    _clearGrid(svg)
 
     var cursor = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-    elem.parentElement.appendChild(cursor)
+    svg.appendChild(cursor)
     cursor.setAttribute('r', 12)
     cursor.setAttribute('fill', CURSOR)
     cursor.setAttribute('stroke', 'black')
@@ -67,7 +74,7 @@ function trace(elem, puzzle) {
     cursor.setAttribute('cy', cy)
 
     var bboxDebug = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-    elem.parentElement.appendChild(bboxDebug)
+    svg.appendChild(bboxDebug)
     bboxDebug.setAttribute('fill', 'white')
     bboxDebug.setAttribute('opacity', 0.3)
 
@@ -89,17 +96,18 @@ function trace(elem, puzzle) {
     // Signal the onMouseMove to stop accepting input (race condition)
     data.tracing = false
 
-    if (!"ended in an endpoint" && false) {
-      // Resume tracing from cursor?
-      PLAY_SOUND('abort')
-    } else {
+    if ("ended in an endpoint" || true) {
       validate(data.puzzle)
-
       if (data.puzzle.valid) {
         PLAY_SOUND('success')
       } else {
         PLAY_SOUND('fail')
       }
+    } else if (event.which == 3) { // Right-clicked, not at the end: Clear puzzle
+      PLAY_SOUND('abort')
+      _clearGrid(elem.parentElement)
+    } else {
+      // Exit pointer lock, but allow resume tracing from cursor
     }
     document.exitPointerLock()
   }
@@ -139,7 +147,7 @@ function _onMove(dx, dy) {
   // redraw (?)
   data.cursor.setAttribute('cx', data.x)
   data.cursor.setAttribute('cy', data.y)
-  
+
   if (window.BBOX_DEBUG) {
     data.bboxDebug.setAttribute('x', data.bbox.x1)
     data.bboxDebug.setAttribute('y', data.bbox.y1)
@@ -181,7 +189,7 @@ function _push(dx, dy, dir, target_dir) {
       return true
     }
   } else if (dir == 'bottom') {
-    var overshoot = (data.y + dy) - data.bbox.y2 + 12 
+    var overshoot = (data.y + dy) - data.bbox.y2 + 12
     if (overshoot > 0) {
       data.x += dx + overshoot / movementRatio
       data.y = data.bbox.y2 - 12
