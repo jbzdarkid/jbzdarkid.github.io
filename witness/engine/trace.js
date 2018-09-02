@@ -269,7 +269,7 @@ function _moveCursor(dx, dy) {
     return
   }
 
-  // Interesection collision
+  // Intersection collision
   if (elem.className.includes('corner') || elem.className.includes('start')) {
     if (data.subx < cursorSize) { // In the left of the intersection
       data.subx += dx + Math.abs(dy) / deltaModInnerWall
