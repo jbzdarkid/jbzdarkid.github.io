@@ -31,14 +31,14 @@ function draw(puzzle, target='puzzle') {
       line.id = target + '_' + x + '_' + y
       if (x%2 == 1 && y%2 == 0) { // Horizontal
         line.setAttribute('x1', x*41 + 11)
-        line.setAttribute('y1', y*41 + 52)
         line.setAttribute('x2', x*41 + 93)
+        line.setAttribute('y1', y*41 + 52)
         line.setAttribute('y2', y*41 + 52)
         svg.appendChild(line)
       } else if (x%2 == 0 && y%2 == 1) { // Vertical
         line.setAttribute('x1', x*41 + 52)
-        line.setAttribute('y1', y*41 + 11)
         line.setAttribute('x2', x*41 + 52)
+        line.setAttribute('y1', y*41 + 11)
         line.setAttribute('y2', y*41 + 93)
         svg.appendChild(line)
       }
