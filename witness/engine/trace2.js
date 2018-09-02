@@ -1,5 +1,31 @@
 window.BBOX_DEBUG = false
 
+class BoundingBox {
+  constructor(x1, y1, x2, y2) {
+    // this.raw = {'x1':x1, 'y1':y1, 'x2':x2, 'y2':y2}
+    this.x1 = x1
+    this.y1 = y1
+    this.x2 = x2
+    this.y2 = y2
+  }
+  
+  shift(dir) {
+    if (dir == 'left') {
+      this.x2 = this.x1
+      this.x1 -= (data.pos.x%2 == 0 ? 24 : 58)
+    } else if (dir == 'right') {
+      this.x1 = this.x2
+      this.x2 += (data.pos.x%2 == 0 ? 24 : 58)
+    } else if (dir == 'top') {
+      this.y2 = this.y1
+      this.y1 -= (data.pos.y%2 == 0 ? 24 : 58)
+    } else if (dir == 'bottom') {
+      this.y1 = this.y2
+      this.y2 += (data.pos.y%2 == 0 ? 24 : 58)
+    }
+  }
+}
+
 var data
 
 function trace(elem, puzzle) {
@@ -33,7 +59,7 @@ function trace(elem, puzzle) {
     data = {
       'animations':animations,
       'tracing':true,
-      'bbox':{'x1':cx-12, 'y1':cy-12, 'x2':cx+12, 'y2':cy+12},
+      'bbox':new BoundingBox(cx-12, cy-12, cx+12, cy+12),
       'bboxDebug':bboxDebug,
       // Cursor element and location
       'cursor': cursor,
@@ -312,8 +338,7 @@ function _move() {
     var cell = data.puzzle.getCell(data.pos.x - 1, data.pos.y)
     if (cell == false && data.x < data.bbox.x1) {
       data.pos.x--
-      data.bbox.x2 = data.bbox.x1
-      data.bbox.x1 -= (data.pos.x%2 == 0 ? 24 : 58)
+      data.bbox.shift('left')
       _move()
     } else if (cell == undefined) {
       data.x = data.bbox.x1 + 12
@@ -322,8 +347,7 @@ function _move() {
     var cell = data.puzzle.getCell(data.pos.x + 1, data.pos.y)
     if (cell == false && data.x > data.bbox.x2) {
       data.pos.x++
-      data.bbox.x1 = data.bbox.x2
-      data.bbox.x2 += (data.pos.x%2 == 0 ? 24 : 58)
+      data.bbox.shift('right')
       _move()
     } else if (cell == undefined) {
       data.x = data.bbox.x2 - 12
@@ -333,8 +357,7 @@ function _move() {
     var cell = data.puzzle.getCell(data.pos.x, data.pos.y - 1)
     if (cell == false && data.y < data.bbox.y1) {
       data.pos.y--
-      data.bbox.y2 = data.bbox.y1
-      data.bbox.y1 -= (data.pos.y%2 == 0 ? 24 : 58)
+      data.bbox.shift('top')
       _move()
     } else if (cell == undefined) {
       data.y = data.bbox.y1 + 12
@@ -343,8 +366,7 @@ function _move() {
     var cell = data.puzzle.getCell(data.pos.x, data.pos.y + 1)
     if (cell == false && data.y > data.bbox.y2) {
       data.pos.y++
-      data.bbox.y1 = data.bbox.y2
-      data.bbox.y2 += (data.pos.y%2 == 0 ? 24 : 58)
+      data.bbox.shift('bottom')
       _move()
     } else if (cell == undefined) {
       data.y = data.bbox.y2 - 12
