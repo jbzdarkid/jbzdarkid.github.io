@@ -142,7 +142,28 @@ function _onMove(dx, dy) {
   _pushCursor(dx, dy, width, height)
 
   // Potentially move the location to a new cell, and make absolute boundary checks
-  _move()
+  do {
+    var moveDir = _move()
+    console.log(moveDir)
+    if (moveDir == 'left') {
+      data.pos.x--
+    } else if (moveDir == 'right') {
+      data.pos.x++
+    } else if (moveDir == 'top') {
+      data.pos.y--
+    } else if (moveDir == 'bottom') {
+      data.pos.y++
+    }
+
+    // Adjust the bounding box
+    data.bbox.shift(moveDir)
+    if (data.pos.x == data.puzzle.end.x && data.pos.y == data.puzzle.end.y) {
+      data.bbox.setEnd(data.puzzle.end.dir)
+    } else {
+      data.bbox.setEnd(undefined)
+    }
+
+  } while (moveDir != null)
 
   // redraw (?)
   data.cursor.setAttribute('cx', data.x)
@@ -310,50 +331,35 @@ function _pushCursor(dx, dy, width, height) {
 }
 
 // Change actual puzzle cells, and limit motion to only puzzle cells.
-// Recursion is to allow multi-cell movements.
+// Returns the direction moved, or null otherwise.
 function _move() {
   if (data.x < data.bbox.x1 + 12) { // Moving left
     var cell = data.puzzle.getCell(data.pos.x - 1, data.pos.y)
-    if (cell == false && data.x < data.bbox.x1) {
-      data.pos.x--
-      data.bbox.shift('left')
-      _move()
-    } else if (cell == undefined) {
+    if (cell == undefined) {
       data.x = data.bbox.x1 + 12
+    } else if (cell == false && data.x < data.bbox.x1) {
+      return 'left'
     }
   } else if (data.x > data.bbox.x2 - 12) { // Moving right
     var cell = data.puzzle.getCell(data.pos.x + 1, data.pos.y)
-    if (cell == false && data.x > data.bbox.x2) {
-      data.pos.x++
-      data.bbox.shift('right')
-      _move()
-    } else if (cell == undefined) {
+    if (cell == undefined) {
       data.x = data.bbox.x2 - 12
+    } else if (cell == false && data.x > data.bbox.x2) {
+      return 'right'
     }
-  }
-  if (data.y < data.bbox.y1 + 12) { // Moving up
+  } else if (data.y < data.bbox.y1 + 12) { // Moving up
     var cell = data.puzzle.getCell(data.pos.x, data.pos.y - 1)
-    if (cell == false && data.y < data.bbox.y1) {
-      data.pos.y--
-      data.bbox.shift('top')
-      _move()
-    } else if (cell == undefined) {
+    if (cell == undefined) {
       data.y = data.bbox.y1 + 12
+    } else if (cell == false && data.y < data.bbox.y1) {
+      return 'top'
     }
   } else if (data.y > data.bbox.y2 - 12) { // Moving down
     var cell = data.puzzle.getCell(data.pos.x, data.pos.y + 1)
-    if (cell == false && data.y > data.bbox.y2) {
-      data.pos.y++
-      data.bbox.shift('bottom')
-      _move()
-    } else if (cell == undefined) {
+    if (cell == undefined) {
       data.y = data.bbox.y2 - 12
+    } else if (cell == false && data.y > data.bbox.y2) {
+      return 'bottom'
     }
-  }
-
-  if (data.pos.x == data.puzzle.end.x && data.pos.y == data.puzzle.end.y) {
-    data.bbox.setEnd(data.puzzle.end.dir)
-  } else {
-    data.bbox.setEnd(undefined)
   }
 }
