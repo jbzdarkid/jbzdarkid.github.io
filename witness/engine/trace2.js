@@ -1,9 +1,9 @@
 window.BBOX_DEBUG = false
 
 class BoundingBox {
-  constructor(x1, x2, y1, y2) {
+  constructor(x1, x2, y1, y2, endDir) {
     this.raw = {'x1':x1, 'x2':x2, 'y1':y1, 'y2':y2}
-    this.endDir = undefined
+    this.endDir = endDir
     this._update()
   }
 
@@ -27,6 +27,10 @@ class BoundingBox {
   setEnd(dir) {
     this.endDir = dir
     this._update()
+  }
+
+  clone() {
+    return new BoundingBox(this.raw.x1, this.raw.x2, this.raw.y1, this.raw.y2, this.endDir)
   }
 
   _update() {
@@ -82,6 +86,7 @@ function trace(elem, event, puzzle) {
       'tracing':true,
       'bbox':new BoundingBox(cx - 12, cx + 12, cy - 12, cy + 12),
       'bboxDebug':bboxDebug,
+      'svg':svg,
       // Cursor element and location
       'cursor': cursor,
       'x':cx,
@@ -89,6 +94,7 @@ function trace(elem, event, puzzle) {
       // Position within puzzle.grid
       'pos':{'x':puzzle.start.x, 'y':puzzle.start.y},
       'puzzle':puzzle,
+      'path':[],
     }
     elem.requestPointerLock()
   } else {
@@ -144,8 +150,45 @@ function _onMove(dx, dy) {
   // Potentially move the location to a new cell, and make absolute boundary checks
   while (true) {
     var moveDir = _move()
+    _draw(data.path[data.path.length - 1])
     if (moveDir == 'none') break
-    console.log(moveDir)
+
+    if (data.path.length > 0) {
+      var lastDir = data.path[data.path.length - 1].dir
+    } else {
+      var lastDir = 'none'
+    }
+    var backedUp = (
+      (moveDir == 'left' && lastDir == 'right') ||
+      (moveDir == 'right' && lastDir == 'left') ||
+      (moveDir == 'top' && lastDir == 'bottom') ||
+      (moveDir == 'bottom' && lastDir == 'top'))
+
+    _draw(data.path[data.path.length - 1]) // Finish the current segment
+    if (backedUp) {
+      data.path.pop()
+      // data.puzzle.setCell(data.pos.x, data.pos.y, false)
+    } else { // Entered a new cell
+      var foo = {
+        'poly1':document.createElementNS('http://www.w3.org/2000/svg', 'polygon'),
+        'circ':document.createElementNS('http://www.w3.org/2000/svg', 'circle'),
+        'poly2':document.createElementNS('http://www.w3.org/2000/svg', 'polygon'),
+        'poly3':document.createElementNS('http://www.w3.org/2000/svg', 'polygon'),
+        'dir': moveDir,
+      }
+      data.svg.insertBefore(foo.poly1, data.cursor)
+      data.svg.insertBefore(foo.circ, data.cursor)
+      data.svg.insertBefore(foo.poly2, data.cursor)
+      data.svg.insertBefore(foo.poly3, data.cursor)
+      foo.poly1.setAttribute('fill', LINE_DEFAULT)
+      foo.circ.setAttribute('fill', LINE_DEFAULT)
+      foo.circ.setAttribute('r', 12)
+      foo.poly2.setAttribute('fill', LINE_DEFAULT)
+      foo.poly3.setAttribute('fill', LINE_DEFAULT)
+      data.path.push(foo)
+      // data.puzzle.setCell(data.pos.x, data.pos.y, true)
+    }
+
     if (moveDir == 'left') {
       data.pos.x--
     } else if (moveDir == 'right') {
@@ -156,6 +199,7 @@ function _onMove(dx, dy) {
       data.pos.y++
     }
 
+
     // Adjust the bounding box
     data.bbox.shift(moveDir)
     if (data.pos.x == data.puzzle.end.x && data.pos.y == data.puzzle.end.y) {
@@ -165,7 +209,7 @@ function _onMove(dx, dy) {
     }
   }
 
-  // redraw (?)
+  // Move the cursor
   data.cursor.setAttribute('cx', data.x)
   data.cursor.setAttribute('cy', data.y)
 
@@ -363,4 +407,83 @@ function _move() {
     }
   }
   return 'none'
+}
+
+function _draw(foo, dir2) {
+  if (foo == undefined) return
+  var poly1 = foo.poly1
+  var circ = foo.circ
+  var poly2 = foo.poly2
+  var poly3 = foo.poly3
+  var dir1 = foo.dir
+
+  var points1 = data.bbox.clone()
+  var pastMiddle = false
+
+  if (dir1 == 'left') {
+    points1.x1 = data.x
+    pastMiddle = (data.x <= data.bbox.middle.x)
+  } else if (dir1 == 'right') {
+    points1.x2 = data.x
+    pastMiddle = (data.x >= data.bbox.middle.x)
+  } else if (dir1 == 'top') {
+    points1.y1 = data.y
+    pastMiddle = (data.y <= data.bbox.middle.y)
+  } else if (dir1 == 'bottom') {
+    points1.y2 = data.y
+    pastMiddle = (data.y >= data.bbox.middle.y)
+  } else { // Start point
+    circ.setAttribute('r', 24)
+//    return // Start point
+  }
+  poly1.setAttribute('points',
+    points1.x1 + ' ' + points1.y1 + ',' +
+    points1.x1 + ' ' + points1.y2 + ',' +
+    points1.x2 + ' ' + points1.y2 + ',' +
+    points1.x2 + ' ' + points1.y1)
+
+  // Above / Below midpoint
+  poly2.setAttribute('points',
+    data.bbox.x1 + ' ' + Math.min(data.y, data.bbox.middle.y) + ',' +
+    data.bbox.x1 + ' ' + Math.max(data.y, data.bbox.middle.y) + ',' +
+    data.bbox.x2 + ' ' + Math.max(data.y, data.bbox.middle.y) + ',' +
+    data.bbox.x2 + ' ' + Math.min(data.y, data.bbox.middle.y))
+
+  // Left / Right midpoint
+  poly3.setAttribute('points',
+    Math.min(data.x, data.bbox.middle.x) + ' ' + data.bbox.y1 + ',' +
+    Math.min(data.x, data.bbox.middle.x) + ' ' + data.bbox.y2 + ',' +
+    Math.max(data.x, data.bbox.middle.x) + ' ' + data.bbox.y2 + ',' +
+    Math.max(data.x, data.bbox.middle.x) + ' ' + data.bbox.y1)
+
+  if (pastMiddle) {
+    circ.setAttribute('opacity', 1)
+    circ.setAttribute('cx', data.bbox.middle.x)
+    circ.setAttribute('cy', data.bbox.middle.y)
+    poly2.setAttribute('opacity', 1)
+    poly3.setAttribute('opacity', 1)
+  } else {
+    circ.setAttribute('opacity', 0)
+    poly2.setAttribute('opacity', 0)
+    poly3.setAttribute('opacity', 0)
+  }
+
+  /*
+  var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+  data.svg.insertBefore(rect, data.cursor)
+  rect.setAttribute('class', 'line ' + data.svg.id)
+  rect.setAttribute('fill', LINE_DEFAULT)
+  var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+  data.svg.insertBefore(circ, data.cursor)
+  circ.setAttribute('r', 12)
+  circ.setAttribute('cx', data.bbox.middle.x)
+  circ.setAttribute('cy', data.bbox.middle.y)
+  circ.setAttribute('class', 'line ' + data.svg.id)
+  circ.setAttribute('fill', LINE_DEFAULT)
+  var rect2 = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+  data.svg.insertBefore(rect2, data.cursor)
+  rect2.setAttribute('class', 'line ' + data.svg.id)
+  rect2.setAttribute('fill', LINE_DEFAULT)
+  */
+
 }
