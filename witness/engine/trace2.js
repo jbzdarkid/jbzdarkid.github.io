@@ -7,19 +7,19 @@ class BoundingBox {
     this._update()
   }
 
-  shift(dir) {
+  shift(dir, width, height) {
     if (dir == 'left') {
       this.raw.x2 = this.raw.x1
-      this.raw.x1 -= (data.pos.x%2 == 0 ? 24 : 58)
+      this.raw.x1 -= width
     } else if (dir == 'right') {
       this.raw.x1 = this.raw.x2
-      this.raw.x2 += (data.pos.x%2 == 0 ? 24 : 58)
+      this.raw.x2 += width
     } else if (dir == 'top') {
       this.raw.y2 = this.raw.y1
-      this.raw.y1 -= (data.pos.y%2 == 0 ? 24 : 58)
+      this.raw.y1 -= height
     } else if (dir == 'bottom') {
       this.raw.y1 = this.raw.y2
-      this.raw.y2 += (data.pos.y%2 == 0 ? 24 : 58)
+      this.raw.y2 += height
     }
     this._update()
   }
@@ -27,6 +27,13 @@ class BoundingBox {
   setEnd(dir) {
     this.endDir = dir
     this._update()
+  }
+
+  inRaw(x, y) {
+    return (
+      x.clamp(this.raw.x1, this.raw.x2) == x &&
+      y.clamp(this.raw.y1, this.raw.y2) == y
+    )
   }
 
   clone() {
@@ -54,13 +61,25 @@ class PathSegment {
     data.svg.insertBefore(this.poly1, data.cursor)
     data.svg.insertBefore(this.circ, data.cursor)
     data.svg.insertBefore(this.poly2, data.cursor)
+    this.poly1.setAttribute('class', 'line ' + data.svg.id)
     this.poly1.setAttribute('fill', LINE_DEFAULT)
+    this.circ.setAttribute('class', 'line ' + data.svg.id)
     this.circ.setAttribute('fill', LINE_DEFAULT)
-    this.circ.setAttribute('r', 12)
+    if (this.dir == 'none') { // Start point
+      this.poly1.setAttribute('pointer-events', 'none')
+      this.circ.setAttribute('r', 24)
+      this.circ.setAttribute('cx', data.bbox.middle.x)
+      this.circ.setAttribute('cy', data.bbox.middle.y)
+      this.circ.setAttribute('pointer-events', 'none')
+      this.poly2.setAttribute('pointer-events', 'none')
+    } else {
+      this.circ.setAttribute('r', 12)
+    }
+    this.poly2.setAttribute('class', 'line ' + data.svg.id)
     this.poly2.setAttribute('fill', LINE_DEFAULT)
   }
 
-  redraw() {
+  redraw() { // Uses raw bbox for endpoints
     var points1 = data.bbox.clone().raw
     if (this.dir == 'left') {
       points1.x1 = data.x.clamp(data.bbox.middle.x, data.bbox.x2)
@@ -70,8 +89,6 @@ class PathSegment {
       points1.y1 = data.y.clamp(data.bbox.middle.y, data.bbox.y2)
     } else if (this.dir == 'bottom') {
       points1.y2 = data.y.clamp(data.bbox.y1, data.bbox.middle.y)
-    } else { // Start point
-      this.circ.setAttribute('r', 24)
     }
     this.poly1.setAttribute('points',
       points1.x1 + ' ' + points1.y1 + ',' +
@@ -172,7 +189,11 @@ function trace(elem, event, puzzle) {
     // Signal the onMouseMove to stop accepting input (race condition)
     data.tracing = false
 
-    if ("ended in an endpoint" || true) {
+    console.log(data.pos.x, data.pos.y)
+    console.log(data.bbox.inRaw(data.x, data.y))
+
+    // At endpoint and not in raw box -> In true endpoint
+    if (data.puzzle.isEndpoint(data.pos.x, data.pos.y) && !data.bbox.inRaw(data.x, data.y)) {
       validate(data.puzzle)
       if (data.puzzle.valid) {
         PLAY_SOUND('success')
@@ -189,8 +210,8 @@ function trace(elem, event, puzzle) {
   }
 }
 
-document.onpointerlockchange = document.mozpointerlockchange = function() {
-  if (document.pointerLockElement == null && document.mozPointerLockElement == null) {
+document.onpointerlockchange = function() {
+  if (document.pointerLockElement == null ) {
     console.log('Cursor release requested')
     document.onmousemove = null
     document.ontouchmove = null
@@ -220,28 +241,20 @@ function _onMove(dx, dy) {
   // Potentially move the location to a new cell, and make absolute boundary checks
   while (true) {
     var moveDir = _move()
-    data.path[data.path.length - 1].redraw()
+    var lastSegment = data.path[data.path.length - 1]
+    lastSegment.redraw()
     if (moveDir == 'none') break
 
-    if (data.path.length > 0) {
-      var lastDir = data.path[data.path.length - 1].dir
-    } else {
-      var lastDir = 'none'
-    }
     var backedUp = (
-      (moveDir == 'left' && lastDir == 'right') ||
-      (moveDir == 'right' && lastDir == 'left') ||
-      (moveDir == 'top' && lastDir == 'bottom') ||
-      (moveDir == 'bottom' && lastDir == 'top'))
+      (moveDir == 'left' && lastSegment.dir == 'right') ||
+      (moveDir == 'right' && lastSegment.dir == 'left') ||
+      (moveDir == 'top' && lastSegment.dir == 'bottom') ||
+      (moveDir == 'bottom' && lastSegment.dir == 'top'))
 
     if (backedUp) {
       data.path.pop()
-      // data.puzzle.setCell(data.pos.x, data.pos.y, false)
-    } else { // Entered a new cell
-      data.path.push(new PathSegment(moveDir))
-      // data.puzzle.setCell(data.pos.x, data.pos.y, true)
+      data.puzzle.setCell(data.pos.x, data.pos.y, false)
     }
-
     if (moveDir == 'left') {
       data.pos.x--
     } else if (moveDir == 'right') {
@@ -251,10 +264,16 @@ function _onMove(dx, dy) {
     } else if (moveDir == 'bottom') {
       data.pos.y++
     }
+    if (!backedUp) { // Entered a new cell
+      data.path.push(new PathSegment(moveDir))
+      data.puzzle.setCell(data.pos.x, data.pos.y, true)
+    }
 
     // Adjust the bounding box
-    data.bbox.shift(moveDir)
-    if (data.pos.x == data.puzzle.end.x && data.pos.y == data.puzzle.end.y) {
+    var width = (data.pos.x%2 == 0 ? 24 : 58)
+    var height = (data.pos.y%2 == 0 ? 24 : 58)
+    data.bbox.shift(moveDir, width, height)
+    if (data.puzzle.isEndpoint(data.pos.x, data.pos.y)) {
       data.bbox.setEnd(data.puzzle.end.dir)
     } else {
       data.bbox.setEnd(undefined)
@@ -433,28 +452,28 @@ function _move() {
     var cell = data.puzzle.getCell(data.pos.x - 1, data.pos.y)
     if (cell == undefined) {
       data.x = data.bbox.x1 + 12
-    } else if (cell == false && data.x < data.bbox.x1) {
+    } else if (data.x < data.bbox.x1) {
       return 'left'
     }
   } else if (data.x > data.bbox.x2 - 12) { // Moving right
     var cell = data.puzzle.getCell(data.pos.x + 1, data.pos.y)
     if (cell == undefined) {
       data.x = data.bbox.x2 - 12
-    } else if (cell == false && data.x > data.bbox.x2) {
+    } else if (data.x > data.bbox.x2) {
       return 'right'
     }
   } else if (data.y < data.bbox.y1 + 12) { // Moving up
     var cell = data.puzzle.getCell(data.pos.x, data.pos.y - 1)
     if (cell == undefined) {
       data.y = data.bbox.y1 + 12
-    } else if (cell == false && data.y < data.bbox.y1) {
+    } else if (data.y < data.bbox.y1) {
       return 'top'
     }
   } else if (data.y > data.bbox.y2 - 12) { // Moving down
     var cell = data.puzzle.getCell(data.pos.x, data.pos.y + 1)
     if (cell == undefined) {
       data.y = data.bbox.y2 - 12
-    } else if (cell == false && data.y > data.bbox.y2) {
+    } else if (data.y > data.bbox.y2) {
       return 'bottom'
     }
   }
