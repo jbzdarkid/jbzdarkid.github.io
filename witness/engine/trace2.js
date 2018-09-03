@@ -164,7 +164,6 @@ function _onMove(dx, dy) {
       (moveDir == 'top' && lastDir == 'bottom') ||
       (moveDir == 'bottom' && lastDir == 'top'))
 
-    _draw(data.path[data.path.length - 1]) // Finish the current segment
     if (backedUp) {
       data.path.pop()
       // data.puzzle.setCell(data.pos.x, data.pos.y, false)
@@ -173,18 +172,15 @@ function _onMove(dx, dy) {
         'poly1':document.createElementNS('http://www.w3.org/2000/svg', 'polygon'),
         'circ':document.createElementNS('http://www.w3.org/2000/svg', 'circle'),
         'poly2':document.createElementNS('http://www.w3.org/2000/svg', 'polygon'),
-        'poly3':document.createElementNS('http://www.w3.org/2000/svg', 'polygon'),
         'dir': moveDir,
       }
       data.svg.insertBefore(foo.poly1, data.cursor)
       data.svg.insertBefore(foo.circ, data.cursor)
       data.svg.insertBefore(foo.poly2, data.cursor)
-      data.svg.insertBefore(foo.poly3, data.cursor)
       foo.poly1.setAttribute('fill', LINE_DEFAULT)
       foo.circ.setAttribute('fill', LINE_DEFAULT)
       foo.circ.setAttribute('r', 12)
       foo.poly2.setAttribute('fill', LINE_DEFAULT)
-      foo.poly3.setAttribute('fill', LINE_DEFAULT)
       data.path.push(foo)
       // data.puzzle.setCell(data.pos.x, data.pos.y, true)
     }
@@ -414,24 +410,17 @@ function _draw(foo, dir2) {
   var poly1 = foo.poly1
   var circ = foo.circ
   var poly2 = foo.poly2
-  var poly3 = foo.poly3
   var dir1 = foo.dir
 
   var points1 = data.bbox.clone()
-  var pastMiddle = false
-
   if (dir1 == 'left') {
-    points1.x1 = data.x
-    pastMiddle = (data.x <= data.bbox.middle.x)
+    points1.x1 = data.x.clamp(data.bbox.middle.x, data.bbox.x2)
   } else if (dir1 == 'right') {
-    points1.x2 = data.x
-    pastMiddle = (data.x >= data.bbox.middle.x)
+    points1.x2 = data.x.clamp(data.bbox.x1, data.bbox.middle.x)
   } else if (dir1 == 'top') {
-    points1.y1 = data.y
-    pastMiddle = (data.y <= data.bbox.middle.y)
+    points1.y1 = data.y.clamp(data.bbox.middle.y, data.bbox.y2)
   } else if (dir1 == 'bottom') {
-    points1.y2 = data.y
-    pastMiddle = (data.y >= data.bbox.middle.y)
+    points1.y2 = data.y.clamp(data.bbox.y1, data.bbox.middle.y)
   } else { // Start point
     circ.setAttribute('r', 24)
 //    return // Start point
@@ -442,30 +431,37 @@ function _draw(foo, dir2) {
     points1.x2 + ' ' + points1.y2 + ',' +
     points1.x2 + ' ' + points1.y1)
 
-  // Above / Below midpoint
+  var pastMiddle = true
+  var points2 = data.bbox.clone().raw
+  if (data.x < data.bbox.middle.x && dir1 != 'right') {
+    points2.x1 = data.x.clamp(data.bbox.x1, data.bbox.middle.x)
+    points2.x2 = data.bbox.middle.x
+  } else if (data.x > data.bbox.middle.x && dir1 != 'left') {
+    points2.x1 = data.bbox.middle.x
+    points2.x2 = data.x.clamp(data.bbox.middle.x, data.bbox.x2)
+  } else if (data.y < data.bbox.middle.y && dir1 != 'bottom') {
+    points2.y1 = data.y.clamp(data.bbox.y1, data.bbox.middle.y)
+    points2.y2 = data.bbox.middle.y
+  } else if (data.y > data.bbox.middle.y && dir1 != 'top') {
+    points2.y1 = data.bbox.middle.y
+    points2.y2 = data.y.clamp(data.bbox.middle.y, data.bbox.y2)
+  } else {
+    pastMiddle = false
+  }
   poly2.setAttribute('points',
-    data.bbox.x1 + ' ' + Math.min(data.y, data.bbox.middle.y) + ',' +
-    data.bbox.x1 + ' ' + Math.max(data.y, data.bbox.middle.y) + ',' +
-    data.bbox.x2 + ' ' + Math.max(data.y, data.bbox.middle.y) + ',' +
-    data.bbox.x2 + ' ' + Math.min(data.y, data.bbox.middle.y))
-
-  // Left / Right midpoint
-  poly3.setAttribute('points',
-    Math.min(data.x, data.bbox.middle.x) + ' ' + data.bbox.y1 + ',' +
-    Math.min(data.x, data.bbox.middle.x) + ' ' + data.bbox.y2 + ',' +
-    Math.max(data.x, data.bbox.middle.x) + ' ' + data.bbox.y2 + ',' +
-    Math.max(data.x, data.bbox.middle.x) + ' ' + data.bbox.y1)
+    points2.x1 + ' ' + points2.y1 + ',' +
+    points2.x1 + ' ' + points2.y2 + ',' +
+    points2.x2 + ' ' + points2.y2 + ',' +
+    points2.x2 + ' ' + points2.y1)
 
   if (pastMiddle) {
     circ.setAttribute('opacity', 1)
     circ.setAttribute('cx', data.bbox.middle.x)
     circ.setAttribute('cy', data.bbox.middle.y)
     poly2.setAttribute('opacity', 1)
-    poly3.setAttribute('opacity', 1)
   } else {
     circ.setAttribute('opacity', 0)
     poly2.setAttribute('opacity', 0)
-    poly3.setAttribute('opacity', 0)
   }
 
   /*

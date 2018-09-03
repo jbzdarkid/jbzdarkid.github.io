@@ -11,6 +11,11 @@ Event.prototype.movementX = Event.prototype.movementX || Event.prototype.mozMove
 Event.prototype.movementY = Event.prototype.movementY || Event.prototype.mozMovementY
 /*** End cross-compatibility ***/
 
+// https://stackoverflow.com/q/11409895
+Number.prototype.clamp = function(min, max) {
+  return this < min ? min : this > max ? max : this
+}
+
 // http://stackoverflow.com/q/901115
 var urlParams
 (window.onpopstate = function () {
@@ -20,7 +25,7 @@ var urlParams
         decode = function (s) {return decodeURIComponent(s.replace(pl, ' '))},
         query  = window.location.search.substring(1)
 
-    urlParams = {};
+    urlParams = {}
     while (match = search.exec(query))
        urlParams[decode(match[1])] = decode(match[2])
 })()
@@ -77,7 +82,6 @@ if (localStorage.theme == "true") { // Dark scheme
   }
 }
 
-
 var animations = '@keyframes line-success { \
   from {fill: ' + LINE_DEFAULT + ';} \
   to {fill: ' + LINE_SUCCESS + ';} \
@@ -89,7 +93,7 @@ var animations = '@keyframes line-success { \
 @keyframes start-grow { \
   from {height: 12; width: 12; top: 6; left: 6;} \
   to {height: 48; width: 48; top: -12; left: -12;} \
-}';
+}'
 var style = document.createElement('style')
 style.type = 'text/css'
 style.title = 'animations'
