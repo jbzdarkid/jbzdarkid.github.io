@@ -4,9 +4,6 @@ if (!String.prototype.includes) {
     return String.prototype.indexOf.apply(this, arguments) !== -1
   }
 }
-document.pointerLockElement = document.pointerLockElement && document.mozPointerLockElement
-document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock
-Element.prototype.requestPointerLock = Element.prototype.requestPointerLock || Element.prototype.mozRequestPointerLock
 Event.prototype.movementX = Event.prototype.movementX || Event.prototype.mozMovementX
 Event.prototype.movementY = Event.prototype.movementY || Event.prototype.mozMovementY
 /*** End cross-compatibility ***/
@@ -46,8 +43,6 @@ function PLAY_SOUND(track) {
   tracks[track].volume = 0.1
   tracks[track].play()
 }
-
-window.DISABLE_CACHE = false
 
 WHITE = 'white'
 BLACK = 'black'
@@ -99,22 +94,3 @@ style.type = 'text/css'
 style.title = 'animations'
 style.appendChild(document.createTextNode(animations))
 document.head.appendChild(style)
-
-/*
-Light:
-Background is a light teal 009999
-Foreground is a dark teal 223333
-Stones are White/Black
-Dots are black
-Colored dots are green 99EE99 and orange
-Stars are yellow?
-
-Dark:
-Background is a dark brown 222200
-Foreground is a mid brown 665511
-Dots are Orange
-
-
-
-*/
-
