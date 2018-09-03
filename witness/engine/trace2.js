@@ -45,6 +45,75 @@ class BoundingBox {
   }
 }
 
+class PathSegment {
+  constructor(dir) {
+    this.poly1 = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
+    this.circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+    this.poly2 = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
+    this.dir = dir
+    data.svg.insertBefore(this.poly1, data.cursor)
+    data.svg.insertBefore(this.circ, data.cursor)
+    data.svg.insertBefore(this.poly2, data.cursor)
+    this.poly1.setAttribute('fill', LINE_DEFAULT)
+    this.circ.setAttribute('fill', LINE_DEFAULT)
+    this.circ.setAttribute('r', 12)
+    this.poly2.setAttribute('fill', LINE_DEFAULT)
+  }
+
+  redraw() {
+    var points1 = data.bbox.clone().raw
+    if (this.dir == 'left') {
+      points1.x1 = data.x.clamp(data.bbox.middle.x, data.bbox.x2)
+    } else if (this.dir == 'right') {
+      points1.x2 = data.x.clamp(data.bbox.x1, data.bbox.middle.x)
+    } else if (this.dir == 'top') {
+      points1.y1 = data.y.clamp(data.bbox.middle.y, data.bbox.y2)
+    } else if (this.dir == 'bottom') {
+      points1.y2 = data.y.clamp(data.bbox.y1, data.bbox.middle.y)
+    } else { // Start point
+      this.circ.setAttribute('r', 24)
+    }
+    this.poly1.setAttribute('points',
+      points1.x1 + ' ' + points1.y1 + ',' +
+      points1.x1 + ' ' + points1.y2 + ',' +
+      points1.x2 + ' ' + points1.y2 + ',' +
+      points1.x2 + ' ' + points1.y1)
+
+    var pastMiddle = true
+    var points2 = data.bbox.clone().raw
+    if (data.x < data.bbox.middle.x && this.dir != 'right') {
+      points2.x1 = data.x.clamp(data.bbox.x1, data.bbox.middle.x)
+      points2.x2 = data.bbox.middle.x
+    } else if (data.x > data.bbox.middle.x && this.dir != 'left') {
+      points2.x1 = data.bbox.middle.x
+      points2.x2 = data.x.clamp(data.bbox.middle.x, data.bbox.x2)
+    } else if (data.y < data.bbox.middle.y && this.dir != 'bottom') {
+      points2.y1 = data.y.clamp(data.bbox.y1, data.bbox.middle.y)
+      points2.y2 = data.bbox.middle.y
+    } else if (data.y > data.bbox.middle.y && this.dir != 'top') {
+      points2.y1 = data.bbox.middle.y
+      points2.y2 = data.y.clamp(data.bbox.middle.y, data.bbox.y2)
+    } else {
+      pastMiddle = false
+    }
+    this.poly2.setAttribute('points',
+      points2.x1 + ' ' + points2.y1 + ',' +
+      points2.x1 + ' ' + points2.y2 + ',' +
+      points2.x2 + ' ' + points2.y2 + ',' +
+      points2.x2 + ' ' + points2.y1)
+
+    if (pastMiddle) {
+      this.circ.setAttribute('opacity', 1)
+      this.circ.setAttribute('cx', data.bbox.middle.x)
+      this.circ.setAttribute('cy', data.bbox.middle.y)
+      this.poly2.setAttribute('opacity', 1)
+    } else {
+      this.circ.setAttribute('opacity', 0)
+      this.poly2.setAttribute('opacity', 0)
+    }
+  }
+}
+
 var data
 
 function _clearGrid(svg) {
@@ -96,6 +165,7 @@ function trace(elem, event, puzzle) {
       'puzzle':puzzle,
       'path':[],
     }
+    data.path.push(new PathSegment('none'))
     elem.requestPointerLock()
   } else {
     event.stopPropagation()
@@ -150,7 +220,7 @@ function _onMove(dx, dy) {
   // Potentially move the location to a new cell, and make absolute boundary checks
   while (true) {
     var moveDir = _move()
-    _draw(data.path[data.path.length - 1])
+    data.path[data.path.length - 1].redraw()
     if (moveDir == 'none') break
 
     if (data.path.length > 0) {
@@ -168,20 +238,7 @@ function _onMove(dx, dy) {
       data.path.pop()
       // data.puzzle.setCell(data.pos.x, data.pos.y, false)
     } else { // Entered a new cell
-      var foo = {
-        'poly1':document.createElementNS('http://www.w3.org/2000/svg', 'polygon'),
-        'circ':document.createElementNS('http://www.w3.org/2000/svg', 'circle'),
-        'poly2':document.createElementNS('http://www.w3.org/2000/svg', 'polygon'),
-        'dir': moveDir,
-      }
-      data.svg.insertBefore(foo.poly1, data.cursor)
-      data.svg.insertBefore(foo.circ, data.cursor)
-      data.svg.insertBefore(foo.poly2, data.cursor)
-      foo.poly1.setAttribute('fill', LINE_DEFAULT)
-      foo.circ.setAttribute('fill', LINE_DEFAULT)
-      foo.circ.setAttribute('r', 12)
-      foo.poly2.setAttribute('fill', LINE_DEFAULT)
-      data.path.push(foo)
+      data.path.push(new PathSegment(moveDir))
       // data.puzzle.setCell(data.pos.x, data.pos.y, true)
     }
 
@@ -194,7 +251,6 @@ function _onMove(dx, dy) {
     } else if (moveDir == 'bottom') {
       data.pos.y++
     }
-
 
     // Adjust the bounding box
     data.bbox.shift(moveDir)
@@ -403,83 +459,4 @@ function _move() {
     }
   }
   return 'none'
-}
-
-function _draw(foo, dir2) {
-  if (foo == undefined) return
-  var poly1 = foo.poly1
-  var circ = foo.circ
-  var poly2 = foo.poly2
-  var dir1 = foo.dir
-
-  var points1 = data.bbox.clone()
-  if (dir1 == 'left') {
-    points1.x1 = data.x.clamp(data.bbox.middle.x, data.bbox.x2)
-  } else if (dir1 == 'right') {
-    points1.x2 = data.x.clamp(data.bbox.x1, data.bbox.middle.x)
-  } else if (dir1 == 'top') {
-    points1.y1 = data.y.clamp(data.bbox.middle.y, data.bbox.y2)
-  } else if (dir1 == 'bottom') {
-    points1.y2 = data.y.clamp(data.bbox.y1, data.bbox.middle.y)
-  } else { // Start point
-    circ.setAttribute('r', 24)
-//    return // Start point
-  }
-  poly1.setAttribute('points',
-    points1.x1 + ' ' + points1.y1 + ',' +
-    points1.x1 + ' ' + points1.y2 + ',' +
-    points1.x2 + ' ' + points1.y2 + ',' +
-    points1.x2 + ' ' + points1.y1)
-
-  var pastMiddle = true
-  var points2 = data.bbox.clone().raw
-  if (data.x < data.bbox.middle.x && dir1 != 'right') {
-    points2.x1 = data.x.clamp(data.bbox.x1, data.bbox.middle.x)
-    points2.x2 = data.bbox.middle.x
-  } else if (data.x > data.bbox.middle.x && dir1 != 'left') {
-    points2.x1 = data.bbox.middle.x
-    points2.x2 = data.x.clamp(data.bbox.middle.x, data.bbox.x2)
-  } else if (data.y < data.bbox.middle.y && dir1 != 'bottom') {
-    points2.y1 = data.y.clamp(data.bbox.y1, data.bbox.middle.y)
-    points2.y2 = data.bbox.middle.y
-  } else if (data.y > data.bbox.middle.y && dir1 != 'top') {
-    points2.y1 = data.bbox.middle.y
-    points2.y2 = data.y.clamp(data.bbox.middle.y, data.bbox.y2)
-  } else {
-    pastMiddle = false
-  }
-  poly2.setAttribute('points',
-    points2.x1 + ' ' + points2.y1 + ',' +
-    points2.x1 + ' ' + points2.y2 + ',' +
-    points2.x2 + ' ' + points2.y2 + ',' +
-    points2.x2 + ' ' + points2.y1)
-
-  if (pastMiddle) {
-    circ.setAttribute('opacity', 1)
-    circ.setAttribute('cx', data.bbox.middle.x)
-    circ.setAttribute('cy', data.bbox.middle.y)
-    poly2.setAttribute('opacity', 1)
-  } else {
-    circ.setAttribute('opacity', 0)
-    poly2.setAttribute('opacity', 0)
-  }
-
-  /*
-  var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-  data.svg.insertBefore(rect, data.cursor)
-  rect.setAttribute('class', 'line ' + data.svg.id)
-  rect.setAttribute('fill', LINE_DEFAULT)
-  var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-  data.svg.insertBefore(circ, data.cursor)
-  circ.setAttribute('r', 12)
-  circ.setAttribute('cx', data.bbox.middle.x)
-  circ.setAttribute('cy', data.bbox.middle.y)
-  circ.setAttribute('class', 'line ' + data.svg.id)
-  circ.setAttribute('fill', LINE_DEFAULT)
-  var rect2 = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-  data.svg.insertBefore(rect2, data.cursor)
-  rect2.setAttribute('class', 'line ' + data.svg.id)
-  rect2.setAttribute('fill', LINE_DEFAULT)
-  */
-
 }
