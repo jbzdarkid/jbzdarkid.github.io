@@ -142,8 +142,9 @@ function _onMove(dx, dy) {
   _pushCursor(dx, dy, width, height)
 
   // Potentially move the location to a new cell, and make absolute boundary checks
-  do {
+  while (true) {
     var moveDir = _move()
+    if (moveDir == 'none') break
     console.log(moveDir)
     if (moveDir == 'left') {
       data.pos.x--
@@ -162,8 +163,7 @@ function _onMove(dx, dy) {
     } else {
       data.bbox.setEnd(undefined)
     }
-
-  } while (moveDir != null)
+  }
 
   // redraw (?)
   data.cursor.setAttribute('cx', data.x)
@@ -362,4 +362,5 @@ function _move() {
       return 'bottom'
     }
   }
+  return 'none'
 }
