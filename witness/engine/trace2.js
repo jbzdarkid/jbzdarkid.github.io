@@ -62,21 +62,15 @@ class PathSegment {
     data.svg.insertBefore(this.circ, data.cursor)
     data.svg.insertBefore(this.poly2, data.cursor)
     this.poly1.setAttribute('class', 'line ' + data.svg.id)
-    this.poly1.setAttribute('fill', LINE_DEFAULT)
     this.circ.setAttribute('class', 'line ' + data.svg.id)
-    this.circ.setAttribute('fill', LINE_DEFAULT)
+    this.poly2.setAttribute('class', 'line ' + data.svg.id)
     if (this.dir == 'none') { // Start point
-      this.poly1.setAttribute('pointer-events', 'none')
       this.circ.setAttribute('r', 24)
       this.circ.setAttribute('cx', data.bbox.middle.x)
       this.circ.setAttribute('cy', data.bbox.middle.y)
-      this.circ.setAttribute('pointer-events', 'none')
-      this.poly2.setAttribute('pointer-events', 'none')
     } else {
       this.circ.setAttribute('r', 12)
     }
-    this.poly2.setAttribute('class', 'line ' + data.svg.id)
-    this.poly2.setAttribute('fill', LINE_DEFAULT)
   }
 
   redraw() { // Uses raw bbox for endpoints
@@ -110,7 +104,7 @@ class PathSegment {
     } else if (data.y > data.bbox.middle.y && this.dir != 'top') {
       points2.y1 = data.bbox.middle.y
       points2.y2 = data.y.clamp(data.bbox.middle.y, data.bbox.y2)
-    } else {
+    } else if (this.dir != 'none') { // Start point always has circle visible
       pastMiddle = false
     }
     this.poly2.setAttribute('points',
@@ -183,26 +177,41 @@ function trace(elem, event, puzzle) {
       'path':[],
     }
     data.path.push(new PathSegment('none'))
+
+    for (var styleSheet of document.styleSheets) {
+      if (styleSheet.title == 'animations') {
+        data.animations = styleSheet
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+          var rule = styleSheet.cssRules[i]
+          if (rule.selectorText == '.' + data.svg.id) {
+            styleSheet.deleteRule(i--)
+          }
+        }
+        break
+      }
+    }
+
     elem.requestPointerLock()
   } else {
     event.stopPropagation()
     // Signal the onMouseMove to stop accepting input (race condition)
     data.tracing = false
 
-    console.log(data.pos.x, data.pos.y)
-    console.log(data.bbox.inRaw(data.x, data.y))
-
     // At endpoint and not in raw box -> In true endpoint
     if (data.puzzle.isEndpoint(data.pos.x, data.pos.y) && !data.bbox.inRaw(data.x, data.y)) {
       validate(data.puzzle)
+
       if (data.puzzle.valid) {
         PLAY_SOUND('success')
+        var animation = 'line-success'
       } else {
         PLAY_SOUND('fail')
+        var animation = 'line-fail'
       }
+      data.animations.insertRule('.' + data.svg.id + ' {animation: 1s 1 forwards ' + animation + '}')
     } else if (event.which == 3) { // Right-clicked, not at the end: Clear puzzle
       PLAY_SOUND('abort')
-      _clearGrid(elem.parentElement)
+      _clearGrid(data.svg)
     } else {
       // Exit pointer lock, but allow resume tracing from cursor
     }

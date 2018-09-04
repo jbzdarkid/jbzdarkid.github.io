@@ -77,7 +77,11 @@ if (localStorage.theme == "true") { // Dark scheme
   }
 }
 
-var animations = '@keyframes line-success { \
+var animations = '.line { \
+  fill: ' + LINE_DEFAULT + '; \
+  pointer-events: none; \
+} \
+@keyframes line-success { \
   from {fill: ' + LINE_DEFAULT + ';} \
   to {fill: ' + LINE_SUCCESS + ';} \
 } \
