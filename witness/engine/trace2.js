@@ -73,6 +73,12 @@ class PathSegment {
     }
   }
 
+  destroy() {
+    data.svg.removeChild(this.poly1)
+    data.svg.removeChild(this.circ)
+    data.svg.removeChild(this.poly2)
+  }
+
   redraw() { // Uses raw bbox for endpoints
     var points1 = data.bbox.clone().raw
     if (this.dir == 'left') {
@@ -261,7 +267,7 @@ function _onMove(dx, dy) {
       (moveDir == 'bottom' && lastSegment.dir == 'top'))
 
     if (backedUp) {
-      data.path.pop()
+      data.path.pop().destroy()
       data.puzzle.setCell(data.pos.x, data.pos.y, false)
     }
     if (moveDir == 'left') {
