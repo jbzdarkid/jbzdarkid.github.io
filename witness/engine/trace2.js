@@ -205,6 +205,7 @@ function trace(elem, event, puzzle) {
 
     // At endpoint and not in raw box -> In true endpoint
     if (data.puzzle.isEndpoint(data.pos.x, data.pos.y) && !data.bbox.inRaw(data.x, data.y)) {
+      data.cursor.onclick = null
       validate(data.puzzle)
 
       if (data.puzzle.valid) {
@@ -218,8 +219,12 @@ function trace(elem, event, puzzle) {
     } else if (event.which == 3) { // Right-clicked, not at the end: Clear puzzle
       PLAY_SOUND('abort')
       _clearGrid(data.svg)
-    } else {
-      // Exit pointer lock, but allow resume tracing from cursor
+    } else { // Exit lock but allow resuming from the cursor
+      data.cursor.onclick = function(event) {
+        if (this.parentElement != data.svg) return // Another puzzle is live, so data is gone
+        data.tracing = true
+        elem.requestPointerLock()
+      }
     }
     document.exitPointerLock()
   }
@@ -227,13 +232,11 @@ function trace(elem, event, puzzle) {
 
 document.onpointerlockchange = function() {
   if (document.pointerLockElement == null ) {
-    console.log('Cursor release requested')
     document.onmousemove = null
     document.ontouchmove = null
     document.onclick = null
     document.ontouchend = null
   } else {
-    console.log('Cursor lock requested')
     var sens = document.getElementById('sens').value
     document.onmousemove = function(event) {
       _onMove(sens * event.movementX, sens * event.movementY)
