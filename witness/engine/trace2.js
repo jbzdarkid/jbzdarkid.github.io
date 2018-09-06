@@ -466,9 +466,13 @@ function _pushCursor(dx, dy, width, height) {
 // Change actual puzzle cells, and limit motion to only puzzle cells.
 // Returns the direction moved, or null otherwise.
 function _move() {
+  var lastDir = data.path[data.path.length - 1].dir
+
   if (data.x < data.bbox.x1 + 12) { // Moving left
     var cell = data.puzzle.getCell(data.pos.x - 1, data.pos.y)
     if (cell == undefined) {
+      data.x = data.bbox.x1 + 12
+    } else if (cell == true && lastDir != 'right') {
       data.x = data.bbox.x1 + 12
     } else if (data.x < data.bbox.x1) {
       return 'left'
@@ -477,6 +481,8 @@ function _move() {
     var cell = data.puzzle.getCell(data.pos.x + 1, data.pos.y)
     if (cell == undefined) {
       data.x = data.bbox.x2 - 12
+    } else if (cell == true && lastDir != 'left') {
+      data.x = data.bbox.x2 - 12
     } else if (data.x > data.bbox.x2) {
       return 'right'
     }
@@ -484,12 +490,16 @@ function _move() {
     var cell = data.puzzle.getCell(data.pos.x, data.pos.y - 1)
     if (cell == undefined) {
       data.y = data.bbox.y1 + 12
+    } else if (cell == true && lastDir != 'bottom') {
+      data.y = data.bbox.y1 + 12
     } else if (data.y < data.bbox.y1) {
       return 'top'
     }
   } else if (data.y > data.bbox.y2 - 12) { // Moving down
     var cell = data.puzzle.getCell(data.pos.x, data.pos.y + 1)
     if (cell == undefined) {
+      data.y = data.bbox.y2 - 12
+    } else if (cell == true && lastDir != 'top') {
       data.y = data.bbox.y2 - 12
     } else if (data.y > data.bbox.y2) {
       return 'bottom'
