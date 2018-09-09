@@ -179,7 +179,7 @@ function trace(elem, event, puzzle) {
       'y':cy,
       // Position within puzzle.grid
       'pos':{'x':puzzle.start.x, 'y':puzzle.start.y},
-      'puzzle':puzzle,
+      'puzzle':Puzzle.deserialize(puzzle.serialize()),
       'path':[],
     }
     data.path.push(new PathSegment('none'))
