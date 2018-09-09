@@ -1,5 +1,4 @@
 Bug fixes:
-- Tracing doesn't work over gaps
 - Tracing doesn't work over pillars
 - Editor doesn't work with new rendering engine
 - Zero size polys fail when zero-size negas don't
