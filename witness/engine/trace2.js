@@ -475,7 +475,8 @@ function _pushCursor(dx, dy, width, height) {
         data.y = data.bbox.middle.y
       }
       return
-    } else if (data.y > data.bbox.middle.y) {
+    // >= here so that there is no default case -- movement must be handled.
+    } else if (data.y >= data.bbox.middle.y) {
       _push(dx, dy, 'leftright', 'top')
       // Overshot the intersection and appears to be trying to turn
       if (data.y < data.bbox.middle.y && Math.abs(dx) * turnMod > Math.abs(dy)) {
