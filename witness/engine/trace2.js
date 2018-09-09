@@ -7,19 +7,19 @@ class BoundingBox {
     this._update()
   }
 
-  shift(dir, width, height) {
+  shift(dir, pixels) {
     if (dir == 'left') {
       this.raw.x2 = this.raw.x1
-      this.raw.x1 -= width
+      this.raw.x1 -= pixels
     } else if (dir == 'right') {
       this.raw.x1 = this.raw.x2
-      this.raw.x2 += width
+      this.raw.x2 += pixels
     } else if (dir == 'top') {
       this.raw.y2 = this.raw.y1
-      this.raw.y1 -= height
+      this.raw.y1 -= pixels
     } else if (dir == 'bottom') {
       this.raw.y1 = this.raw.y2
-      this.raw.y2 += height
+      this.raw.y2 += pixels
     }
     this._update()
   }
@@ -262,46 +262,9 @@ function _onMove(dx, dy) {
   // Potentially move the location to a new cell, and make absolute boundary checks
   while (true) {
     var moveDir = _move()
-    if (data.pos.x%2 == 1 && data.pos.y%2 == 1) {
-      console.error('Cursor went out of bounds!')
-    }
-    var lastSegment = data.path[data.path.length - 1]
-    lastSegment.redraw()
+    data.path[data.path.length - 1].redraw()
     if (moveDir == 'none') break
-
-    var backedUp = (
-      (moveDir == 'left' && lastSegment.dir == 'right') ||
-      (moveDir == 'right' && lastSegment.dir == 'left') ||
-      (moveDir == 'top' && lastSegment.dir == 'bottom') ||
-      (moveDir == 'bottom' && lastSegment.dir == 'top'))
-
-    if (backedUp) {
-      data.path.pop().destroy()
-      data.puzzle.setCell(data.pos.x, data.pos.y, false)
-    }
-    if (moveDir == 'left') {
-      data.pos.x--
-    } else if (moveDir == 'right') {
-      data.pos.x++
-    } else if (moveDir == 'top') {
-      data.pos.y--
-    } else if (moveDir == 'bottom') {
-      data.pos.y++
-    }
-    if (!backedUp) { // Entered a new cell
-      data.path.push(new PathSegment(moveDir))
-      data.puzzle.setCell(data.pos.x, data.pos.y, true)
-    }
-
-    // Adjust the bounding box
-    var width = (data.pos.x%2 == 0 ? 24 : 58)
-    var height = (data.pos.y%2 == 0 ? 24 : 58)
-    data.bbox.shift(moveDir, width, height)
-    if (data.puzzle.isEndpoint(data.pos.x, data.pos.y)) {
-      data.bbox.setEnd(data.puzzle.end.dir)
-    } else {
-      data.bbox.setEnd(undefined)
-    }
+    _changePos(moveDir)
   }
 
   // Move the cursor
@@ -364,25 +327,27 @@ function _push(dx, dy, dir, target_dir) {
 
 function _pushCursor(dx, dy, width, height) {
   // Outer wall collision
-  if (data.pos.x == 0) { // Against left wall
-    if (data.puzzle.end.x == data.pos.x) { // Endpoint is on the left wall
-      if (data.pos.y < data.puzzle.end.y) { // Above endpoint
-        if (_push(dx, dy, 'left', 'bottom')) return
-      } else if (data.pos.y > data.puzzle.end.y) { // Below endpoint
+  if (!data.puzzle.pillar) { // Left/right walls are inner if we're a pillar
+    if (data.pos.x == 0) { // Against left wall
+      if (data.puzzle.end.x == data.pos.x) { // Endpoint is on the left wall
+        if (data.pos.y < data.puzzle.end.y) { // Above endpoint
+          if (_push(dx, dy, 'left', 'bottom')) return
+        } else if (data.pos.y > data.puzzle.end.y) { // Below endpoint
+          if (_push(dx, dy, 'left', 'top')) return
+        }
+      } else { // Endpoint is not on the left wall
         if (_push(dx, dy, 'left', 'top')) return
       }
-    } else { // Endpoint is not on the left wall
-      if (_push(dx, dy, 'left', 'top')) return
-    }
-  } else if (data.pos.x == data.puzzle.grid.length - 1) { // Against right wall
-    if (data.puzzle.end.x == data.pos.x) { // Endpoint is on the right wall
-      if (data.pos.y < data.puzzle.end.y) { // Above endpoint
-        if (_push(dx, dy, 'right', 'bottom')) return
-      } else if (data.pos.y > data.puzzle.end.y) { // Below endpoint
+    } else if (data.pos.x == data.puzzle.grid.length - 1) { // Against right wall
+      if (data.puzzle.end.x == data.pos.x) { // Endpoint is on the right wall
+        if (data.pos.y < data.puzzle.end.y) { // Above endpoint
+          if (_push(dx, dy, 'right', 'bottom')) return
+        } else if (data.pos.y > data.puzzle.end.y) { // Below endpoint
+          if (_push(dx, dy, 'right', 'top')) return
+        }
+      } else { // Endpoint is not on the right wall
         if (_push(dx, dy, 'right', 'top')) return
       }
-    } else { // Endpoint is not on the right wall
-      if (_push(dx, dy, 'right', 'top')) return
     }
   }
   if (data.pos.y == 0) { // Against top wall
@@ -539,4 +504,66 @@ function _move() {
     }
   }
   return 'none'
+}
+
+function _changePos(moveDir) {
+  var lastDir = data.path[data.path.length - 1].dir
+
+  var backedUp = (
+    (moveDir == 'left' && lastDir == 'right') ||
+    (moveDir == 'right' && lastDir == 'left') ||
+    (moveDir == 'top' && lastDir == 'bottom') ||
+    (moveDir == 'bottom' && lastDir == 'top'))
+
+  if (backedUp) { // Exited cell, mark as unvisited
+    data.path.pop().destroy()
+    data.puzzle.setCell(data.pos.x, data.pos.y, false)
+  }
+  console.log('<522>')
+  if (moveDir == 'left') {
+    data.pos.x--
+    if (data.puzzle.pillar && data.pos.x < 0) { // Wrap around the left
+      console.log('<525>')
+      data.x += data.puzzle.grid.length * 41
+      data.pos.x += data.puzzle.grid.length
+      data.bbox.shift('right', data.puzzle.grid.length * 41 - 82)
+      data.bbox.shift('right', 58)
+      console.log(data.x, data.pos.x)
+      data.cursor.setAttribute('cx', data.x)
+    } else {
+      data.bbox.shift('left', (data.pos.x%2 == 0 ? 24 : 58))
+    }
+  } else if (moveDir == 'right') {
+    data.pos.x++
+    if (data.puzzle.pillar && data.pos.x >= data.puzzle.grid.length) { // Wrap around to the right
+      data.x -= data.puzzle.grid.length * 41
+      data.pos.x -= data.puzzle.grid.length
+      data.bbox.shift('left', data.puzzle.grid.length * 41 - 82)
+      data.bbox.shift('left', 24)
+    } else {
+      data.bbox.shift('right', (data.pos.x%2 == 0 ? 24 : 58))
+    }
+  } else if (moveDir == 'top') {
+    data.pos.y--
+    data.bbox.shift('top', (data.pos.y%2 == 0 ? 24 : 58))
+  } else if (moveDir == 'bottom') {
+    data.pos.y++
+    data.bbox.shift('bottom', (data.pos.y%2 == 0 ? 24 : 58))
+  }
+
+  if (data.pos.x%2 == 1 && data.pos.y%2 == 1) {
+    console.error('Cursor went out of bounds (into a cell)!')
+  }
+
+  if (!backedUp) { // Entered a new cell, mark as visited
+    data.path.push(new PathSegment(moveDir))
+    data.puzzle.setCell(data.pos.x, data.pos.y, true)
+  }
+
+  // Check for endpoint adjustment
+  if (data.puzzle.isEndpoint(data.pos.x, data.pos.y)) {
+    data.bbox.setEnd(data.puzzle.end.dir)
+  } else {
+    data.bbox.setEnd(undefined)
+  }
 }
