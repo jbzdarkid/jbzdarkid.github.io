@@ -44,6 +44,27 @@ function draw(puzzle, target='puzzle') {
         line.setAttribute('y1', y*41 + 52)
         line.setAttribute('y2', y*41 + 52)
         svg.appendChild(line)
+
+        if (puzzle.pillar) {
+          if (x == 1) {
+            var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+            rect.setAttribute('x', (x-1)*41 + 40)
+            rect.setAttribute('y', y*41 + 40)
+            rect.setAttribute('width', 24)
+            rect.setAttribute('height', 24)
+            rect.setAttribute('fill', FOREGROUND)
+            svg.appendChild(rect)
+          }
+          if (x == puzzle.grid.length - 1) {
+            var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+            rect.setAttribute('x', (x+1)*41 + 16)
+            rect.setAttribute('y', y*41 + 40)
+            rect.setAttribute('width', 24)
+            rect.setAttribute('height', 24)
+            rect.setAttribute('fill', FOREGROUND)
+            svg.appendChild(rect)
+          }
+        }
       } else if (x%2 == 0 && y%2 == 1) { // Vertical
         line.setAttribute('x1', x*41 + 52)
         line.setAttribute('x2', x*41 + 52)
@@ -53,6 +74,12 @@ function draw(puzzle, target='puzzle') {
       }
     }
   }
+  if (puzzle.pillar) {
+    for (var y=0; y<puzzle.grid[0].length; y++) {
+
+    }
+  }
+
   // Draw cell symbols after so they overlap the lines, if necessary
   for (var x=1; x<puzzle.grid.length; x+=2) {
     for (var y=1; y<puzzle.grid[x].length; y+=2) {
