@@ -4,8 +4,13 @@ function draw(puzzle, target='puzzle') {
   var svg = document.getElementById(target)
   while (svg.firstChild) svg.removeElement(firstChild)
 
-  // 41*(width-1) + 24 (extra edge) + 25*2 (padding) + 10*2 (border)
-  var pixelWidth = 41*puzzle.grid.length + 63
+  if (puzzle.pillar) {
+    // 41*(width-1) + 30*2 (padding) + 10*2 (border)
+    var pixelWidth = 41*puzzle.grid.length + 80
+  } else {
+    // 41*(width-1) + 24 (extra edge) + 30*2 (padding) + 10*2 (border)
+    var pixelWidth = 41*puzzle.grid.length + 63
+  }
   var pixelHeight = 41*puzzle.grid[0].length + 63
   svg.setAttribute('viewbox', '0 0 ' + pixelWidth + ' ' + pixelHeight)
   svg.style.width = pixelWidth
@@ -30,16 +35,20 @@ function draw(puzzle, target='puzzle') {
       line.setAttribute('stroke', FOREGROUND)
       line.id = target + '_' + x + '_' + y // TODO: Currently only used for gaps.
       if (x%2 == 1 && y%2 == 0) { // Horizontal
-        line.setAttribute('x1', x*41 + 11)
-        line.setAttribute('x2', x*41 + 93)
+        line.setAttribute('x1', (x-1)*41 + 52)
+        if (puzzle.pillar && x == puzzle.grid.length - 1) {
+          line.setAttribute('x2', (x+1)*41 + 28)
+        } else {
+          line.setAttribute('x2', (x+1)*41 + 52)
+        }
         line.setAttribute('y1', y*41 + 52)
         line.setAttribute('y2', y*41 + 52)
         svg.appendChild(line)
       } else if (x%2 == 0 && y%2 == 1) { // Vertical
         line.setAttribute('x1', x*41 + 52)
         line.setAttribute('x2', x*41 + 52)
-        line.setAttribute('y1', y*41 + 11)
-        line.setAttribute('y2', y*41 + 93)
+        line.setAttribute('y1', (y-1)*41 + 52)
+        line.setAttribute('y2', (y+1)*41 + 52)
         svg.appendChild(line)
       }
     }
