@@ -257,6 +257,8 @@ function _onMove(dx, dy) {
   // Also handles some collision
   _pushCursor(dx, dy, width, height)
 
+  _gapCollision()
+
   // Potentially move the location to a new cell, and make absolute boundary checks
   while (true) {
     var moveDir = _move()
@@ -405,16 +407,6 @@ function _pushCursor(dx, dy, width, height) {
     }
   }
 
-  // Gap collision preparation
-  var lastDir = data.path[data.path.length - 1].dir
-  var isGap = false
-  for (var gap of data.puzzle.gaps) {
-    if (gap.x == data.pos.x && gap.y == data.pos.y) {
-      isGap = true
-      break
-    }
-  }
-
   // Inner wall collision
   if (data.pos.x%2 == 1 && data.pos.y%2 == 0) { // Horizontal cell
     if (data.x < data.bbox.middle.x) {
@@ -422,26 +414,12 @@ function _pushCursor(dx, dy, width, height) {
     } else {
       _push(dx, dy, 'topbottom', 'right')
     }
-    if (isGap) {
-      if (lastDir == 'left') {
-        data.x = Math.max(data.bbox.middle.x + 21, data.x)
-      } else if (lastDir == 'right') {
-        data.x = Math.min(data.x, data.bbox.middle.x - 21)
-      }
-    }
     return
   } else if (data.pos.x%2 == 0 && data.pos.y%2 == 1) { // Vertical cell
     if (data.y < data.bbox.middle.y) {
       _push(dx, dy, 'leftright', 'top')
     } else {
       _push(dx, dy, 'leftright', 'bottom')
-    }
-    if (isGap) {
-      if (lastDir == 'top') {
-        data.y = Math.max(data.bbox.middle.y + 21, data.y)
-      } else if (lastDir == 'bottom') {
-        data.y = Math.min(data.y, data.bbox.middle.y - 21)
-      }
     }
     return
   }
@@ -490,6 +468,32 @@ function _pushCursor(dx, dy, width, height) {
   // Normal movement
   data.x += dx
   data.y += dy
+}
+
+function _gapCollision() {
+  var lastDir = data.path[data.path.length - 1].dir
+  var isGap = false
+  for (var gap of data.puzzle.gaps) {
+    if (gap.x == data.pos.x && gap.y == data.pos.y) {
+      isGap = true
+      break
+    }
+  }
+  if (!isGap) return
+
+  if (data.pos.x%2 == 1 && data.pos.y%2 == 0) { // Horizontal cell
+    if (lastDir == 'left') {
+      data.x = Math.max(data.bbox.middle.x + 21, data.x)
+    } else if (lastDir == 'right') {
+      data.x = Math.min(data.x, data.bbox.middle.x - 21)
+    }
+  } else if (data.pos.x%2 == 0 && data.pos.y%2 == 1) { // Vertical cell
+    if (lastDir == 'top') {
+      data.y = Math.max(data.bbox.middle.y + 21, data.y)
+    } else if (lastDir == 'bottom') {
+      data.y = Math.min(data.y, data.bbox.middle.y - 21)
+    }
+  }
 }
 
 // Change actual puzzle cells, and limit motion to only puzzle cells.

@@ -28,7 +28,7 @@ function draw(puzzle, target='puzzle') {
       line.setAttribute('stroke-width', 24)
       line.setAttribute('stroke-linecap', 'round')
       line.setAttribute('stroke', FOREGROUND)
-      line.id = target + '_' + x + '_' + y // TODO: Do I need this?
+      line.id = target + '_' + x + '_' + y // TODO: Currently only used for gaps.
       if (x%2 == 1 && y%2 == 0) { // Horizontal
         line.setAttribute('x1', x*41 + 11)
         line.setAttribute('x2', x*41 + 93)
