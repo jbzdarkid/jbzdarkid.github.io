@@ -58,47 +58,49 @@ var styles = {
   },
 }
 
-// Main startup code, detect style + puzzle id, generate, validate, and display puzzle.
-if (location.hash == "") {
-  // If no seed is provided, choose a random one
-  setSeed(Math.floor(Math.random() * (1 << 30)))
-} else { // A seed was provided
-  setSeed(parseInt(location.hash.substring(1)))
-}
-
-// Parse URL params to either load a puzzle, or generate a random one
-if ('puzzle' in urlParams) {
-  var puzzleData = {'solutions': []}
-  puzzleData.puzzle = Puzzle.deserialize(urlParams.puzzle)
-  // Only verify 5x5 (11x11 internally) and smaller
-  if (puzzleData.puzzle.grid.length * puzzleData.puzzle.grid[0].length <= 121) {
-    solve(puzzleData.puzzle, puzzleData.puzzle.start.x, puzzleData.puzzle.start.y, puzzleData.solutions)
+// Detect style + puzzle id, generate, validate, and display puzzle.
+window.onload = function() {
+  // Determine puzzle seed
+  if (location.hash == "") {
+    // If no seed is provided, choose a random one
+    setSeed(Math.floor(Math.random() * (1 << 30)))
+  } else { // A seed was provided
+    setSeed(parseInt(location.hash.substring(1)))
   }
-} else {
-  if ('style' in urlParams) {
-    if (urlParams.style in styles) {
-      var style = styles[urlParams.style]
-    } else {
-      var style = JSON.parse(urlParams.style)
+
+  // Parse URL params to either load a puzzle, or generate a random one
+  if ('puzzle' in urlParams) {
+    var puzzleData = {'solutions': []}
+    puzzleData.puzzle = Puzzle.deserialize(urlParams.puzzle)
+    document.head.title = puzzleData.puzzle.name
+    document.getElementById('title').innerText = puzzleData.puzzle.name
+    // Only verify 5x5 (11x11 internally) and smaller
+    if (puzzleData.puzzle.grid.length * puzzleData.puzzle.grid[0].length <= 121) {
+      solve(puzzleData.puzzle, puzzleData.puzzle.start.x, puzzleData.puzzle.start.y, puzzleData.solutions)
     }
   } else {
-    var day = [
-      'sunday',
-      'monday',
-      'tuesday',
-      'wednesday',
-      'thursday',
-      'friday',
-      'saturday'][(new Date()).getDay()]
-    var style = styles[day]
-    location.search = 'style='+day
+    if ('style' in urlParams) {
+      if (urlParams.style in styles) {
+        var style = styles[urlParams.style]
+      } else {
+        var style = JSON.parse(urlParams.style)
+      }
+    } else {
+      var day = [
+        'sunday',
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday'][(new Date()).getDay()]
+      var style = styles[day]
+      location.search = 'style='+day
+    }
+    var puzzleData = validPuzzle(style)
+    location.hash = puzzleData.seed
   }
-  var puzzleData = validPuzzle(style)
-  location.hash = puzzleData.seed
-}
 
-// Draw the puzzle
-window.onload = function() {
   draw(puzzleData.puzzle)
   window.solution = puzzleData.solutions[_randint(puzzleData.solutions.length)]
   if (window.solution != undefined) {
@@ -109,11 +111,11 @@ window.onload = function() {
 }
 
 function showHint() {
-  if (hints.length <= 0) return
+  if (window.hints.length <= 0) return
   window.hints = puzzleData.puzzle.showHint(window.hints)
   draw(puzzleData.puzzle)
 }
 
 function showSolution() {
-  draw(solution)
+  draw(window.solution)
 }
