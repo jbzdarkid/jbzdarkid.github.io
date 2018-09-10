@@ -220,7 +220,7 @@ function _end(svg, params) {
     rect.setAttribute('y', parseInt(rect.getAttribute('y')) + 12)
     circ.setAttribute('cy', parseInt(circ.getAttribute('cy')) + 24)
   } else {
-    console.trace('Endpoint direction not defined!', params)
+    console.error('Endpoint direction not defined!', JSON.stringify(params))
   }
 }
 
