@@ -12,4 +12,4 @@ Features:
 - Colored Dots
 - Invisible Dots (flash for errors)
 - Dots cancelled by negation
-- Preview images (og:image meta tag, see https://stackoverflow.com/q/44552942)
+- Preview images -- Needs server, images must be statically hosted

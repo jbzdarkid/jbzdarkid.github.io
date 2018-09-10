@@ -35,6 +35,18 @@ function draw(puzzle, target='puzzle') {
       line.setAttribute('stroke', FOREGROUND)
       line.id = target + '_' + x + '_' + y // TODO: Currently only used for gaps.
       if (x%2 == 1 && y%2 == 0) { // Horizontal
+        /* Try:
+        if (puzzle.pillar && x == 1) {
+          line.setAttribute('x1', (x-1)*41 + 40)
+        } else {
+          line.setAttribute('x1', (x-1)*41 + 52)
+        }
+        if (puzzle.pillar && x == puzzle.grid.length - 1) {
+          line.setAttribute('x2', (x+1)*41 + 40)
+        } else {
+          line.setAttribute('x2', (x+1)*41 + 52)
+        }
+        */
         line.setAttribute('x1', (x-1)*41 + 52)
         if (puzzle.pillar && x == puzzle.grid.length - 1) {
           line.setAttribute('x2', (x+1)*41 + 28)
