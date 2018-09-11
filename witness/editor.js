@@ -8,9 +8,10 @@ window.onload = function() {
   var activePuzzle = window.localStorage.getItem('activePuzzle')
   var serialized = window.localStorage.getItem(activePuzzle)
 
-  // Load an empty puzzle so that we have a fall-back
-  newPuzzle()
-  _tryUpdatePuzzle(serialized)
+  newPuzzle() // Load an empty puzzle so that we have a fall-back
+  if (_tryUpdatePuzzle(serialized)) {
+    window.localStorage.setItem('activePuzzle', activePuzzle)
+  }
 
   drawSymbolButtons()
   drawColorButtons()
@@ -152,10 +153,9 @@ function _removePuzzleFromList(puzzleName) {
   var puzzleList = JSON.parse(window.localStorage.getItem('puzzleList'))
   if (!puzzleList) puzzleList = []
   var index = puzzleList.indexOf(puzzleName)
-  if (index != -1) {
-    puzzleList.splice(index, 1)
-    window.localStorage.setItem('puzzleList', JSON.stringify(puzzleList))
-  }
+  if (index == -1) return
+  puzzleList.splice(index, 1)
+  window.localStorage.setItem('puzzleList', JSON.stringify(puzzleList))
 }
 
 function _tryUpdatePuzzle(serialized) {
@@ -201,7 +201,7 @@ function savePuzzle() {
 
 function deletePuzzleAndLoadNext() {
   var activePuzzle = window.localStorage.getItem('activePuzzle')
-  console.log('Deleting', activePuzzle)
+  // console.log('Deleting', activePuzzle)
   window.localStorage.removeItem(activePuzzle)
   _removePuzzleFromList(activePuzzle)
 
@@ -245,10 +245,11 @@ function loadPuzzle() {
   loadList.onchange = function() {
     _removePuzzleFromList(this.value)
     _addPuzzleToList(this.value)
+    window.localStorage.setItem('activePuzzle', this.value)
 
     var serialized = window.localStorage.getItem(this.value)
     if (!_tryUpdatePuzzle(serialized)) {
-      _removePuzzleFromList(this.value)
+      deletePuzzleAndLoadNext()
     }
 
     var anchor = document.getElementById('anchor')
@@ -293,10 +294,10 @@ function drawSymbolButtons() {
     'star': {'type':'star'},
     'nega': {'type':'nega'},
     'triangle': {'type':'triangle', 'count':1},
-    'poly': {'type':'poly', 'rot':0},
-    'rpoly': {'type':'poly', 'rot':'all'},
-    'ylop': {'type':'ylop', 'rot':0},
-    'rylop': {'type':'ylop', 'rot':'all'},
+    'poly': {'type':'poly', 'rot':0, 'polyshape':71},
+    'rpoly': {'type':'poly', 'rot':'all', 'polyshape':71},
+    'ylop': {'type':'ylop', 'rot':0, 'polyshape':71},
+    'rylop': {'type':'ylop', 'rot':'all', 'polyshape':71},
   }
   var symbolTable = document.getElementById('symbolButtons')
   for (var button of symbolTable.getElementsByTagName('button')) {
@@ -352,9 +353,8 @@ function drawColorButtons() {
     button.style.border = params.border
     button.style.height = params.height + 2*params.border
     button.style.width = params.width + 2*params.border
-    button.params = params
     button.onclick = function() {
-      activeParams = Object.assign(activeParams, this.params)
+      activeParams.color = this.id
       drawColorButtons()
     }
     while (button.firstChild) button.removeChild(button.firstChild)
@@ -408,13 +408,7 @@ function shapeChooser() {
 }
 
 function shapeChooserClick(event, cell) {
-  // Clicked outside the chooser, close it
   if (cell == undefined) {
-    console.log(activeParams.polyshape)
-    if (activeParams.polyshape == 0) {
-      activeParams.polyshape = 1
-      drawSymbolButtons()
-    }
     var chooser = document.getElementById('chooser')
     var anchor = document.getElementById('anchor')
     var puzzle = document.getElementById('puzzle')
@@ -423,22 +417,24 @@ function shapeChooserClick(event, cell) {
     anchor.parentElement.removeChild(anchor)
     puzzle.style.opacity = null
     event.stopPropagation()
-  } else if (cell.id == 'chooser') {
-    // Clicked inside the chooser, but not in a cell, do nothing
-  } else { // Clicked on a cell, toggle it
-    var x = cell.id.split('_')[1]
-    var y = cell.id.split('_')[2]
-    cell.clicked = !cell.clicked
-    var chooser = document.getElementById('chooser')
-    activeParams.polyshape ^= cell.powerOfTwo
-    if (cell.clicked) {
-      cell.style.background = 'black'
-    } else {
-      cell.style.background = FOREGROUND
-    }
-    drawSymbolButtons()
+    return
   }
-  event.stopPropagation()
+  // Clicks inside the chooser box are non-closing
+  if (cell.id == 'chooser') {
+    event.stopPropagation()
+    return
+  }
+  var x = cell.id.split('_')[1]
+  var y = cell.id.split('_')[2]
+  cell.clicked = !cell.clicked
+  var chooser = document.getElementById('chooser')
+  activeParams.polyshape ^= cell.powerOfTwo
+  if (cell.clicked) {
+    cell.style.background = 'black'
+  } else {
+    cell.style.background = FOREGROUND
+  }
+  drawSymbolButtons()
 }
 
 function updatePuzzle() {
@@ -499,7 +495,7 @@ function _onElementClicked(id)
     if (activeParams.type == 'dot' && !foundDot) puzzle.dots.push({'x':x, 'y':y})
   } else if (['square', 'star', 'nega'].includes(activeParams.type)) {
     if (x%2 != 1 || y%2 != 1) return
-    // Only turn off the symbol if it's an exact match -- otherwise, replace it.
+    // Only change one thing at a time -- if you change color, don't toggle the symbol
     if (puzzle.grid[x][y].type == activeParams.type
      && puzzle.grid[x][y].color == activeParams.color) {
       puzzle.grid[x][y] = false
@@ -511,7 +507,7 @@ function _onElementClicked(id)
     }
   } else if (['poly', 'ylop'].includes(activeParams.type)) {
     if (x%2 != 1 || y%2 != 1) return
-    // Only turn off the symbol if it's an exact match -- otherwise, replace it.
+    // Only change one thing at a time -- if you change color, don't toggle the symbol
     if (puzzle.grid[x][y].type == activeParams.type
      && puzzle.grid[x][y].color == activeParams.color
      && puzzle.grid[x][y].polyshape == activeParams.polyshape
@@ -527,22 +523,22 @@ function _onElementClicked(id)
     }
   } else if (activeParams.type == 'triangle') {
     if (x%2 != 1 || y%2 != 1) return
-    // Only increment the symbol if it's an exact match -- otherwise, replace it.
-    console.log(JSON.stringify(puzzle.grid[x][y]))
-    console.log(JSON.stringify(activeParams))
-    if (puzzle.grid[x][y].type == activeParams.type
-     && puzzle.grid[x][y].color == activeParams.color) {
-      puzzle.grid[x][y].count++
+    var count = 0
+    if (puzzle.grid[x][y].type == activeParams.type) {
+      count = puzzle.grid[x][y].count
+      // Only change one thing at a time -- if you change color, count shouldn't change as well.
+      if (activeParams.color != puzzle.grid[x][y].color) {
+        count--
+      }
+    }
+    if (puzzle.grid[x][y].count == 3) {
+      puzzle.grid[x][y] = false
     } else {
       puzzle.grid[x][y] = {
         'type': activeParams.type,
         'color': activeParams.color,
-        'count': puzzle.grid[x][y].count,
+        'count': count+1,
       }
-    }
-    // Remove the symbol once the count is more than 3
-    if (puzzle.grid[x][y].count > 3) {
-      puzzle.grid[x][y] = false
     }
   }
 
