@@ -187,33 +187,33 @@ tests = [
     puzzle.grid[5][5] = {'type':'nega', 'color':'white'}
     return {'puzzle':puzzle, 'solutions':0}
   }, function() {
-    var puzzle = new Puzzle(1, 2, true)
+    var puzzle = new Puzzle(2, 1, true)
     puzzle.gaps = [
-      {'x':0, 'y':1},
-      {'x':2, 'y':1}
+      {'x':1, 'y':0},
+      {'x':1, 'y':2}
     ]
-    puzzle.end = {'x':0, 'y':2}
-    puzzle.start = {'x':2, 'y':0}
+    puzzle.end = {'x':2, 'y':0}
+    puzzle.start = {'x':0, 'y':2}
     return {'puzzle':puzzle, 'solutions':2}
   }, function() {
-    var puzzle = new Puzzle(1, 2, true)
+    var puzzle = new Puzzle(2, 1, true)
     puzzle.grid[1][1] = {'type':'square', 'color':'white'}
-    puzzle.grid[1][3] = {'type':'square', 'color':'black'}
+    puzzle.grid[3][1] = {'type':'square', 'color':'black'}
     puzzle.start = {'x':2, 'y':2}
-    puzzle.end = {'x':0, 'y':2}
+    puzzle.end = {'x':2, 'y':0}
     return {'puzzle':puzzle, 'solutions':0}
   }, function() {
     var puzzle = new Puzzle(2, 2, true)
     puzzle.grid[1][1] = {'type':'poly', 'color':'yellow', 'polyshape':49}
-    puzzle.start = {'x':4, 'y':2}
-    puzzle.end = {'x':0, 'y':2}
+    puzzle.start = {'x':2, 'y':4}
+    puzzle.end = {'x':2, 'y':0}
     return {'puzzle':puzzle, 'solutions':0}
   }, function() {
-    var puzzle = new Puzzle(1, 2, true)
+    var puzzle = new Puzzle(2, 1, true)
     puzzle.grid[1][1] = {'type':'star', 'color':'orange'}
-    puzzle.grid[1][3] = {'type':'star', 'color':'orange'}
+    puzzle.grid[3][1] = {'type':'star', 'color':'orange'}
     puzzle.start = {'x':2, 'y':2}
-    puzzle.end = {'x':0, 'y':2}
+    puzzle.end = {'x':2, 'y':0}
     return {'puzzle':puzzle, 'solutions':5}
   }, function() {
     var puzzle = new Puzzle(2, 2)
@@ -245,5 +245,13 @@ tests = [
     puzzle.grid[3][3] = {'type':'square', 'color':'red'}
     puzzle.grid[5][3] = {'type':'square', 'color':'red'}
     return {'puzzle':puzzle, 'solutions':7}
+  }, function() {
+    var puzzle = new Puzzle(1, 1)
+    puzzle.grid[1][1] = {'type':'poly', 'polyshape':0}
+    return {'puzzle':puzzle, 'solutions':2}
+  }, function() {
+    var puzzle = new Puzzle(1, 1)
+    puzzle.grid[1][1] = {'type':'ylop', 'polyshape':0}
+    return {'puzzle':puzzle, 'solutions':2}
   }
 ]
