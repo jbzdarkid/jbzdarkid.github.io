@@ -1,15 +1,24 @@
-Bug fixes:
-- Editor doesn't work with new rendering engine
-- Zero size polys fail when zero-size negas don't
+In vague order of importance.
 
-Features:
-- Multi start
-- Multi end
+- Editor improvements
+-- By hand interaction regions
+-- Validate button
+--- Improved solution display, leveraging trace code
+-- Mark methods as private
+-- Pillar button (and symmetry buttons, disabled)
+- Zero size polys fail when zero-size negas don't
+- Multi start/end
+- Dots & gaps into the grid
 - Symmetry
-- Add "validate" button for editor (with warning / sometimes disabled?)
-- Windmill Import
-- Colored Symmetry
+- Colored Symmetry -> Probably want line color 0/1/2 instead of true/false
 - Colored Dots
-- Invisible Dots (flash for errors)
-- Dots cancelled by negation
-- Preview images -- Needs server, images must be statically hosted
+- Server / full release
+-- Shortnames for puzzles
+-- A whole bunch of UI for browsing puzzles
+-- Signin?
+-- Preview images for puzzles (meta:og tag)
+-- Name for the project (so I can have a reasonable dns name)
+- Region to include edges
+-- Dots cancelled by negation
+-- Polyominos will not allow trace-through
+- Flash for errors (Invisible Dots)
