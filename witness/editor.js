@@ -53,91 +53,97 @@ function dragStart(event, elem) {
 
 function dragMove(event, elem) {
   if (!dragging) return
-
-  // Inverted because the table is stored inverted
-  var dy = Math.round((event.clientX - dragging.x) / 58)
-  var dx = Math.round((dragging.y - event.clientY) / 58)
-  var height = puzzle.grid.length
-  var width = puzzle.grid[0].length
-
-  if (dx != 0 || dy != 0) {
-    if (width < 0 || height < 0) return
-    // TODO: Maximum grid dimensions?
-    // Set a new reference point for future drag operations
+  if (elem.id.includes('left')) {
+    var dx = dragging.x - event.clientX
+  } else if (elem.id.includes('right')) {
+    var dx = event.clientX - dragging.x
+  } else {
+    var dx = 0
+  }
+  if (elem.id.includes('top')) {
+    var dy = dragging.y - event.clientY
+  } else if (elem.id.includes('bottom')) {
+    var dy = event.clientY - dragging.y
+  } else {
+    var dy = 0
+  }
+  
+  if (Math.abs(dx) >= 82 || Math.abs(dy) >= 82) {
+    if (!resizePuzzle(Math.round(dx/82), Math.round(dy/82), elem.id)) return
+    // If resize succeeded, set a new reference point for future drag operations
     dragging.x = event.clientX
     dragging.y = event.clientY
   }
-
-  if (elem.id == 'resize-topleft') resizePuzzle(dx, -dy, elem.id)
-  if (elem.id == 'resize-top') resizePuzzle(dx, 0, elem.id)
-  if (elem.id == 'resize-topright') resizePuzzle(dx, dy, elem.id)
-  if (elem.id == 'resize-right') resizePuzzle(0, dy, elem.id)
-  if (elem.id == 'resize-bottomright') resizePuzzle(-dx, dy, elem.id)
-  if (elem.id == 'resize-bottom') resizePuzzle(-dx, 0, elem.id)
-  if (elem.id == 'resize-bottomleft') resizePuzzle(-dx, -dy, elem.id)
-  if (elem.id == 'resize-left') resizePuzzle(0, -dy, elem.id)
 }
 
-// Caution: Will loop forever if height is modified in a non top/bottom elem
-// Similarly for width & left/right
 function resizePuzzle(dx, dy, id) {
-  var height = puzzle.grid.length + 2 * dx
-  var width = puzzle.grid[0].length + 2 * dy
+  var newWidth = puzzle.grid.length + 2 * dx
+  var newHeight = puzzle.grid[0].length + 2 * dy
+  
+  if (newWidth < 0 || newHeight < 0) return false
+  // TODO: Maximum size goes here
 
-  for (var row of puzzle.grid) {
-    while (row.length > width) {
-      if (id.includes('left')) row.shift()
-      if (id.includes('right')) row.pop()
-    }
-    while (row.length < width) {
-      if (id.includes('left')) row.unshift(false)
-      if (id.includes('right')) row.push(false)
+  if (id.includes('left')) {
+    while (puzzle.grid.length > newWidth) puzzle.grid.shift()
+    while (puzzle.grid.length < newWidth) {
+      puzzle.grid.unshift((new Array(newHeight)).fill(false))
     }
   }
-  while (puzzle.grid.length > height) {
-    if (id.includes('top')) puzzle.grid.shift()
-    if (id.includes('bottom')) puzzle.grid.pop()
+  if (id.includes('right')) {
+    while (puzzle.grid.length > newWidth) puzzle.grid.pop()
+    while (puzzle.grid.length < newWidth) {
+      puzzle.grid.push((new Array(newHeight)).fill(false))
+    }
   }
-  while (puzzle.grid.length < height) {
-    var newRow = (new Array(width)).fill(false)
-    if (id.includes('top')) puzzle.grid.unshift(newRow)
-    if (id.includes('bottom')) puzzle.grid.push(newRow)
+  if (id.includes('top')) {
+    for (var row of puzzle.grid) {
+      while (row.length > newHeight) row.shift()
+      while (row.length < newHeight) row.unshift(false)
+    }
+  }
+  if (id.includes('bottom')) {
+    for (var row of puzzle.grid) {
+      while (row.length > newHeight) row.pop()
+      while (row.length < newHeight) row.push(false)
+    }
   }
 
   var newDots = []
   for (var dot of puzzle.dots) {
-    if (id.includes('left')) dot.y += 2 * dy
-    if (id.includes('top')) dot.x += 2 * dx
-    if (dot.x < height && dot.y < width) newDots.push(dot)
+    if (id.includes('right')) dot.x += 2 * dx
+    if (id.includes('bottom')) dot.y += 2 * dy
+    if (dot.x < newWidth && dot.y < newHeight) newDots.push(dot)
   }
   puzzle.dots = newDots
   var newGaps = []
   for (var gap of puzzle.gaps) {
-    if (id.includes('left')) gap.y += 2 * dy
-    if (id.includes('top')) gap.y += 2 * dx
-    if (gap.y < width) newGaps.push(gap)
+    if (id.includes('right')) gap.x += 2 * dx
+    if (id.includes('bottom')) gap.y += 2 * dy
+    if (gap.x < newWidth && gap.y < newHeight) newGaps.push(gap)
   }
   puzzle.gaps = newGaps
 
   if (id.includes('left')) {
+    puzzle.start.x += 2 * dx
+  }
+  // Endpoint needs to be dragged always, so it doesn't fall into the center.
+  puzzle.end.x += 2 * dx
+  if (id.includes('top')) {
     puzzle.start.y += 2 * dy
     puzzle.end.y += 2 * dy
   }
-  if (id.includes('top')) {
-    puzzle.start.x += 2 * dx
-    puzzle.end.x += 2 * dx
-  }
   if (puzzle.start.x < 0) puzzle.start.x = 0
-  if (puzzle.start.x >= height) puzzle.start.x = height - 1
+  if (puzzle.start.x >= newWidth) puzzle.start.x = newWidth - 1
   if (puzzle.start.y < 0) puzzle.start.y = 0
-  if (puzzle.start.y >= width) puzzle.start.y = width - 1
+  if (puzzle.start.y >= newHeight) puzzle.start.y = newHeight - 1
   if (puzzle.end.x < 0) puzzle.end.x = 0
-  if (puzzle.end.x >= height) puzzle.end.x = height - 1
+  if (puzzle.end.x >= newWidth) puzzle.end.x = newWidth - 1
   if (puzzle.end.y < 0) puzzle.end.y = 0
-  if (puzzle.end.y >= width) puzzle.end.y = width - 1
+  if (puzzle.end.y >= newHeight) puzzle.end.y = newHeight - 1
 
   savePuzzle()
   updatePuzzle()
+  return true
 }
 
 function _addPuzzleToList(puzzleName) {

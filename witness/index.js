@@ -58,6 +58,8 @@ var styles = {
   },
 }
 
+
+var puzzleData = {'solutions': []}
 // Detect style + puzzle id, generate, validate, and display puzzle.
 window.onload = function() {
   // Determine puzzle seed
@@ -70,7 +72,6 @@ window.onload = function() {
 
   // Parse URL params to either load a puzzle, or generate a random one
   if ('puzzle' in urlParams) {
-    var puzzleData = {'solutions': []}
     puzzleData.puzzle = Puzzle.deserialize(urlParams.puzzle)
     document.head.title = puzzleData.puzzle.name
     document.getElementById('title').innerText = puzzleData.puzzle.name
@@ -97,7 +98,7 @@ window.onload = function() {
       var style = styles[day]
       location.search = 'style='+day
     }
-    var puzzleData = validPuzzle(style)
+    puzzleData = validPuzzle(style)
     location.hash = puzzleData.seed
   }
 

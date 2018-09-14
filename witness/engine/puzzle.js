@@ -173,9 +173,9 @@ class Puzzle {
   showHint(hints) {
     var goodHints = []
     var badHints = []
+    console.log(JSON.stringify(this.grid))
     for (var hint of hints) {
-      var elem = document.getElementById("puzzle_"+hint.x+"_"+hint.y)
-      if (!elem.className.endsWith("trace")) {
+      if (this.getCell(hint.x, hint.y) == true) {
         // Solution will be broken by this hint
         goodHints.push(hint)
       } else {

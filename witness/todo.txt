@@ -13,3 +13,11 @@ Features:
 - Invisible Dots (flash for errors)
 - Dots cancelled by negation
 - Preview images -- Needs server, images must be statically hosted
+
+- Search for fixme/todo and move them here
+-- Move generate out of engine?
+-- Fix generation colors
+-- Add missing daily styles
+- Some way to pass data.puzzle into window.showHint -- maybe move hint logic into tracing?
+- Solution draw with native tracing
+- change all divs to auto-centering? It's all I seem to use them for rn

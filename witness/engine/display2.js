@@ -2,7 +2,7 @@ function draw(puzzle, target='puzzle') {
   console.log('Drawing', puzzle, 'into', target)
   if (puzzle == undefined) return
   var svg = document.getElementById(target)
-  while (svg.firstChild) svg.removeElement(firstChild)
+  while (svg.firstChild) svg.removeChild(svg.firstChild)
 
   if (puzzle.pillar) {
     // 41*(width-1) + 30*2 (padding) + 10*2 (border)

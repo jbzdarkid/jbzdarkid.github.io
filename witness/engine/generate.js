@@ -27,21 +27,17 @@ function randomPuzzle(style) {
     puzzle.end = style['end']
   } else {
     switch (_randint(4)) {
-      case 0: // Top
-        puzzle.end.x = 0
-        puzzle.end.y = 2 * _randint(height)
+      case 0:
+        puzzle.end = {'x':0, 'y':2 * _randint(height), 'dir':'left'}
         break
-      case 1: // Left
-        puzzle.end.x = 2 * _randint(height)
-        puzzle.end.y = 0
+      case 1:
+        puzzle.end = {'x':2 * width - 1, 'y':2 * _randint(height), 'dir':'right'}
         break
-      case 2: // Bottom
-        puzzle.end.x = 2 * width
-        puzzle.end.y = 2 * _randint(height)
+      case 2:
+        puzzle.end = {'x':2 * _randint(width), 'y':2 * height - 1, 'dir':'top'}
         break
-      case 3: // Right
-        puzzle.end.x = 2 * _randint(height)
-        puzzle.end.y = 2 * height
+      case 2:
+        puzzle.end = {'x':2 * _randint(width), 'y':2 * height - 1, 'dir':'bottom'}
         break
     }
   }
