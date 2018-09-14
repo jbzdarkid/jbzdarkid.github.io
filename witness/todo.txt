@@ -19,5 +19,6 @@ Features:
 -- Fix generation colors
 -- Add missing daily styles
 - Some way to pass data.puzzle into window.showHint -- maybe move hint logic into tracing?
+-- Or, stop cloning the puzzle in trace(), and just clear the grid instead
 - Solution draw with native tracing
 - change all divs to auto-centering? It's all I seem to use them for rn
