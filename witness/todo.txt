@@ -1,19 +1,11 @@
-Bug fixes:
-- Editor doesn't work with new rendering engine
-- Zero size polys fail when zero-size negas don't
+In vague order of importance.
 
-Features:
-- Multi start
-- Multi end
-- Symmetry
-- Add "validate" button for editor (with warning / sometimes disabled?)
-- Windmill Import
-- Colored Symmetry
-- Colored Dots
-- Invisible Dots (flash for errors)
-- Dots cancelled by negation
-- Preview images -- Needs server, images must be statically hosted
-
+- Editor improvements
+-- By hand interaction regions
+-- Validate button
+--- Improved solution display, leveraging trace code
+-- Mark methods as private
+-- Pillar button (and symmetry buttons, disabled)
 - Search for fixme/todo and move them here
 -- Move generate out of engine?
 -- Fix generation colors
@@ -22,3 +14,19 @@ Features:
 -- Or, stop cloning the puzzle in trace(), and just clear the grid instead
 - Solution draw with native tracing
 - change all divs to auto-centering? It's all I seem to use them for rn
+- Zero size polys fail when zero-size negas don't
+- Multi start/end
+- Dots & gaps into the grid
+- Symmetry
+- Colored Symmetry -> Probably want line color 0/1/2 instead of true/false
+- Colored Dots
+- Server / full release
+-- Shortnames for puzzles
+-- A whole bunch of UI for browsing puzzles
+-- Signin?
+-- Preview images for puzzles (meta:og tag)
+-- Name for the project (so I can have a reasonable dns name)
+- Region to include edges
+-- Dots cancelled by negation
+-- Polyominos will not allow trace-through
+- Flash for errors (Invisible Dots)

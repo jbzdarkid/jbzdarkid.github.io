@@ -20,7 +20,7 @@ function drawSymbolWithSvg(svg, params) {
   else if (params.type == 'crayon') _crayon(svg, params)
   else if (params.type == 'start') _start(svg, params)
   else if (params.type == 'end') _end(svg, params)
-  else throw 'Unknown symbol type in params: ' + JSON.stringify(params)
+  else console.error('Unknown symbol type in params: ' + JSON.stringify(params))
 }
 
 function _square(svg, params) {
