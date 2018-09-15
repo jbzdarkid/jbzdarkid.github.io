@@ -1,7 +1,7 @@
 window.DISABLE_CACHE = true
 var customColor = 'gray'
 var activeParams = {'id':'', 'polyshape': 71}
-var puzzle, solutions, currentSolution
+var puzzle
 var dragging = false
 
 window.onload = function() {
@@ -182,8 +182,6 @@ function _try_updatePuzzle(serialized) {
 
 function newPuzzle() {
   puzzle = new Puzzle(4, 4)
-  solutions = []
-  currentSolution = 0
   document.getElementById('puzzleName').innerText = 'Unnamed Puzzle'
   window.localStorage.setItem('activePuzzle', '')
   _redraw(puzzle)
@@ -446,21 +444,10 @@ function _shapeChooserClick(event, cell) {
 function _updatePuzzle() {
   document.getElementById('puzzleName').innerText = puzzle.name
   _redraw(puzzle)
-  solutions = []
-//  solve(puzzle, puzzle.start.x, puzzle.start.y, solutions)
-//  document.getElementById('solutionCount').innerText = solutions.length
-  currentSolution = -1
 }
 
-function _drawSolution(offset) {
-  currentSolution += offset
-  if (currentSolution < 0) currentSolution = solutions.length - 1
-  if (currentSolution >= solutions.length) currentSolution = 0
-  _redraw(solutions[currentSolution])
-}
-
-function _redraw(puzzleOrSolution) {
-  draw(puzzleOrSolution)
+function _redraw(puzzle) {
+  draw(puzzle)
   var puzzleElement = document.getElementById('puzzle')
   for (var elem of puzzleElement.getElementsByTagName('td')) {
     elem.onclick = function() {_onElementClicked(this.id)}
