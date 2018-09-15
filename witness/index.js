@@ -29,7 +29,7 @@ var styles = {
     }
   },
   'friday':{
-    'width':5, 'height':5, 'colors':2, 'difficulty':[0, 99999999],
+    'width':5, 'height':5, 'colors':2, 'difficulty':[1, 99999999],
 //    'pillar':1,
     'distribution':{
       'onimoylops':1,
