@@ -8,10 +8,16 @@
     <script type="text/javascript" src="engine/validate.js"></script>
     <script type="text/javascript" src="engine/svg.js"></script>
     <script type="text/javascript" src="engine/display2.js"></script>
+    <script type="text/javascript" src="engine/trace2.js"></script>
     <script type="text/javascript" src="editor.js"></script>
     <title>Create a puzzle</title>
   </head>
   <body style="text-align: center">
+    <div id="solutionViewer" style="position:absolute; right:8; display:none">
+      <button id="previousSolution">&larr;</button>
+      <label id="solutionCount"></label>
+      <button id="nextSolution">&rarr;</button>
+    </div>
     <label id="puzzleName" contentEditable=true style="font-size: 72">Unnamed Puzzle</label>
     <br>
     <div id="metaButtons" style="display:inline">
@@ -22,6 +28,7 @@
       <button onclick="exportPuzzle()">Export</button>
       <textarea style="display:none" id="export"></textarea>
       <button onclick="playPuzzle()">Play</button>
+      <button onclick="solvePuzzle()">Solve</button>
     </div>
 
     <table id="meta">
@@ -72,15 +79,7 @@
             <tr><td><button id="purple"></button></td></tr>
           </table>
         </td>
-      </tr><!--<tr>
-        <td colspan="3" style="text-align: center">
-          <label>Number of solutions:</label>
-          <label id="solutionCount"></label>
-          <label>&nbsp;</label>
-          <button onclick="drawSolution(-1)">&larr;</button>
-          <button onclick="drawSolution(1)">&rarr;</button>
-        </td>
-      </tr>-->
+      </tr>
     </table>
   </body>
 </html>

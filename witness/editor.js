@@ -3,6 +3,7 @@ var customColor = 'gray'
 var activeParams = {'id':'', 'polyshape': 71}
 var puzzle
 var dragging = false
+var solutions = []
 
 window.onload = function() {
   var activePuzzle = window.localStorage.getItem('activePuzzle')
@@ -18,7 +19,7 @@ window.onload = function() {
   var puzzleName = document.getElementById('puzzleName')
   puzzleName.oninput = function() {savePuzzle()}
   puzzleName.onkeypress = function(event) {
-    if (event.key == "Enter") {
+    if (event.key == 'Enter') {
       event.preventDefault()
       this.blur()
     }
@@ -130,6 +131,34 @@ function exportPuzzle() {
 
 function playPuzzle() {
   window.location.href = 'index.html?puzzle=' + puzzle.serialize()
+}
+
+function solvePuzzle() {
+  if (puzzle.grid.length * puzzle.grid[0].length > 121) {
+    // Larger than 5x5 (internal 11x11)
+    if (!confirm('Caution: You are solving a large puzzle (>25 cells). This will take more than 5 minutes to run.')) {
+      return
+    }
+  }
+  solutions = []
+  solve(puzzle, puzzle.start.x, puzzle.start.y, solutions)
+  document.getElementById('solutionViewer').style.display = null
+  _showSolution(0)
+}
+
+function _showSolution(num) {
+  if (num < 0) num = solutions.length - 1
+  if (num >= solutions.length) num = 0
+
+  document.getElementById('solutionCount').innerText = num + ' of ' + solutions.length
+  solutions[num].name = puzzle.name
+  _redraw(solutions[num])
+  document.getElementById('previousSolution').onclick = function() {
+    _showSolution(num - 1)
+  }
+  document.getElementById('nextSolution').onclick = function() {
+    _showSolution(num + 1)
+  }
 }
 
 function _addPuzzleToList(puzzleName) {
@@ -416,7 +445,7 @@ function _shapeChooserClick(event, cell) {
 function resizePuzzle(dx, dy, id) {
   var newWidth = puzzle.grid.length + 2 * dx
   var newHeight = puzzle.grid[0].length + 2 * dy
-  
+
   if (newWidth < 0 || newHeight < 0) return false
   // TODO: Maximum size goes here
 
@@ -519,7 +548,7 @@ function _dragMove(event, elem) {
   } else {
     var dy = 0
   }
-  
+
   if (Math.abs(dx) >= 82 || Math.abs(dy) >= 82) {
     if (!resizePuzzle(Math.round(dx/82), Math.round(dy/82), elem.id)) return
     // If resize succeeded, set a new reference point for future drag operations
