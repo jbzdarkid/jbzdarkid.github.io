@@ -9,7 +9,7 @@ window.onload = function() {
   var serialized = window.localStorage.getItem(activePuzzle)
 
   newPuzzle() // Load an empty puzzle so that we have a fall-back
-  if (_try_updatePuzzle(serialized)) {
+  if (_tryUpdatePuzzle(serialized)) {
     window.localStorage.setItem('activePuzzle', activePuzzle)
   }
 
@@ -143,7 +143,7 @@ function resizePuzzle(dx, dy, id) {
   if (puzzle.end.y >= newHeight) puzzle.end.y = newHeight - 1
 
   savePuzzle()
-  _updatePuzzle()
+  _redraw(puzzle)
   return true
 }
 
@@ -164,25 +164,26 @@ function _removePuzzleFromList(puzzleName) {
   window.localStorage.setItem('puzzleList', JSON.stringify(puzzleList))
 }
 
-function _try_updatePuzzle(serialized) {
+function _tryUpdatePuzzle(serialized) {
   if (!serialized) return false
   var savedPuzzle = puzzle
   try {
     puzzle = Puzzle.deserialize(serialized)
-    _updatePuzzle() // Will throw for most invalid puzzles
+    _redraw(puzzle) // Will throw for most invalid puzzles
     document.getElementById('puzzleName').innerText = puzzle.name
     return true
   } catch (e) {
     console.log(e)
     puzzle = savedPuzzle
-    _updatePuzzle()
+    _redraw(puzzle)
     return false
   }
 }
 
 function newPuzzle() {
   puzzle = new Puzzle(4, 4)
-  document.getElementById('puzzleName').innerText = 'Unnamed Puzzle'
+  puzzle.name = 'Unnamed Puzzle'
+  _redraw(puzzle)
   window.localStorage.setItem('activePuzzle', '')
   _redraw(puzzle)
 }
@@ -212,7 +213,7 @@ function deletePuzzleAndLoadNext() {
   var puzzleList = JSON.parse(window.localStorage.getItem('puzzleList'))
   while (puzzleList.length > 0) {
     var serialized = window.localStorage.getItem(puzzleList[0])
-    if (_try_updatePuzzle(serialized)) break
+    if (_tryUpdatePuzzle(serialized)) break
     puzzleList.shift()
   }
 
@@ -252,7 +253,7 @@ function loadPuzzle() {
     window.localStorage.setItem('activePuzzle', this.value)
 
     var serialized = window.localStorage.getItem(this.value)
-    if (!_try_updatePuzzle(serialized)) {
+    if (!_tryUpdatePuzzle(serialized)) {
       deletePuzzleAndLoadNext()
     }
 
@@ -264,7 +265,7 @@ function loadPuzzle() {
 
 function importPuzzle() {
   var serialized = prompt('Paste your puzzle here:')
-  if (!_try_updatePuzzle(serialized)) {
+  if (!_tryUpdatePuzzle(serialized)) {
     // Only alert if user tried to enter data
     if (serialized) alert('Not a valid puzzle!')
     return
@@ -441,12 +442,8 @@ function _shapeChooserClick(event, cell) {
   _drawSymbolButtons()
 }
 
-function _updatePuzzle() {
-  document.getElementById('puzzleName').innerText = puzzle.name
-  _redraw(puzzle)
-}
-
 function _redraw(puzzle) {
+  document.getElementById('puzzleName').innerText = puzzle.name
   draw(puzzle)
   var puzzleElement = document.getElementById('puzzle')
   for (var elem of puzzleElement.getElementsByTagName('td')) {
@@ -536,5 +533,5 @@ function _onElementClicked(id)
   }
 
   savePuzzle()
-  _updatePuzzle()
+  _redraw(puzzle)
 }
