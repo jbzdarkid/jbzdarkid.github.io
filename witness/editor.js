@@ -52,24 +52,18 @@ function savePuzzle() {
   var savedPuzzle = puzzle.name + ' on ' + (new Date()).toLocaleString()
   _addPuzzleToList(savedPuzzle)
   window.localStorage.setItem(savedPuzzle, puzzle.serialize())
-  window.localStorage.setItem('activePuzzle', savedPuzzle)
 }
 
 function loadPuzzle() {
   var puzzleList = JSON.parse(window.localStorage.getItem('puzzleList'))
   if (!puzzleList) return
 
-  document.getElementById('puzzleMeta').style.opacity = 0
-
-  var anchor = document.createElement('div')
-  anchor.id = 'anchor'
-  anchor.style.position = 'absolute'
-  anchor.style.top = 100
-  anchor.style.width = '100%'
-  document.body.appendChild(anchor)
-
+  var buttons = document.getElementById('metaButtons')
   var loadList = document.createElement('select')
-  anchor.appendChild(loadList)
+  document.body.insertBefore(loadList, buttons)
+  loadList.style.width = buttons.offsetWidth
+  buttons.style.display = 'none'
+
   for (var puzzleName of puzzleList) {
     var option = document.createElement('option')
     option.innerText = puzzleName
@@ -80,16 +74,14 @@ function loadPuzzle() {
   loadList.onchange = function() {
     _removePuzzleFromList(this.value)
     _addPuzzleToList(this.value)
-    window.localStorage.setItem('activePuzzle', this.value)
 
     var serialized = window.localStorage.getItem(this.value)
     if (!_tryUpdatePuzzle(serialized)) {
       deletePuzzleAndLoadNext()
     }
 
-    var anchor = document.getElementById('anchor')
-    anchor.parentElement.removeChild(anchor)
-    document.getElementById('puzzleMeta').style.opacity = null
+    document.body.removeChild(buttons.previousSibling)
+    document.getElementById('metaButtons').style.display = 'inline'
   }
 }
 
@@ -145,6 +137,7 @@ function _addPuzzleToList(puzzleName) {
   if (!puzzleList) puzzleList = []
   puzzleList.unshift(puzzleName)
   window.localStorage.setItem('puzzleList', JSON.stringify(puzzleList))
+  window.localStorage.setItem('activePuzzle', puzzleName)
 }
 
 function _removePuzzleFromList(puzzleName) {

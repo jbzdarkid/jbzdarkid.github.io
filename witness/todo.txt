@@ -2,7 +2,6 @@ In vague order of importance.
 
 - Editor improvements
 -- By hand interaction regions so that it works with the new renderer
--- Mark methods as private
 -- Validate button
 --- Improved solution display, leveraging trace code
 -- Pillar checkbox (and symmetry buttons, disabled)
