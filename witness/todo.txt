@@ -1,26 +1,25 @@
 In vague order of importance.
 
 - Editor improvements
--- By hand interaction regions
+-- By hand interaction regions so that it works with the new renderer
+-- Mark methods as private
 -- Validate button
 --- Improved solution display, leveraging trace code
--- Mark methods as private
--- Pillar button (and symmetry buttons, disabled)
-- Search for fixme/todo and move them here
+-- Pillar checkbox (and symmetry buttons, disabled)
+-- Click on triangle button to toggle count, as well as clicking in-editor
+- Some way to pass data.puzzle into window.showHint
+-- Maybe move hint logic into tracing?
+-- Or, stop cloning the puzzle in trace(), and just clear the grid instead
+- Solution draw with native tracing
+!- Merge back to master
 -- Move generate out of engine?
 -- Fix generation colors
 -- Add missing daily styles
-- Some way to pass data.puzzle into window.showHint -- maybe move hint logic into tracing?
--- Or, stop cloning the puzzle in trace(), and just clear the grid instead
-- Solution draw with native tracing
-- change all divs to auto-centering? It's all I seem to use them for rn
-- Zero size polys fail when zero-size negas don't
 - Multi start/end
 - Dots & gaps into the grid
 - Symmetry
-- Colored Symmetry -> Probably want line color 0/1/2 instead of true/false
-- Colored Dots
-- Server / full release
+!- Stable release
+- Server
 -- Shortnames for puzzles
 -- A whole bunch of UI for browsing puzzles
 -- Signin?
@@ -30,3 +29,13 @@ In vague order of importance.
 -- Dots cancelled by negation
 -- Polyominos will not allow trace-through
 - Flash for errors (Invisible Dots)
+- Colored Symmetry -> Probably want line color 0/1/2 instead of true/false
+- Colored Dots
+
+
+!- Small things / Bugs
+- Zero size polys fail when zero-size negas don't
+- change all divs to auto-centering? It's all I seem to use them for rn
+-- Maybe have a class="centered"
+- Search for fixme/todo and move them here
+- When start == end, can't enter end without leaving the cell
