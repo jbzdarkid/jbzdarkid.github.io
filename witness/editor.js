@@ -9,12 +9,12 @@ window.onload = function() {
   var serialized = window.localStorage.getItem(activePuzzle)
 
   newPuzzle() // Load an empty puzzle so that we have a fall-back
-  if (_tryUpdatePuzzle(serialized)) {
+  if (_try_updatePuzzle(serialized)) {
     window.localStorage.setItem('activePuzzle', activePuzzle)
   }
 
-  drawSymbolButtons()
-  drawColorButtons()
+  _drawSymbolButtons()
+  _drawColorButtons()
   var puzzleName = document.getElementById('puzzleName')
   puzzleName.oninput = function() {savePuzzle()}
   puzzleName.onkeypress = function(event) {
@@ -28,11 +28,11 @@ window.onload = function() {
   }
 
   for (var resize of document.getElementsByClassName('resize')) {
-    resize.onmousedown = function(event) {dragStart(event, this)}
+    resize.onmousedown = function(event) {_dragStart(event, this)}
   }
 }
 
-function dragStart(event, elem) {
+function _dragStart(event, elem) {
   dragging = {'x':event.clientX, 'y':event.clientY}
 
   var anchor = document.createElement('div')
@@ -44,7 +44,7 @@ function dragStart(event, elem) {
   anchor.style.width = '99%'
   anchor.style.height = '100%'
   anchor.style.cursor = elem.style.cursor
-  anchor.onmousemove = function(event) {dragMove(event, elem)}
+  anchor.onmousemove = function(event) {_dragMove(event, elem)}
   anchor.onmouseup = function() {
     dragging = false
     var anchor = document.getElementById('anchor')
@@ -52,7 +52,7 @@ function dragStart(event, elem) {
   }
 }
 
-function dragMove(event, elem) {
+function _dragMove(event, elem) {
   if (!dragging) return
   if (elem.id.includes('left')) {
     var dx = dragging.x - event.clientX
@@ -143,7 +143,7 @@ function resizePuzzle(dx, dy, id) {
   if (puzzle.end.y >= newHeight) puzzle.end.y = newHeight - 1
 
   savePuzzle()
-  updatePuzzle()
+  _updatePuzzle()
   return true
 }
 
@@ -164,18 +164,18 @@ function _removePuzzleFromList(puzzleName) {
   window.localStorage.setItem('puzzleList', JSON.stringify(puzzleList))
 }
 
-function _tryUpdatePuzzle(serialized) {
+function _try_updatePuzzle(serialized) {
   if (!serialized) return false
   var savedPuzzle = puzzle
   try {
     puzzle = Puzzle.deserialize(serialized)
-    updatePuzzle() // Will throw for most invalid puzzles
+    _updatePuzzle() // Will throw for most invalid puzzles
     document.getElementById('puzzleName').innerText = puzzle.name
     return true
   } catch (e) {
     console.log(e)
     puzzle = savedPuzzle
-    updatePuzzle()
+    _updatePuzzle()
     return false
   }
 }
@@ -186,7 +186,7 @@ function newPuzzle() {
   currentSolution = 0
   document.getElementById('puzzleName').innerText = 'Unnamed Puzzle'
   window.localStorage.setItem('activePuzzle', '')
-  redraw(puzzle)
+  _redraw(puzzle)
 }
 
 function savePuzzle() {
@@ -214,7 +214,7 @@ function deletePuzzleAndLoadNext() {
   var puzzleList = JSON.parse(window.localStorage.getItem('puzzleList'))
   while (puzzleList.length > 0) {
     var serialized = window.localStorage.getItem(puzzleList[0])
-    if (_tryUpdatePuzzle(serialized)) break
+    if (_try_updatePuzzle(serialized)) break
     puzzleList.shift()
   }
 
@@ -254,7 +254,7 @@ function loadPuzzle() {
     window.localStorage.setItem('activePuzzle', this.value)
 
     var serialized = window.localStorage.getItem(this.value)
-    if (!_tryUpdatePuzzle(serialized)) {
+    if (!_try_updatePuzzle(serialized)) {
       deletePuzzleAndLoadNext()
     }
 
@@ -266,7 +266,7 @@ function loadPuzzle() {
 
 function importPuzzle() {
   var serialized = prompt('Paste your puzzle here:')
-  if (!_tryUpdatePuzzle(serialized)) {
+  if (!_try_updatePuzzle(serialized)) {
     // Only alert if user tried to enter data
     if (serialized) alert('Not a valid puzzle!')
     return
@@ -290,7 +290,7 @@ function playPuzzle() {
   window.location.href = 'index.html?puzzle=' + puzzle.serialize()
 }
 
-function drawSymbolButtons() {
+function _drawSymbolButtons() {
   var symbolData = {
     'start': {'type':'start'},
     'end': {'type':'end', 'y':18, 'dir':'top'},
@@ -327,16 +327,16 @@ function drawSymbolButtons() {
       button.onclick = function() {
         if (activeParams.id == this.id) {
           activeParams = Object.assign(activeParams, this.params)
-          shapeChooser()
+          _shapeChooser()
         } else {
           activeParams = Object.assign(activeParams, this.params)
-          drawSymbolButtons()
+          _drawSymbolButtons()
         }
       }
     } else {
       button.onclick = function() {
         activeParams = Object.assign(activeParams, this.params)
-        drawSymbolButtons()
+        _drawSymbolButtons()
       }
     }
     while (button.firstChild) button.removeChild(button.firstChild)
@@ -344,7 +344,7 @@ function drawSymbolButtons() {
   }
 }
 
-function drawColorButtons() {
+function _drawColorButtons() {
   var colorTable = document.getElementById('colorButtons')
   for (var button of colorTable.getElementsByTagName('button')) {
     var params = {'width':146, 'height':45, 'border':2}
@@ -361,7 +361,7 @@ function drawColorButtons() {
     button.style.width = params.width + 2*params.border
     button.onclick = function() {
       activeParams.color = this.id
-      drawColorButtons()
+      _drawColorButtons()
     }
     while (button.firstChild) button.removeChild(button.firstChild)
     params.type = 'crayon'
@@ -369,7 +369,7 @@ function drawColorButtons() {
   }
 }
 
-function shapeChooser() {
+function _shapeChooser() {
   var puzzle = document.getElementById('puzzle')
   puzzle.style.opacity = 0
 
@@ -379,7 +379,7 @@ function shapeChooser() {
   anchor.style.height = '100%'
   anchor.style.position = 'absolute'
   anchor.style.top = 0
-  anchor.onmousedown = function(event) {shapeChooserClick(event)}
+  anchor.onmousedown = function(event) {_shapeChooserClick(event)}
   document.body.appendChild(anchor)
 
   var chooser = document.createElement('table')
@@ -392,14 +392,14 @@ function shapeChooser() {
   chooser.style.padding = 25
   chooser.style.background = BACKGROUND
   chooser.style.border = BORDER
-  chooser.onmousedown = function(event) {shapeChooserClick(event, this)}
+  chooser.onmousedown = function(event) {_shapeChooserClick(event, this)}
   for (var x=0; x<4; x++) {
     var row = chooser.insertRow(x)
     for (var y=0; y<4; y++) {
       var cell = row.insertCell(y)
       cell.id = 'chooser_' + x + '_' + y
       cell.powerOfTwo = 1 << (x + y*4)
-      cell.onmousedown = function(event) {shapeChooserClick(event, this)}
+      cell.onmousedown = function(event) {_shapeChooserClick(event, this)}
       cell.style.width = 58
       cell.style.height = 58
       if ((activeParams.polyshape & cell.powerOfTwo) != 0) {
@@ -413,7 +413,7 @@ function shapeChooser() {
   }
 }
 
-function shapeChooserClick(event, cell) {
+function _shapeChooserClick(event, cell) {
   if (cell == undefined) {
     var chooser = document.getElementById('chooser')
     var anchor = document.getElementById('anchor')
@@ -440,26 +440,26 @@ function shapeChooserClick(event, cell) {
   } else {
     cell.style.background = FOREGROUND
   }
-  drawSymbolButtons()
+  _drawSymbolButtons()
 }
 
-function updatePuzzle() {
+function _updatePuzzle() {
   document.getElementById('puzzleName').innerText = puzzle.name
-  redraw(puzzle)
+  _redraw(puzzle)
   solutions = []
 //  solve(puzzle, puzzle.start.x, puzzle.start.y, solutions)
 //  document.getElementById('solutionCount').innerText = solutions.length
   currentSolution = -1
 }
 
-function drawSolution(offset) {
+function _drawSolution(offset) {
   currentSolution += offset
   if (currentSolution < 0) currentSolution = solutions.length - 1
   if (currentSolution >= solutions.length) currentSolution = 0
-  redraw(solutions[currentSolution])
+  _redraw(solutions[currentSolution])
 }
 
-function redraw(puzzleOrSolution) {
+function _redraw(puzzleOrSolution) {
   draw(puzzleOrSolution)
   var puzzleElement = document.getElementById('puzzle')
   for (var elem of puzzleElement.getElementsByTagName('td')) {
@@ -549,5 +549,5 @@ function _onElementClicked(id)
   }
 
   savePuzzle()
-  updatePuzzle()
+  _updatePuzzle()
 }
