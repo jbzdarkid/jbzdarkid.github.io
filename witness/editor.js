@@ -32,160 +32,11 @@ window.onload = function() {
   }
 }
 
-function _dragStart(event, elem) {
-  dragging = {'x':event.clientX, 'y':event.clientY}
-
-  var anchor = document.createElement('div')
-  document.body.appendChild(anchor)
-
-  anchor.id = 'anchor'
-  anchor.style.position = 'absolute'
-  anchor.style.top = 0
-  anchor.style.width = '99%'
-  anchor.style.height = '100%'
-  anchor.style.cursor = elem.style.cursor
-  anchor.onmousemove = function(event) {_dragMove(event, elem)}
-  anchor.onmouseup = function() {
-    dragging = false
-    var anchor = document.getElementById('anchor')
-    anchor.parentElement.removeChild(anchor)
-  }
-}
-
-function _dragMove(event, elem) {
-  if (!dragging) return
-  if (elem.id.includes('left')) {
-    var dx = dragging.x - event.clientX
-  } else if (elem.id.includes('right')) {
-    var dx = event.clientX - dragging.x
-  } else {
-    var dx = 0
-  }
-  if (elem.id.includes('top')) {
-    var dy = dragging.y - event.clientY
-  } else if (elem.id.includes('bottom')) {
-    var dy = event.clientY - dragging.y
-  } else {
-    var dy = 0
-  }
-  
-  if (Math.abs(dx) >= 82 || Math.abs(dy) >= 82) {
-    if (!resizePuzzle(Math.round(dx/82), Math.round(dy/82), elem.id)) return
-    // If resize succeeded, set a new reference point for future drag operations
-    dragging.x = event.clientX
-    dragging.y = event.clientY
-  }
-}
-
-function resizePuzzle(dx, dy, id) {
-  var newWidth = puzzle.grid.length + 2 * dx
-  var newHeight = puzzle.grid[0].length + 2 * dy
-  
-  if (newWidth < 0 || newHeight < 0) return false
-  // TODO: Maximum size goes here
-
-  if (id.includes('left')) {
-    while (puzzle.grid.length > newWidth) puzzle.grid.shift()
-    while (puzzle.grid.length < newWidth) {
-      puzzle.grid.unshift((new Array(newHeight)).fill(false))
-    }
-  }
-  if (id.includes('right')) {
-    while (puzzle.grid.length > newWidth) puzzle.grid.pop()
-    while (puzzle.grid.length < newWidth) {
-      puzzle.grid.push((new Array(newHeight)).fill(false))
-    }
-  }
-  if (id.includes('top')) {
-    for (var row of puzzle.grid) {
-      while (row.length > newHeight) row.shift()
-      while (row.length < newHeight) row.unshift(false)
-    }
-  }
-  if (id.includes('bottom')) {
-    for (var row of puzzle.grid) {
-      while (row.length > newHeight) row.pop()
-      while (row.length < newHeight) row.push(false)
-    }
-  }
-
-  var newDots = []
-  for (var dot of puzzle.dots) {
-    if (id.includes('right')) dot.x += 2 * dx
-    if (id.includes('bottom')) dot.y += 2 * dy
-    if (dot.x < newWidth && dot.y < newHeight) newDots.push(dot)
-  }
-  puzzle.dots = newDots
-  var newGaps = []
-  for (var gap of puzzle.gaps) {
-    if (id.includes('right')) gap.x += 2 * dx
-    if (id.includes('bottom')) gap.y += 2 * dy
-    if (gap.x < newWidth && gap.y < newHeight) newGaps.push(gap)
-  }
-  puzzle.gaps = newGaps
-
-  if (id.includes('left')) {
-    puzzle.start.x += 2 * dx
-  }
-  // Endpoint needs to be dragged always, so it doesn't fall into the center.
-  puzzle.end.x += 2 * dx
-  if (id.includes('top')) {
-    puzzle.start.y += 2 * dy
-    puzzle.end.y += 2 * dy
-  }
-  if (puzzle.start.x < 0) puzzle.start.x = 0
-  if (puzzle.start.x >= newWidth) puzzle.start.x = newWidth - 1
-  if (puzzle.start.y < 0) puzzle.start.y = 0
-  if (puzzle.start.y >= newHeight) puzzle.start.y = newHeight - 1
-  if (puzzle.end.x < 0) puzzle.end.x = 0
-  if (puzzle.end.x >= newWidth) puzzle.end.x = newWidth - 1
-  if (puzzle.end.y < 0) puzzle.end.y = 0
-  if (puzzle.end.y >= newHeight) puzzle.end.y = newHeight - 1
-
-  savePuzzle()
-  _redraw(puzzle)
-  return true
-}
-
-function _addPuzzleToList(puzzleName) {
-  var puzzleList = JSON.parse(window.localStorage.getItem('puzzleList'))
-  if (!puzzleList) puzzleList = []
-  puzzleList.unshift(puzzleName)
-  window.localStorage.setItem('puzzleList', JSON.stringify(puzzleList))
-}
-
-function _removePuzzleFromList(puzzleName) {
-  // console.log('Removing puzzle', puzzleName)
-  var puzzleList = JSON.parse(window.localStorage.getItem('puzzleList'))
-  if (!puzzleList) puzzleList = []
-  var index = puzzleList.indexOf(puzzleName)
-  if (index == -1) return
-  puzzleList.splice(index, 1)
-  window.localStorage.setItem('puzzleList', JSON.stringify(puzzleList))
-}
-
-function _tryUpdatePuzzle(serialized) {
-  if (!serialized) return false
-  var savedPuzzle = puzzle
-  try {
-    puzzle = Puzzle.deserialize(serialized)
-    _redraw(puzzle) // Will throw for most invalid puzzles
-    document.getElementById('puzzleName').innerText = puzzle.name
-    return true
-  } catch (e) {
-    console.log(e)
-    puzzle = savedPuzzle
-    _redraw(puzzle)
-    return false
-  }
-}
-
 function newPuzzle() {
   puzzle = new Puzzle(4, 4)
   puzzle.name = 'Unnamed Puzzle'
   _redraw(puzzle)
   window.localStorage.setItem('activePuzzle', '')
-  _redraw(puzzle)
 }
 
 function savePuzzle() {
@@ -202,27 +53,6 @@ function savePuzzle() {
   _addPuzzleToList(savedPuzzle)
   window.localStorage.setItem(savedPuzzle, puzzle.serialize())
   window.localStorage.setItem('activePuzzle', savedPuzzle)
-}
-
-function deletePuzzleAndLoadNext() {
-  var activePuzzle = window.localStorage.getItem('activePuzzle')
-  // console.log('Deleting', activePuzzle)
-  window.localStorage.removeItem(activePuzzle)
-  _removePuzzleFromList(activePuzzle)
-
-  var puzzleList = JSON.parse(window.localStorage.getItem('puzzleList'))
-  while (puzzleList.length > 0) {
-    var serialized = window.localStorage.getItem(puzzleList[0])
-    if (_tryUpdatePuzzle(serialized)) break
-    puzzleList.shift()
-  }
-
-  if (puzzleList.length == 0) {
-    window.localStorage.clear()
-    newPuzzle()
-    return
-  }
-  window.localStorage.setItem('activePuzzle', puzzleList[0])
 }
 
 function loadPuzzle() {
@@ -263,6 +93,27 @@ function loadPuzzle() {
   }
 }
 
+function deletePuzzleAndLoadNext() {
+  var activePuzzle = window.localStorage.getItem('activePuzzle')
+  // console.log('Deleting', activePuzzle)
+  window.localStorage.removeItem(activePuzzle)
+  _removePuzzleFromList(activePuzzle)
+
+  var puzzleList = JSON.parse(window.localStorage.getItem('puzzleList'))
+  while (puzzleList.length > 0) {
+    var serialized = window.localStorage.getItem(puzzleList[0])
+    if (_tryUpdatePuzzle(serialized)) break
+    puzzleList.shift()
+  }
+
+  if (puzzleList.length == 0) {
+    window.localStorage.clear()
+    newPuzzle()
+    return
+  }
+  window.localStorage.setItem('activePuzzle', puzzleList[0])
+}
+
 function importPuzzle() {
   var serialized = prompt('Paste your puzzle here:')
   if (!_tryUpdatePuzzle(serialized)) {
@@ -287,6 +138,133 @@ function exportPuzzle() {
 
 function playPuzzle() {
   window.location.href = 'index.html?puzzle=' + puzzle.serialize()
+}
+
+function _addPuzzleToList(puzzleName) {
+  var puzzleList = JSON.parse(window.localStorage.getItem('puzzleList'))
+  if (!puzzleList) puzzleList = []
+  puzzleList.unshift(puzzleName)
+  window.localStorage.setItem('puzzleList', JSON.stringify(puzzleList))
+}
+
+function _removePuzzleFromList(puzzleName) {
+  // console.log('Removing puzzle', puzzleName)
+  var puzzleList = JSON.parse(window.localStorage.getItem('puzzleList'))
+  if (!puzzleList) puzzleList = []
+  var index = puzzleList.indexOf(puzzleName)
+  if (index == -1) return
+  puzzleList.splice(index, 1)
+  window.localStorage.setItem('puzzleList', JSON.stringify(puzzleList))
+}
+
+function _tryUpdatePuzzle(serialized) {
+  if (!serialized) return false
+  var savedPuzzle = puzzle
+  try {
+    puzzle = Puzzle.deserialize(serialized)
+    _redraw(puzzle) // Will throw for most invalid puzzles
+    document.getElementById('puzzleName').innerText = puzzle.name
+    return true
+  } catch (e) {
+    console.log(e)
+    puzzle = savedPuzzle
+    _redraw(puzzle)
+    return false
+  }
+}
+
+function _redraw(puzzle) {
+  document.getElementById('puzzleName').innerText = puzzle.name
+  draw(puzzle)
+  var puzzleElement = document.getElementById('puzzle')
+  //for (var elem of puzzleElement.getElementsByTagName('td')) {
+  //  elem.onclick = function() {_onElementClicked(this.id)}
+  //}
+}
+
+function _onElementClicked(id)
+{
+  var x = parseInt(id.split('_')[1])
+  var y = parseInt(id.split('_')[2])
+
+  if (['start', 'end'].includes(activeParams.type)) {
+    if (x%2 != 0 || y%2 != 0) return
+    if (x == 0 || y == 0 || x == puzzle.grid.length - 1 || y == puzzle.grid[x].length - 1) {
+      if (activeParams.type == 'start') puzzle.start = {'x':x, 'y':y}
+      if (activeParams.type == 'end') puzzle.end = {'x':x, 'y':y}
+    }
+  } else if (['gap', 'dot'].includes(activeParams.type)) {
+    if (x%2 == 1 && y%2 == 1) return
+    if (activeParams.type == 'gap' && x%2 == 0 && y%2 == 0) return
+    var foundGap = false
+    for (var i=0; i < puzzle.gaps.length; i++) {
+      if (puzzle.gaps[i].x == x && puzzle.gaps[i].y == y) {
+        puzzle.gaps.splice(i, 1)
+        foundGap = true
+        break
+      }
+    }
+    var foundDot = false
+    for (var i=0; i < puzzle.dots.length; i++) {
+      if (puzzle.dots[i].x == x && puzzle.dots[i].y == y) {
+        puzzle.dots.splice(i, 1)
+        foundDot = true
+        break
+      }
+    }
+    if (activeParams.type == 'gap' && !foundGap) puzzle.gaps.push({'x':x, 'y':y})
+    if (activeParams.type == 'dot' && !foundDot) puzzle.dots.push({'x':x, 'y':y})
+  } else if (['square', 'star', 'nega'].includes(activeParams.type)) {
+    if (x%2 != 1 || y%2 != 1) return
+    // Only change one thing at a time -- if you change color, don't toggle the symbol
+    if (puzzle.grid[x][y].type == activeParams.type
+     && puzzle.grid[x][y].color == activeParams.color) {
+      puzzle.grid[x][y] = false
+    } else {
+      puzzle.grid[x][y] = {
+        'type': activeParams.type,
+        'color': activeParams.color,
+      }
+    }
+  } else if (['poly', 'ylop'].includes(activeParams.type)) {
+    if (x%2 != 1 || y%2 != 1) return
+    // Only change one thing at a time -- if you change color, don't toggle the symbol
+    if (puzzle.grid[x][y].type == activeParams.type
+     && puzzle.grid[x][y].color == activeParams.color
+     && puzzle.grid[x][y].polyshape == activeParams.polyshape
+     && puzzle.grid[x][y].rot == activeParams.rot) {
+      puzzle.grid[x][y] = false
+    } else {
+      puzzle.grid[x][y] = {
+        'type': activeParams.type,
+        'color': activeParams.color,
+        'polyshape': activeParams.polyshape,
+        'rot': activeParams.rot,
+      }
+    }
+  } else if (activeParams.type == 'triangle') {
+    if (x%2 != 1 || y%2 != 1) return
+    var count = 0
+    if (puzzle.grid[x][y].type == activeParams.type) {
+      count = puzzle.grid[x][y].count
+      // Only change one thing at a time -- if you change color, count shouldn't change as well.
+      if (activeParams.color != puzzle.grid[x][y].color) {
+        count--
+      }
+    }
+    if (puzzle.grid[x][y].count == 3) {
+      puzzle.grid[x][y] = false
+    } else {
+      puzzle.grid[x][y] = {
+        'type': activeParams.type,
+        'color': activeParams.color,
+        'count': count+1,
+      }
+    }
+  }
+
+  savePuzzle()
+  _redraw(puzzle)
 }
 
 function _drawSymbolButtons() {
@@ -442,96 +420,117 @@ function _shapeChooserClick(event, cell) {
   _drawSymbolButtons()
 }
 
-function _redraw(puzzle) {
-  document.getElementById('puzzleName').innerText = puzzle.name
-  draw(puzzle)
-  var puzzleElement = document.getElementById('puzzle')
-  for (var elem of puzzleElement.getElementsByTagName('td')) {
-    elem.onclick = function() {_onElementClicked(this.id)}
-  }
-}
+function resizePuzzle(dx, dy, id) {
+  var newWidth = puzzle.grid.length + 2 * dx
+  var newHeight = puzzle.grid[0].length + 2 * dy
+  
+  if (newWidth < 0 || newHeight < 0) return false
+  // TODO: Maximum size goes here
 
-function _onElementClicked(id)
-{
-  var x = parseInt(id.split('_')[1])
-  var y = parseInt(id.split('_')[2])
-
-  if (['start', 'end'].includes(activeParams.type)) {
-    if (x%2 != 0 || y%2 != 0) return
-    if (x == 0 || y == 0 || x == puzzle.grid.length - 1 || y == puzzle.grid[x].length - 1) {
-      if (activeParams.type == 'start') puzzle.start = {'x':x, 'y':y}
-      if (activeParams.type == 'end') puzzle.end = {'x':x, 'y':y}
-    }
-  } else if (['gap', 'dot'].includes(activeParams.type)) {
-    if (x%2 == 1 && y%2 == 1) return
-    if (activeParams.type == 'gap' && x%2 == 0 && y%2 == 0) return
-    var foundGap = false
-    for (var i=0; i < puzzle.gaps.length; i++) {
-      if (puzzle.gaps[i].x == x && puzzle.gaps[i].y == y) {
-        puzzle.gaps.splice(i, 1)
-        foundGap = true
-        break
-      }
-    }
-    var foundDot = false
-    for (var i=0; i < puzzle.dots.length; i++) {
-      if (puzzle.dots[i].x == x && puzzle.dots[i].y == y) {
-        puzzle.dots.splice(i, 1)
-        foundDot = true
-        break
-      }
-    }
-    if (activeParams.type == 'gap' && !foundGap) puzzle.gaps.push({'x':x, 'y':y})
-    if (activeParams.type == 'dot' && !foundDot) puzzle.dots.push({'x':x, 'y':y})
-  } else if (['square', 'star', 'nega'].includes(activeParams.type)) {
-    if (x%2 != 1 || y%2 != 1) return
-    // Only change one thing at a time -- if you change color, don't toggle the symbol
-    if (puzzle.grid[x][y].type == activeParams.type
-     && puzzle.grid[x][y].color == activeParams.color) {
-      puzzle.grid[x][y] = false
-    } else {
-      puzzle.grid[x][y] = {
-        'type': activeParams.type,
-        'color': activeParams.color,
-      }
-    }
-  } else if (['poly', 'ylop'].includes(activeParams.type)) {
-    if (x%2 != 1 || y%2 != 1) return
-    // Only change one thing at a time -- if you change color, don't toggle the symbol
-    if (puzzle.grid[x][y].type == activeParams.type
-     && puzzle.grid[x][y].color == activeParams.color
-     && puzzle.grid[x][y].polyshape == activeParams.polyshape
-     && puzzle.grid[x][y].rot == activeParams.rot) {
-      puzzle.grid[x][y] = false
-    } else {
-      puzzle.grid[x][y] = {
-        'type': activeParams.type,
-        'color': activeParams.color,
-        'polyshape': activeParams.polyshape,
-        'rot': activeParams.rot,
-      }
-    }
-  } else if (activeParams.type == 'triangle') {
-    if (x%2 != 1 || y%2 != 1) return
-    var count = 0
-    if (puzzle.grid[x][y].type == activeParams.type) {
-      count = puzzle.grid[x][y].count
-      // Only change one thing at a time -- if you change color, count shouldn't change as well.
-      if (activeParams.color != puzzle.grid[x][y].color) {
-        count--
-      }
-    }
-    if (puzzle.grid[x][y].count == 3) {
-      puzzle.grid[x][y] = false
-    } else {
-      puzzle.grid[x][y] = {
-        'type': activeParams.type,
-        'color': activeParams.color,
-        'count': count+1,
-      }
+  if (id.includes('left')) {
+    while (puzzle.grid.length > newWidth) puzzle.grid.shift()
+    while (puzzle.grid.length < newWidth) {
+      puzzle.grid.unshift((new Array(newHeight)).fill(false))
     }
   }
+  if (id.includes('right')) {
+    while (puzzle.grid.length > newWidth) puzzle.grid.pop()
+    while (puzzle.grid.length < newWidth) {
+      puzzle.grid.push((new Array(newHeight)).fill(false))
+    }
+  }
+  if (id.includes('top')) {
+    for (var row of puzzle.grid) {
+      while (row.length > newHeight) row.shift()
+      while (row.length < newHeight) row.unshift(false)
+    }
+  }
+  if (id.includes('bottom')) {
+    for (var row of puzzle.grid) {
+      while (row.length > newHeight) row.pop()
+      while (row.length < newHeight) row.push(false)
+    }
+  }
+
+  var newDots = []
+  for (var dot of puzzle.dots) {
+    if (id.includes('right')) dot.x += 2 * dx
+    if (id.includes('bottom')) dot.y += 2 * dy
+    if (dot.x < newWidth && dot.y < newHeight) newDots.push(dot)
+  }
+  puzzle.dots = newDots
+  var newGaps = []
+  for (var gap of puzzle.gaps) {
+    if (id.includes('right')) gap.x += 2 * dx
+    if (id.includes('bottom')) gap.y += 2 * dy
+    if (gap.x < newWidth && gap.y < newHeight) newGaps.push(gap)
+  }
+  puzzle.gaps = newGaps
+
+  if (id.includes('left')) {
+    puzzle.start.x += 2 * dx
+  }
+  // Endpoint needs to be dragged always, so it doesn't fall into the center.
+  puzzle.end.x += 2 * dx
+  if (id.includes('top')) {
+    puzzle.start.y += 2 * dy
+    puzzle.end.y += 2 * dy
+  }
+  if (puzzle.start.x < 0) puzzle.start.x = 0
+  if (puzzle.start.x >= newWidth) puzzle.start.x = newWidth - 1
+  if (puzzle.start.y < 0) puzzle.start.y = 0
+  if (puzzle.start.y >= newHeight) puzzle.start.y = newHeight - 1
+  if (puzzle.end.x < 0) puzzle.end.x = 0
+  if (puzzle.end.x >= newWidth) puzzle.end.x = newWidth - 1
+  if (puzzle.end.y < 0) puzzle.end.y = 0
+  if (puzzle.end.y >= newHeight) puzzle.end.y = newHeight - 1
 
   savePuzzle()
   _redraw(puzzle)
+  return true
+}
+
+function _dragStart(event, elem) {
+  dragging = {'x':event.clientX, 'y':event.clientY}
+
+  var anchor = document.createElement('div')
+  document.body.appendChild(anchor)
+
+  anchor.id = 'anchor'
+  anchor.style.position = 'absolute'
+  anchor.style.top = 0
+  anchor.style.width = '99%'
+  anchor.style.height = '100%'
+  anchor.style.cursor = elem.style.cursor
+  anchor.onmousemove = function(event) {_dragMove(event, elem)}
+  anchor.onmouseup = function() {
+    dragging = false
+    var anchor = document.getElementById('anchor')
+    anchor.parentElement.removeChild(anchor)
+  }
+}
+
+function _dragMove(event, elem) {
+  if (!dragging) return
+  if (elem.id.includes('left')) {
+    var dx = dragging.x - event.clientX
+  } else if (elem.id.includes('right')) {
+    var dx = event.clientX - dragging.x
+  } else {
+    var dx = 0
+  }
+  if (elem.id.includes('top')) {
+    var dy = dragging.y - event.clientY
+  } else if (elem.id.includes('bottom')) {
+    var dy = event.clientY - dragging.y
+  } else {
+    var dy = 0
+  }
+  
+  if (Math.abs(dx) >= 82 || Math.abs(dy) >= 82) {
+    if (!resizePuzzle(Math.round(dx/82), Math.round(dy/82), elem.id)) return
+    // If resize succeeded, set a new reference point for future drag operations
+    dragging.x = event.clientX
+    dragging.y = event.clientY
+  }
 }
