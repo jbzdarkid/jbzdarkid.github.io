@@ -104,21 +104,24 @@ window.onload = function() {
   }
 
   draw(puzzleData.puzzle)
-  window.solution = puzzleData.solutions[_randint(puzzleData.solutions.length)]
-  if (window.solution != undefined) {
+  puzzleData.solution = puzzleData.solutions[_randint(puzzleData.solutions.length)]
+  if (puzzleData.solution != undefined) {
     document.getElementById('soln').disabled = false
     document.getElementById('hint').disabled = false
-    window.hints = solution.hints()
+    puzzleData.solution.loadHints()
   }
 }
 
 function showHint() {
-  if (window.hints.length <= 0) return
-  window.hints = puzzleData.puzzle.showHint(window.hints)
+  var hint = puzzleData.solution.showHint()
+  if (hint == undefined) {
+    document.getElementById('hint').disabled = true
+  }
+  puzzleData.puzzle.showHint(hint)
   puzzleData.puzzle.clearLines()
   draw(puzzleData.puzzle)
 }
 
 function showSolution() {
-  draw(window.solution)
+  draw(puzzleData.solution)
 }

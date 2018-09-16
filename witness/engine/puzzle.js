@@ -141,6 +141,7 @@ class Puzzle {
     copy.gaps = this.gaps.slice()
     copy.regionCache = this.regionCache
     copy.pillar = this.pillar
+    copy.hints = this.hints
     return copy
     /*
     return {
@@ -155,26 +156,33 @@ class Puzzle {
     */
   }
 
-  // Called from a solution
-  hints() {
-    var hints = []
+  // Called on a solution. Computes a list of gaps to show as hints which *do not*
+  // break the path.
+  loadHints() {
+    this.hints = []
     for (var x=0; x<this.grid.length; x++) {
       for (var y=0; y<this.grid[x].length; y++) {
         if (x%2 + y%2 == 1 && !this.getCell(x, y)) {
-          hints.push({'x':x, 'y':y})
+          this.hints.push({'x':x, 'y':y})
         }
       }
     }
-    return hints
   }
 
-  // hints are passed from a solution
-  // Returns updated list of hints, less the one that was shown.
-  showHint(hints) {
+  // Show a hint on the grid.
+  // If no hint is provided, will select the best one it can find,
+  // prioritizing breaking current lines on the grid.
+  // Returns the shown hint.
+  showHint(hint) {
+    if (hint != undefined) {
+      this.gaps.push(hint)
+      return
+    }
+
     var goodHints = []
     var badHints = []
-    console.log(JSON.stringify(this.grid))
-    for (var hint of hints) {
+
+    for (var hint of this.hints) {
       if (this.getCell(hint.x, hint.y) == true) {
         // Solution will be broken by this hint
         goodHints.push(hint)
@@ -184,11 +192,14 @@ class Puzzle {
     }
     if (goodHints.length > 0) {
       var hint = goodHints.splice(_randint(goodHints.length), 1)[0]
-    } else {
+    } else if (badHints.length > 0) {
       var hint = badHints.splice(_randint(badHints.length), 1)[0]
+    } else {
+      return
     }
     this.gaps.push(hint)
-    return badHints.concat(goodHints)
+    this.hints = badHints.concat(goodHints)
+    return hint
   }
 
   clearLines() {
