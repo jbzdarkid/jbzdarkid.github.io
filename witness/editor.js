@@ -142,22 +142,31 @@ function solvePuzzle() {
   }
   solutions = []
   solve(puzzle, puzzle.start.x, puzzle.start.y, solutions)
-  document.getElementById('solutionViewer').style.display = null
-  _showSolution(0)
+  _showSolution(0, puzzle)
 }
 
-function _showSolution(num) {
+function _showSolution(num, puzzle) {
   if (num < 0) num = solutions.length - 1
   if (num >= solutions.length) num = 0
 
-  document.getElementById('solutionCount').innerText = num + ' of ' + solutions.length
-  solutions[num].name = puzzle.name
-  _redraw(solutions[num])
+  if (solutions.length < 2) { // 0 or 1 solution(s), arrows are useless
+    document.getElementById('solutionCount').innerText = solutions.length + ' of ' + solutions.length
+    document.getElementById('previousSolution').disabled = true
+    document.getElementById('nextSolution').disabled = true
+  } else {
+    document.getElementById('solutionCount').innerText = (num + 1) + ' of ' + solutions.length
+    document.getElementById('previousSolution').disabled = null
+    document.getElementById('nextSolution').disabled = null
+    console.log(solutions[num])
+    solutions[num].name = puzzle.name
+    _redraw(solutions[num])
+  }
+  document.getElementById('solutionViewer').style.display = null
   document.getElementById('previousSolution').onclick = function() {
-    _showSolution(num - 1)
+    _showSolution(num - 1, puzzle)
   }
   document.getElementById('nextSolution').onclick = function() {
-    _showSolution(num + 1)
+    _showSolution(num + 1, puzzle)
   }
 }
 
@@ -199,6 +208,7 @@ function _redraw(puzzle) {
   document.getElementById('puzzleName').innerText = puzzle.name
   draw(puzzle)
   var puzzleElement = document.getElementById('puzzle')
+  document.getElementById('solutionViewer').style.display = 'none'
   //for (var elem of puzzleElement.getElementsByTagName('td')) {
   //  elem.onclick = function() {_onElementClicked(this.id)}
   //}
