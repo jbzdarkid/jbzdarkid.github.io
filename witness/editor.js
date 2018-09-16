@@ -266,11 +266,13 @@ function _onElementClicked(elem) {
   var x = parseInt(elem.id.split('_')[0])
   var y = parseInt(elem.id.split('_')[1])
 
-  if (['start', 'end'].includes(activeParams.type)) {
+  if (activeParams.type == 'start') {
+    if (x%2 == 1 && y%2 == 1) return
+    puzzle.start = {'x':x, 'y':y}
+  } else if (activeParams.type == 'end') {
     if (x%2 != 0 || y%2 != 0) return
     if (x == 0 || y == 0 || x == puzzle.grid.length - 1 || y == puzzle.grid[x].length - 1) {
-      if (activeParams.type == 'start') puzzle.start = {'x':x, 'y':y}
-      if (activeParams.type == 'end') puzzle.end = {'x':x, 'y':y}
+      puzzle.end = {'x':x, 'y':y}
     }
   } else if (['gap', 'dot'].includes(activeParams.type)) {
     if (x%2 == 1 && y%2 == 1) return

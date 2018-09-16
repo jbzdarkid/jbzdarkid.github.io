@@ -58,7 +58,6 @@ class PathSegment {
     this.circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
     this.poly2 = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
     this.dir = dir
-    data.svg.insertBefore(this.poly1, data.cursor)
     data.svg.insertBefore(this.circ, data.cursor)
     data.svg.insertBefore(this.poly2, data.cursor)
     this.poly1.setAttribute('class', 'line ' + data.svg.id)
@@ -69,6 +68,7 @@ class PathSegment {
       this.circ.setAttribute('cx', data.bbox.middle.x)
       this.circ.setAttribute('cy', data.bbox.middle.y)
     } else {
+      data.svg.insertBefore(this.poly1, data.cursor)
       this.circ.setAttribute('r', 12)
     }
   }
@@ -215,10 +215,18 @@ function onTraceStart(svg, puzzle, start) {
   svg.appendChild(bboxDebug)
   bboxDebug.setAttribute('fill', 'white')
   bboxDebug.setAttribute('opacity', 0.3)
+  if (puzzle.start.x%2 == 1) { // Start point is on a horizontal segment
+    var bbox = new BoundingBox(x - 29, x + 29, y - 12, y + 12)
+  } else if (puzzle.start.y%2 == 1) { // Start point is on a vertical segment
+    var bbox = new BoundingBox(x - 12, x + 12, y - 29, y + 29)
+  } else { // Start point is at an intersection
+    var bbox = new BoundingBox(x - 12, x + 12, y - 12, y + 12)
+  }
+
 
   data = {
     'tracing':true,
-    'bbox':new BoundingBox(x - 12, x + 12, y - 12, y + 12),
+    'bbox':bbox,
     'bboxDebug':bboxDebug,
     'svg':svg,
     // Cursor element and location
