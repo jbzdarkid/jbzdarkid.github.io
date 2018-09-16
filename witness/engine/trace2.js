@@ -199,6 +199,11 @@ function onTraceStart(svg, puzzle, start) {
 
   // Clean previous state
   _clearGrid(svg)
+  for (var x=0; x<puzzle.grid.length; x++) {
+    for (var y=0; y<puzzle.grid[x].length; y++) {
+      puzzle.setCell(x, y, false)
+    }
+  }
 
   var cursor = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
   svg.appendChild(cursor)
