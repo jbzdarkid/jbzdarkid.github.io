@@ -321,3 +321,17 @@ class Puzzle {
     }
   }
 }
+
+Puzzle.prototype.toString = function() {
+  var output = ''
+  for (var y=0; y<this.grid[0].length; y++) {
+    for (var x=0; x<this.grid.length; x++) {
+      cell = this.getCell(x, y)
+      if (cell == false) output += '0'
+      else if (cell == true) output += '1'
+      else output += '#'
+    }
+    output += '\n'
+  }
+  return output
+}

@@ -144,90 +144,97 @@ function _clearGrid(svg) {
 }
 
 function trace(elem, event, puzzle) {
+  var svg = elem.parentElement
   if (document.pointerLockElement == null) { // Started tracing a solution
     PLAY_SOUND('start')
-    // Clean previous state
-    var svg = elem.parentElement
-    _clearGrid(svg)
-
-    var cursor = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-    svg.appendChild(cursor)
-    cursor.setAttribute('r', 12)
-    cursor.setAttribute('fill', CURSOR)
-    cursor.setAttribute('stroke', 'black')
-    cursor.setAttribute('stroke-width', '2px')
-    cursor.setAttribute('stroke-opacity', '0.4')
-    cursor.setAttribute('class', 'cursor')
     var cx = parseFloat(elem.getAttribute('cx'))
     var cy = parseFloat(elem.getAttribute('cy'))
-    cursor.setAttribute('cx', cx)
-    cursor.setAttribute('cy', cy)
-
-    var bboxDebug = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-    svg.appendChild(bboxDebug)
-    bboxDebug.setAttribute('fill', 'white')
-    bboxDebug.setAttribute('opacity', 0.3)
-
-    data = {
-      'tracing':true,
-      'bbox':new BoundingBox(cx - 12, cx + 12, cy - 12, cy + 12),
-      'bboxDebug':bboxDebug,
-      'svg':svg,
-      // Cursor element and location
-      'cursor': cursor,
-      'x':cx,
-      'y':cy,
-      // Position within puzzle.grid
-      'pos':{'x':puzzle.start.x, 'y':puzzle.start.y},
-      'puzzle':Puzzle.deserialize(puzzle.serialize()),
-      'path':[],
-    }
-    data.path.push(new PathSegment('none'))
-    data.puzzle.setCell(puzzle.start.x, puzzle.start.y, true)
-
-    for (var styleSheet of document.styleSheets) {
-      if (styleSheet.title == 'animations') {
-        data.animations = styleSheet
-        for (var i = 0; i < styleSheet.cssRules.length; i++) {
-          var rule = styleSheet.cssRules[i]
-          if (rule.selectorText == '.' + data.svg.id) {
-            styleSheet.deleteRule(i--)
-          }
-        }
-        break
-      }
-    }
-
+    onTraceStart(svg, puzzle, cx, cy)
     elem.requestPointerLock()
   } else {
     event.stopPropagation()
-    // Signal the onMouseMove to stop accepting input (race condition)
-    data.tracing = false
-
-    // At endpoint and not in raw box -> In true endpoint
-    if (data.puzzle.isEndpoint(data.pos.x, data.pos.y) && !data.bbox.inRaw(data.x, data.y)) {
-      data.cursor.onclick = null
-      validate(data.puzzle)
-
-      if (data.puzzle.valid) {
-        PLAY_SOUND('success')
-        var animation = 'line-success'
-      } else {
-        PLAY_SOUND('fail')
-        var animation = 'line-fail'
-      }
-      data.animations.insertRule('.' + data.svg.id + ' {animation: 1s 1 forwards ' + animation + '}')
-    } else if (event.which == 3) { // Right-clicked, not at the end: Clear puzzle
-      PLAY_SOUND('abort')
-      _clearGrid(data.svg)
-    } else { // Exit lock but allow resuming from the cursor
-      data.cursor.onclick = function(event) {
-        if (this.parentElement != data.svg) return // Another puzzle is live, so data is gone
-        data.tracing = true
-        elem.requestPointerLock()
-      }
-    }
+    onTraceEnd(svg, puzzle)
     document.exitPointerLock()
+  }
+}
+
+function onTraceStart(svg, puzzle, x, y) {
+  // Clean previous state
+  _clearGrid(svg)
+
+  var cursor = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+  svg.appendChild(cursor)
+  cursor.setAttribute('r', 12)
+  cursor.setAttribute('fill', CURSOR)
+  cursor.setAttribute('stroke', 'black')
+  cursor.setAttribute('stroke-width', '2px')
+  cursor.setAttribute('stroke-opacity', '0.4')
+  cursor.setAttribute('class', 'cursor')
+  cursor.setAttribute('cx', x)
+  cursor.setAttribute('cy', y)
+
+  var bboxDebug = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+  svg.appendChild(bboxDebug)
+  bboxDebug.setAttribute('fill', 'white')
+  bboxDebug.setAttribute('opacity', 0.3)
+
+  data = {
+    'tracing':true,
+    'bbox':new BoundingBox(x - 12, x + 12, y - 12, y + 12),
+    'bboxDebug':bboxDebug,
+    'svg':svg,
+    // Cursor element and location
+    'cursor': cursor,
+    'x':x,
+    'y':y,
+    // Position within puzzle.grid
+    'pos':{'x':puzzle.start.x, 'y':puzzle.start.y},
+    'puzzle':Puzzle.deserialize(puzzle.serialize()),
+    'path':[],
+  }
+  data.path.push(new PathSegment('none'))
+  data.puzzle.setCell(puzzle.start.x, puzzle.start.y, true)
+
+  for (var styleSheet of document.styleSheets) {
+    if (styleSheet.title == 'animations') {
+      data.animations = styleSheet
+      for (var i = 0; i < styleSheet.cssRules.length; i++) {
+        var rule = styleSheet.cssRules[i]
+        if (rule.selectorText == '.' + data.svg.id) {
+          styleSheet.deleteRule(i--)
+        }
+      }
+      break
+    }
+  }
+}
+
+function onTraceEnd(svg, puzzle) {
+  // Signal the onMouseMove to stop accepting input (race condition)
+  data.tracing = false
+
+  // At endpoint and not in raw box -> In true endpoint
+  if (data.puzzle.isEndpoint(data.pos.x, data.pos.y) && !data.bbox.inRaw(data.x, data.y)) {
+    data.cursor.onclick = null
+    validate(data.puzzle)
+
+    if (data.puzzle.valid) {
+      PLAY_SOUND('success')
+      var animation = 'line-success'
+    } else {
+      PLAY_SOUND('fail')
+      var animation = 'line-fail'
+    }
+    data.animations.insertRule('.' + data.svg.id + ' {animation: 1s 1 forwards ' + animation + '}')
+  } else if (event.which == 3) { // Right-clicked, not at the end: Clear puzzle
+    PLAY_SOUND('abort')
+    _clearGrid(data.svg)
+  } else { // Exit lock but allow resuming from the cursor
+    data.cursor.onclick = function(event) {
+      if (this.parentElement != data.svg) return // Another puzzle is live, so data is gone
+      data.tracing = true
+      elem.requestPointerLock()
+    }
   }
 }
 
@@ -240,7 +247,7 @@ document.onpointerlockchange = function() {
   } else {
     var sens = document.getElementById('sens').value
     document.onmousemove = function(event) {
-      _onMove(sens * event.movementX, sens * event.movementY)
+      onMove(sens * event.movementX, sens * event.movementY)
     }
     document.ontouchmove = function(event) {
       // TODO: Save the identifier & x/y from the touchstart, then compute deltas
@@ -249,7 +256,7 @@ document.onpointerlockchange = function() {
   }
 }
 
-function _onMove(dx, dy) {
+function onMove(dx, dy) {
   if (!data.tracing) return
   var width = (data.pos.x%2 == 0 ? 24 : 58)
   var height = (data.pos.y%2 == 0 ? 24 : 58)
@@ -418,8 +425,7 @@ function _pushCursor(dx, dy, width, height) {
         data.y = data.bbox.middle.y
       }
       return
-    // >= here so that there is no default case -- movement must be handled.
-    } else if (data.y >= data.bbox.middle.y) {
+    } else if (data.y > data.bbox.middle.y) {
       _push(dx, dy, 'leftright', 'top')
       // Overshot the intersection and appears to be trying to turn
       if (data.y < data.bbox.middle.y && Math.abs(dx) * turnMod > Math.abs(dy)) {
@@ -430,9 +436,12 @@ function _pushCursor(dx, dy, width, height) {
     }
   }
 
-  // Normal movement
-  data.x += dx
-  data.y += dy
+  // No collision, limit movement to X or Y only to prevent out-of-bounds
+  if (Math.abs(dx) > Math.abs(dy)) {
+    data.x += dx
+  } else {
+    data.y += dy
+  }
 }
 
 function _gapCollision() {
@@ -519,16 +528,13 @@ function _changePos(moveDir) {
     data.path.pop().destroy()
     data.puzzle.setCell(data.pos.x, data.pos.y, false)
   }
-  console.log('<522>')
   if (moveDir == 'left') {
     data.pos.x--
     if (data.puzzle.pillar && data.pos.x < 0) { // Wrap around the left
-      console.log('<525>')
       data.x += data.puzzle.grid.length * 41
       data.pos.x += data.puzzle.grid.length
       data.bbox.shift('right', data.puzzle.grid.length * 41 - 82)
       data.bbox.shift('right', 58)
-      console.log(data.x, data.pos.x)
       data.cursor.setAttribute('cx', data.x)
     } else {
       data.bbox.shift('left', (data.pos.x%2 == 0 ? 24 : 58))

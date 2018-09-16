@@ -27,6 +27,18 @@ function draw(puzzle, target='puzzle') {
   rect.setAttribute('width', pixelWidth - 10) // Removing border
   rect.setAttribute('height', pixelHeight - 10) // Removing border
 
+  _drawGrid(puzzle, svg, target)
+  // Draw cell symbols after so they overlap the lines, if necessary
+  _drawSymbols(puzzle, svg, target)
+  _drawStartAndEnd(puzzle, svg)
+
+  if (puzzle.getCell(puzzle.start.x, puzzle.start.y) == true) {
+    _drawSolution(svg, puzzle, puzzle.start.x, puzzle.start.y)
+  }
+}
+
+function _drawGrid(puzzle, svg, target) {
+
   for (var x=0; x<puzzle.grid.length; x++) {
     for (var y=0; y<puzzle.grid[x].length; y++) {
       var line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
@@ -86,13 +98,9 @@ function draw(puzzle, target='puzzle') {
       }
     }
   }
-  if (puzzle.pillar) {
-    for (var y=0; y<puzzle.grid[0].length; y++) {
+}
 
-    }
-  }
-
-  // Draw cell symbols after so they overlap the lines, if necessary
+function _drawSymbols(puzzle, svg, target) {
   for (var x=1; x<puzzle.grid.length; x+=2) {
     for (var y=1; y<puzzle.grid[x].length; y+=2) {
       if (puzzle.grid[x][y]) {
@@ -122,7 +130,9 @@ function draw(puzzle, target='puzzle') {
     if (gap.x%2 == 0 && gap.y%2 == 1) params.rot = 1
     drawSymbolWithSvg(svg, params)
   }
+}
 
+function _drawStartAndEnd(puzzle, svg) {
   drawSymbolWithSvg(svg, {
     'type':'start',
     'width': 58,
@@ -130,9 +140,11 @@ function draw(puzzle, target='puzzle') {
     'x': puzzle.start.x*41 + 23,
     'y': puzzle.start.y*41 + 23,
   })
-  svg.lastChild.onclick = svg.lastChild.ontouchstart = function(event) {
+  var start = svg.lastChild
+  start.onclick = start.ontouchstart = function(event) {
     trace(this, event, puzzle)
   }
+  start.id = 'start' // TODO: Gross?
 
   if (puzzle.end.dir == undefined) {
     if (puzzle.end.x == 0) {
@@ -153,4 +165,37 @@ function draw(puzzle, target='puzzle') {
     'x': puzzle.end.x*41 + 23,
     'y': puzzle.end.y*41 + 23,
   })
+}
+
+// TODO: Remove data.puzzle when/if I remove the trace copy
+function _drawSolution(svg, puzzle, x, y) {
+  onTraceStart(svg, puzzle, 52, 380)
+
+  // Limited because there is a chance of infinite looping with bad input data.
+  for (var i=0; i<1000; i++) {
+    var lastDir = data.path[data.path.length - 1].dir
+    console.log(data.path.length, JSON.stringify(data.path))
+    console.log(x, y, lastDir)
+    var dx = 0
+    var dy = 0
+    if (lastDir != 'right' && data.puzzle.getCell(x - 1, y) == true) { // Left
+      dx = -1
+    } else if (lastDir != 'left' && data.puzzle.getCell(x + 1, y) == true) { // Right
+      dx = 1
+    } else if (lastDir != 'bottom' && data.puzzle.getCell(x, y - 1) == true) { // Top
+      dy = -1
+    } else if (lastDir != 'top' && data.puzzle.getCell(x, y + 1) == true) { // Bottom
+      dy = 1
+    } else { // Unable to follow path any further, reached an endpoint
+      break
+    }
+    console.log(dx, dy)
+    x += dx
+    y += dy
+    data.puzzle.setCell(x, y, false)
+    onMove(41 * dx, 41 * dy)
+    data.puzzle.setCell(x, y, true)
+    console.log(data.x, data.y)
+  }
+
 }
