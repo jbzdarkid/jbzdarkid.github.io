@@ -22,7 +22,7 @@ In vague order of importance.
 - Flash for errors (Invisible Dots)
 - Colored Symmetry -> Probably want line color 0/1/2 instead of true/false
 - Colored Dots
-
+!- Feature complete
 
 !- Small things / Bugs
 - Zero size polys fail when zero-size negas don't
