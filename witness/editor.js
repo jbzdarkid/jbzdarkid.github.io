@@ -312,7 +312,7 @@ function _onElementClicked(elem) {
     if (activeParams.type == 'dot' && !foundDot) puzzle.dots.push({'x':x, 'y':y})
   } else if (['square', 'star', 'nega'].includes(activeParams.type)) {
     if (x%2 != 1 || y%2 != 1) return
-    // Only change one thing at a time -- if you change color, don't toggle the symbol
+    // Only remove the element if it's an exact match
     if (puzzle.grid[x][y].type == activeParams.type
      && puzzle.grid[x][y].color == activeParams.color) {
       puzzle.grid[x][y] = false
@@ -324,7 +324,7 @@ function _onElementClicked(elem) {
     }
   } else if (['poly', 'ylop'].includes(activeParams.type)) {
     if (x%2 != 1 || y%2 != 1) return
-    // Only change one thing at a time -- if you change color, don't toggle the symbol
+    // Only remove the element if it's an exact match
     if (puzzle.grid[x][y].type == activeParams.type
      && puzzle.grid[x][y].color == activeParams.color
      && puzzle.grid[x][y].polyshape == activeParams.polyshape
@@ -340,21 +340,19 @@ function _onElementClicked(elem) {
     }
   } else if (activeParams.type == 'triangle') {
     if (x%2 != 1 || y%2 != 1) return
-    var count = 0
-    if (puzzle.grid[x][y].type == activeParams.type) {
-      count = puzzle.grid[x][y].count
-      // Only change one thing at a time -- if you change color, count shouldn't change as well.
-      if (activeParams.color != puzzle.grid[x][y].color) {
-        count--
+    // Only increment count if exact match
+    if (puzzle.grid[x][y].type == activeParams.type
+     && puzzle.grid[x][y].color == activeParams.color) {
+      puzzle.grid[x][y].count = puzzle.grid[x][y].count % 3 + 1
+      // Remove when it matches activeParams -- this allows fluid cycling
+      if (puzzle.grid[x][y].count == activeParams.count) {
+        puzzle.grid[x][y] = false
       }
-    }
-    if (puzzle.grid[x][y].count == 3) {
-      puzzle.grid[x][y] = false
     } else {
       puzzle.grid[x][y] = {
-        'type': activeParams.type,
-        'color': activeParams.color,
-        'count': count+1,
+        'type':activeParams.type,
+        'color':activeParams.color,
+        'count':activeParams.count
       }
     }
   }
@@ -363,21 +361,21 @@ function _onElementClicked(elem) {
   _redraw(puzzle)
 }
 
+var symbolData = {
+  'start': {'type':'start'},
+  'end': {'type':'end', 'y':18, 'dir':'top'},
+  'gap': {'type':'gap'},
+  'dot': {'type':'dot'},
+  'square': {'type':'square'},
+  'star': {'type':'star'},
+  'nega': {'type':'nega'},
+  'triangle': {'type':'triangle', 'count':1},
+  'poly': {'type':'poly', 'rot':0, 'polyshape':71},
+  'rpoly': {'type':'poly', 'rot':'all', 'polyshape':71},
+  'ylop': {'type':'ylop', 'rot':0, 'polyshape':71},
+  'rylop': {'type':'ylop', 'rot':'all', 'polyshape':71},
+}
 function _drawSymbolButtons() {
-  var symbolData = {
-    'start': {'type':'start'},
-    'end': {'type':'end', 'y':18, 'dir':'top'},
-    'gap': {'type':'gap'},
-    'dot': {'type':'dot'},
-    'square': {'type':'square'},
-    'star': {'type':'star'},
-    'nega': {'type':'nega'},
-    'triangle': {'type':'triangle', 'count':1},
-    'poly': {'type':'poly', 'rot':0, 'polyshape':71},
-    'rpoly': {'type':'poly', 'rot':'all', 'polyshape':71},
-    'ylop': {'type':'ylop', 'rot':0, 'polyshape':71},
-    'rylop': {'type':'ylop', 'rot':'all', 'polyshape':71},
-  }
   var symbolTable = document.getElementById('symbolButtons')
   for (var button of symbolTable.getElementsByTagName('button')) {
     var params = symbolData[button.id]
@@ -405,6 +403,15 @@ function _drawSymbolButtons() {
           activeParams = Object.assign(activeParams, this.params)
           _drawSymbolButtons()
         }
+      }
+    } else if (button.id == 'triangle') {
+      button.onclick = function() {
+        if (activeParams.id == this.id) {
+          symbolData.triangle.count = symbolData.triangle.count % 3 + 1
+          activeParams.count = symbolData.triangle.count
+        }
+        activeParams = Object.assign(activeParams, this.params)
+        _drawSymbolButtons()
       }
     } else {
       button.onclick = function() {

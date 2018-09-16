@@ -1,7 +1,5 @@
 In vague order of importance.
 
-- Editor improvements
--- Click on triangle button to toggle count, as well as clicking in-editor
 !- Merge back to master
 -- Move generate out of engine?
 -- Fix generation colors
