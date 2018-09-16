@@ -133,7 +133,7 @@ class PathSegment {
 
 var data
 
-function _clearGrid(svg) {
+function _clearGrid(svg, puzzle) {
   while (svg.getElementsByClassName('cursor').length > 0) {
     svg.getElementsByClassName('cursor')[0].remove()
   }
@@ -141,25 +141,17 @@ function _clearGrid(svg) {
   while (svg.getElementsByClassName('line').length > 0) {
     svg.getElementsByClassName('line')[0].remove()
   }
+
+  puzzle.clearLines()
 }
 
 function trace(elem, event, puzzle) {
   var svg = elem.parentElement
   if (document.pointerLockElement == null) { // Started tracing a solution
     PLAY_SOUND('start')
+    // Cleans drawn lines & puzzle state
+    _clearGrid(svg, puzzle)
     onTraceStart(svg, puzzle, elem)
-    for (var styleSheet of document.styleSheets) {
-      if (styleSheet.title == 'animations') {
-        data.animations = styleSheet
-        break
-      }
-    }
-    for (var i = 0; i < data.animations.cssRules.length; i++) {
-      var rule = data.animations.cssRules[i]
-      if (rule.selectorText == '.' + data.svg.id) {
-        data.animations.deleteRule(i--)
-      }
-    }
     elem.requestPointerLock()
   } else {
     event.stopPropagation()
@@ -167,21 +159,21 @@ function trace(elem, event, puzzle) {
     data.tracing = false
 
     // At endpoint and not in raw box -> In true endpoint
-    if (data.puzzle.isEndpoint(data.pos.x, data.pos.y) && !data.bbox.inRaw(data.x, data.y)) {
+    if (puzzle.isEndpoint(data.pos.x, data.pos.y) && !data.bbox.inRaw(data.x, data.y)) {
       data.cursor.onclick = null
-      validate(data.puzzle)
+      validate(puzzle)
 
-      if (data.puzzle.valid) {
+      if (puzzle.valid) {
         PLAY_SOUND('success')
         var animation = 'line-success'
       } else {
         PLAY_SOUND('fail')
         var animation = 'line-fail'
       }
-      data.animations.insertRule('.' + data.svg.id + ' {animation: 1s 1 forwards ' + animation + '}')
+      data.animations.insertRule('.' + svg.id + ' {animation: 1s 1 forwards ' + animation + '}')
     } else if (event.which == 3) { // Right-clicked, not at the end: Clear puzzle
       PLAY_SOUND('abort')
-      _clearGrid(data.svg)
+      _clearGrid(svg, puzzle)
     } else { // Exit lock but allow resuming from the cursor
       data.cursor.onclick = function(event) {
         if (this.parentElement != data.svg) return // Another puzzle is live, so data is gone
@@ -196,14 +188,6 @@ function trace(elem, event, puzzle) {
 function onTraceStart(svg, puzzle, start) {
   var x = parseFloat(start.getAttribute('cx'))
   var y = parseFloat(start.getAttribute('cy'))
-
-  // Clean previous state
-  _clearGrid(svg)
-  for (var x=0; x<puzzle.grid.length; x++) {
-    for (var y=0; y<puzzle.grid[x].length; y++) {
-      puzzle.setCell(x, y, false)
-    }
-  }
 
   var cursor = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
   svg.appendChild(cursor)
@@ -228,7 +212,6 @@ function onTraceStart(svg, puzzle, start) {
     var bbox = new BoundingBox(x - 12, x + 12, y - 12, y + 12)
   }
 
-
   data = {
     'tracing':true,
     'bbox':bbox,
@@ -240,8 +223,20 @@ function onTraceStart(svg, puzzle, start) {
     'y':y,
     // Position within puzzle.grid
     'pos':{'x':puzzle.start.x, 'y':puzzle.start.y},
-    'puzzle':Puzzle.deserialize(puzzle.serialize()),
+    'puzzle':puzzle,
     'path':[],
+  }
+  for (var styleSheet of document.styleSheets) {
+    if (styleSheet.title == 'animations') {
+      data.animations = styleSheet
+      break
+    }
+  }
+  for (var i = 0; i < data.animations.cssRules.length; i++) {
+    var rule = data.animations.cssRules[i]
+    if (rule.selectorText == '.' + svg.id) {
+      data.animations.deleteRule(i--)
+    }
   }
   data.path.push(new PathSegment('none'))
   data.puzzle.setCell(puzzle.start.x, puzzle.start.y, true)

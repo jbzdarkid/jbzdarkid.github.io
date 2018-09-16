@@ -191,6 +191,15 @@ class Puzzle {
     return badHints.concat(goodHints)
   }
 
+  clearLines() {
+    for (var x=0; x<this.grid.length; x++) {
+      for (var y=0; y<this.grid[x].length; y++) {
+        if (x%2 == 1 && y%2 == 1) continue
+        this.grid[x][y] = false
+      }
+    }
+  }
+
   _innerLoop(x, y, region) {
     region.setCell(x, y)
     this.setCell(x, y, true)

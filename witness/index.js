@@ -115,6 +115,7 @@ window.onload = function() {
 function showHint() {
   if (window.hints.length <= 0) return
   window.hints = puzzleData.puzzle.showHint(window.hints)
+  puzzleData.puzzle.clearLines()
   draw(puzzleData.puzzle)
 }
 
