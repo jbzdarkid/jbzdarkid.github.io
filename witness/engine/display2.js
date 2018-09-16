@@ -30,10 +30,10 @@ function draw(puzzle, target='puzzle') {
   _drawGrid(puzzle, svg, target)
   // Draw cell symbols after so they overlap the lines, if necessary
   _drawSymbols(puzzle, svg, target)
-  _drawStartAndEnd(puzzle, svg)
+  _drawStartAndEnd(puzzle, svg, target)
 
   if (puzzle.getCell(puzzle.start.x, puzzle.start.y) == true) {
-    _drawSolution(svg, puzzle, puzzle.start.x, puzzle.start.y)
+    _drawSolution(puzzle, svg, target)
   }
 }
 
@@ -132,7 +132,7 @@ function _drawSymbols(puzzle, svg, target) {
   }
 }
 
-function _drawStartAndEnd(puzzle, svg) {
+function _drawStartAndEnd(puzzle, svg, target) {
   drawSymbolWithSvg(svg, {
     'type':'start',
     'width': 58,
@@ -141,10 +141,10 @@ function _drawStartAndEnd(puzzle, svg) {
     'y': puzzle.start.y*41 + 23,
   })
   var start = svg.lastChild
-  start.onclick = start.ontouchstart = function(event) {
+  start.onclick = function(event) {
     trace(this, event, puzzle)
   }
-  start.id = 'start' // TODO: Gross?
+  start.id = target + '_start'
 
   if (puzzle.end.dir == undefined) {
     if (puzzle.end.x == 0) {
@@ -168,14 +168,16 @@ function _drawStartAndEnd(puzzle, svg) {
 }
 
 // TODO: Remove data.puzzle when/if I remove the trace copy
-function _drawSolution(svg, puzzle, x, y) {
-  onTraceStart(svg, puzzle, 52, 380)
+function _drawSolution(puzzle, svg, target) {
+  var x = puzzle.start.x
+  var y = puzzle.start.y
+  var start = document.getElementById(target + '_start')
+
+  onTraceStart(svg, puzzle, start)
 
   // Limited because there is a chance of infinite looping with bad input data.
   for (var i=0; i<1000; i++) {
     var lastDir = data.path[data.path.length - 1].dir
-    console.log(data.path.length, JSON.stringify(data.path))
-    console.log(x, y, lastDir)
     var dx = 0
     var dy = 0
     if (lastDir != 'right' && data.puzzle.getCell(x - 1, y) == true) { // Left
@@ -189,13 +191,22 @@ function _drawSolution(svg, puzzle, x, y) {
     } else { // Unable to follow path any further, reached an endpoint
       break
     }
-    console.log(dx, dy)
     x += dx
     y += dy
     data.puzzle.setCell(x, y, false)
     onMove(41 * dx, 41 * dy)
     data.puzzle.setCell(x, y, true)
-    console.log(data.x, data.y)
+  }
+
+  // Move into endpoint
+  if (puzzle.end.dir == 'left') {
+    onMove(-24, 0)
+  } else if (puzzle.end.dir == 'right') {
+    onMove(24, 0)
+  } else if (puzzle.end.dir == 'top') {
+    onMove(0, -24)
+  } else if (puzzle.end.dir == 'bottom') {
+    onMove(0, 24)
   }
 
 }
