@@ -19,7 +19,7 @@ function draw(puzzle, target='puzzle') {
   var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
   svg.appendChild(rect)
   rect.setAttribute('stroke-width', 10)
-  rect.setAttribute('stroke', 'black')
+  rect.setAttribute('stroke', BORDER)
   rect.setAttribute('fill', BACKGROUND)
   // Accounting for the border thickness
   rect.setAttribute('x', 5)

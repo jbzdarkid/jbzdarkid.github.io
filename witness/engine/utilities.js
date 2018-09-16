@@ -54,7 +54,7 @@ YELLOW = 'yellow'
 if (localStorage.theme == "true") { // Dark scheme
   BACKGROUND = '#221' // '#000'
   FOREGROUND = '#751' // '#873'
-  BORDER = '10px solid #666'
+  BORDER = '#666'
   LINE_DEFAULT = '#888' // '#FD8'
   LINE_SUCCESS = '#BBB' // '#FA0'
   LINE_FAIL = '#000'
@@ -66,7 +66,7 @@ if (localStorage.theme == "true") { // Dark scheme
 } else { // Light scheme
   BACKGROUND = '#0A8'
   FOREGROUND = '#344'
-  BORDER = '10px solid #000'
+  BORDER = '#000'
   LINE_DEFAULT = '#AAA'
   LINE_SUCCESS = '#FFF'
   LINE_FAIL = '#000'

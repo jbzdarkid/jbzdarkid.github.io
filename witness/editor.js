@@ -6,6 +6,7 @@ var dragging = false
 var solutions = []
 
 window.onload = function() {
+  recolor()
   var activePuzzle = window.localStorage.getItem('activePuzzle')
   var serialized = window.localStorage.getItem(activePuzzle)
 
@@ -344,7 +345,7 @@ function _drawSymbolButtons() {
     params.width = 64
     params.border = 2
     if (activeParams.id == button.id) {
-      button.parentElement.style.background = 'black'
+      button.parentElement.style.background = BORDER
     } else {
       button.parentElement.style.background = null
     }
@@ -382,7 +383,7 @@ function _drawColorButtons() {
     params.text = button.id
     params.color = button.id
     if (activeParams.color == button.id) {
-      button.parentElement.style.background = 'black'
+      button.parentElement.style.background = BORDER
     } else {
       button.parentElement.style.background = null
     }
