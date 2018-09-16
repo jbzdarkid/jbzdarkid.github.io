@@ -16,7 +16,7 @@
     <div style="position:absolute; float:left">
       <input style="transform:scale(2)" id="theme" type="checkbox" onchange="localStorage.theme = this.checked; location.reload()">
       <script>document.getElementById('theme').checked = (localStorage.theme == "true")</script>
-      <label for="theme"> Dark theme</label>
+      <label for="theme">Dark theme</label>
     </div>
     <div id="solutionViewer" style="position:absolute; right:8; display:none">
       <button id="previousSolution">&larr;</button>
@@ -34,6 +34,13 @@
       <textarea style="display:none" id="export"></textarea>
       <button onclick="playPuzzle()">Play</button>
       <button onclick="solvePuzzle()">Solve</button>
+      <br>
+      <input style="transform:scale(2)" id="hSymBox" type="checkbox" onchange="setHSymmetry(this.checked)" disabled>
+      <label cellpadding="10" for="pillarBox" style="margin-right: 20">Horizontal Symmetry</label>
+      <input style="transform:scale(2)" id="vSymBox" type="checkbox" onchange="setVSymmetry(this.checked)" disabled>
+      <label for="pillarBox" style="margin-right: 20">Vertical Symmetry</label>
+      <input style="transform:scale(2)" id="pillarBox" type="checkbox" onchange="setPillar(this.checked)">
+      <label for="pillarBox">Pillar</label>
     </div>
 
     <table id="meta">

@@ -1,16 +1,16 @@
 In vague order of importance.
 
 - Editor improvements
--- Pillar checkbox (and symmetry buttons, disabled?)
 -- Click on triangle button to toggle count, as well as clicking in-editor
+-- Click on endpoints again to rotate
 - Some way to pass data.puzzle into window.showHint
 -- Maybe move hint logic into tracing?
 -- Or, stop cloning the puzzle in trace(), and just clear the grid instead
-- Solution draw with native tracing
 !- Merge back to master
 -- Move generate out of engine?
 -- Fix generation colors
 -- Add missing daily styles
+- Start and end mid-segment
 - Multi start/end
 - Dots & gaps into the grid
 - Symmetry

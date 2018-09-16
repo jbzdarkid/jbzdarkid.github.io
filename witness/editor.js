@@ -146,6 +146,29 @@ function solvePuzzle() {
   _showSolution(0, puzzle)
 }
 
+function setHSymmetry(value) {
+
+}
+
+function setVSymmetry(value) {
+
+}
+
+function setPillar(value) {
+  if (value == false && puzzle.grid.length%2 == 0) { // Non-pillar
+    puzzle.pillar = false
+    resizePuzzle(1, 0, 'right')
+  } else if (value == true && puzzle.grid.length%2 == 1) { // Pillar
+    if (puzzle.end.dir == 'right' || puzzle.end.dir == 'left') {
+      puzzle.end.y = 0
+      puzzle.end.x = 0
+      puzzle.end.dir = 'top'
+    }
+    puzzle.pillar = true
+    resizePuzzle(-1, 0, 'right')
+  }
+}
+
 function _showSolution(num, puzzle) {
   if (num < 0) num = solutions.length - 1
   if (num >= solutions.length) num = 0
@@ -209,6 +232,7 @@ function _tryUpdatePuzzle(serialized) {
 
 function _redraw(puzzle) {
   document.getElementById('puzzleName').innerText = puzzle.name
+  document.getElementById('pillarBox').checked = puzzle.pillar
   draw(puzzle)
   var puzzleElement = document.getElementById('puzzle')
   document.getElementById('solutionViewer').style.display = 'none'
@@ -475,9 +499,12 @@ function _shapeChooserClick(event, cell) {
   _drawSymbolButtons()
 }
 
+// All puzzle elements remain fixed, the edge you're dragging is where the new
+// row/column is added. The endpoint will try to stay fixed, but will be pulled
+// to remain against the edge.
 function resizePuzzle(dx, dy, id) {
-  var newWidth = puzzle.grid.length + 2 * dx
-  var newHeight = puzzle.grid[0].length + 2 * dy
+  var newWidth = puzzle.grid.length + dx
+  var newHeight = puzzle.grid[0].length + dy
 
   if (newWidth < 0 || newHeight < 0) return false
   // TODO: Maximum size goes here
@@ -509,27 +536,36 @@ function resizePuzzle(dx, dy, id) {
 
   var newDots = []
   for (var dot of puzzle.dots) {
-    if (id.includes('right')) dot.x += 2 * dx
-    if (id.includes('bottom')) dot.y += 2 * dy
-    if (dot.x < newWidth && dot.y < newHeight) newDots.push(dot)
+    if (id.includes('left')) dot.x += dx
+    if (id.includes('top')) dot.y += dy
+    if (dot.x >= 0 && dot.x < newWidth
+     && dot.y >= 0 && dot.y < newHeight) {
+      newDots.push(dot)
+    }
   }
   puzzle.dots = newDots
   var newGaps = []
   for (var gap of puzzle.gaps) {
-    if (id.includes('right')) gap.x += 2 * dx
-    if (id.includes('bottom')) gap.y += 2 * dy
-    if (gap.x < newWidth && gap.y < newHeight) newGaps.push(gap)
+    if (id.includes('left')) gap.x += dx
+    if (id.includes('top')) gap.y += dy
+    if (gap.x >= 0 && gap.x < newWidth
+     && gap.y >= 0 && gap.y < newHeight) {
+      newGaps.push(gap)
+    }
   }
   puzzle.gaps = newGaps
 
   if (id.includes('left')) {
-    puzzle.start.x += 2 * dx
+    puzzle.start.x += dx
   }
-  // Endpoint needs to be dragged always, so it doesn't fall into the center.
-  puzzle.end.x += 2 * dx
   if (id.includes('top')) {
-    puzzle.start.y += 2 * dy
-    puzzle.end.y += 2 * dy
+    puzzle.start.y += dy
+  }
+  if (puzzle.end.dir == 'right' && id.includes('right')) {
+    puzzle.end.x += dx
+  }
+  if (puzzle.end.dir == 'bottom' && id.includes('bottom')) {
+    puzzle.end.y += dy
   }
   if (puzzle.start.x < 0) puzzle.start.x = 0
   if (puzzle.start.x >= newWidth) puzzle.start.x = newWidth - 1
@@ -583,7 +619,7 @@ function _dragMove(event, elem) {
   }
 
   if (Math.abs(dx) >= 82 || Math.abs(dy) >= 82) {
-    if (!resizePuzzle(Math.round(dx/82), Math.round(dy/82), elem.id)) return
+    if (!resizePuzzle(2*Math.round(dx/82), 2*Math.round(dy/82), elem.id)) return
     // If resize succeeded, set a new reference point for future drag operations
     dragging.x = event.clientX
     dragging.y = event.clientY
