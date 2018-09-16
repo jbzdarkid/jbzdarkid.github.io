@@ -271,9 +271,24 @@ function _onElementClicked(elem) {
     puzzle.start = {'x':x, 'y':y}
   } else if (activeParams.type == 'end') {
     if (x%2 != 0 || y%2 != 0) return
-    if (x == 0 || y == 0 || x == puzzle.grid.length - 1 || y == puzzle.grid[x].length - 1) {
-      puzzle.end = {'x':x, 'y':y}
+    var validDirs = []
+    if (x == 0 && !puzzle.pillar) validDirs.push('left')
+    if (x == puzzle.grid.length - 1 && !puzzle.pillar) validDirs.push('right')
+    if (y == 0) validDirs.push('top')
+    if (y == puzzle.grid[x].length - 1) validDirs.push('bottom')
+    if (validDirs.length == 0) return
+
+    var index = validDirs.indexOf(puzzle.end.dir)
+    if (index != -1) {
+      if (x == puzzle.end.x && y == puzzle.end.y) {
+        var dir = validDirs[index + 1 % validDirs.length]
+      } else {
+        var dir = validDirs[index]
+      }
+    } else {
+      var dir = validDirs[0]
     }
+    puzzle.end = {'x':x, 'y':y, 'dir':dir}
   } else if (['gap', 'dot'].includes(activeParams.type)) {
     if (x%2 == 1 && y%2 == 1) return
     if (activeParams.type == 'gap' && x%2 == 0 && y%2 == 0) return
