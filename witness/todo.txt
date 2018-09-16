@@ -1,9 +1,8 @@
 In vague order of importance.
 
-!- Merge back to master
--- Move generate out of engine?
--- Fix generation colors
--- Add missing daily styles
+- Move generate out of engine?
+- Fix generation colors
+- Add missing daily styles
 - Solver compatibility with mid-segment start
 - Solution draw with mid-segment start
 - Mid-segment endpoints
