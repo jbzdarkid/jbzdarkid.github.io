@@ -149,25 +149,27 @@ function _showSolution(num, puzzle) {
   if (num < 0) num = solutions.length - 1
   if (num >= solutions.length) num = 0
 
+  var previousSolution = document.getElementById('previousSolution')
+  var solutionCount = document.getElementById('solutionCount')
+  var nextSolution = document.getElementById('nextSolution')
+
+  // Buttons & text
   if (solutions.length < 2) { // 0 or 1 solution(s), arrows are useless
-    document.getElementById('solutionCount').innerText = solutions.length + ' of ' + solutions.length
-    document.getElementById('previousSolution').disabled = true
-    document.getElementById('nextSolution').disabled = true
+    solutionCount.innerText = solutions.length + ' of ' + solutions.length
+    previousSolution.disabled = true
+    nextSolution.disabled = true
   } else {
-    document.getElementById('solutionCount').innerText = (num + 1) + ' of ' + solutions.length
-    document.getElementById('previousSolution').disabled = null
-    document.getElementById('nextSolution').disabled = null
-    console.log(solutions[num])
+    solutionCount.innerText = (num + 1) + ' of ' + solutions.length
+    previousSolution.disabled = null
+    nextSolution.disabled = null
+    previousSolution.onclick = function() {_showSolution(num - 1, puzzle)}
+    nextSolution.onclick = function() {_showSolution(num + 1, puzzle)}
+  }
+  if (solutions[num] != undefined) {
     solutions[num].name = puzzle.name
     _redraw(solutions[num])
   }
   document.getElementById('solutionViewer').style.display = null
-  document.getElementById('previousSolution').onclick = function() {
-    _showSolution(num - 1, puzzle)
-  }
-  document.getElementById('nextSolution').onclick = function() {
-    _showSolution(num + 1, puzzle)
-  }
 }
 
 function _addPuzzleToList(puzzleName) {
@@ -209,15 +211,35 @@ function _redraw(puzzle) {
   draw(puzzle)
   var puzzleElement = document.getElementById('puzzle')
   document.getElementById('solutionViewer').style.display = 'none'
-  //for (var elem of puzzleElement.getElementsByTagName('td')) {
-  //  elem.onclick = function() {_onElementClicked(this.id)}
-  //}
+
+  var xPos = 40
+  var topLeft = {'x':40, 'y':40}
+  for (var x=0; x<puzzle.grid.length; x++) {
+    var yPos = 40
+    for (var y=0; y<puzzle.grid[x].length; y++) {
+      var width = (x%2 == 0 ? 24 : 58)
+      var height = (y%2 == 0 ? 24 : 58)
+      var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+      puzzleElement.appendChild(rect)
+      rect.setAttribute('x', xPos)
+      rect.setAttribute('y', yPos)
+      rect.setAttribute('width', width)
+      rect.setAttribute('height', height)
+      rect.setAttribute('fill', 'white')
+      rect.setAttribute('opacity', 0)
+      yPos += height
+      rect.id = x + '_' + y
+      rect.onclick = function() {_onElementClicked(this)}
+      rect.onmouseover = function() {this.setAttribute('opacity', 0.1)}
+      rect.onmouseout = function() {this.setAttribute('opacity', 0)}
+    }
+    xPos += width
+  }
 }
 
-function _onElementClicked(id)
-{
-  var x = parseInt(id.split('_')[1])
-  var y = parseInt(id.split('_')[2])
+function _onElementClicked(elem) {
+  var x = parseInt(elem.id.split('_')[0])
+  var y = parseInt(elem.id.split('_')[1])
 
   if (['start', 'end'].includes(activeParams.type)) {
     if (x%2 != 0 || y%2 != 0) return

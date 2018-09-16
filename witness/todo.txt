@@ -1,8 +1,7 @@
 In vague order of importance.
 
 - Editor improvements
--- By hand interaction regions so that it works with the new renderer
--- Pillar checkbox (and symmetry buttons, disabled)
+-- Pillar checkbox (and symmetry buttons, disabled?)
 -- Click on triangle button to toggle count, as well as clicking in-editor
 - Some way to pass data.puzzle into window.showHint
 -- Maybe move hint logic into tracing?
