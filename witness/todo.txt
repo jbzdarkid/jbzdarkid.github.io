@@ -1,6 +1,6 @@
 In vague order of importance.
 
-- Move generate;etc out of engine? Probably need a new folder for 'legacy' anyways.
+- Move generate, etc out of engine? Probably need a new folder for 'legacy' anyways.
 - Fix generation colors
 - Add missing daily styles
 - Rewrite polyfit to use region[0] aka int version

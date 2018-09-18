@@ -159,6 +159,10 @@ function setPillar(value) {
     puzzle.pillar = false
     resizePuzzle(1, 0, 'right')
   } else if (value == true && puzzle.grid.length%2 == 1) { // Pillar
+    if (puzzle.grid.length <= 1) {
+      document.getElementById('pillarBox').checked = false
+      return
+    }
     if (puzzle.end.dir == 'right' || puzzle.end.dir == 'left') {
       puzzle.end.y = 0
       puzzle.end.dir = 'top'
@@ -166,7 +170,6 @@ function setPillar(value) {
     if (puzzle.end.x == puzzle.grid.length - 1) {
       puzzle.end.x = 0
     }
-
     puzzle.pillar = true
     resizePuzzle(-1, 0, 'right')
   }
@@ -533,7 +536,7 @@ function resizePuzzle(dx, dy, id) {
   var newWidth = puzzle.grid.length + dx
   var newHeight = puzzle.grid[0].length + dy
 
-  if (newWidth < 0 || newHeight < 0) return false
+  if (newWidth <= 0 || newHeight <= 0) return false
   // TODO: Maximum size goes here
 
   if (id.includes('left')) {
