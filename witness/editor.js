@@ -585,10 +585,10 @@ function resizePuzzle(dx, dy, id) {
   if (id.includes('top')) {
     puzzle.start.y += dy
   }
-  if (puzzle.end.dir == 'right' && id.includes('right')) {
+  if (puzzle.end.dir == 'right') {
     puzzle.end.x += dx
   }
-  if (puzzle.end.dir == 'bottom' && id.includes('bottom')) {
+  if (puzzle.end.dir == 'bottom') {
     puzzle.end.y += dy
   }
   if (puzzle.start.x < 0) puzzle.start.x = 0
