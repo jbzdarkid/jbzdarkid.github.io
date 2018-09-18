@@ -161,9 +161,12 @@ function setPillar(value) {
   } else if (value == true && puzzle.grid.length%2 == 1) { // Pillar
     if (puzzle.end.dir == 'right' || puzzle.end.dir == 'left') {
       puzzle.end.y = 0
-      puzzle.end.x = 0
       puzzle.end.dir = 'top'
     }
+    if (puzzle.end.x == puzzle.grid.length - 1) {
+      puzzle.end.x = 0
+    }
+
     puzzle.pillar = true
     resizePuzzle(-1, 0, 'right')
   }

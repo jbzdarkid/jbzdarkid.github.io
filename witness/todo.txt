@@ -8,6 +8,7 @@ In vague order of importance.
 - Mid-segment endpoints
 - Multi start/end
 - Dots & gaps into the grid
+-- Empty segments (not just gaps)
 - Symmetry
 !- Stable release
 - Server
