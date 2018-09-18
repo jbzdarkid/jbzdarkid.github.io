@@ -1,5 +1,10 @@
 In vague order of importance.
 
+- Show hint is adding endpoints in pillars?
+- Pillars are failing, try
+{"grid":[[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,{"type":"square"},false,{"type":"square"},false,{"type":"square"},false,{"type":"square"},false],[false,false,false,false,false,false,false,false,false],[false,{"type":"square","color":"white"},false,{"type":"square","color":"white"},false,{"type":"square","color":"white"},false,{"type":"square","color":"white"},false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false]],"start":{"x":0,"y":8},"end":{"x":0,"y":0,"dir":"top"},"dots":[],"gaps":[],"regionCache":{},"pillar":true,"name":"Unnamed Puzzle","valid":0,"negations":[]}
+- Hints are bad for triangles w/ pillars?
+- Shape Chooser is bad for small puzzles, set minimum size?
 - Move generate, etc out of engine? Probably need a new folder for 'legacy' anyways.
 - Fix generation colors
 - Add missing daily styles
