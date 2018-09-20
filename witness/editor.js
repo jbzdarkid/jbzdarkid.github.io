@@ -537,7 +537,7 @@ function resizePuzzle(dx, dy, id) {
   var newHeight = puzzle.grid[0].length + dy
 
   if (newWidth <= 0 || newHeight <= 0) return false
-  // TODO: Maximum size goes here
+  if (newWidth > 21 || newHeight > 21) return false
 
   if (id.includes('left')) {
     while (puzzle.grid.length > newWidth) puzzle.grid.shift()

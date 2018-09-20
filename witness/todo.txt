@@ -1,6 +1,5 @@
 In vague order of importance.
 
-- 10x10 max
 - Solve with pillars is slow, maybe increase warning threshold / disable in play mode?
 - Maybe remove show solution for play mode entirely?
 - Show hint is adding endpoints in pillars?
