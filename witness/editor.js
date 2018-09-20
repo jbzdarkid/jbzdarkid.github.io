@@ -242,6 +242,9 @@ function _redraw(puzzle) {
   draw(puzzle)
   var puzzleElement = document.getElementById('puzzle')
   document.getElementById('solutionViewer').style.display = 'none'
+  for (var child of puzzleElement.children) {
+    child.onclick = null
+  }
 
   var xPos = 40
   var topLeft = {'x':40, 'y':40}
