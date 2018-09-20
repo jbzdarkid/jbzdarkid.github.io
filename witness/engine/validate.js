@@ -35,6 +35,10 @@ function validate(puzzle) {
       var hasNega = false
       for (var pos of region.cells) {
         var cell = puzzle.getCell(pos.x, pos.y)
+        if (cell == undefined) {
+          console.log(regions)
+        }
+
         if (cell != false && cell.type == 'nega') {
           hasNega = true
           break

@@ -321,23 +321,23 @@ class Puzzle {
       }
     }
     var regions = []
-    var pos = {'x':1, 'y':1}
+    var pos = {'x':-1, 'y':1}
     while (true) {
-      var region = new Region(this.grid.length)
-      this._innerLoop(pos.x, pos.y, region)
-      regions.push(region)
-
       // Find the next open cell
       while (this.getCell(pos.x, pos.y) != false) {
         pos.x += 2
         if (pos.x >= this.grid.length) {
           pos = {'x':1, 'y':pos.y+2}
         }
-        if (pos.y >= this.grid[pos.x].length) {
+        if (pos.y >= this.grid[0].length) {
           this.grid = savedGrid
           return regions
         }
       }
+      
+      var region = new Region(this.grid.length)
+      this._innerLoop(pos.x, pos.y, region)
+      regions.push(region)
     }
   }
 }

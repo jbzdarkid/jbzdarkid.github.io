@@ -253,5 +253,11 @@ tests = [
     var puzzle = new Puzzle(1, 1)
     puzzle.grid[1][1] = {'type':'ylop', 'polyshape':0}
     return {'puzzle':puzzle, 'solutions':2}
+  }, function() {
+    var puzzle = new Puzzle(0, 3)
+    return {'puzzle':puzzle, 'solutions':1}
+  }, function() {
+    var puzzle = new Puzzle(3, 0)
+    return {'puzzle':puzzle, 'solutions':1}
   }
 ]
