@@ -242,6 +242,9 @@ function _redraw(puzzle) {
   draw(puzzle)
   var puzzleElement = document.getElementById('puzzle')
   document.getElementById('solutionViewer').style.display = 'none'
+  for (var child of puzzleElement.children) {
+    child.onclick = null
+  }
 
   var xPos = 40
   var topLeft = {'x':40, 'y':40}
@@ -537,7 +540,7 @@ function resizePuzzle(dx, dy, id) {
   var newHeight = puzzle.grid[0].length + dy
 
   if (newWidth <= 0 || newHeight <= 0) return false
-  // TODO: Maximum size goes here
+  if (newWidth > 21 || newHeight > 21) return false
 
   if (id.includes('left')) {
     while (puzzle.grid.length > newWidth) puzzle.grid.shift()
