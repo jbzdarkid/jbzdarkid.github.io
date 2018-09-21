@@ -1,6 +1,9 @@
 In vague order of importance.
 
+- Dots are rendering under start/end
+- 1xN and Nx1 have many troubles.
 - Show hint is adding endpoints in pillars?
+- End point is pushed into second-to-right when squishing pillars
 - Pillars are failing, try
 {"grid":[[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,{"type":"square"},false,{"type":"square"},false,{"type":"square"},false,{"type":"square"},false],[false,false,false,false,false,false,false,false,false],[false,{"type":"square","color":"white"},false,{"type":"square","color":"white"},false,{"type":"square","color":"white"},false,{"type":"square","color":"white"},false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false]],"start":{"x":0,"y":8},"end":{"x":0,"y":0,"dir":"top"},"dots":[],"gaps":[],"regionCache":{},"pillar":true,"name":"Unnamed Puzzle","valid":0,"negations":[]}
 - Hints are bad for triangles w/ pillars?
@@ -37,3 +40,6 @@ In vague order of importance.
 -- Maybe have a class="centered"
 - Search for fixme/todo and move them here
 - When start == end, can't enter end without leaving the cell
+
+!- Won't Fix
+- Tracing over gaps is possible if you go too fast
