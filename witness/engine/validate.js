@@ -222,7 +222,7 @@ function _regionCheck(puzzle, region) {
       // Stars must be in a region with exactly one other element of their color
       var count = objects['squares'] + objects['stars'] + objects['other']
       if (count != 2) {
-        // console.log('Found a '+colorKeys[i]+' star in a region with '+count+' total '+colorKeys[i]+' objects')
+        console.log('Found a', color, 'star in a region with', count, color, 'objects')
         return false
       }
     }
