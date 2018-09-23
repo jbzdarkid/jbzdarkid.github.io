@@ -1,6 +1,5 @@
 window.DISABLE_CACHE = true
-var customColor = 'gray'
-var activeParams = {'id':'', 'polyshape': 71}
+var activeParams = {'id':'', 'color':'black', 'polyshape': 71}
 var puzzle
 var dragging = false
 var solutions = []
