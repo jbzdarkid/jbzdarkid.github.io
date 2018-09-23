@@ -6,10 +6,9 @@ In vague order of importance.
 - Solve with pillars is slow, maybe increase warning threshold / disable in play mode?
 - Maybe remove show solution for play mode entirely?
 - Show hint is adding endpoints in pillars?
-- Bug with negation, see
-{"grid":[[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,{"type":"star"},false,{"type":"nega"},false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,{"type":"square","color":"white"},false,{"type":"star"},false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false]],"start":{"x":0,"y":8},"end":{"x":8,"y":0,"dir":"right"},"dots":[],"gaps":[],"regionCache":{},"pillar":false,"name":"Unnamed Puzzle","valid":0,"negations":[{"x":1,"y":7,"cell":{"type":"nega"}},{"x":1,"y":5,"cell":{"type":"star"}}]}
-- Pillars are failing, try
-{"grid":[[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,{"type":"square"},false,{"type":"square"},false,{"type":"square"},false,{"type":"square"},false],[false,false,false,false,false,false,false,false,false],[false,{"type":"square","color":"white"},false,{"type":"square","color":"white"},false,{"type":"square","color":"white"},false,{"type":"square","color":"white"},false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false]],"start":{"x":0,"y":8},"end":{"x":0,"y":0,"dir":"top"},"dots":[],"gaps":[],"regionCache":{},"pillar":true,"name":"Unnamed Puzzle","valid":0,"negations":[]}
+- Start point interaction region is still active in editor
+- Bug with negation, see tests
+- Pillars are failing, see tests
 - Hints are bad for triangles w/ pillars?
 - Shape Chooser is bad for small puzzles, set minimum size?
 - Move generate, etc out of engine? Probably need a new folder for 'legacy' anyways.
