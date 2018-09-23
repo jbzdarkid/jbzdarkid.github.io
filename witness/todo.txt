@@ -7,14 +7,17 @@ In vague order of importance.
 - Maybe remove show solution for play mode entirely?
 - Show hint is adding endpoints in pillars?
 - Start point interaction region is still active in editor
-- Bug with negation, see tests
 - Pillars are failing, see tests
 - Hints are bad for triangles w/ pillars?
 - Shape Chooser is bad for small puzzles, set minimum size?
+!- Regressions fixed
+- Some cleanup needed for _polyFit
+-- Merge 2 functions into 1?
+-- Rewrite polyfit to use region[0] aka int version
+-- Fix failing test case for 0x0 poly
 - Move generate, etc out of engine? Probably need a new folder for 'legacy' anyways.
 - Fix generation colors
 - Add missing daily styles
-- Rewrite polyfit to use region[0] aka int version
 - Solver compatibility with mid-segment start
 - Solution draw with mid-segment start
 - Mid-segment endpoints
@@ -38,7 +41,6 @@ In vague order of importance.
 !- Feature complete
 
 !- Small things / Bugs
-- Zero size polys fail when zero-size negas don't
 - change all divs to auto-centering? It's all I seem to use them for rn
 -- Maybe have a class="centered"
 - Search for fixme/todo and move them here
