@@ -12,7 +12,7 @@
     <script type="text/javascript" src="test.js"></script>
     <title>Random tests or something</title>
   </head>
-  <body onload="recolor();">
+  <body">
     <div style="position:absolute; float:left">
       <input style="transform:scale(2)" id="theme" type="checkbox" onchange="localStorage.theme = this.checked; location.reload()">
       <script>document.getElementById('theme').checked = (localStorage.theme == "true")</script>
@@ -26,33 +26,5 @@
     </div>
 
     <table id="meta" cellpadding="30"></table>
-    <script type="text/javascript">
-      var table = document.getElementById('meta')
-      for (var i=0; i<tests.length; i+=3) {
-        var row = table.insertRow()
-        for (var j=i; j<i+3 && j < tests.length; j++) {
-          var cell = row.insertCell()
-          var puzzle = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-          puzzle.id = 'test'+j
-          cell.appendChild(puzzle)
-
-          try {
-            var solutions = []
-            var puzzleData = tests[j]()
-            solve(puzzleData.puzzle, puzzleData.puzzle.start.x, puzzleData.puzzle.start.y, solutions)
-            draw(puzzleData.puzzle, 'test'+j)
-            if (solutions.length != puzzleData.solutions) {
-              console.log('Puzzle', j, 'has', solutions.length, 'solutions, should have', puzzleData.solutions)
-              console.log(solutions)
-              var border = document.getElementById('test'+j).firstChild
-              border.setAttribute('stroke', 'red')
-            }
-          } catch (e) {
-            document.getElementById('test'+j).parentElement.innerHTML = e.stack || 'ERROR: '+e
-          }
-
-        }
-      }
-    </script>
   </body>
 </html>

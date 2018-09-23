@@ -1,4 +1,36 @@
 window.DISABLE_CACHE = true
+
+window.onload = function() {
+  recolor()
+  var table = document.getElementById('meta')
+  for (var i=0; i<tests.length; i+=3) {
+    var row = table.insertRow()
+    for (var j=i; j<i+3 && j < tests.length; j++) {
+      var cell = row.insertCell()
+      var puzzle = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+      puzzle.id = 'test'+j
+      cell.appendChild(puzzle)
+
+      try {
+        var solutions = []
+        var puzzleData = tests[j]()
+        solve(puzzleData.puzzle, puzzleData.puzzle.start.x, puzzleData.puzzle.start.y, solutions)
+        draw(puzzleData.puzzle, 'test'+j)
+        if (solutions.length != puzzleData.solutions) {
+          console.log('Puzzle', j, 'has', solutions.length, 'solutions, should have', puzzleData.solutions)
+          for (var solution of solutions) {
+            console.log(solution.toString())
+          }
+          var border = document.getElementById('test'+j).firstChild
+          border.setAttribute('stroke', 'red')
+        }
+      } catch (e) {
+        document.getElementById('test'+j).parentElement.innerHTML = e.stack || 'ERROR: '+e
+      }
+    }
+  }
+}
+
 tests = [
   function() {
     var puzzle = new Puzzle(2, 2)
@@ -37,6 +69,7 @@ tests = [
     puzzle.grid[5][1] = {'type':'square', 'color':'blue'}
     return {'puzzle':puzzle, 'solutions':2}
   }, function() {
+    console.clear()
     var puzzle = new Puzzle(3, 3)
     puzzle.grid[5][1] = {'type':'nega', 'color':'white'}
     puzzle.grid[5][5] = {'type':'nega', 'color':'white'}
@@ -52,7 +85,7 @@ tests = [
     puzzle.grid[3][3] = {'type':'square', 'color':'blue'}
     puzzle.grid[5][3] = {'type':'square', 'color':'blue'}
     return {'puzzle':puzzle, 'solutions':62}
-  }, function() {
+  }/*, function() {
     var puzzle = new Puzzle(3, 3)
     puzzle.grid[1][1] = {'type':'nega', 'color':'white'}
     puzzle.grid[3][1] = {'type':'nega', 'color':'white'}
@@ -261,11 +294,11 @@ tests = [
     var puzzle = new Puzzle(3, 0)
     return {'puzzle':puzzle, 'solutions':1}
   }, function() {
-    var puzzle = new Puzzle(4, 4)
-    puzzle.grid[1][5] = {'type':'star', 'color':'black'}
-    puzzle.grid[1][7] = {'type':'nega', 'color':'black'}
-    puzzle.grid[3][5] = {'type':'square', 'color':'white'}
-    puzzle.grid[3][7] = {'type':'star', 'color':'black'}
+    var puzzle = new Puzzle(2, 2)
+    puzzle.grid[1][1] = {'type':'star', 'color':'black'}
+    puzzle.grid[1][3] = {'type':'nega', 'color':'black'}
+    puzzle.grid[3][1] = {'type':'square', 'color':'white'}
+    puzzle.grid[3][3] = {'type':'star', 'color':'black'}
     return {'puzzle':puzzle, 'solutions':0}
   }, function() {
     var puzzle = Puzzle.deserialize('{"grid":[[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,{"type":"star"},false,{"type":"nega"},false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,{"type":"star"},false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false]],"start":{"x":0,"y":8},"end":{"x":8,"y":0,"dir":"right"},"dots":[],"gaps":[],"regionCache":{},"pillar":false,"name":"Unnamed Puzzle"}')
@@ -273,5 +306,5 @@ tests = [
   }, function() {
     var puzzle = Puzzle.deserialize('{"grid":[[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,{"type":"square"},false,{"type":"square"},false,{"type":"square"},false,{"type":"square"},false],[false,false,false,false,false,false,false,false,false],[false,{"type":"square","color":"white"},false,{"type":"square","color":"white"},false,{"type":"square","color":"white"},false,{"type":"square","color":"white"},false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false]],"start":{"x":0,"y":8},"end":{"x":0,"y":0,"dir":"top"},"dots":[],"gaps":[],"regionCache":{},"pillar":true,"name":"Unnamed Puzzle","valid":0,"negations":[]}')
     return {'puzzle':puzzle, 'solutions':0}
-  }
+  }*/
 ]
