@@ -188,38 +188,39 @@ function _regionCheck(puzzle, region) {
   }
 
   // Check for color-based elements
-  var colors = {}
+  var colorObjects = {}
   for (var pos of region.cells) {
     var cell = puzzle.getCell(pos.x, pos.y)
     if (cell != 0) {
-      if (colors[cell.color] == undefined) {
-        colors[cell.color] = {'squares':0, 'stars':0, 'other':0}
+      if (colorObjects[cell.color] == undefined) {
+        colorObjects[cell.color] = {'squares':0, 'stars':0, 'other':0}
       }
       if (cell.type == 'square') {
-        colors[cell.color]['squares']++
+        colorObjects[cell.color]['squares']++
       } else if (cell.type == 'star') {
-        colors[cell.color]['stars']++
+        colorObjects[cell.color]['stars']++
       } else if (cell.type == 'poly' || cell.type == 'nega' || cell.type == 'nonce' || cell.type == 'triangle') {
-        colors[cell.color]['other']++
+        colorObjects[cell.color]['other']++
       }
     }
   }
 
-  var colorKeys = Object.keys(colors) // FIXME: Object.values might be cleaner
-  for (var i=0; i<colorKeys.length; i++) {
-    var objects = colors[colorKeys[i]]
+  var colors = Object.keys(colorObjects)
+  for (var color of colors) {
+    var objects = colorObjects[color]
     if (objects['squares'] > 0) {
       // Squares can only be in a region with same colored squares
-      for (var j=i+1; j<colorKeys.length; j++) {
-        if (colors[colorKeys[j]]['squares'] > 0) {
-          // console.log('Found a '+colorKeys[i]+' and '+colorKeys[j]+' square in the same region')
+      for (var otherColor of colors) {
+        if (color == otherColor) continue
+        if (colorObjects[otherColor]['squares'] > 0) {
+          console.log('Found a', color, 'and', otherColor, 'square in the same region')
           return false
         }
       }
     }
     if (objects['stars'] > 0) {
       // Stars must be in a region with exactly one other element of their color
-      var count = objects['squares']+objects['stars']+objects['other']
+      var count = objects['squares'] + objects['stars'] + objects['other']
       if (count != 2) {
         // console.log('Found a '+colorKeys[i]+' star in a region with '+count+' total '+colorKeys[i]+' objects')
         return false
