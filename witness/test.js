@@ -1,3 +1,4 @@
+window.DISABLE_CACHE = true
 tests = [
   function() {
     var puzzle = new Puzzle(2, 2)
@@ -260,7 +261,14 @@ tests = [
     var puzzle = new Puzzle(3, 0)
     return {'puzzle':puzzle, 'solutions':1}
   }, function() {
-    var puzzle = Puzzle.deserialize('{"grid":[[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,{"type":"star"},false,{"type":"nega"},false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,{"type":"square","color":"white"},false,{"type":"star"},false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false]],"start":{"x":0,"y":8},"end":{"x":8,"y":0,"dir":"right"},"dots":[],"gaps":[],"regionCache":{},"pillar":false,"name":"Unnamed Puzzle","valid":0,"negations":[{"x":1,"y":7,"cell":{"type":"nega"}},{"x":1,"y":5,"cell":{"type":"star"}}]}')
+    var puzzle = new Puzzle(4, 4)
+    puzzle.grid[1][5] = {'type':'star', 'color':'black'}
+    puzzle.grid[1][7] = {'type':'nega', 'color':'black'}
+    puzzle.grid[3][5] = {'type':'square', 'color':'white'}
+    puzzle.grid[3][7] = {'type':'star', 'color':'black'}
+    return {'puzzle':puzzle, 'solutions':0}
+  }, function() {
+    var puzzle = Puzzle.deserialize('{"grid":[[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,{"type":"star"},false,{"type":"nega"},false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,{"type":"star"},false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false]],"start":{"x":0,"y":8},"end":{"x":8,"y":0,"dir":"right"},"dots":[],"gaps":[],"regionCache":{},"pillar":false,"name":"Unnamed Puzzle"}')
     return {'puzzle':puzzle, 'solutions':0}
   }, function() {
     var puzzle = Puzzle.deserialize('{"grid":[[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,{"type":"square"},false,{"type":"square"},false,{"type":"square"},false,{"type":"square"},false],[false,false,false,false,false,false,false,false,false],[false,{"type":"square","color":"white"},false,{"type":"square","color":"white"},false,{"type":"square","color":"white"},false,{"type":"square","color":"white"},false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false]],"start":{"x":0,"y":8},"end":{"x":0,"y":0,"dir":"top"},"dots":[],"gaps":[],"regionCache":{},"pillar":true,"name":"Unnamed Puzzle","valid":0,"negations":[]}')
