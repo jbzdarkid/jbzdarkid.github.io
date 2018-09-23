@@ -28,9 +28,9 @@ function draw(puzzle, target='puzzle') {
   rect.setAttribute('height', pixelHeight - 10) // Removing border
 
   _drawGrid(puzzle, svg, target)
+  _drawStartAndEnd(puzzle, svg, target)
   // Draw cell symbols after so they overlap the lines, if necessary
   _drawSymbols(puzzle, svg, target)
-  _drawStartAndEnd(puzzle, svg, target)
 
   if (puzzle.getCell(puzzle.start.x, puzzle.start.y) == true) {
     _drawSolution(puzzle, svg, target)
@@ -114,13 +114,6 @@ function _drawSymbols(puzzle, svg, target) {
     }
   }
 
-  for (var dot of puzzle.dots) {
-    var params = {'type':'dot', 'width':58, 'height':58}
-    params.x = dot.x*41 + 23
-    params.y = dot.y*41 + 23
-    drawSymbolWithSvg(svg, params)
-  }
-
   for (var gap of puzzle.gaps) {
     var line = document.getElementById(target + '_' + gap.x + '_' + gap.y)
     svg.removeChild(line)
@@ -128,6 +121,13 @@ function _drawSymbols(puzzle, svg, target) {
     params.x = gap.x*41 + 23
     params.y = gap.y*41 + 23
     if (gap.x%2 == 0 && gap.y%2 == 1) params.rot = 1
+    drawSymbolWithSvg(svg, params)
+  }
+
+  for (var dot of puzzle.dots) {
+    var params = {'type':'dot', 'width':58, 'height':58}
+    params.x = dot.x*41 + 23
+    params.y = dot.y*41 + 23
     drawSymbolWithSvg(svg, params)
   }
 }

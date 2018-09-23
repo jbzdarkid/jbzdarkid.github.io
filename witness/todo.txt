@@ -1,13 +1,13 @@
 In vague order of importance.
 
-- Dots are rendering under start/end/gaps
+- Pillars are failing, can't repro (maybe fixed?)
+
 - Show hint is adding endpoints in pillars? Or removing? Something very wrong.
 - End point is pushed into second-to-right when squishing pillars
 - Solve with pillars is slow, maybe increase warning threshold / disable in play mode?
 - Maybe remove show solution for play mode entirely?
 - Show hint is adding endpoints in pillars?
 - Start point interaction region is still active in editor
-- Pillars are failing, see tests
 - Hints are bad for triangles w/ pillars?
 - Shape Chooser is bad for small puzzles, set minimum size?
 !- Regressions fixed

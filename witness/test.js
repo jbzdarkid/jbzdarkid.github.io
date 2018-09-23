@@ -300,14 +300,33 @@ tests = [
     puzzle.grid[3][3] = {'type':'star', 'color':'black'}
     return {'puzzle':puzzle, 'solutions':0}
   }, function() {
-    console.clear()
     var puzzle = new Puzzle(4, 4)
     puzzle.grid[1][1] = {'type':'star', 'color':'black'}
     puzzle.grid[1][3] = {'type':'nega', 'color':'black'}
     puzzle.grid[3][3] = {'type':'star', 'color':'black'}
     return {'puzzle':puzzle, 'solutions':0}
   }, function() {
-    var puzzle = Puzzle.deserialize('{"grid":[[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,{"type":"square"},false,{"type":"square"},false,{"type":"square"},false,{"type":"square"},false],[false,false,false,false,false,false,false,false,false],[false,{"type":"square","color":"white"},false,{"type":"square","color":"white"},false,{"type":"square","color":"white"},false,{"type":"square","color":"white"},false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false]],"start":{"x":0,"y":8},"end":{"x":0,"y":0,"dir":"top"},"dots":[],"gaps":[],"regionCache":{},"pillar":true,"name":"Unnamed Puzzle","valid":0,"negations":[]}')
-    return {'puzzle':puzzle, 'solutions':0}
+    var puzzle = new Puzzle(4, 4, true)
+    puzzle.grid[3][1] = {'type':'square', 'color':'black'}
+    puzzle.grid[3][3] = {'type':'square', 'color':'black'}
+    puzzle.grid[3][5] = {'type':'square', 'color':'black'}
+    puzzle.grid[3][7] = {'type':'square', 'color':'black'}
+    puzzle.grid[5][1] = {'type':'square', 'color':'white'}
+    puzzle.grid[5][3] = {'type':'square', 'color':'white'}
+    puzzle.grid[5][5] = {'type':'square', 'color':'white'}
+    puzzle.grid[5][7] = {'type':'square', 'color':'white'}
+    puzzle.end = {'x':0, 'y':0, 'dir':'top'}
+    return {'puzzle':puzzle, 'solutions':40}
+  }, function() {
+    var puzzle = new Puzzle(4, 4, true)
+    puzzle.grid[3][7] = {'type':'square', 'color':'black'}
+    puzzle.grid[5][1] = {'type':'square', 'color':'white'}
+    puzzle.end = {'x':0, 'y':0, 'dir':'top'}
+    return {'puzzle':puzzle, 'solutions':1373}
+  }, function() {
+    var puzzle = new Puzzle(4, 4, true)
+    puzzle.grid[7][7] = {'type':'poly', 'color':'yellow', 'polyshape':17}
+    puzzle.end = {'x':0, 'y':0, 'dir':'top'}
+    return {'puzzle':puzzle, 'solutions':155}
   }
 ]
