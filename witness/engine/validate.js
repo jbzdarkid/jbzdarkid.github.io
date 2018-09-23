@@ -162,6 +162,7 @@ function _regionCheck(puzzle, region) {
   var squareColors = {}
   for (var pos of region.cells) {
     var cell = puzzle.getCell(pos.x, pos.y)
+    if (cell == false) continue
     if (coloredObjects[cell.color] == undefined) {
       coloredObjects[cell.color] = 0
     }
