@@ -1,3 +1,6 @@
+// Settings (todo: Expose to the user/puzzlemaker?)
+window.NEGATIONS_CANCEL_NEGATIONS = true
+
 // Puzzle = {grid, start, end, dots, gaps}
 // Determines if the current grid state is solvable. Modifies the puzzle element with:
 // valid: Whether or not the puzzle is valid
@@ -32,23 +35,11 @@ function validate(puzzle) {
     var regionData = puzzle.regionCache[key]
     if (regionData == undefined) {
       // console.log('Cache miss for region', region, 'key', key)
-      var hasNega = false
-      for (var pos of region.cells) {
-        var cell = puzzle.getCell(pos.x, pos.y)
-        if (cell == undefined) {
-          console.log(regions)
-        }
+      regionData = _regionCheckNegations(puzzle, region)
+      // Entirely for convenience
+      regionData.valid = (regionData.invalidElements.length == 0)
+      // console.log('Region valid:', regionData.valid)
 
-        if (cell != false && cell.type == 'nega') {
-          hasNega = true
-          break
-        }
-      }
-      if (hasNega) {
-        regionData = _regionCheckNegations(puzzle, region)
-      } else {
-        regionData = {'valid':_regionCheck(puzzle, region), 'negations':[]}
-      }
       if (!window.DISABLE_CACHE) {
         puzzle.regionCache[key] = regionData
       }
@@ -66,112 +57,91 @@ function validate(puzzle) {
 }
 
 function _regionCheckNegations(puzzle, region) {
-  // console.log('Validating region of length', region.length)
-  // Iterate over all possible ways of applying negations
-  var combinations = _combinations(puzzle, region)
-  for (var combination of combinations) {
-    // console.log('Validating combination', combination)
-    for (var negation of combination) {
-      puzzle.setCell(negation.source.x, negation.source.y, false)
-      puzzle.setCell(negation.target.x, negation.target.y, false)
-    }
-    if (!_regionCheck(puzzle, region)) {
-      // console.log('Region is invalid with negations applied, so the combination is invalid')
-      for (var negation of combination) {
-        puzzle.setCell(negation.source.x, negation.source.y, negation.source.cell)
-        puzzle.setCell(negation.target.x, negation.target.y, negation.target.cell)
-      }
-      continue
-    }
+  // console.log('Validating region of length', region.cells.length)
 
-    var combinationIsValid = true
-    // Verify that each negation is valid, i.e. removes an incorrect element
-    for (var negation of combination) {
-      // console.log('Un-doing negation', negation, 'and re-validating')
-      puzzle.setCell(negation.target.x, negation.target.y, negation.target.cell)
-      negation.source.cell.type = 'nonce'
-      puzzle.setCell(negation.source.x, negation.source.y, negation.source.cell)
-      var regionCheck = _regionCheckNegations(puzzle, region)
-      puzzle.setCell(negation.target.x, negation.target.y, false)
-      negation.source.cell.type = 'nega'
-      puzzle.setCell(negation.source.x, negation.source.y, false)
-
-      if (regionCheck.valid) {
-        // console.log('Region still valid with element removed, so the combination is invalid')
-        combinationIsValid = false
-        break
-      }
-    }
-    for (var negation of combination) {
-      puzzle.setCell(negation.source.x, negation.source.y, negation.source.cell)
-      puzzle.setCell(negation.target.x, negation.target.y, negation.target.cell)
-    }
-    if (combinationIsValid) {
-      // console.log('Valid combination: ', combination)
-      var cells = []
-      for (var negation of combination) {
-        cells.push(negation.source)
-        cells.push(negation.target)
-      }
-      return {'valid':true, 'negations':cells}
-    }
-  }
-  // console.log('Unable to find valid negation, but negation symbols exist')
-  var cells = []
-  if (combinations.length > 0) {
-    for (var negation of combinations[0]) { // TODO: Random negation?
-      cells.push(negation.source)
-      cells.push(negation.target)
-    }
-  }
-  return {'valid':false, 'negations':cells}
-}
-
-// Returns all the different ways to negate elements.
-function _combinations(puzzle, region, regionStart=0) {
-  // Find the first negation element (may be part of cells already considered)
-  var nega = undefined
-  for (var i=0; i<region.cells.length; i++) {
-    var pos = region.cells[i]
+  // Get a list of negation symbols in the grid, and set them to 'nonce'
+  var negationSymbols = []
+  for (var pos of region.cells) {
     var cell = puzzle.getCell(pos.x, pos.y)
     if (cell == false) continue
     if (cell.type == 'nega') {
-      nega = {'x':pos.x, 'y':pos.y, 'cell':cell}
-      puzzle.setCell(nega.x, nega.y, false)
-      break
+      cell.type = 'nonce'
+      puzzle.setCell(pos.x, pos.y, cell)
+      negationSymbols.push({'x':pos.x, 'y':pos.y, 'cell':cell})
     }
   }
-  if (nega == undefined) {
-    // No more negation elements -> No ways to combine negation elements
-    return [[]]
+  // console.log('Found negation symbols:', negationSymbols)
+  // Get a list of elements that are currently invalid (before any negations are applied)
+  var invalidElements = _regionCheck(puzzle, region)
+  // console.log('Negation-less regioncheck returned invalid elements:', JSON.stringify(invalidElements))
+  // Set 'nonce' back to 'nega' for the negation symbols
+  for (var nega of negationSymbols) {
+    nega.cell.type = 'nega'
+    puzzle.setCell(nega.x, nega.y, nega.cell)
   }
 
-  var combinations = []
-  // All elements before regionStart have been considered, so don't try negating them again.
-  for (var i=regionStart; i<region.cells.length; i++) {
-    var pos = region.cells[i]
-    var cell = puzzle.getCell(pos.x, pos.y)
-    if (cell == false) continue
-    puzzle.setCell(pos.x, pos.y, false)
-    // Find all combinations of later items
-    for (var comb of _combinations(puzzle, region, i+1)) {
-      // Combine this negation with each later combination
-      combinations.push([{
-        'source':{'x':nega.x, 'y':nega.y, 'cell':nega.cell},
-        'target':{'x':pos.x, 'y':pos.y, 'cell':cell}
-      }].concat(comb))
-    }
-    // Restore the negated element
-    puzzle.setCell(pos.x, pos.y, cell)
+  // If there are not enough elements to pair, return
+  if (negationSymbols.length == 0 ||
+     (invalidElements.length == 0 && (negationSymbols.length < 2 || !window.NEGATIONS_CANCEL_NEGATIONS))) {
+    // console.log('Not enough elements left to create a pair')
+    invalidElements = invalidElements.concat(negationSymbols)
+    return {'invalidElements':invalidElements, 'negations':[]}
   }
-  // Restore the negation symbol
-  puzzle.setCell(nega.x, nega.y, nega.cell)
-  return combinations
+  // Else, there are invalid elements and negations, try to pair them up
+  var source = negationSymbols[0]
+  puzzle.setCell(source.x, source.y, false)
+  // console.log('Using negation symbol at', source.x, source.y)
+
+  // Logic is duplicate of below
+  if (window.NEGATIONS_CANCEL_NEGATIONS) {
+    for (var i=1; i<negationSymbols.length; i++) {
+      var target = negationSymbols[i]
+      puzzle.setCell(target.x, target.y, false)
+      // console.log('Negating other negation symbol at', target.x, target.y)
+      var regionData = _regionCheckNegations(puzzle, region)
+      puzzle.setCell(target.x, target.y, target.cell)
+
+      if (regionData.invalidElements.length == 0) {
+        // console.log('Negation pair valid')
+        // Restore negation symbol, add to list of negation pairs
+        puzzle.setCell(source.x, source.y, source.cell)
+        regionData.negations.push({'source':source, 'target':target})
+        return regionData
+      }
+    }
+  }
+
+  for (var invalidElement of invalidElements) {
+    invalidElement.cell = puzzle.getCell(invalidElement.x, invalidElement.y)
+    puzzle.setCell(invalidElement.x, invalidElement.y, false)
+    // console.log('Negating other negation symbol at', invalidElement.x, invalidElement.y)
+    // Remove the negation and target, then recurse
+    var regionData = _regionCheckNegations(puzzle, region)
+    // Restore the target
+    puzzle.setCell(invalidElement.x, invalidElement.y, invalidElement.cell)
+
+    // No invalid elements after negation is applied, so the region validates
+    if (regionData.invalidElements.length == 0) {
+      // console.log('Negation pair valid')
+      // Restore negation symbol, add to list of negation pairs
+      puzzle.setCell(source.x, source.y, source.cell)
+      regionData.negations.push({'source':source, 'target':invalidElement})
+      return regionData
+    }
+  }
+
+  // console.log('All pairings failed')
+  // All negation pairings failed, select one possible pairing and return it
+  // FIXME: Random? This is currently the last possible negation
+  puzzle.setCell(source.x, source.y, source.cell)
+  return regionData
 }
 
 // Checks if a region (series of cells) is valid.
 // Since the path must be complete at this point, returns only true or false
 function _regionCheck(puzzle, region) {
+  var invalidElements = []
+
   // Check for triangles
   for (var pos of region.cells) {
     if (puzzle.getCell(pos.x, pos.y).type == 'triangle') {
@@ -182,69 +152,79 @@ function _regionCheck(puzzle, region) {
       if (puzzle.getCell(pos.x, pos.y + 1)) count++
       if (count != puzzle.getCell(pos.x, pos.y).count) {
         // console.log('Triangle at grid['+pos.x+']['+pos.y+'] has', count, 'borders')
-        return false
+        invalidElements.push(pos)
       }
     }
   }
 
   // Check for color-based elements
-  var colorObjects = {}
+  var coloredObjects = {}
+  var squareColors = {}
   for (var pos of region.cells) {
     var cell = puzzle.getCell(pos.x, pos.y)
-    if (cell != 0) {
-      if (colorObjects[cell.color] == undefined) {
-        colorObjects[cell.color] = {'squares':0, 'stars':0, 'other':0}
+    if (coloredObjects[cell.color] == undefined) {
+      coloredObjects[cell.color] = 0
+    }
+    coloredObjects[cell.color]++
+    if (cell.type == 'square') {
+      squareColors[cell.color] = true
+    }
+  }
+  var squareColorCount = Object.keys(squareColors).length
+
+  for (var pos of region.cells) {
+    var cell = puzzle.getCell(pos.x, pos.y)
+    if (cell == false) continue
+    if (cell.type == 'square') {
+      if (squareColorCount > 1) {
+        // console.log('Found a', cell.color, 'square in a region with', squareColorCount, 'square colors')
+        invalidElements.push(pos)
       }
-      if (cell.type == 'square') {
-        colorObjects[cell.color]['squares']++
-      } else if (cell.type == 'star') {
-        colorObjects[cell.color]['stars']++
-      } else if (cell.type == 'poly' || cell.type == 'nega' || cell.type == 'nonce' || cell.type == 'triangle') {
-        colorObjects[cell.color]['other']++
+    } else if (cell.type == 'star') {
+      if (coloredObjects[cell.color] != 2) {
+        // console.log('Found a', cell.color, 'star in a region with', coloredObjects[cell.color], cell.color, 'objects')
+        invalidElements.push(pos)
       }
     }
   }
 
-  var colors = Object.keys(colorObjects)
-  for (var color of colors) {
-    var objects = colorObjects[color]
-    if (objects['squares'] > 0) {
-      // Squares can only be in a region with same colored squares
-      for (var otherColor of colors) {
-        if (color == otherColor) continue
-        if (colorObjects[otherColor]['squares'] > 0) {
-          console.log('Found a', color, 'and', otherColor, 'square in the same region')
-          return false
-        }
-      }
-    }
-    if (objects['stars'] > 0) {
-      // Stars must be in a region with exactly one other element of their color
-      var count = objects['squares'] + objects['stars'] + objects['other']
-      if (count != 2) {
-        console.log('Found a', color, 'star in a region with', count, color, 'objects')
-        return false
-      }
-    }
-  }
-
-  // For polyominos, we construct a grid to place them on
-  // The grid is 1 inside the region, and undefined outside.
   var polys = []
   var ylops = []
-  var polyCount = 0
   for (var pos of region.cells) {
     var cell = puzzle.getCell(pos.x, pos.y)
-    if (cell != 0) {
+    if (cell != false) {
       if (cell.type == 'poly') {
         polys.push(cell)
-        polyCount += getPolySize(cell.polyshape)
       } else if (cell.type == 'ylop') {
         ylops.push(cell)
-        polyCount -= getPolySize(cell.polyshape)
       }
     }
   }
+
+  if (!_polyWrapper(polys, ylops, region, puzzle)) {
+    for (var pos of region.cells) {
+      var cell = puzzle.getCell(pos.x, pos.y)
+      if (cell == false) continue
+      if (cell.type == 'poly' || cell.type == 'ylop') {
+        invalidElements.push(pos)
+      }
+    }
+  }
+  // console.log('Region has', invalidElements.length, 'invalid elements')
+  return invalidElements
+}
+
+function _polyWrapper(polys, ylops, region, puzzle) {
+  // For polyominos, we construct a grid to place them on
+  // The grid is 1 inside the region, and undefined outside.
+  var polyCount = 0
+  for (var poly of polys) {
+    polyCount += getPolySize(poly.polyshape)
+  }
+  for (var ylop of ylops) {
+    polyCount -= getPolySize(ylop.polyshape)
+  }
+
   if (polys.length + ylops.length > 0) { // Some polys/ylops exist in the region
     if (polyCount < 0) {
       // console.log('More onimoylops than polyominos by', -polyCount)
@@ -267,7 +247,6 @@ function _regionCheck(puzzle, region) {
     puzzle.grid = savedGrid
     return polyFits
   }
-  // console.info('Region', region, 'is valid')
   return true
 }
 

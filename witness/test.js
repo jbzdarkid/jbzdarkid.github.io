@@ -69,7 +69,6 @@ tests = [
     puzzle.grid[5][1] = {'type':'square', 'color':'blue'}
     return {'puzzle':puzzle, 'solutions':2}
   }, function() {
-    console.clear()
     var puzzle = new Puzzle(3, 3)
     puzzle.grid[5][1] = {'type':'nega', 'color':'white'}
     puzzle.grid[5][5] = {'type':'nega', 'color':'white'}
@@ -84,8 +83,8 @@ tests = [
     puzzle.grid[1][3] = {'type':'square', 'color':'red'}
     puzzle.grid[3][3] = {'type':'square', 'color':'blue'}
     puzzle.grid[5][3] = {'type':'square', 'color':'blue'}
-    return {'puzzle':puzzle, 'solutions':61}
-  }/*, function() {
+    return {'puzzle':puzzle, 'solutions':62}
+  }, function() {
     var puzzle = new Puzzle(3, 3)
     puzzle.grid[1][1] = {'type':'nega', 'color':'white'}
     puzzle.grid[3][1] = {'type':'nega', 'color':'white'}
@@ -306,5 +305,5 @@ tests = [
   }, function() {
     var puzzle = Puzzle.deserialize('{"grid":[[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false],[false,{"type":"square"},false,{"type":"square"},false,{"type":"square"},false,{"type":"square"},false],[false,false,false,false,false,false,false,false,false],[false,{"type":"square","color":"white"},false,{"type":"square","color":"white"},false,{"type":"square","color":"white"},false,{"type":"square","color":"white"},false],[false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false]],"start":{"x":0,"y":8},"end":{"x":0,"y":0,"dir":"top"},"dots":[],"gaps":[],"regionCache":{},"pillar":true,"name":"Unnamed Puzzle","valid":0,"negations":[]}')
     return {'puzzle':puzzle, 'solutions':0}
-  }*/
+  }
 ]
