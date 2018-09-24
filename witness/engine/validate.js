@@ -28,6 +28,7 @@ function validate(puzzle) {
       puzzle.valid = false
     }
   }
+
   // Check that individual regions are valid
   var regions = puzzle.getRegions()
   for (var region of regions) {
@@ -42,13 +43,6 @@ function validate(puzzle) {
 
       if (!window.DISABLE_CACHE) {
         puzzle.regionCache[key] = regionData
-      }
-      // FIXME: Can't cache regions with triangles because the edges matter, not just the cells.
-      for (var pos of region.cells) {
-        if (puzzle.getCell(pos.x, pos.y).type == 'triangle') {
-          puzzle.regionCache[key] = undefined
-          break
-        }
       }
     }
     puzzle.negations = puzzle.negations.concat(regionData.negations)

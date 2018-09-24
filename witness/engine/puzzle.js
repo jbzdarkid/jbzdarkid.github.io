@@ -14,20 +14,18 @@ class Region {
     return clone
   }
 
+  _mod(val) {
+    var mod = this.grid.length
+    return ((val % mod) + mod) % mod
+  }
+
   setCell(x, y) {
-    if (this.getCell(x, y)) return
+    x = this._mod(x)
+    if ((this.grid[x] & (1 << y)) != 0) return
     this.grid[x] |= (1 << y)
-    this.cells.push({'x':x, 'y':y})
-  }
-
-  getCell(x, y) {
-    return (this.cells[x] & (1 << y)) != 0
-  }
-
-  popCell() {
-    var cell = this.cells.pop()
-    this.grid[cell.x] &= ~(1 << cell.y)
-    return cell
+    if (x%2 == 1 && y%2 == 1) { // TODO: Validate handles center cells only!
+      this.cells.push({'x':x, 'y':y})
+    }
   }
 
   merge(other) {
@@ -51,10 +49,12 @@ class Puzzle {
   constructor(width, height, pillar=false) {
     if (pillar) {
       width -= 0.5
+      this.end = {'x':0, 'y':0, 'dir':'top'}
+    } else {
+      this.end = {'x':2*width, 'y':0, 'dir':'right'}
     }
     this.grid = this.newGrid(2*width+1, 2*height+1)
     this.start = {'x':0, 'y':2*height}
-    this.end = {'x':2*width, 'y':0, 'dir':'right'}
     this.dots = []
     this.gaps = []
     this.regionCache = {}
@@ -215,101 +215,18 @@ class Puzzle {
     region.setCell(x, y)
     this.setCell(x, y, true)
 
-    if (this.getCell(x, y + 2) == false && this.getCell(x, y + 1) == false) {
-      this._innerLoop(x, y + 2, region)
+    if (this.getCell(x, y + 1) == false) {
+      this._innerLoop(x, y + 1, region)
     }
-    if (this.getCell(x + 2, y) == false && this.getCell(x + 1, y) == false) {
-      this._innerLoop(x + 2, y, region)
+    if (this.getCell(x + 1, y) == false) {
+      this._innerLoop(x + 1, y, region)
     }
-    if (this.getCell(x, y - 2) == false && this.getCell(x, y - 1) == false) {
-      this._innerLoop(x, y - 2, region)
+    if (this.getCell(x, y - 1) == false) {
+      this._innerLoop(x, y - 1, region)
     }
-    if (this.getCell(x - 2, y) == false && this.getCell(x - 1, y) == false) {
-      this._innerLoop(x - 2, y, region)
+    if (this.getCell(x - 1, y) == false) {
+      this._innerLoop(x - 1, y, region)
     }
-  }
-
-  _innerLoop2(x, y, region) {
-    region.setCell(x, y)
-    this.setCell(x, y, true)
-
-    var i = x
-    while(this.getCell(i - 2, y) == false && this.getCell(i - 1, y) == false) {
-      i -= 2
-      region.setCell(i, y)
-      this.setCell(i, y, true)
-    }
-
-    var j = x
-    while(this.getCell(j + 2, y) == false && this.getCell(j + 1, y) == false) {
-      j += 2
-      region.setCell(j, y)
-      this.setCell(j, y, true)
-    }
-
-    for (var above = i; above <= j; above += 2) {
-      if (this.getCell(above, y - 2) != false) continue
-      if (this.getCell(above, y - 1) != true) {
-        this._innerLoop2(above, y - 2, region)
-      }
-    }
-
-    for (var below = i; below <= j; below += 2) {
-      if (this.getCell(below, y + 2) != false) continue
-      if (this.getCell(below, y + 1) != true) {
-        this._innerLoop2(below, y + 2, region)
-      }
-    }
-  }
-
-  _innerLoop3() {
-    var regions = [new Region(this.grid.length)]
-    var color = 0
-    var regionMap = [[]]
-
-    for (var x = 1; x < this.grid.length; x += 2) {
-      for (var y = 1; y < this.grid[x].length; y += 2) {
-        if (y > 1 && this.getCell(x, y - 1) == false) {
-          color = this.getCell(x, y - 2)
-          if (x > 1 && this.getCell(x - 1, y) == false) {
-            var otherColor = this.getCell(x - 2, y)
-            if (otherColor < color) {
-              regionMap[otherColor].push(color)
-            } else if (color < otherColor) {
-              regionMap[color].push(otherColor)
-            }
-          }
-        } else if (x > 1 && this.getCell(x - 1, y) == false) {
-          color = this.getCell(x - 2, y)
-        } else {
-          color = regions.length
-          regions.push(new Region(this.grid.length))
-          regionMap.push([])
-        }
-        regions[color].setCell(x, y)
-        this.setCell(x, y, color)
-      }
-    }
-
-    for (var i = regionMap.length - 1; i >= 0; i--) {
-      if (regionMap[i] == undefined) continue
-      var toVisit = regionMap[i]
-      while(toVisit.length > 0) {
-        var j = toVisit.pop()
-        if (regionMap[j] == undefined) continue
-        toVisit = toVisit.concat(regionMap[j])
-        regions[i].merge(regions[j])
-      }
-    }
-
-    // Clean the regions list
-    var len = regions.length
-    for (var i=0; i < len; i++) {
-      if (regions[i] != undefined) regions.push(regions[i])
-    }
-    regions.splice(0, len)
-
-    return regions
   }
 
   getRegions() {
@@ -321,20 +238,21 @@ class Puzzle {
       }
     }
     var regions = []
-    var pos = {'x':-1, 'y':1}
+    var pos = {'x':0, 'y':0}
     while (true) {
       // Find the next open cell
       while (this.getCell(pos.x, pos.y) != false) {
-        pos.x += 2
+        pos.x++
         if (pos.x >= this.grid.length) {
-          pos = {'x':1, 'y':pos.y+2}
+          pos.x = 0
+          pos.y++
         }
         if (pos.y >= this.grid[0].length) {
           this.grid = savedGrid
           return regions
         }
       }
-      
+
       var region = new Region(this.grid.length)
       this._innerLoop(pos.x, pos.y, region)
       regions.push(region)

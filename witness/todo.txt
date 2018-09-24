@@ -1,11 +1,8 @@
 In vague order of importance.
 
-- Pillars are failing validation, can't repro (maybe fixed?)
-
 - Show hint is removing endpoints in pillars?
 - Solve with pillars is slow, maybe increase warning threshold / disable in play mode?
 - Maybe remove show solution for play mode entirely?
-- Hints are bad for triangles w/ pillars?
 - Shape Chooser is bad for small puzzles, set minimum size?
 !- Regressions fixed
 - Some cleanup needed for _polyFit
@@ -19,6 +16,9 @@ In vague order of importance.
 -- Solver compatibility
 -- Solution draw compatibility
 - Mid-segment endpoints
+- Region includes edges, update validation
+-- Dots cancelled by negation
+-- Polyominos will not allow trace-through
 - Multi start/end
 - Dots & gaps into the grid
 -- Empty segments (not just gaps)
@@ -30,9 +30,6 @@ In vague order of importance.
 -- Signin?
 -- Preview images for puzzles (meta:og tag)
 -- Name for the project (so I can have a reasonable dns name)
-- Region to include edges
--- Dots cancelled by negation
--- Polyominos will not allow trace-through
 - Flash for errors (Invisible Dots)
 - Colored Symmetry -> Probably want line color 0/1/2 instead of true/false
 - Colored Dots
