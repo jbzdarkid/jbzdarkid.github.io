@@ -354,5 +354,8 @@ tests = [
     puzzle.grid[1][1] = {'type':'triangle', 'color':'orange', 'count':2}
     puzzle.grid[3][3] = {'type':'triangle', 'color':'orange', 'count':2}
     return [puzzle, 7]
+  }, function() {
+    var puzzle = new Puzzle(1, 3, true)
+    return [puzzle, 1]
   }
 ]

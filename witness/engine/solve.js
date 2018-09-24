@@ -11,36 +11,28 @@ function solve(puzzle, x, y, solutions) {
     puzzle.setCell(x, y, false)
     return
   }
-  // Extend path down
-  if (puzzle.getCell(x+2, y) == false) {
-    puzzle.setCell(x++, y, true)
-    puzzle.setCell(x++, y, true)
+  // Extend path left
+  if (y%2 == 0 && puzzle.getCell(x - 1, y) == false) {
+    puzzle.setCell(x--, y, true)
     solve(puzzle, x, y, solutions)
-    puzzle.setCell(--x, y, false)
-    puzzle.setCell(--x, y, false)
+    puzzle.setCell(++x, y, false)
   }
   // Extend path right
-  if (puzzle.getCell(x, y+2) == false) {
-    puzzle.setCell(x, y++, true)
-    puzzle.setCell(x, y++, true)
+  if (y%2 == 0 && puzzle.getCell(x + 1, y) == false) {
+    puzzle.setCell(x++, y, true)
     solve(puzzle, x, y, solutions)
-    puzzle.setCell(x, --y, false)
-    puzzle.setCell(x, --y, false)
+    puzzle.setCell(--x, y, false)
   }
   // Extend path up
-  if (puzzle.getCell(x-2, y) == false) {
-    puzzle.setCell(x--, y, true)
-    puzzle.setCell(x--, y, true)
+  if (x%2 == 0 && puzzle.getCell(x, y - 1) == false) {
+    puzzle.setCell(x, y--, true)
     solve(puzzle, x, y, solutions)
-    puzzle.setCell(++x, y, false)
-    puzzle.setCell(++x, y, false)
+    puzzle.setCell(x, ++y, false)
   }
-  // Extend path left
-  if (puzzle.getCell(x, y-2) == false) {
-    puzzle.setCell(x, y--, true)
-    puzzle.setCell(x, y--, true)
+  // Extend path down
+  if (x%2 == 0 && puzzle.getCell(x, y + 1) == false) {
+    puzzle.setCell(x, y++, true)
     solve(puzzle, x, y, solutions)
-    puzzle.setCell(x, ++y, false)
-    puzzle.setCell(x, ++y, false)
+    puzzle.setCell(x, --y, false)
   }
 }

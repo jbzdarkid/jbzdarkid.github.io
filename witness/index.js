@@ -116,6 +116,7 @@ function showHint() {
   var hint = puzzleData.solution.showHint()
   if (hint == undefined) {
     document.getElementById('hint').disabled = true
+    return
   }
   puzzleData.puzzle.showHint(hint)
   puzzleData.puzzle.clearLines()
