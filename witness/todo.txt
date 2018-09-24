@@ -12,6 +12,7 @@ In vague order of importance.
 - Move generate, etc out of engine? Probably need a new folder for 'legacy' anyways.
 - Fix generation colors
 - Add missing daily styles
+- Shape chooser is not centered
 - Mid-segment start
 -- Solution tracer compatibility
 - Mid-segment endpoints
