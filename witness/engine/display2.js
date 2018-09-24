@@ -164,7 +164,6 @@ function _drawStartAndEnd(puzzle, svg, target) {
   })
 }
 
-// TODO: Remove data.puzzle when/if I remove the trace copy
 function _drawSolution(puzzle, svg, target) {
   var x = puzzle.start.x
   var y = puzzle.start.y
@@ -177,22 +176,27 @@ function _drawSolution(puzzle, svg, target) {
     var lastDir = data.path[data.path.length - 1].dir
     var dx = 0
     var dy = 0
-    if (lastDir != 'right' && data.puzzle.getCell(x - 1, y) == true) { // Left
+    if (lastDir != 'right' && puzzle.getCell(x - 1, y) == true) { // Left
+      console.log('Tracing left')
       dx = -1
-    } else if (lastDir != 'left' && data.puzzle.getCell(x + 1, y) == true) { // Right
+    } else if (lastDir != 'left' && puzzle.getCell(x + 1, y) == true) { // Right
+      console.log('Tracing right')
       dx = 1
-    } else if (lastDir != 'bottom' && data.puzzle.getCell(x, y - 1) == true) { // Top
+    } else if (lastDir != 'bottom' && puzzle.getCell(x, y - 1) == true) { // Top
+      console.log('Tracing bottom')
       dy = -1
-    } else if (lastDir != 'top' && data.puzzle.getCell(x, y + 1) == true) { // Bottom
+    } else if (lastDir != 'top' && puzzle.getCell(x, y + 1) == true) { // Bottom
+      console.log('Tracing top')
       dy = 1
     } else { // Unable to follow path any further, reached an endpoint
       break
     }
     x += dx
     y += dy
-    data.puzzle.setCell(x, y, false)
+    // Unflag the cell, move into it, and reflag it
+    puzzle.setCell(x, y, false)
     onMove(41 * dx, 41 * dy)
-    data.puzzle.setCell(x, y, true)
+    puzzle.setCell(x, y, true)
   }
 
   // Move into endpoint
@@ -205,5 +209,4 @@ function _drawSolution(puzzle, svg, target) {
   } else if (puzzle.end.dir == 'bottom') {
     onMove(0, 24)
   }
-
 }

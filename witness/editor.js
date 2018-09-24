@@ -481,6 +481,7 @@ function _shapeChooser() {
   chooser.style.zIndex = 1 // Position in front of the puzzle
   chooser.style.position = 'absolute'
   chooser.style.padding = 25
+  chooser.style.minWidth = '400px'
   chooser.style.background = BACKGROUND
   chooser.style.border = BORDER
   chooser.onmousedown = function(event) {_shapeChooserClick(event, this)}
@@ -488,7 +489,6 @@ function _shapeChooser() {
     var row = chooser.insertRow(x)
     for (var y=0; y<4; y++) {
       var cell = row.insertCell(y)
-      cell.id = 'chooser_' + x + '_' + y
       cell.powerOfTwo = 1 << (x + y*4)
       cell.onmousedown = function(event) {_shapeChooserClick(event, this)}
       cell.style.width = 58
@@ -521,8 +521,6 @@ function _shapeChooserClick(event, cell) {
     event.stopPropagation()
     return
   }
-  var x = cell.id.split('_')[1]
-  var y = cell.id.split('_')[2]
   cell.clicked = !cell.clicked
   var chooser = document.getElementById('chooser')
   activeParams.polyshape ^= cell.powerOfTwo
