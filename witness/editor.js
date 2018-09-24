@@ -169,6 +169,9 @@ function setPillar(value) {
     if (puzzle.end.x == puzzle.grid.length - 1) {
       puzzle.end.x = 0
     }
+    if (puzzle.start.x == puzzle.grid.length - 1) {
+      puzzle.start.x = 0
+    }
     puzzle.pillar = true
     resizePuzzle(-1, 0, 'right')
   }
@@ -275,7 +278,7 @@ function _onElementClicked(elem) {
   var y = parseInt(elem.id.split('_')[1])
 
   if (activeParams.type == 'start') {
-    if (x%2 == 1 && y%2 == 1) return
+    if (x%2 != 0 || y%2 != 0) return
     puzzle.start = {'x':x, 'y':y}
   } else if (activeParams.type == 'end') {
     if (x%2 != 0 || y%2 != 0) return
@@ -587,26 +590,24 @@ function resizePuzzle(dx, dy, id) {
   }
   puzzle.gaps = newGaps
 
-  if (id.includes('left')) {
-    puzzle.start.x += dx
-  }
-  if (id.includes('top')) {
-    puzzle.start.y += dy
-  }
+  // Try to keep the start and endpoint moving together
   if (puzzle.end.dir == 'right') {
+    puzzle.start.x += dx
     puzzle.end.x += dx
   }
   if (puzzle.end.dir == 'bottom') {
+    puzzle.start.y += dy
     puzzle.end.y += dy
   }
+  // Unless one of them goes off the edge of the puzzle
   if (puzzle.start.x < 0) puzzle.start.x = 0
-  if (puzzle.start.x >= newWidth) puzzle.start.x = newWidth - 1
   if (puzzle.start.y < 0) puzzle.start.y = 0
-  if (puzzle.start.y >= newHeight) puzzle.start.y = newHeight - 1
   if (puzzle.end.x < 0) puzzle.end.x = 0
-  if (puzzle.end.x >= newWidth) puzzle.end.x = newWidth - 1
   if (puzzle.end.y < 0) puzzle.end.y = 0
-  if (puzzle.end.y >= newHeight) puzzle.end.y = newHeight - 1
+  if (puzzle.start.x >= newWidth) puzzle.start.x -= 2
+  if (puzzle.start.y >= newHeight) puzzle.start.x -= 2
+  if (puzzle.end.x >= newWidth) puzzle.end.x -= 2
+  if (puzzle.end.y >= newHeight) puzzle.end.x -= 2
 
   savePuzzle()
   _redraw(puzzle)

@@ -2,11 +2,9 @@ In vague order of importance.
 
 - Pillars are failing validation, can't repro (maybe fixed?)
 
-- Show hint is adding endpoints in pillars? Or removing? Something very wrong.
-- End point is pushed into second-to-right when squishing pillars
+- Show hint is removing endpoints in pillars?
 - Solve with pillars is slow, maybe increase warning threshold / disable in play mode?
 - Maybe remove show solution for play mode entirely?
-- Start point interaction region is still active in editor
 - Hints are bad for triangles w/ pillars?
 - Shape Chooser is bad for small puzzles, set minimum size?
 !- Regressions fixed
@@ -17,8 +15,9 @@ In vague order of importance.
 - Move generate, etc out of engine? Probably need a new folder for 'legacy' anyways.
 - Fix generation colors
 - Add missing daily styles
-- Solver compatibility with mid-segment start
-- Solution draw with mid-segment start
+- Mid-segment start
+-- Solver compatibility
+-- Solution draw compatibility
 - Mid-segment endpoints
 - Multi start/end
 - Dots & gaps into the grid
