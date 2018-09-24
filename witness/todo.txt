@@ -1,12 +1,11 @@
 In vague order of importance.
 
-- Pillars are failing, can't repro (maybe fixed?)
+- Pillars are failing validation, can't repro (maybe fixed?)
 
 - Show hint is adding endpoints in pillars? Or removing? Something very wrong.
 - End point is pushed into second-to-right when squishing pillars
 - Solve with pillars is slow, maybe increase warning threshold / disable in play mode?
 - Maybe remove show solution for play mode entirely?
-- Show hint is adding endpoints in pillars?
 - Start point interaction region is still active in editor
 - Hints are bad for triangles w/ pillars?
 - Shape Chooser is bad for small puzzles, set minimum size?
@@ -45,6 +44,3 @@ In vague order of importance.
 -- Maybe have a class="centered"
 - Search for fixme/todo and move them here
 - When start == end, can't enter end without leaving the cell
-
-!- Won't Fix
-- Tracing over gaps is possible if you go too fast

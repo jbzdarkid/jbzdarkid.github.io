@@ -372,7 +372,7 @@ function _onElementClicked(elem) {
 var symbolData = {
   'start': {'type':'start'},
   'end': {'type':'end', 'y':18, 'dir':'top'},
-  'gap': {'type':'gap'},
+  'gap': {'type':'gap', 'color':BACKGROUND},
   'dot': {'type':'dot'},
   'square': {'type':'square'},
   'star': {'type':'star'},

@@ -45,7 +45,6 @@ function _drawGrid(puzzle, svg, target) {
       line.setAttribute('stroke-width', 24)
       line.setAttribute('stroke-linecap', 'round')
       line.setAttribute('stroke', FOREGROUND)
-      line.id = target + '_' + x + '_' + y // TODO: Currently only used for gaps.
       if (x%2 == 1 && y%2 == 0) { // Horizontal
         line.setAttribute('x1', (x-1)*41 + 52)
         if (puzzle.pillar && x == puzzle.grid.length - 1) {
@@ -115,9 +114,7 @@ function _drawSymbols(puzzle, svg, target) {
   }
 
   for (var gap of puzzle.gaps) {
-    var line = document.getElementById(target + '_' + gap.x + '_' + gap.y)
-    svg.removeChild(line)
-    var params = {'type':'gap', 'width':58, 'height':58}
+    var params = {'type':'gap', 'width':58, 'height':58, 'color':BACKGROUND}
     params.x = gap.x*41 + 23
     params.y = gap.y*41 + 23
     if (gap.x%2 == 0 && gap.y%2 == 1) params.rot = 1

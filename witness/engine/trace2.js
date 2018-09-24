@@ -268,10 +268,9 @@ function onMove(dx, dy) {
   // Also handles some collision
   _pushCursor(dx, dy, width, height)
 
-  _gapCollision()
-
   // Potentially move the location to a new cell, and make absolute boundary checks
   while (true) {
+    _gapCollision()
     var moveDir = _move()
     data.path[data.path.length - 1].redraw()
     if (moveDir == 'none') break
