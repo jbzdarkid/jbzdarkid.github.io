@@ -78,7 +78,7 @@ window.onload = function() {
     document.getElementById('title').innerText = puzzleData.puzzle.name
     // Only verify 5x5 (11x11 internally) and smaller
     if (puzzleData.puzzle.grid.length * puzzleData.puzzle.grid[0].length <= 121) {
-      solve(puzzleData.puzzle, puzzleData.puzzle.start.x, puzzleData.puzzle.start.y, puzzleData.solutions)
+      puzzleData.solutions = solve(puzzleData.puzzle)
     }
   } else {
     if ('style' in urlParams) {

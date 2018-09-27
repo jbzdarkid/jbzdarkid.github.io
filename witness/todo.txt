@@ -42,3 +42,4 @@ In vague order of importance.
 -- Maybe have a class="centered"
 - Search for fixme/todo and move them here
 - When start == end, can't enter end without leaving the cell
+- Checkboxes are very not centered, especially on mac.
