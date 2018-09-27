@@ -35,7 +35,6 @@ window.onload = function() {
 
 function newPuzzle() {
   puzzle = new Puzzle(4, 4)
-  puzzle.toggleStart(0, 8)
   puzzle.name = 'Unnamed Puzzle'
   _redraw(puzzle)
   window.localStorage.setItem('activePuzzle', '')
@@ -377,7 +376,7 @@ function _onElementClicked(elem) {
 var symbolData = {
   'start': {'type':'start'},
   'end': {'type':'end', 'y':18, 'dir':'top'},
-  'gap': {'type':'gap', 'color':BACKGROUND},
+  'gap': {'type':'gap'},
   'dot': {'type':'dot'},
   'square': {'type':'square'},
   'star': {'type':'star'},
@@ -390,6 +389,7 @@ var symbolData = {
 }
 function _drawSymbolButtons() {
   var symbolTable = document.getElementById('symbolButtons')
+  symbolTable.style.display = null
   for (var button of symbolTable.getElementsByTagName('button')) {
     var params = symbolData[button.id]
     params.id = button.id
@@ -439,6 +439,7 @@ function _drawSymbolButtons() {
 
 function _drawColorButtons() {
   var colorTable = document.getElementById('colorButtons')
+  colorTable.style.display = null
   for (var button of colorTable.getElementsByTagName('button')) {
     var params = {'width':146, 'height':45, 'border':2}
     params.text = button.id

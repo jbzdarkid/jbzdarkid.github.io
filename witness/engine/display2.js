@@ -113,7 +113,7 @@ function _drawSymbols(puzzle, svg) {
   }
 
   for (var gap of puzzle.gaps) {
-    var params = {'type':'gap', 'width':58, 'height':58, 'color':BACKGROUND}
+    var params = {'type':'gap', 'width':58, 'height':58}
     params.x = gap.x*41 + 23
     params.y = gap.y*41 + 23
     if (gap.x%2 == 0 && gap.y%2 == 1) params.rot = 1

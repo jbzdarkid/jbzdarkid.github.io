@@ -130,9 +130,9 @@ class Puzzle {
   }
 
   toggleStart(x, y) {
-    for (var startPoint of this.startPoints) {
-      if (startPoint.x == x && startPoint.y == y) {
-        this.startPoints.remove(startPoint)
+    for (var i=0; i<this.startPoints.length; i++) {
+      if (this.startPoints[i].x == x && this.startPoints[i].y == y) {
+        this.startPoints.splice(i, 1)
         return
       }
     }

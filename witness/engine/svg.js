@@ -240,19 +240,19 @@ function _gap(svg, params) {
 
   var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
   svg.appendChild(rect)
-  rect.setAttribute('width', 18)
+  rect.setAttribute('width', 58)
   rect.setAttribute('height', 24)
-  rect.setAttribute('fill', params.color)
-  rect.setAttribute('x', center_x - 9)
+  rect.setAttribute('fill', FOREGROUND)
+  rect.setAttribute('transform', rotate(90 * params.rot))
+  rect.setAttribute('x', center_x - 29)
   rect.setAttribute('y', center_y - 12)
-  if (params.rot == 0) {
-    svg.appendChild(rect.cloneNode())
-    rect.setAttribute('transform', rotate(180))
-    svg.appendChild(rect)
-  } else if (params.rot == 1) {
-    rect.setAttribute('transform', rotate(90))
-    svg.appendChild(rect.cloneNode())
-    rect.setAttribute('transform', rotate(270))
-    svg.appendChild(rect)
-  }
+
+  var rect2 = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+  svg.appendChild(rect2)
+  rect2.setAttribute('width', 18)
+  rect2.setAttribute('height', 24)
+  rect2.setAttribute('fill', BACKGROUND)
+  rect2.setAttribute('transform', rotate(90 * params.rot))
+  rect2.setAttribute('x', center_x - 9)
+  rect2.setAttribute('y', center_y - 12)
 }
