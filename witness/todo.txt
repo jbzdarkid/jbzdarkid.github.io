@@ -1,16 +1,14 @@
 In vague order of importance.
 
-- [No Repro] Show hint is removing endpoints in pillars?
-
 - Solve with pillars is slow, maybe increase warning threshold / disable in play mode?
 - Maybe remove show solution for play mode entirely?
-!- Regressions fixed
 - Some cleanup needed for _polyFit
 -- Merge 2 functions into 1?
 -- Rewrite polyfit to use region[0] aka int version
 -- Fix failing test case for 0x0 poly
 - Move generate, etc out of engine? Probably need a new folder for 'legacy' anyways.
 - Fix generation colors
+- Improve tracing for 1xN
 - Add missing daily styles
 - Shape chooser is not centered
 - Mid-segment start
