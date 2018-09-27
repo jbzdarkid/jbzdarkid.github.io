@@ -129,25 +129,27 @@ function _drawSymbols(puzzle, svg) {
 }
 
 function _drawStartAndEnd(puzzle, svg) {
-  if (puzzle.end.dir == undefined) {
-    if (puzzle.end.x == 0) {
-      puzzle.end.dir = 'left'
-    } else if (puzzle.end.x == puzzle.grid.length - 1) {
-      puzzle.end.dir = 'right'
-    } else if (puzzle.end.y == 0) {
-      puzzle.end.dir = 'top'
-    } else if (puzzle.end.y == puzzle.grid[puzzle.end.x].length - 1) {
-      puzzle.end.dir = 'bottom'
+  for (var endPoint of puzzle.endPoints) {
+    if (endPoint.dir == undefined) {
+      if (endPoint.x == 0) {
+        endPoint.dir = 'left'
+      } else if (endPoint.x == puzzle.grid.length - 1) {
+        endPoint.dir = 'right'
+      } else if (endPoint.y == 0) {
+        endPoint.dir = 'top'
+      } else if (endPoint.y == puzzle.grid[endPoint.x].length - 1) {
+        endPoint.dir = 'bottom'
+      }
     }
+    drawSymbolWithSvg(svg, {
+      'type':'end',
+      'width': 58,
+      'height': 58,
+      'dir': endPoint.dir,
+      'x': endPoint.x*41 + 23,
+      'y': endPoint.y*41 + 23,
+    })
   }
-  drawSymbolWithSvg(svg, {
-    'type':'end',
-    'width': 58,
-    'height': 58,
-    'dir': puzzle.end.dir,
-    'x': puzzle.end.x*41 + 23,
-    'y': puzzle.end.y*41 + 23,
-  })
 
   var startData = undefined
   for (var startPoint of puzzle.startPoints) {
@@ -197,6 +199,9 @@ function _drawSolution(puzzle, x, y) {
       // console.log('Tracing bottom')
       dy = 1
     }
+    var endDir = puzzle.getEndDir(x, y)
+    if (endDir != undefined) break
+
     x += dx
     y += dy
     // Unflag the cell, move into it, and reflag it
@@ -206,13 +211,13 @@ function _drawSolution(puzzle, x, y) {
   }
 
   // Move into endpoint
-  if (puzzle.end.dir == 'left') {
+  if (endDir == 'left') {
     onMove(-24, 0)
-  } else if (puzzle.end.dir == 'right') {
+  } else if (endDir == 'right') {
     onMove(24, 0)
-  } else if (puzzle.end.dir == 'top') {
+  } else if (endDir == 'top') {
     onMove(0, -24)
-  } else if (puzzle.end.dir == 'bottom') {
+  } else if (endDir == 'bottom') {
     onMove(0, 24)
   }
 }

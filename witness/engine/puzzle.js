@@ -48,13 +48,12 @@ class Region {
 class Puzzle {
   constructor(width, height, pillar=false) {
     if (pillar) {
-      width -= 0.5
-      this.end = {'x':0, 'y':0, 'dir':'top'}
+      this.grid = this.newGrid(2 * width, 2 * height + 1)
     } else {
-      this.end = {'x':2*width, 'y':0, 'dir':'right'}
+      this.grid = this.newGrid(2 * width + 1, 2 * height + 1)
     }
-    this.grid = this.newGrid(2*width+1, 2*height+1)
     this.startPoints = []
+    this.endPoints = []
     this.dots = []
     this.gaps = []
     this.regionCache = {}
@@ -71,7 +70,11 @@ class Puzzle {
     } else {
       puzzle.startPoints = [parsed.start]
     }
-    puzzle.end = parsed.end
+    if (parsed.endPoints) {
+      puzzle.endPoints = parsed.endPoints
+    } else {
+      puzzle.endPoints = [parsed.end]
+    }
     puzzle.dots = parsed.dots
     puzzle.gaps = parsed.gaps
     puzzle.regionCache = parsed.regionCache
@@ -139,35 +142,35 @@ class Puzzle {
     this.startPoints.push({'x':x, 'y':y})
   }
 
-  isEndpoint(x, y) {
+  toggleEnd(x, y) {
+    for (var i=0; i<this.endPoints.length; i++) {
+      if (this.endPoints[i].x == x && this.endPoints[i].y == y) {
+        this.endPoints.splice(i, 1)
+        return
+      }
+    }
+    this.endPoints.push({'x':x, 'y':y})
+  }
+
+  getEndDir(x, y) {
     if (this.pillar) x = this._mod(x)
-    if (x != this.end.x) return false
-    if (y != this.end.y) return false
-    return true
+    for (var endPoint of this.endPoints) {
+      if (x == endPoint.x && y == endPoint.y) return endPoint.dir
+    }
+    return undefined
   }
 
   clone() {
     var copy = new Puzzle(0, 0)
     copy.grid = this.copyGrid()
     copy.startPoints = this.startPoints.slice()
-    copy.end = this.end
+    copy.endPoints = this.endPoints.slice()
     copy.dots = this.dots.slice()
     copy.gaps = this.gaps.slice()
     copy.regionCache = this.regionCache
     copy.pillar = this.pillar
     copy.hints = this.hints
     return copy
-    /*
-    return {
-      'grid':this.copyGrid(this.grid),
-      'start':{'x':this.start.x, 'y':this.start.y},
-      'end':{'x':this.end.x, 'y':this.end.y},
-      'dots':this.dots.slice(),
-      'gaps':this.gaps.slice(),
-      'regionCache':this.regionCache,
-      'pillar':this.pillar
-    }
-    */
   }
 
   // Called on a solution. Computes a list of gaps to show as hints which *do not*

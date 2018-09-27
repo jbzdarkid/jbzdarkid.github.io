@@ -300,7 +300,7 @@ function _onElementClicked(elem) {
     } else {
       var dir = validDirs[0]
     }
-    puzzle.end = {'x':x, 'y':y, 'dir':dir}
+    puzzle.toggleEnd({'x':x, 'y':y, 'dir':dir})
   } else if (['gap', 'dot'].includes(activeParams.type)) {
     if (x%2 == 1 && y%2 == 1) return
     if (activeParams.type == 'gap' && x%2 == 0 && y%2 == 0) return

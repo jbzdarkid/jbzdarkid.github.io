@@ -21,11 +21,8 @@ class BoundingBox {
       this.raw.y1 = this.raw.y2
       this.raw.y2 += pixels
     }
-    this._update()
-  }
-
-  setEnd(dir) {
-    this.endDir = dir
+    // Check for endpoint adjustment
+    this.endDir = data.puzzle.getEndDir(data.pos.x, data.pos.y)
     this._update()
   }
 
@@ -571,12 +568,5 @@ function _changePos(moveDir) {
   if (!backedUp) { // Entered a new cell, mark as visited
     data.path.push(new PathSegment(moveDir))
     data.puzzle.setCell(data.pos.x, data.pos.y, true)
-  }
-
-  // Check for endpoint adjustment
-  if (data.puzzle.isEndpoint(data.pos.x, data.pos.y)) {
-    data.bbox.setEnd(data.puzzle.end.dir)
-  } else {
-    data.bbox.setEnd(undefined)
   }
 }
