@@ -188,6 +188,10 @@ function trace(elem, event, puzzle) {
 function onTraceStart(svg, puzzle, start) {
   var x = parseFloat(start.getAttribute('cx'))
   var y = parseFloat(start.getAttribute('cy'))
+  var startPoint = {
+    'x': parseInt(start.id.split('_')[0]),
+    'y': parseInt(start.id.split('_')[1]),
+  }
 
   var cursor = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
   svg.appendChild(cursor)
@@ -204,9 +208,9 @@ function onTraceStart(svg, puzzle, start) {
   svg.appendChild(bboxDebug)
   bboxDebug.setAttribute('fill', 'white')
   bboxDebug.setAttribute('opacity', 0.3)
-  if (puzzle.start.x%2 == 1) { // Start point is on a horizontal segment
+  if (startPoint.x % 2 == 1) { // Start point is on a horizontal segment
     var bbox = new BoundingBox(x - 29, x + 29, y - 12, y + 12)
-  } else if (puzzle.start.y%2 == 1) { // Start point is on a vertical segment
+  } else if (startPoint.y % 2 == 1) { // Start point is on a vertical segment
     var bbox = new BoundingBox(x - 12, x + 12, y - 29, y + 29)
   } else { // Start point is at an intersection
     var bbox = new BoundingBox(x - 12, x + 12, y - 12, y + 12)
@@ -222,7 +226,7 @@ function onTraceStart(svg, puzzle, start) {
     'x':x,
     'y':y,
     // Position within puzzle.grid
-    'pos':{'x':puzzle.start.x, 'y':puzzle.start.y},
+    'pos':startPoint,
     'puzzle':puzzle,
     'path':[],
   }
@@ -239,7 +243,7 @@ function onTraceStart(svg, puzzle, start) {
     }
   }
   data.path.push(new PathSegment('none'))
-  data.puzzle.setCell(puzzle.start.x, puzzle.start.y, true)
+  data.puzzle.setCell(startPoint.x, startPoint.y, true)
 }
 
 document.onpointerlockchange = function() {

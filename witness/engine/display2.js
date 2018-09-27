@@ -27,18 +27,17 @@ function draw(puzzle, target='puzzle') {
   rect.setAttribute('width', pixelWidth - 10) // Removing border
   rect.setAttribute('height', pixelHeight - 10) // Removing border
 
-  _drawGrid(puzzle, svg, target)
-  _drawStartAndEnd(puzzle, svg, target)
+  _drawGrid(puzzle, svg)
+  var startData = _drawStartAndEnd(puzzle, svg) // Detects and returns the start element to begin tracing
   // Draw cell symbols after so they overlap the lines, if necessary
-  _drawSymbols(puzzle, svg, target)
-
-  if (puzzle.getCell(puzzle.start.x, puzzle.start.y) == true) {
-    _drawSolution(puzzle, svg, target)
+  _drawSymbols(puzzle, svg)
+  if (startData) {
+    onTraceStart(svg, puzzle, startData.elem)
+    _drawSolution(puzzle, startData.x, startData.y)
   }
 }
 
-function _drawGrid(puzzle, svg, target) {
-
+function _drawGrid(puzzle, svg) {
   for (var x=0; x<puzzle.grid.length; x++) {
     for (var y=0; y<puzzle.grid[x].length; y++) {
       var line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
@@ -99,7 +98,7 @@ function _drawGrid(puzzle, svg, target) {
   }
 }
 
-function _drawSymbols(puzzle, svg, target) {
+function _drawSymbols(puzzle, svg) {
   for (var x=1; x<puzzle.grid.length; x+=2) {
     for (var y=1; y<puzzle.grid[x].length; y+=2) {
       if (puzzle.grid[x][y]) {
@@ -129,20 +128,7 @@ function _drawSymbols(puzzle, svg, target) {
   }
 }
 
-function _drawStartAndEnd(puzzle, svg, target) {
-  drawSymbolWithSvg(svg, {
-    'type':'start',
-    'width': 58,
-    'height': 58,
-    'x': puzzle.start.x*41 + 23,
-    'y': puzzle.start.y*41 + 23,
-  })
-  var start = svg.lastChild
-  start.onclick = function(event) {
-    trace(this, event, puzzle)
-  }
-  start.id = target + '_start'
-
+function _drawStartAndEnd(puzzle, svg) {
   if (puzzle.end.dir == undefined) {
     if (puzzle.end.x == 0) {
       puzzle.end.dir = 'left'
@@ -162,34 +148,54 @@ function _drawStartAndEnd(puzzle, svg, target) {
     'x': puzzle.end.x*41 + 23,
     'y': puzzle.end.y*41 + 23,
   })
+
+  var startData = undefined
+  for (var startPoint of puzzle.startPoints) {
+    drawSymbolWithSvg(svg, {
+      'type':'start',
+      'width': 58,
+      'height': 58,
+      'x': startPoint.x*41 + 23,
+      'y': startPoint.y*41 + 23,
+    })
+    var start = svg.lastChild
+    start.id = startPoint.x + '_' + startPoint.y // FIXME: I'd like to avoid using ID to pass x/y, it feels like a hack.
+    start.onclick = function(event) {
+      trace(this, event, puzzle)
+    }
+    if (puzzle.getCell(startPoint.x, startPoint.y) == true) {
+      // TODO: Clean up once I have rich lines; this start point should be 'none'
+      var surroundingLines = 0
+      if (puzzle.getCell(startPoint.x - 1, startPoint.y) == true) surroundingLines++
+      if (puzzle.getCell(startPoint.x + 1, startPoint.y) == true) surroundingLines++
+      if (puzzle.getCell(startPoint.x, startPoint.y - 1) == true) surroundingLines++
+      if (puzzle.getCell(startPoint.x, startPoint.y + 1) == true) surroundingLines++
+      if (surroundingLines == 1) {
+        startData = {'elem':start, 'x':startPoint.x, 'y':startPoint.y}
+      }
+    }
+  }
+  return startData
 }
 
-function _drawSolution(puzzle, svg, target) {
-  var x = puzzle.start.x
-  var y = puzzle.start.y
-  var start = document.getElementById(target + '_start')
-
-  onTraceStart(svg, puzzle, start)
-
+function _drawSolution(puzzle, x, y) {
   // Limited because there is a chance of infinite looping with bad input data.
   for (var i=0; i<1000; i++) {
     var lastDir = data.path[data.path.length - 1].dir
     var dx = 0
     var dy = 0
     if (lastDir != 'right' && puzzle.getCell(x - 1, y) == true) { // Left
-      console.log('Tracing left')
+      // console.log('Tracing left')
       dx = -1
     } else if (lastDir != 'left' && puzzle.getCell(x + 1, y) == true) { // Right
-      console.log('Tracing right')
+      // console.log('Tracing right')
       dx = 1
     } else if (lastDir != 'bottom' && puzzle.getCell(x, y - 1) == true) { // Top
-      console.log('Tracing bottom')
+      // console.log('Tracing top')
       dy = -1
     } else if (lastDir != 'top' && puzzle.getCell(x, y + 1) == true) { // Bottom
-      console.log('Tracing top')
+      // console.log('Tracing bottom')
       dy = 1
-    } else { // Unable to follow path any further, reached an endpoint
-      break
     }
     x += dx
     y += dy

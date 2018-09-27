@@ -1,5 +1,13 @@
 // Generates a solution via DFS recursive backtracking
-function solve(puzzle, x, y, solutions) {
+function solve(puzzle) {
+  var solutions = []
+  for (var startPoint of puzzle.startPoints) {
+    _solveLoop(puzzle, startPoint.x, startPoint.y, solutions)
+  }
+  return solutions
+}
+
+function _solveLoop(puzzle, x, y, solutions) {
   // if (solutions.length > 0) return
   if (puzzle.isEndpoint(x, y)) {
     // Reached the end point, validate solution and tail recurse
@@ -14,25 +22,25 @@ function solve(puzzle, x, y, solutions) {
   // Extend path left
   if (y%2 == 0 && puzzle.getCell(x - 1, y) == false) {
     puzzle.setCell(x--, y, true)
-    solve(puzzle, x, y, solutions)
+    _solveLoop(puzzle, x, y, solutions)
     puzzle.setCell(++x, y, false)
   }
   // Extend path right
   if (y%2 == 0 && puzzle.getCell(x + 1, y) == false) {
     puzzle.setCell(x++, y, true)
-    solve(puzzle, x, y, solutions)
+    _solveLoop(puzzle, x, y, solutions)
     puzzle.setCell(--x, y, false)
   }
   // Extend path up
   if (x%2 == 0 && puzzle.getCell(x, y - 1) == false) {
     puzzle.setCell(x, y--, true)
-    solve(puzzle, x, y, solutions)
+    _solveLoop(puzzle, x, y, solutions)
     puzzle.setCell(x, ++y, false)
   }
   // Extend path down
   if (x%2 == 0 && puzzle.getCell(x, y + 1) == false) {
     puzzle.setCell(x, y++, true)
-    solve(puzzle, x, y, solutions)
+    _solveLoop(puzzle, x, y, solutions)
     puzzle.setCell(x, --y, false)
   }
 }

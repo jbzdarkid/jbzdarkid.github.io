@@ -12,16 +12,16 @@ function _randint(n) {
 
 // Generates a random puzzle for a given size.
 function randomPuzzle(style) {
-  var width = style['width']
-  var height = style['height']
+  var width = style.width
+  var height = style.height
   var puzzle = new Puzzle(width, height)
 
   // FIXME: Both start and end must be on corners
-  if (style['start']) {
-    puzzle.start = style['start']
+  if (style.start) {
+    puzzle.toggleStart(style.start.x, style.start.y)
   } else {
-    puzzle.start.x = 2 * _randint(width)
-    puzzle.start.y = 2 * _randint(height)
+    // TODO: Allow start points mid-segment
+    puzzle.toggleStart(2 * _randint(width), 2 * _randint(height))
   }
   if (style['end']) {
     puzzle.end = style['end']
@@ -234,7 +234,7 @@ function randomLeftDoor() {
   puzzle.grid[poly1.x][poly1.y] = poly1
   puzzle.grid[poly2.x][poly2.y] = poly2
 
-  puzzle.start = {'x':8, 'y':0}
+  puzzle.toggleStart(8, 0)
   puzzle.end = {'x':0, 'y':8}
   return puzzle
 }
@@ -284,7 +284,7 @@ function randomRightDoor() {
   puzzle.grid[square3.x][square3.y] = {'type':'square', 'color':color2}
   puzzle.grid[square4.x][square4.y] = {'type':'square', 'color':color2}
 
-  puzzle.start = {'x':8, 'y':8}
+  puzzle.toggleStart(8, 8)
   puzzle.end = {'x':0, 'y':0}
   return puzzle
 }
@@ -361,21 +361,19 @@ function randomTriple() {
       placedWhites++
     }
   }
-  puzzle.start = {'x':8, 'y':0}
+  puzzle.toggleStart(8, 0)
   puzzle.end = {'x':0, 'y':8}
   return puzzle
 }
 
 function validDoor(side) {
-  var solutions = []
   while (true) {
-    solutions = []
     var puzzleSeed = seed
     if (side == 'left')
       var puzzle = randomLeftDoor()
     else
       var puzzle = randomRightDoor()
-    solve(puzzle, puzzle.start.x, puzzle.start.y, solutions)
+    var solutions = solve(puzzle)
     console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: ')
     if (solutions.length > 0) {
       break
@@ -385,12 +383,11 @@ function validDoor(side) {
 }
 
 function validTriple() {
-  var solutions = []
   while (true) {
     solutions = []
     var puzzleSeed = seed
     var puzzle = randomTriple()
-    solve(puzzle, puzzle.start.x, puzzle.start.y, solutions)
+    var solutions = solve(puzzle)
     console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: ')
     if (solutions.length > 0) {
       break
@@ -400,12 +397,11 @@ function validTriple() {
 }
 
 function invalidTriple() {
-  var solutions = []
   while (true) {
     solutions = []
     var puzzleSeed = seed
     var puzzle = randomTriple()
-    solve(puzzle, puzzle.start.x, puzzle.start.y, solutions)
+    var solutions = solve(puzzle)
     console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: ')
     if (solutions.length == 0) {
       break
@@ -415,13 +411,11 @@ function invalidTriple() {
 }
 
 function validPuzzle(style) {
-  var solutions = []
   // Require a puzzle with not too many solutions
   while (true) {
-    solutions = []
     var puzzleSeed = seed
     var puzzle = randomPuzzle(style)
-    solve(puzzle, puzzle.start.x, puzzle.start.y, solutions)
+    var solutions = solve(puzzle)
     console.info('Puzzle', puzzle, 'has', solutions.length, 'solutions: ')
     if (solutions.length < style['difficulty'][0]) {
       console.info('Too Hard')

@@ -35,6 +35,7 @@ window.onload = function() {
 
 function newPuzzle() {
   puzzle = new Puzzle(4, 4)
+  puzzle.toggleStart(0, 8)
   puzzle.name = 'Unnamed Puzzle'
   _redraw(puzzle)
   window.localStorage.setItem('activePuzzle', '')
@@ -140,8 +141,7 @@ function solvePuzzle() {
       return
     }
   }
-  solutions = []
-  solve(puzzle, puzzle.start.x, puzzle.start.y, solutions)
+  solutions = solve(puzzle)
   _showSolution(0, puzzle)
 }
 
@@ -169,8 +169,10 @@ function setPillar(value) {
     if (puzzle.end.x == puzzle.grid.length - 1) {
       puzzle.end.x = 0
     }
-    if (puzzle.start.x == puzzle.grid.length - 1) {
-      puzzle.start.x = 0
+    for (var startPoint of puzzle.startPoints) {
+      if (startPoint.x == puzzle.grid.length - 1) {
+        startPoint.x = 0
+      }
     }
     puzzle.pillar = true
     resizePuzzle(-1, 0, 'right')
@@ -279,7 +281,7 @@ function _onElementClicked(elem) {
 
   if (activeParams.type == 'start') {
     if (x%2 != 0 || y%2 != 0) return
-    puzzle.start = {'x':x, 'y':y}
+    puzzle.toggleStart(x, y)
   } else if (activeParams.type == 'end') {
     if (x%2 != 0 || y%2 != 0) return
     var validDirs = []
@@ -590,20 +592,22 @@ function resizePuzzle(dx, dy, id) {
 
   // Try to keep the start and endpoint moving together
   if (puzzle.end.dir == 'right') {
-    puzzle.start.x += dx
+    for (var startPoint of puzzle.startPoints) startPoint.x += dx
     puzzle.end.x += dx
   }
   if (puzzle.end.dir == 'bottom') {
-    puzzle.start.y += dy
+    for (var startPoint of puzzle.startPoints) startPoint.y += dy
     puzzle.end.y += dy
   }
   // Unless one of them goes off the edge of the puzzle
-  if (puzzle.start.x < 0) puzzle.start.x = 0
-  if (puzzle.start.y < 0) puzzle.start.y = 0
+  for (var startPoint of puzzle.startPoints) {
+    if (startPoint.x < 0) startPoint.x = 0
+    if (startPoint.y < 0) startPoint.y = 0
+    if (startPoint.x >= newWidth) startPoint.x -= 2
+    if (startPoint.y >= newHeight) startPoint.x -= 2
+  }
   if (puzzle.end.x < 0) puzzle.end.x = 0
   if (puzzle.end.y < 0) puzzle.end.y = 0
-  if (puzzle.start.x >= newWidth) puzzle.start.x -= 2
-  if (puzzle.start.y >= newHeight) puzzle.start.x -= 2
   if (puzzle.end.x >= newWidth) puzzle.end.x -= 2
   if (puzzle.end.y >= newHeight) puzzle.end.x -= 2
 

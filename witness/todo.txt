@@ -1,5 +1,6 @@
 In vague order of importance.
 
+- localStorage.theme is "insecure" in safari
 - Solve with pillars is slow, maybe increase warning threshold / disable in play mode?
 - Maybe remove show solution for play mode entirely?
 - Some cleanup needed for _polyFit
@@ -18,10 +19,15 @@ In vague order of importance.
 -- Dots cancelled by negation
 -- Polyominos will not allow trace-through
 - Multi start/end
-- Dots & gaps into the grid
+- Rich line data
+-- Dots & gaps into the grid
 -- Empty segments (not just gaps)
+-- Colored symmetry lines (0/1/2)
+-- Colored Dots
+-- Clean up solution to be a full path (start point = none, same as trace)
 - Symmetry
 !- Stable release
+- Hide solution (puzzleData) from global scope
 - Server
 -- Shortnames for puzzles
 -- A whole bunch of UI for browsing puzzles
@@ -29,8 +35,6 @@ In vague order of importance.
 -- Preview images for puzzles (meta:og tag)
 -- Name for the project (so I can have a reasonable dns name)
 - Flash for errors (Invisible Dots)
-- Colored Symmetry -> Probably want line color 0/1/2 instead of true/false
-- Colored Dots
 !- Feature complete
 
 !- Small things / Bugs

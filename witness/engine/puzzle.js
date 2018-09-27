@@ -54,7 +54,7 @@ class Puzzle {
       this.end = {'x':2*width, 'y':0, 'dir':'right'}
     }
     this.grid = this.newGrid(2*width+1, 2*height+1)
-    this.start = {'x':0, 'y':2*height}
+    this.startPoints = []
     this.dots = []
     this.gaps = []
     this.regionCache = {}
@@ -66,7 +66,11 @@ class Puzzle {
     var puzzle = new Puzzle()
     puzzle.name = parsed.name
     puzzle.grid = parsed.grid
-    puzzle.start = parsed.start
+    if (parsed.startPoints) {
+      puzzle.startPoints = parsed.startPoints
+    } else {
+      puzzle.startPoints = [parsed.start]
+    }
     puzzle.end = parsed.end
     puzzle.dots = parsed.dots
     puzzle.gaps = parsed.gaps
@@ -125,6 +129,16 @@ class Puzzle {
     this.grid[x][y] = value
   }
 
+  toggleStart(x, y) {
+    for (var startPoint of this.startPoints) {
+      if (startPoint.x == x && startPoint.y == y) {
+        this.startPoints.remove(startPoint)
+        return
+      }
+    }
+    this.startPoints.push({'x':x, 'y':y})
+  }
+
   isEndpoint(x, y) {
     if (this.pillar) x = this._mod(x)
     if (x != this.end.x) return false
@@ -135,7 +149,7 @@ class Puzzle {
   clone() {
     var copy = new Puzzle(0, 0)
     copy.grid = this.copyGrid()
-    copy.start = this.start
+    copy.startPoints = this.startPoints.slice()
     copy.end = this.end
     copy.dots = this.dots.slice()
     copy.gaps = this.gaps.slice()
