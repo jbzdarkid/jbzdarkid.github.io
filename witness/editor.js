@@ -35,6 +35,7 @@ window.onload = function() {
 
 function newPuzzle() {
   puzzle = new Puzzle(4, 4)
+  puzzle.toggleStart(0, 8)
   puzzle.name = 'Unnamed Puzzle'
   _redraw(puzzle)
   window.localStorage.setItem('activePuzzle', '')

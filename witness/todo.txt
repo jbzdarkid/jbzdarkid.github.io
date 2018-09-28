@@ -18,7 +18,7 @@ In vague order of importance.
 - Region includes edges, update validation
 -- Dots cancelled by negation
 -- Polyominos will not allow trace-through
-- Multi start/end
+- Multi end
 - Rich line data
 -- Dots & gaps into the grid
 -- Empty segments (not just gaps)
