@@ -7,3 +7,7 @@ label, button, select, option {
 }
 table { margin:auto; }
 .resize { position: absolute; }
+input.checkbox {
+  transform: scale(2) translate(0px, -3px);
+  margin-right: 5px;
+}

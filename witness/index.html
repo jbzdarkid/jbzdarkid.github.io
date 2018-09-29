@@ -15,7 +15,7 @@
   </head>
   <body>
     <div style="position:absolute; float:left">
-      <input style="transform:scale(2)" id="theme" type="checkbox" onchange="localStorage.theme = this.checked; location.reload()">
+      <input class="checkbox" type="checkbox" id="theme" onchange="localStorage.theme = this.checked; location.reload()">
       <script>document.getElementById('theme').checked = (localStorage.theme == "true")</script>
       <label for="theme">Dark theme</label>
     </div>
