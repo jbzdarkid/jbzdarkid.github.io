@@ -163,23 +163,7 @@ function setPillar(value) {
       document.getElementById('pillarBox').checked = false
       return
     }
-    // TODO: BUG! Duplicate points which overlap may occur, which will yeild confusing behavior.
-    for (var endPoint of puzzle.endPoints) {
-      // If the endpoint is against a pillar edge, shift it to the top and re-orient it.
-      if (endPoint.dir == 'right' || endPoint.dir == 'left') {
-        endPoint.y = 0
-        endPoint.dir = 'top'
-      }
-      // If the endpoint is against the right edge, bring it around to the left (it will already have been snapped to top)
-      if (endPoint.x == puzzle.grid.length - 1) {
-        endPoint.x = 0
-      }
-    }
-    for (var startPoint of puzzle.startPoints) {
-      if (startPoint.x == puzzle.grid.length - 1) {
-        startPoint.x = 0
-      }
-    }
+
     puzzle.pillar = true
     resizePuzzle(-1, 0, 'right')
   }
@@ -619,7 +603,7 @@ function resizePuzzle(dx, dy, id) {
 
   var newEnds = []
   for (var endPoint of puzzle.endPoints) {
-    if (endPoint.dir == 'right') endPoint.x += dx
+    if (endPoint.dir == 'right' && !puzzle.pillar) endPoint.x += dx
     if (endPoint.dir == 'top') endPoint.y += dy
     if (endPoint.x >= 0 && endPoint.x < newWidth
      && endPoint.y >= 0 && endPoint.y < newHeight) {
