@@ -175,6 +175,7 @@ function _drawStartAndEnd(puzzle, svg) {
 
 function _drawSolution(puzzle, x, y) {
   // Limited because there is a chance of infinite looping with bad input data.
+  // TODO: Clean up once I have rich lines, this should be following the path laid by the solution.
   for (var i=0; i<1000; i++) {
     var lastDir = data.path[data.path.length - 1].dir
     var dx = 0
@@ -192,8 +193,6 @@ function _drawSolution(puzzle, x, y) {
       // console.log('Tracing bottom')
       dy = 1
     }
-    var endDir = puzzle.getEndDir(x, y)
-    if (endDir != undefined) break
 
     x += dx
     y += dy
@@ -204,6 +203,7 @@ function _drawSolution(puzzle, x, y) {
   }
 
   // Move into endpoint
+  var endDir = puzzle.getEndDir(x, y)
   if (endDir == 'left') {
     onMove(-24, 0)
   } else if (endDir == 'right') {

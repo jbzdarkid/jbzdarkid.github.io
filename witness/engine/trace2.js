@@ -156,7 +156,8 @@ function trace(elem, event, puzzle) {
     data.tracing = false
 
     // At endpoint and not in raw box -> In true endpoint
-    if (puzzle.isEndpoint(data.pos.x, data.pos.y) && !data.bbox.inRaw(data.x, data.y)) {
+    var endDir = puzzle.getEndDir(data.pos.x, data.pos.y)
+    if (endDir != undefined && !data.bbox.inRaw(data.x, data.y)) {
       data.cursor.onclick = null
       validate(puzzle)
 
