@@ -339,17 +339,20 @@ function _push(dx, dy, dir, target_dir) {
 
 function _pushCursor(dx, dy, width, height) {
   // Outer wall collision
-  if (!data.puzzle.pillar) { // Left/right walls are inner if we're a pillar
-    if (data.pos.x == 0) { // Against left wall
-      if (_push(dx, dy, 'left', 'top')) return
-    } else if (data.pos.x == data.puzzle.grid.length - 1) { // Against right wall
-      if (_push(dx, dy, 'right', 'top')) return
+  var endDir = data.puzzle.getEndDir(data.pos.x, data.pos.y)
+  if (endDir == undefined) { // Only handle collision for non-endpoint case, it's handled by interesection collision
+    if (!data.puzzle.pillar) { // Left/right walls are inner if we're a pillar
+      if (data.pos.x == 0) { // Against left wall
+        if (_push(dx, dy, 'left', 'top')) return
+      } else if (data.pos.x == data.puzzle.grid.length - 1) { // Against right wall
+        if (_push(dx, dy, 'right', 'top')) return
+      }
     }
-  }
-  if (data.pos.y == 0) { // Against top wall
-    if (_push(dx, dy, 'top', 'right')) return
-  } else if (data.pos.y == data.puzzle.grid[data.pos.x].length - 1) { // Against bottom wall
-    if (_push(dx, dy, 'bottom', 'right')) return
+    if (data.pos.y == 0) { // Against top wall
+      if (_push(dx, dy, 'top', 'right')) return
+    } else if (data.pos.y == data.puzzle.grid[data.pos.x].length - 1) { // Against bottom wall
+      if (_push(dx, dy, 'bottom', 'right')) return
+    }
   }
 
   // Inner wall collision
