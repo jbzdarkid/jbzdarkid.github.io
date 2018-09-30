@@ -165,7 +165,7 @@ function _drawStartAndEnd(puzzle, svg) {
       if (puzzle.getCell(startPoint.x + 1, startPoint.y) == true) surroundingLines++
       if (puzzle.getCell(startPoint.x, startPoint.y - 1) == true) surroundingLines++
       if (puzzle.getCell(startPoint.x, startPoint.y + 1) == true) surroundingLines++
-      if (surroundingLines == 1) {
+      if (surroundingLines < 2) { // 0 or 1 are valid
         startData = {'elem':start, 'x':startPoint.x, 'y':startPoint.y}
       }
     }

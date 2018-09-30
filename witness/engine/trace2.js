@@ -1,9 +1,8 @@
 window.BBOX_DEBUG = false
 
 class BoundingBox {
-  constructor(x1, x2, y1, y2, endDir) {
+  constructor(x1, x2, y1, y2) {
     this.raw = {'x1':x1, 'x2':x2, 'y1':y1, 'y2':y2}
-    this.endDir = endDir
     this._update()
   }
 
@@ -21,8 +20,6 @@ class BoundingBox {
       this.raw.y1 = this.raw.y2
       this.raw.y2 += pixels
     }
-    // Check for endpoint adjustment
-    this.endDir = data.puzzle.getEndDir(data.pos.x, data.pos.y)
     this._update()
   }
 
@@ -33,15 +30,17 @@ class BoundingBox {
     )
   }
 
-  clone() {
-    return new BoundingBox(this.raw.x1, this.raw.x2, this.raw.y1, this.raw.y2, this.endDir)
+  rawCopy() {
+    return JSON.parse(JSON.stringify(this.raw))
   }
 
   _update() {
-    this.x1 = this.raw.x1 + (this.endDir == 'left' ? -24 : 0)
-    this.x2 = this.raw.x2 + (this.endDir == 'right' ? 24 : 0)
-    this.y1 = this.raw.y1 + (this.endDir == 'top' ? -24 : 0)
-    this.y2 = this.raw.y2 + (this.endDir == 'bottom' ? 24 : 0)
+    // Check for endpoint adjustment
+    var endDir = data.puzzle.getEndDir(data.pos.x, data.pos.y)
+    this.x1 = this.raw.x1 + (endDir == 'left' ? -24 : 0)
+    this.x2 = this.raw.x2 + (endDir == 'right' ? 24 : 0)
+    this.y1 = this.raw.y1 + (endDir == 'top' ? -24 : 0)
+    this.y2 = this.raw.y2 + (endDir == 'bottom' ? 24 : 0)
     this.middle = { // Note: Middle of the raw object
       'x':(this.raw.x1 + this.raw.x2)/2,
       'y':(this.raw.y1 + this.raw.y2)/2
@@ -77,7 +76,7 @@ class PathSegment {
   }
 
   redraw() { // Uses raw bbox because of endpoints
-    var points1 = data.bbox.clone().raw
+    var points1 = data.bbox.rawCopy()
     if (this.dir == 'left') {
       points1.x1 = data.x.clamp(data.bbox.middle.x, data.bbox.x2)
     } else if (this.dir == 'right') {
@@ -94,7 +93,7 @@ class PathSegment {
       points1.x2 + ' ' + points1.y1)
 
     var pastMiddle = true
-    var points2 = data.bbox.clone().raw
+    var points2 = data.bbox.rawCopy()
     if (data.x < data.bbox.middle.x && this.dir != 'right') {
       points2.x1 = data.x.clamp(data.bbox.x1, data.bbox.middle.x)
       points2.x2 = data.bbox.middle.x
@@ -202,22 +201,8 @@ function onTraceStart(svg, puzzle, start) {
   cursor.setAttribute('cx', x)
   cursor.setAttribute('cy', y)
 
-  var bboxDebug = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-  svg.appendChild(bboxDebug)
-  bboxDebug.setAttribute('fill', 'white')
-  bboxDebug.setAttribute('opacity', 0.3)
-  if (startPoint.x % 2 == 1) { // Start point is on a horizontal segment
-    var bbox = new BoundingBox(x - 29, x + 29, y - 12, y + 12)
-  } else if (startPoint.y % 2 == 1) { // Start point is on a vertical segment
-    var bbox = new BoundingBox(x - 12, x + 12, y - 29, y + 29)
-  } else { // Start point is at an intersection
-    var bbox = new BoundingBox(x - 12, x + 12, y - 12, y + 12)
-  }
-
   data = {
     'tracing':true,
-    'bbox':bbox,
-    'bboxDebug':bboxDebug,
     'svg':svg,
     // Cursor element and location
     'cursor': cursor,
@@ -228,6 +213,18 @@ function onTraceStart(svg, puzzle, start) {
     'puzzle':puzzle,
     'path':[],
   }
+  data.bboxDebug = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+  svg.appendChild(data.bboxDebug)
+  data.bboxDebug.setAttribute('fill', 'white')
+  data.bboxDebug.setAttribute('opacity', 0.3)
+  if (startPoint.x % 2 == 1) { // Start point is on a horizontal segment
+    data.bbox = new BoundingBox(x - 29, x + 29, y - 12, y + 12)
+  } else if (startPoint.y % 2 == 1) { // Start point is on a vertical segment
+    data.bbox = new BoundingBox(x - 12, x + 12, y - 29, y + 29)
+  } else { // Start point is at an intersection
+    data.bbox = new BoundingBox(x - 12, x + 12, y - 12, y + 12)
+  }
+
   for (var styleSheet of document.styleSheets) {
     if (styleSheet.title == 'animations') {
       data.animations = styleSheet

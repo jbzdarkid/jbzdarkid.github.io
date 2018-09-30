@@ -1,31 +1,27 @@
 In vague order of importance.
 
-- Solve with pillars is slow, maybe increase warning threshold / disable in play mode?
-- Maybe remove show solution for play mode entirely?
+- Region includes edges, update validation
+-- Dots cancelled by negation
 - Some cleanup needed for _polyFit
+-- Polyominos will not allow trace-through
 -- Merge 2 functions into 1?
 -- Rewrite polyfit to use region[0] aka int version
 -- Fix failing test case for 0x0 poly
-- Move generate, etc out of engine? Probably need a new folder for 'legacy' anyways.
 - Fix generation colors
 - Improve tracing for 1xN
 -- Some of it is endpoint handling -- it's preventing outer wall sliding even when endpoint is in another direction
-- Add missing daily styles
-- Shape chooser is not centered
 - Mid-segment start
 -- Solution tracer compatibility
 - Mid-segment endpoints
-- Region includes edges, update validation
--- Dots cancelled by negation
--- Polyominos will not allow trace-through
+- Simple Symmetry (horiz/verti)
+!- Stable release
 - Rich line data
 -- Dots & gaps into the grid
+-- Start & end into the grid?
 -- Empty segments (not just gaps)
 -- Colored symmetry lines (0/1/2)
 -- Colored Dots
 -- Clean up solution to be a full path (start point = none, same as trace)
-- Symmetry
-!- Stable release
 - Hide solution (puzzleData) from global scope
 - Server
 -- Shortnames for puzzles
@@ -34,11 +30,15 @@ In vague order of importance.
 -- Preview images for puzzles (meta:og tag)
 -- Name for the project (so I can have a reasonable dns name)
 - Flash for errors (Invisible Dots)
-!- Feature complete
+!- Feature complete!
 
 !- Small things / Bugs
+- Solve with pillars is slow, maybe increase warning threshold / disable in play mode?
+- Maybe remove show solution for play mode entirely?
+- Move generate, etc out of engine? Probably need a new folder for 'legacy' anyways.
+- Add missing daily styles
+- Shape chooser is not centered
 - change all divs to auto-centering? It's all I seem to use them for rn
 -- Maybe have a class="centered"
 - Search for fixme/todo and move them here
-- When start == end, can't enter end without leaving the cell
 - transform: scale(2) doesn't work on safari?
