@@ -1,7 +1,7 @@
 function draw(puzzle, target='puzzle') {
-  console.log('Drawing', puzzle, 'into', target)
   if (puzzle == undefined) return
   var svg = document.getElementById(target)
+  console.log('Drawing', puzzle, 'into', svg)
   while (svg.firstChild) svg.removeChild(svg.firstChild)
 
   if (puzzle.pillar) {

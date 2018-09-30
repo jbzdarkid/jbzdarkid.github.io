@@ -18,7 +18,6 @@ function _solveLoop(puzzle, x, y, solutions) {
       solutions.push(puzzle.clone())
     }
     puzzle.setCell(x, y, false)
-    return
   }
   // Extend path left
   if (y%2 == 0 && puzzle.getCell(x - 1, y) == false) {

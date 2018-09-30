@@ -431,6 +431,7 @@ tests = [
   }, function() {
     window.DISABLE_CACHE = true
     var puzzle = new Puzzle(3, 2, true)
+    puzzle.addStart(0, 4)
     puzzle.addEnd(0, 0, 'top')
     puzzle.grid[1][1] = {'type':'triangle', 'color':'orange', 'count':2}
     puzzle.grid[3][3] = {'type':'triangle', 'color':'orange', 'count':2}
@@ -447,7 +448,7 @@ tests = [
     puzzle.addStart(4, 6)
     puzzle.addStart(6, 6)
     puzzle.addEnd(6, 0, 'right')
-    return [puzzle, 2596]
+    return [puzzle, 649]
   }, function() {
     var puzzle = new Puzzle(3, 3)
     puzzle.addStart(0, 6)
@@ -455,7 +456,7 @@ tests = [
     puzzle.addEnd(2, 0, 'top')
     puzzle.addEnd(4, 0, 'top')
     puzzle.addEnd(6, 0, 'top')
-    return [puzzle, 2596]
+    return [puzzle, 649]
   }, function() {
     var puzzle = new Puzzle(3, 3)
     puzzle.addStart(0, 6)
@@ -466,6 +467,6 @@ tests = [
     puzzle.addEnd(2, 0, 'top')
     puzzle.addEnd(4, 0, 'top')
     puzzle.addEnd(6, 0, 'top')
-    return [puzzle, 2596]
+    return [puzzle, 2320]
   }
 ]
