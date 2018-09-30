@@ -33,8 +33,18 @@ function getRotations(polyshape, rot=null) {
   return rotations
 }
 
-// IMPORTANT NOTE: When formulating these, the top-left must be 0, 0.
-// That can also never be any negative x values.
+function fitsGrid(cells, x, y, puzzle) {
+  for (var cell of cells) {
+    if (cell.x + x < 0 || cell.x + x >= puzzle.grid.length) return false
+    if (cell.y + y < 0 || cell.y + y >= puzzle.grid[0].length) return false
+  }
+  return true
+}
+
+// IMPORTANT NOTE: When formulating these, the top row must contain (0, 0)
+// That means there will never be any negative y values.
+// (0, 0) must also be a cell in the shape, so that
+/// placing the shape at (x, y) will fill (x, y)
 function polyominoFromPolyshape(polyshape) {
   var topLeft = {'x':4, 'y':4}
   var polyomino = []
@@ -43,7 +53,7 @@ function polyominoFromPolyshape(polyshape) {
     for (var y=0; y<4; y++) {
       if (_isSet(polyshape, x, y)) {
         polyomino.push({'x':x, 'y':y})
-        if (x < topLeft.x || (x == topLeft.x && y < topLeft.y)) {
+        if (y < topLeft.y || (y == topLeft.y && x < topLeft.x)) {
           topLeft = {'x':x, 'y':y}
         }
       }

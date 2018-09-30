@@ -116,6 +116,7 @@ function _regionCheckNegations(puzzle, region) {
 // Checks if a region (series of cells) is valid.
 // Since the path must be complete at this point, returns only true or false
 function _regionCheck(puzzle, region) {
+  // console.log('Validation region of length', region.cells.length)
   var invalidElements = []
 
   // Check that all gaps are not covered
@@ -212,130 +213,109 @@ function _polyWrapper(region, puzzle) {
     }
   }
 
-  // No polyominos or onimylops inside the region
-  if (polys.length + ylops.length == 0) return
-
-
-  // For polyominos, we construct a grid to place them on
-  // The grid is 1 inside the region, and undefined outside.
-  if (polyCount < 0) {
-    // console.log('More onimoylops than polyominos by', -polyCount)
-    return false
-  } else if (polyCount > 0 && polyCount < region.cells.length) {
+  if (polys.length + ylops.length == 0) {
+    // console.log('No polyominos or onimylops inside the region, vacuously true')
+    return true
+  }
+  /*
+  if (polyCount > 0 && polyCount < region.cells.length) {
     // console.log('Combined size of polyominos', polyCount, 'does not match region size', region.length)
     return false
+  }*/
+
+  // For polyominos, we clear the grid to mark it up again:
+  var copy = puzzle.clone()
+  if (polyCount < 0) {
+    // This is an early exit, if there's bad counts.
+    // console.log('More onimoylops than polyominos by', -polyCount)
+    return false
   }
-  var savedGrid = puzzle.copyGrid()
-  puzzle.grid = puzzle.newGrid(puzzle.grid.length, puzzle.grid[0].length, puzzle.pillar)
-  // If polyCount == 0, then ylops cancel polys, and we should present the
-  // region as nonexistant, thus forcing all the shapes to cancel.
-  if (polyCount == 0) {
-    region = new Region()
+  // First, we mark all cells as 0: Cells outside the target region should be unaffected.
+  for (var x=1; x<copy.grid.length; x+=2) {
+    for (var y=1; y<copy.grid.length; y+=2) {
+      copy.setCell(x, y, 0)
+    }
   }
-  for (var cell of region.cells) {
-    puzzle.setCell(cell.x, cell.y, true)
+  // In the normal case, we mark every cell as -1: It needs to be covered by one poly
+  if (polyCount > 0) {
+    for (var cell of region.cells) copy.setCell(cell.x, cell.y, -1)
   }
-  var polyFits = _polyFit(polys, ylops, puzzle.grid)
-  puzzle.grid = savedGrid
-  return polyFits
+  // In the exact match case, we leave every cell marked 0: Polys and ylops need to cancel.
+
+  return _ylopFit(ylops, polys, copy)
+}
+
+// Places the ylops such that they are inside of the grid, then checks if the polys
+// zero the region.
+function _ylopFit(ylops, polys, puzzle) {
+  if (ylops.length == 0) return _polyFit(polys, puzzle)
+  var ylop = ylops.pop()
+  var ylopRotations = getRotations(ylop.polyshape, ylop.rot)
+  for (var x=1; x<puzzle.grid.length; x+=2) {
+    for (var y=1; y<puzzle.grid[x].length; y+=2) {
+      // console.log('Placing ylop', ylop, 'at', x, y)
+      for (var polyshape of ylopRotations) {
+        var cells = polyominoFromPolyshape(polyshape)
+        if (!fitsGrid(cells, x, y, puzzle)) continue
+        for (var cell of cells) puzzle.grid[cell.x + x][cell.y + y]--
+        if (_ylopFit(ylops, polys, puzzle)) return true
+        for (var cell of cells) puzzle.grid[cell.x + x][cell.y + y]++
+      }
+    }
+  }
 }
 
 // Returns whether or not a set of polyominos fit into a region.
-// The region is represented on a grid to facilitate checking.
 // Solves via recursive backtracking: Some piece must fill the top left square,
 // so try every piece to fill it, then recurse.
-// Onimoylops are complex, and basically can be placed anywhere, once placed
-// they act as an extra count for that square.
-function _polyFit(polys, ylops, grid) {
-  if (polys.length + ylops.length == 0) {
-    for (var x=1; x<grid.length; x+=2) {
-      for (var y=1; y<grid[x].length; y+=2) {
-        if (grid[x][y] != 0) {
+function _polyFit(polys, puzzle) {
+  // All polys (and ylops) placed, grid must be 0 everywhere to pass.
+  for (var y=1; y<puzzle.grid[0].length; y+=2) {
+    for (var x=1; x<puzzle.grid.length; x+=2) {
+      var cell = puzzle.getCell(x, y)
+      if (cell < 0) {
+        if (polys.length == 0) {
           // console.log('All polys placed, but grid not full')
           return false
         }
+      } else if (cell > 0) {
+        // console.log('Cell has been overfilled and no negations left to place')
+        return false
       }
     }
+  }
+  if (polys.length == 0) {
     // console.log('All polys placed, and grid full')
     return true
   }
 
-  if (ylops.length > 0) {
-    ylop = ylops.pop()
-    var ylopRotations = getRotations(ylop.polyshape, ylop.rot)
-    for (var _ylopCells of ylopRotations) {
-      var ylopCells = polyominoFromPolyshape(_ylopCells)
-      for (var x=1; x<grid.length; x+=2) {
-        nextPos: for (var y=1; y<grid[x].length; y+=2) {
-          for (var cell of ylopCells) { // Check if the ylop fits
-            if (cell.x + x < 0 || cell.x + x > grid.length-1) {
-              continue nextPos
-            } else if (cell.y + y < 0 || cell.y + y > grid[cell.x + x].length-1) {
-              continue nextPos
-            }
-          }
-          for (var cell of ylopCells) { // Place in the grid
-            grid[cell.x + x][cell.y + y]++
-          }
-          var ret = _polyFit(polys, ylops, grid)
-          for (var cell of ylopCells) { // Restore the grid
-            grid[cell.x + x][cell.y + y]--
-          }
-          if (ret) return true
-        }
-      }
+  // TODO: Might be a bit of perf to pass pos around, rather than rediscover?
+  var pos = {'x':1, 'y':1}
+  // Find the next open cell
+  while (puzzle.getCell(pos.x, pos.y) > 0) {
+    pos.x += 2
+    if (pos.x >= puzzle.grid.length) {
+      pos.x = 1
+      pos.y += 2
     }
-    // console.log('Ylop found, but no placement valid')
-    ylops.push(ylop)
-    return false
-  }
-
-  var first = undefined
-  firstLoop: for (var x=1; x<grid.length; x+=2) {
-    for (var y=1; y<grid[x].length; y+=2) {
-      if (grid[x][y] >= 1) {
-        first = {'x':x, 'y':y}
-        break firstLoop
-      }
+    if (pos.y >= puzzle.grid[0].length) {
+      // console.log('Polys remaining but grid full')
+      return false
     }
-  }
-  if (first == undefined) {
-    // console.log('Polys remaining but grid full')
-    return false
   }
 
   for (var i=0; i<polys.length; i++) {
     var poly = polys.splice(i, 1)[0]
-    var polyRotations = getRotations(poly.polyshape, poly.rot)
-    var polyFits = false
-    nextRotation: for (var _polyCells of polyRotations) {
-      var polyCells = polyominoFromPolyshape(_polyCells)
-      for (var cell of polyCells) {
-        // Check if the poly is off the grid or extends out of region
-        if (cell.x + first.x < 0 || cell.x + first.x > grid.length-1) {
-          continue nextRotation
-        } else if (cell.y + first.y < 0 || cell.y + first.y > grid[cell.x + first.x].length-1) {
-          continue nextRotation
-        } else if (grid[cell.x + first.x][cell.y + first.y] <= 0) {
-          continue nextRotation
-        }
-      }
-      // Poly fits, place it in the grid, update first empty cell, and recurse.
-      for (var cell of polyCells) {
-        grid[cell.x + first.x][cell.y + first.y]--
-      }
-      if (_polyFit(polys, ylops, grid)) {
-        polyFits = true
-      }
-      // Restore grid and poly list for the next poly choice
-      for (var cell of polyCells) {
-        grid[cell.x + first.x][cell.y + first.y]++
-      }
-      if (polyFits) break
+    // console.log('Placing poly', poly, 'at', pos.x, pos.y)
+    for (var polyshape of getRotations(poly.polyshape, poly.rot)) {
+      var cells = polyominoFromPolyshape(polyshape)
+      if (!fitsGrid(cells, pos.x, pos.y, puzzle)) continue
+      for (var cell of cells) puzzle.grid[cell.x + pos.x][cell.y + pos.y]++
+      if (_polyFit(polys, puzzle)) return true
+      for (var cell of cells) puzzle.grid[cell.x + pos.x][cell.y + pos.y]--
     }
     polys.splice(i, 0, poly)
-    if (polyFits) return true
   }
-  // console.log('Poly found, but no placement valid')
+  // console.log('Grid non-empty with >0 polys, but no valid recursion.')
   return false
 }

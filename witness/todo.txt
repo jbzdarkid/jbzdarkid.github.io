@@ -1,10 +1,9 @@
 In vague order of importance.
 
+- Flash for errors
 - Some cleanup needed for _polyFit
 -- Polyominos will not allow trace-through
--- Merge 2 functions into 1?
--- Rewrite polyfit to use region[0] aka int version
--- Fix failing test case for 0x0 poly
+-- Rewrite polyfit to use region[0] aka int version -- May not be possible, how do you encode -2?
 - Fix generation colors
 - Improve tracing for 1xN
 -- Some of it is endpoint handling -- it's preventing outer wall sliding even when endpoint is in another direction
@@ -28,10 +27,11 @@ In vague order of importance.
 -- Signin?
 -- Preview images for puzzles (meta:og tag)
 -- Name for the project (so I can have a reasonable dns name)
-- Flash for errors (Invisible Dots)
+- Invisible Dots
 !- Feature complete!
 
 !- Small things / Bugs
+- What uses getRotations? Why do we need rot=null?
 - Solve with pillars is slow, maybe increase warning threshold / disable in play mode?
 - Maybe remove show solution for play mode entirely?
 - Move generate, etc out of engine? Probably need a new folder for 'legacy' anyways.

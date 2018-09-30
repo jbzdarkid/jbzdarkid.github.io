@@ -26,6 +26,7 @@ window.onload = function() {
           border.setAttribute('stroke', 'red')
         }
       } catch (e) {
+        console.error('Puzzle', j, 'errored!')
         document.getElementById('test'+j).parentElement.innerHTML = e.stack || 'ERROR: '+e
       }
     }
