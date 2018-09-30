@@ -18,7 +18,7 @@ window.onload = function() {
         var solutions = solve(puzzle)
         draw(puzzle, 'test'+j)
         if (solutions.length != expectedSolutions) {
-          console.log('Puzzle', j, 'has', solutions.length, 'solutions, should have', expectedSolutions)
+          console.error('Puzzle', j, 'has', solutions.length, 'solutions, should have', expectedSolutions)
           for (var solution of solutions) {
             console.log(solution.toString())
           }
