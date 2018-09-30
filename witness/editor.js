@@ -35,7 +35,7 @@ window.onload = function() {
 
 function newPuzzle() {
   puzzle = new Puzzle(4, 4)
-  puzzle.toggleStart(0, 8)
+  puzzle.addStart(0, 8)
   puzzle.name = 'Unnamed Puzzle'
   _redraw(puzzle)
   window.localStorage.setItem('activePuzzle', '')
@@ -158,16 +158,22 @@ function setPillar(value) {
     puzzle.pillar = false
     resizePuzzle(1, 0, 'right')
   } else if (value == true && puzzle.grid.length%2 == 1) { // Pillar
+    // If puzzle is not wide enough to shrink (1xN), then prevent pillar-izing, and uncheck the box.
     if (puzzle.grid.length <= 1) {
       document.getElementById('pillarBox').checked = false
       return
     }
-    if (puzzle.end.dir == 'right' || puzzle.end.dir == 'left') {
-      puzzle.end.y = 0
-      puzzle.end.dir = 'top'
-    }
-    if (puzzle.end.x == puzzle.grid.length - 1) {
-      puzzle.end.x = 0
+    // TODO: BUG! Duplicate points which overlap may occur, which will yeild confusing behavior.
+    for (var endPoint of puzzle.endPoints) {
+      // If the endpoint is against a pillar edge, shift it to the top and re-orient it.
+      if (endPoint.dir == 'right' || endPoint.dir == 'left') {
+        endPoint.y = 0
+        endPoint.dir = 'top'
+      }
+      // If the endpoint is against the right edge, bring it around to the left (it will already have been snapped to top)
+      if (endPoint.x == puzzle.grid.length - 1) {
+        endPoint.x = 0
+      }
     }
     for (var startPoint of puzzle.startPoints) {
       if (startPoint.x == puzzle.grid.length - 1) {
@@ -281,27 +287,34 @@ function _onElementClicked(elem) {
 
   if (activeParams.type == 'start') {
     if (x%2 != 0 || y%2 != 0) return
-    puzzle.toggleStart(x, y)
+    // Toggle the start point -- add it if it isn't removed.
+    if (!puzzle.removeStart(x, y)) {
+      puzzle.addStart(x, y)
+    }
   } else if (activeParams.type == 'end') {
     if (x%2 != 0 || y%2 != 0) return
+    // Compute all valid endpoint directions for this location
     var validDirs = []
     if (x == 0 && !puzzle.pillar) validDirs.push('left')
-    if (x == puzzle.grid.length - 1 && !puzzle.pillar) validDirs.push('right')
     if (y == 0) validDirs.push('top')
+    if (x == puzzle.grid.length - 1 && !puzzle.pillar) validDirs.push('right')
     if (y == puzzle.grid[x].length - 1) validDirs.push('bottom')
     if (validDirs.length == 0) return
 
-    var index = validDirs.indexOf(puzzle.end.dir)
+    // If (x, y) is an endpoint, loop to the next direction
+    var index = validDirs.indexOf(puzzle.getEndDir(x, y))
     if (index != -1) {
-      if (x == puzzle.end.x && y == puzzle.end.y) {
-        var dir = validDirs[index + 1 % validDirs.length]
-      } else {
-        var dir = validDirs[index]
-      }
+      var dir = validDirs[index + 1]
     } else {
+      // Not an endpoint, choose the first valid direction
       var dir = validDirs[0]
     }
-    puzzle.toggleEnd({'x':x, 'y':y, 'dir':dir})
+    // If the direction loops past the end (or there are no valid directions), remove the endpoint.
+    if (dir == undefined) {
+      puzzle.removeEnd(x, y)
+    } else {
+      puzzle.addEnd(x, y, dir)
+    }
   } else if (['gap', 'dot'].includes(activeParams.type)) {
     if (x%2 == 1 && y%2 == 1) return
     if (activeParams.type == 'gap' && x%2 == 0 && y%2 == 0) return
@@ -581,6 +594,7 @@ function resizePuzzle(dx, dy, id) {
     }
   }
   puzzle.dots = newDots
+
   var newGaps = []
   for (var gap of puzzle.gaps) {
     if (id.includes('left')) gap.x += dx
@@ -592,26 +606,27 @@ function resizePuzzle(dx, dy, id) {
   }
   puzzle.gaps = newGaps
 
-  // Try to keep the start and endpoint moving together
-  if (puzzle.end.dir == 'right') {
-    for (var startPoint of puzzle.startPoints) startPoint.x += dx
-    puzzle.end.x += dx
-  }
-  if (puzzle.end.dir == 'bottom') {
-    for (var startPoint of puzzle.startPoints) startPoint.y += dy
-    puzzle.end.y += dy
-  }
-  // Unless one of them goes off the edge of the puzzle
+  var newStarts = []
   for (var startPoint of puzzle.startPoints) {
-    if (startPoint.x < 0) startPoint.x = 0
-    if (startPoint.y < 0) startPoint.y = 0
-    if (startPoint.x >= newWidth) startPoint.x -= 2
-    if (startPoint.y >= newHeight) startPoint.x -= 2
+    if (id.includes('left')) startPoint.x += dx
+    if (id.includes('top')) startPoint.y += dy
+    if (startPoint.x >= 0 && startPoint.x < newWidth
+     && startPoint.y >= 0 && startPoint.y < newHeight) {
+      newStarts.push(startPoint)
+    }
   }
-  if (puzzle.end.x < 0) puzzle.end.x = 0
-  if (puzzle.end.y < 0) puzzle.end.y = 0
-  if (puzzle.end.x >= newWidth) puzzle.end.x -= 2
-  if (puzzle.end.y >= newHeight) puzzle.end.x -= 2
+  puzzle.startPoints = newStarts
+
+  var newEnds = []
+  for (var endPoint of puzzle.endPoints) {
+    if (endPoint.dir == 'right') endPoint.x += dx
+    if (endPoint.dir == 'top') endPoint.y += dy
+    if (endPoint.x >= 0 && endPoint.x < newWidth
+     && endPoint.y >= 0 && endPoint.y < newHeight) {
+      newEnds.push(endPoint)
+    }
+  }
+  puzzle.endPoints = newEnds
 
   savePuzzle()
   _redraw(puzzle)

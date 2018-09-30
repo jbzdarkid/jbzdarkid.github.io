@@ -131,15 +131,8 @@ function _drawSymbols(puzzle, svg) {
 function _drawStartAndEnd(puzzle, svg) {
   for (var endPoint of puzzle.endPoints) {
     if (endPoint.dir == undefined) {
-      if (endPoint.x == 0) {
-        endPoint.dir = 'left'
-      } else if (endPoint.x == puzzle.grid.length - 1) {
-        endPoint.dir = 'right'
-      } else if (endPoint.y == 0) {
-        endPoint.dir = 'top'
-      } else if (endPoint.y == puzzle.grid[endPoint.x].length - 1) {
-        endPoint.dir = 'bottom'
-      }
+      console.error('Endpoint at', endPoint.x, endPoint.y, 'has no defined direction!')
+      continue
     }
     drawSymbolWithSvg(svg, {
       'type':'end',

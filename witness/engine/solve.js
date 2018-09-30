@@ -9,7 +9,8 @@ function solve(puzzle) {
 
 function _solveLoop(puzzle, x, y, solutions) {
   // if (solutions.length > 0) return
-  if (puzzle.isEndpoint(x, y)) {
+  var endDir = puzzle.getEndDir(x, y)
+  if (endDir != undefined) {
     // Reached the end point, validate solution and tail recurse
     puzzle.setCell(x, y, true)
     validate(puzzle)

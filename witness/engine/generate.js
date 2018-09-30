@@ -18,26 +18,26 @@ function randomPuzzle(style) {
 
   // FIXME: Both start and end must be on corners
   if (style.start) {
-    puzzle.toggleStart(style.start.x, style.start.y)
+    puzzle.addStart(style.start.x, style.start.y)
   } else {
     // TODO: Allow start points mid-segment
-    puzzle.toggleStart(2 * _randint(width), 2 * _randint(height))
+    puzzle.addStart(2 * _randint(width), 2 * _randint(height))
   }
-  if (style['end']) {
-    puzzle.end = style['end']
+  if (style.end) {
+    puzzle.addEnd(style.end.x, style.end.y)
   } else {
     switch (_randint(4)) {
       case 0:
-        puzzle.end = {'x':0, 'y':2 * _randint(height), 'dir':'left'}
+        puzzle.addEnd(0, 2 * _randint(height), 'left')
         break
       case 1:
-        puzzle.end = {'x':2 * width - 1, 'y':2 * _randint(height), 'dir':'right'}
+        puzzle.addEnd(2 * width - 1, 2 * _randint(height), 'right')
         break
       case 2:
-        puzzle.end = {'x':2 * _randint(width), 'y':2 * height - 1, 'dir':'top'}
+        puzzle.addEnd(2 * _randint(width), 0, 'top')
         break
-      case 2:
-        puzzle.end = {'x':2 * _randint(width), 'y':2 * height - 1, 'dir':'bottom'}
+      case 3:
+        puzzle.addEnd(2 * _randint(width), 2 * height - 1, 'bottom')
         break
     }
   }
@@ -234,8 +234,8 @@ function randomLeftDoor() {
   puzzle.grid[poly1.x][poly1.y] = poly1
   puzzle.grid[poly2.x][poly2.y] = poly2
 
-  puzzle.toggleStart(8, 0)
-  puzzle.end = {'x':0, 'y':8}
+  puzzle.addStart(8, 0)
+  puzzle.addEnd(0, 8, 'top')
   return puzzle
 }
 
@@ -284,8 +284,8 @@ function randomRightDoor() {
   puzzle.grid[square3.x][square3.y] = {'type':'square', 'color':color2}
   puzzle.grid[square4.x][square4.y] = {'type':'square', 'color':color2}
 
-  puzzle.toggleStart(8, 8)
-  puzzle.end = {'x':0, 'y':0}
+  puzzle.addStart(8, 8)
+  puzzle.addEnd(0, 0, 'bottom')
   return puzzle
 }
 
@@ -361,8 +361,8 @@ function randomTriple() {
       placedWhites++
     }
   }
-  puzzle.toggleStart(8, 0)
-  puzzle.end = {'x':0, 'y':8}
+  puzzle.addStart(8, 0)
+  puzzle.addEnd(0, 8, 'top')
   return puzzle
 }
 

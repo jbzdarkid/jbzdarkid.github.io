@@ -132,24 +132,34 @@ class Puzzle {
     this.grid[x][y] = value
   }
 
-  toggleStart(x, y) {
+  removeStart(x, y) {
     for (var i=0; i<this.startPoints.length; i++) {
       if (this.startPoints[i].x == x && this.startPoints[i].y == y) {
         this.startPoints.splice(i, 1)
-        return
+        return true
       }
     }
+    return false
+  }
+
+  addStart(x, y) {
+    this.removeStart(x, y)
     this.startPoints.push({'x':x, 'y':y})
   }
 
-  toggleEnd(x, y) {
+  removeEnd(x, y) {
     for (var i=0; i<this.endPoints.length; i++) {
       if (this.endPoints[i].x == x && this.endPoints[i].y == y) {
         this.endPoints.splice(i, 1)
-        return
+        return true
       }
     }
-    this.endPoints.push({'x':x, 'y':y})
+    return false
+  }
+
+  addEnd(x, y, dir) {
+    this.removeEnd(x, y)
+    this.endPoints.push({'x':x, 'y':y, 'dir':dir})
   }
 
   getEndDir(x, y) {

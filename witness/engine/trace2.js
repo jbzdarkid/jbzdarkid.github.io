@@ -340,47 +340,15 @@ function _pushCursor(dx, dy, width, height) {
   // Outer wall collision
   if (!data.puzzle.pillar) { // Left/right walls are inner if we're a pillar
     if (data.pos.x == 0) { // Against left wall
-      if (data.puzzle.end.x == data.pos.x) { // Endpoint is on the left wall
-        if (data.pos.y < data.puzzle.end.y) { // Above endpoint
-          if (_push(dx, dy, 'left', 'bottom')) return
-        } else if (data.pos.y > data.puzzle.end.y) { // Below endpoint
-          if (_push(dx, dy, 'left', 'top')) return
-        }
-      } else { // Endpoint is not on the left wall
-        if (_push(dx, dy, 'left', 'top')) return
-      }
+      if (_push(dx, dy, 'left', 'top')) return
     } else if (data.pos.x == data.puzzle.grid.length - 1) { // Against right wall
-      if (data.puzzle.end.x == data.pos.x) { // Endpoint is on the right wall
-        if (data.pos.y < data.puzzle.end.y) { // Above endpoint
-          if (_push(dx, dy, 'right', 'bottom')) return
-        } else if (data.pos.y > data.puzzle.end.y) { // Below endpoint
-          if (_push(dx, dy, 'right', 'top')) return
-        }
-      } else { // Endpoint is not on the right wall
-        if (_push(dx, dy, 'right', 'top')) return
-      }
+      if (_push(dx, dy, 'right', 'top')) return
     }
   }
   if (data.pos.y == 0) { // Against top wall
-    if (data.puzzle.end.y == data.pos.y) { // Endpoint is on the top wall
-      if (data.pos.x < data.puzzle.end.x) { // Left of endpoint
-        if (_push(dx, dy, 'top', 'right')) return
-      } else if (data.pos.x > data.puzzle.end.x) { // Right of endpoint
-        if (_push(dx, dy, 'top', 'left')) return
-      }
-    } else { // Endpoint is not on the top wall
-      if (_push(dx, dy, 'top', 'right')) return
-    }
+    if (_push(dx, dy, 'top', 'right')) return
   } else if (data.pos.y == data.puzzle.grid[data.pos.x].length - 1) { // Against bottom wall
-    if (data.puzzle.end.y == data.pos.y) { // Endpoint is on the bottom wall
-      if (data.pos.x < data.puzzle.end.x) { // Left of endpoint
-        if (_push(dx, dy, 'bottom', 'right')) return
-      } else if (data.pos.x > data.puzzle.end.x) { // Right of endpoint
-        if (_push(dx, dy, 'bottom', 'left')) return
-      }
-    } else { // Endpoint is not on the bottom wall
-      if (_push(dx, dy, 'bottom', 'right')) return
-    }
+    if (_push(dx, dy, 'bottom', 'right')) return
   }
 
   // Inner wall collision
