@@ -235,7 +235,7 @@ function randomLeftDoor() {
   puzzle.grid[poly2.x][poly2.y] = poly2
 
   puzzle.addStart(8, 0)
-  puzzle.addEnd(0, 8, 'top')
+  puzzle.addEnd(0, 8, 'left')
   return puzzle
 }
 
@@ -285,7 +285,7 @@ function randomRightDoor() {
   puzzle.grid[square4.x][square4.y] = {'type':'square', 'color':color2}
 
   puzzle.addStart(8, 8)
-  puzzle.addEnd(0, 0, 'bottom')
+  puzzle.addEnd(0, 0, 'right')
   return puzzle
 }
 
