@@ -1,7 +1,5 @@
 In vague order of importance.
 
-- Region includes edges, update validation
--- Dots cancelled by negation
 - Some cleanup needed for _polyFit
 -- Polyominos will not allow trace-through
 -- Merge 2 functions into 1?
@@ -17,6 +15,7 @@ In vague order of importance.
 !- Stable release
 - Rich line data
 -- Dots & gaps into the grid
+-- Dots cancelled by negation
 -- Start & end into the grid?
 -- Empty segments (not just gaps)
 -- Colored symmetry lines (0/1/2)

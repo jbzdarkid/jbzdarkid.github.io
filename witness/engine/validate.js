@@ -5,29 +5,12 @@ window.NEGATIONS_CANCEL_NEGATIONS = true
 // Determines if the current grid state is solvable. Modifies the puzzle element with:
 // valid: Whether or not the puzzle is valid
 // negations: Negation symbols and their targets (for the purpose of darkening)
-// invalids: Symbols which are invalid (for the purpose of flashing)
+// invalidElements: Symbols which are invalid (for the purpose of flashing)
 function validate(puzzle) {
   // console.log('Validating', puzzle)
   puzzle.valid = true // Assume valid until we find an invalid element
+  puzzle.invalidElements = []
   puzzle.negations = []
-
-  // Check that all dots are covered
-  // FIXME: Check for invalid dot placement?
-  // FIXME: Code in such a way that this works with negation?
-  for (var dot of puzzle.dots) {
-    if (!puzzle.getCell(dot.x, dot.y)) {
-      // console.log('Dot at grid['+dot.x+']['+dot.y+'] is not covered')
-      puzzle.valid = false
-    }
-  }
-  // Check that all gaps are not covered
-  // FIXME: Check for invalid gap placement?
-  for (var gap of puzzle.gaps) {
-    if (puzzle.getCell(gap.x, gap.y)) {
-      // console.log('Gap at grid['+gap.x+']['+gap.y+'] is covered')
-      puzzle.valid = false
-    }
-  }
 
   // Check that individual regions are valid
   var regions = puzzle.getRegions()
@@ -46,13 +29,12 @@ function validate(puzzle) {
       }
     }
     puzzle.negations = puzzle.negations.concat(regionData.negations)
+    puzzle.invalidElements = puzzle.invalidElements.concat(regionData.invalidElements)
     puzzle.valid &= regionData.valid
   }
 }
 
 function _regionCheckNegations(puzzle, region) {
-  // console.log('Validating region of length', region.cells.length)
-
   // Get a list of negation symbols in the grid, and set them to 'nonce'
   var negationSymbols = []
   for (var pos of region.cells) {
@@ -135,6 +117,26 @@ function _regionCheckNegations(puzzle, region) {
 // Since the path must be complete at this point, returns only true or false
 function _regionCheck(puzzle, region) {
   var invalidElements = []
+
+  // Check that all gaps are not covered
+  // FIXME: Check for invalid gap placement?
+  for (var gap of puzzle.gaps) {
+    if (puzzle.getCell(gap.x, gap.y)) {
+      // console.log('Gap at grid['+gap.x+']['+gap.y+'] is covered')
+      puzzle.valid = false
+    }
+  }
+
+  // Check that all dots are covered
+  // FIXME: Check for invalid dot placement?
+  // TODO: This doesn't do anything until dots are actually IN THE GRID
+  for (var dot of puzzle.dots) {
+    if (!puzzle.getCell(dot.x, dot.y)) {
+      // console.log('Dot at', dot.x, dot.y, 'is not covered')
+      invalidElements.push(dot)
+    }
+  }
+
 
   // Check for triangles
   for (var pos of region.cells) {
