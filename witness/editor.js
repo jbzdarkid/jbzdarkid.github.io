@@ -165,6 +165,20 @@ function setPillar(value) {
       return
     }
 
+    var newEnds = []
+    for (var endPoint of puzzle.endPoints) {
+      if (endPoint.x != 0) {
+        newEnds.push(endPoint)
+      } else if (endPoint.y == 0) {
+        endPoint.dir = 'top'
+        newEnds.push(endPoint)
+      } else if (endPoint.y == puzzle.grid[endPoint.x].length - 1) {
+        endPoint.dir = 'bottom'
+        newEnds.push(endPoint)
+      }
+    }
+    puzzle.endPoints = newEnds
+
     puzzle.pillar = true
     resizePuzzle(-1, 0, 'right')
   }
