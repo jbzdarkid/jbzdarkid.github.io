@@ -204,6 +204,7 @@ function _polyWrapper(region, puzzle) {
   var polyCount = 0
   for (var pos of region.cells) {
     var cell = puzzle.getCell(pos.x, pos.y)
+    if (cell.polyshape == 0) continue
     if (cell.type == 'poly') {
       polys.push(cell)
       polyCount += getPolySize(cell.polyshape)
@@ -269,7 +270,7 @@ function _ylopFit(ylops, polys, puzzle) {
 // Solves via recursive backtracking: Some piece must fill the top left square,
 // so try every piece to fill it, then recurse.
 function _polyFit(polys, puzzle) {
-  // All polys (and ylops) placed, grid must be 0 everywhere to pass.
+  // Check for overlapping polyominos, and handle exit cases for all polyominos placed.
   for (var y=1; y<puzzle.grid[0].length; y+=2) {
     for (var x=1; x<puzzle.grid.length; x+=2) {
       var cell = puzzle.getCell(x, y)
@@ -292,7 +293,7 @@ function _polyFit(polys, puzzle) {
   // TODO: Might be a bit of perf to pass pos around, rather than rediscover?
   var pos = {'x':1, 'y':1}
   // Find the next open cell
-  while (puzzle.getCell(pos.x, pos.y) > 0) {
+  while (puzzle.getCell(pos.x, pos.y) >= 0) {
     pos.x += 2
     if (pos.x >= puzzle.grid.length) {
       pos.x = 1
