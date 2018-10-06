@@ -153,6 +153,12 @@ tests = [
     puzzle.grid[3][1] = {'type':'poly', 'color':'red', 'polyshape':17}
     return [puzzle, 2]
   }, function() {
+    var puzzle = new Puzzle(4, 4)
+    puzzle.addStart(0, 8)
+    puzzle.addEnd(8, 0, 'right')
+    puzzle.grid[1][1] = {'type':'poly', 'color':'yellow', 'polyshape':19}
+    return [puzzle, 0]
+  }, function() {
     var puzzle = new Puzzle(3, 2)
     puzzle.addStart(2, 2)
     puzzle.addEnd(6, 0, 'right')
