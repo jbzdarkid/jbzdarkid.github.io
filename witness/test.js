@@ -343,17 +343,24 @@ tests = [
     puzzle.grid[5][3] = {'type':'square', 'color':'red'}
     return [puzzle, 7]
   }, function() {
-    var puzzle = new Puzzle(1, 1)
+    var puzzle = new Puzzle(2, 1)
     puzzle.addStart(0, 2)
-    puzzle.addEnd(2, 0, 'right')
+    puzzle.addEnd(4, 0, 'right')
     puzzle.grid[1][1] = {'type':'poly', 'polyshape':0}
-    return [puzzle, 2]
+    return [puzzle, 4]
   }, function() {
-    var puzzle = new Puzzle(1, 1)
+    var puzzle = new Puzzle(2, 1)
     puzzle.addStart(0, 2)
-    puzzle.addEnd(2, 0, 'right')
-    puzzle.grid[1][1] = {'type':'ylop', 'polyshape':0}
-    return [puzzle, 2]
+    puzzle.addEnd(4, 0, 'right')
+    puzzle.grid[3][1] = {'type':'ylop', 'polyshape':0}
+    return [puzzle, 4]
+  }, function() {
+    var puzzle = new Puzzle(2, 1)
+    puzzle.addStart(0, 2)
+    puzzle.addEnd(4, 0, 'right')
+    puzzle.grid[1][1] = {'type':'poly', 'polyshape':0}
+    puzzle.grid[3][1] = {'type':'ylop', 'polyshape':0}
+    return [puzzle, 4]
   }, function() {
     var puzzle = new Puzzle(0, 3)
     puzzle.addStart(0, 6)
