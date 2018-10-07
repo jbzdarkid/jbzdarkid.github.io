@@ -1,15 +1,9 @@
 In vague order of importance.
 
 - Flash for errors
-- Some cleanup needed for _polyFit
--- Polyominos will not allow trace-through
--- Rewrite polyfit to use region[0] aka int version -- May not be possible, how do you encode -2?
 - Fix generation colors
 - Improve tracing for 1xN
 -- Some of it is endpoint handling -- it's preventing outer wall sliding even when endpoint is in another direction
-- Mid-segment start
--- Solution tracer compatibility
-- Mid-segment endpoints
 - Simple Symmetry (horiz/verti)
 !- Stable release
 - Rich line data
@@ -19,6 +13,9 @@ In vague order of importance.
 -- Empty segments (not just gaps)
 -- Colored symmetry lines (0/1/2)
 -- Colored Dots
+-- Mid-segment start
+--- Solution tracer compatibility
+-- Mid-segment endpoints
 -- Clean up solution to be a full path (start point = none, same as trace)
 - Hide solution (puzzleData) from global scope
 - Server

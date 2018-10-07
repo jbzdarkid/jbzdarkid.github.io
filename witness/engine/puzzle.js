@@ -23,9 +23,7 @@ class Region {
     x = this._mod(x)
     if ((this.grid[x] & (1 << y)) != 0) return
     this.grid[x] |= (1 << y)
-    if (x%2 == 1 && y%2 == 1) { // TODO: Validate handles center cells only!
-      this.cells.push({'x':x, 'y':y})
-    }
+    this.cells.push({'x':x, 'y':y})
   }
 
   merge(other) {

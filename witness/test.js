@@ -164,7 +164,7 @@ tests = [
     puzzle.addEnd(6, 0, 'right')
     puzzle.grid[1][1] = {'type':'poly', 'color':'yellow', 'polyshape':273}
     puzzle.grid[1][3] = {'type':'poly', 'color':'yellow', 'polyshape':273}
-    return [puzzle, 12]
+    return [puzzle, 4]
   }, function() {
     var puzzle = new Puzzle(2, 2)
     puzzle.addStart(0, 4)

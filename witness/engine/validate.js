@@ -32,6 +32,7 @@ function validate(puzzle) {
     puzzle.invalidElements = puzzle.invalidElements.concat(regionData.invalidElements)
     puzzle.valid &= regionData.valid
   }
+  console.log('Puzzle has', puzzle.invalidElements.length, 'invalid elements')
 }
 
 function _regionCheckNegations(puzzle, region) {
@@ -116,7 +117,7 @@ function _regionCheckNegations(puzzle, region) {
 // Checks if a region (series of cells) is valid.
 // Since the path must be complete at this point, returns only true or false
 function _regionCheck(puzzle, region) {
-  console.log('Validation region of size', region.cells.length)
+  console.log('Validating region', region)
   var invalidElements = []
 
   // Check that all gaps are not covered
@@ -213,13 +214,17 @@ function _polyWrapper(region, puzzle) {
       polyCount -= getPolySize(cell.polyshape)
     }
   }
+  var regionSize = 0
+  for (var pos of region.cells) {
+    if (pos.x%2 == 1 && pos.y%2 == 1) regionSize++
+  }
 
   if (polys.length + ylops.length == 0) {
     console.log('No polyominos or onimylops inside the region, vacuously true')
     return true
   }
-  if (polyCount > 0 && polyCount != region.cells.length) {
-    console.log('Combined size of polyominos', polyCount, 'does not match region size', region.cells.length)
+  if (polyCount > 0 && polyCount != regionSize) {
+    console.log('Combined size of polyominos', polyCount, 'does not match region size', regionSize)
     return false
   }
 
@@ -242,7 +247,7 @@ function _polyWrapper(region, puzzle) {
   }
   // In the exact match case, we leave every cell marked 0: Polys and ylops need to cancel.
 
-  return _ylopFit(ylops, polys, copy)
+  return _ylopFit(ylops.slice(), polys.slice(), copy)
 }
 
 // Places the ylops such that they are inside of the grid, then checks if the polys
@@ -255,7 +260,7 @@ function _ylopFit(ylops, polys, puzzle) {
     for (var y=1; y<puzzle.grid[x].length; y+=2) {
       console.log('Placing ylop', ylop, 'at', x, y)
       for (var polyshape of ylopRotations) {
-        var cells = polyominoFromPolyshape(polyshape)
+        var cells = polyominoFromPolyshape(polyshape, true)
         if (!fitsGrid(cells, x, y, puzzle)) continue
         for (var cell of cells) puzzle.grid[cell.x + x][cell.y + y]--
         if (_ylopFit(ylops, polys, puzzle)) return true
@@ -274,13 +279,13 @@ function _polyFit(polys, puzzle) {
   for (var y=0; y<puzzle.grid[0].length; y++) {
     for (var x=0; x<puzzle.grid.length; x++) {
       var cell = puzzle.getCell(x, y)
-      if (cell < 0) {
-        if (polys.length == 0) {
-          console.log('All polys placed, but grid not full')
-          return false
-        }
-      } else if (cell > 0) {
+      if (cell > 0) {
         console.log('Cell has been overfilled and no negations left to place')
+        return false
+      }
+      if (x%2 == 1 && y%2 == 1 && cell < 0 && polys.length == 0) {
+        // Normal, center cell with a negative value & no polys remaining.
+        console.log('All polys placed, but grid not full')
         return false
       }
     }
@@ -307,10 +312,11 @@ function _polyFit(polys, puzzle) {
 
   for (var i=0; i<polys.length; i++) {
     var poly = polys.splice(i, 1)[0]
-    console.log('Placing poly', poly, 'at', pos.x, pos.y)
+    console.log('Selected poly', poly)
     for (var polyshape of getRotations(poly.polyshape, poly.rot)) {
       var cells = polyominoFromPolyshape(polyshape)
       if (!fitsGrid(cells, pos.x, pos.y, puzzle)) continue
+      console.log('Placing at', pos.x, pos.y)
       for (var cell of cells) puzzle.grid[cell.x + pos.x][cell.y + pos.y]++
       if (_polyFit(polys, puzzle)) return true
       for (var cell of cells) puzzle.grid[cell.x + pos.x][cell.y + pos.y]--

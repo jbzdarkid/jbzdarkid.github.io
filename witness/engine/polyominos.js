@@ -12,6 +12,8 @@ function _mask(x, y) {
   return 1 << (x*4 + y)
 }
 function _isSet(polyshape, x, y) {
+  if (x < 0 || y < 0) return false
+  if (x > 4 || y > 4) return false
   return (polyshape & _mask(x, y)) != 0
 }
 
@@ -44,26 +46,45 @@ function fitsGrid(cells, x, y, puzzle) {
 // IMPORTANT NOTE: When formulating these, the top row must contain (0, 0)
 // That means there will never be any negative y values.
 // (0, 0) must also be a cell in the shape, so that
-/// placing the shape at (x, y) will fill (x, y)
-function polyominoFromPolyshape(polyshape) {
-  var topLeft = {'x':4, 'y':4}
-  var polyomino = []
-
-  for (var x=0; x<4; x++) {
-    for (var y=0; y<4; y++) {
+// placing the shape at (x, y) will fill (x, y)
+// Ylops will have -1s on all adjacent cells, to break "overlaps" for polyominos.
+function polyominoFromPolyshape(polyshape, ylop=false) {
+  for (var y=0; y<4; y++) {
+    for (var x=0; x<4; x++) {
       if (_isSet(polyshape, x, y)) {
-        polyomino.push({'x':x, 'y':y})
-        if (y < topLeft.y || (y == topLeft.y && x < topLeft.x)) {
-          topLeft = {'x':x, 'y':y}
-        }
+        var topLeft = {'x':x, 'y':y}
+        break
       }
     }
+    if (topLeft != undefined) break
   }
+  if (topLeft == undefined) return [] // Empty polyomino
 
-  for (var i=0; i<polyomino.length; i++) {
-    polyomino[i] = {
-      'x':2*(polyomino[i].x - topLeft.x),
-      'y':2*(polyomino[i].y - topLeft.y)
+  var polyomino = []
+  for (var x=0; x<4; x++) {
+    for (var y=0; y<4; y++) {
+      if (!_isSet(polyshape, x, y)) continue
+      polyomino.push({'x':2*(x - topLeft.x), 'y':2*(y - topLeft.y)})
+
+      if (ylop) {
+        // Ylops fill up/left if no adjacent cell, and always fill bottom/right
+        if (!_isSet(polyshape, x - 1, y)) {
+          polyomino.push({'x':2*(x - topLeft.x) - 1, 'y':2*(y - topLeft.y)})
+        }
+        if (!_isSet(polyshape, x, y - 1)) {
+          polyomino.push({'x':2*(x - topLeft.x), 'y':2*(y - topLeft.y) - 1})
+        }
+        polyomino.push({'x':2*(x - topLeft.x) + 1, 'y':2*(y - topLeft.y)})
+        polyomino.push({'x':2*(x - topLeft.x), 'y':2*(y - topLeft.y) + 1})
+      } else {
+        // Normal polys only fill bottom/right if there is an adjacent cell.
+        if (_isSet(polyshape, x + 1, y)) {
+          polyomino.push({'x':2*(x - topLeft.x) + 1, 'y':2*(y - topLeft.y)})
+        }
+        if (_isSet(polyshape, x, y + 1)) {
+          polyomino.push({'x':2*(x - topLeft.x), 'y':2*(y - topLeft.y) + 1})
+        }
+      }
     }
   }
   return polyomino

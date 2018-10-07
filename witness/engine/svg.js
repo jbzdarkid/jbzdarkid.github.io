@@ -79,6 +79,7 @@ function _poly(svg, params) {
   var center_y = (params.height - size - offset * (bounds.ymax + bounds.ymin)) / 2 + params.y
 
   for (var pos of polyomino) {
+    if (pos.x%2 != 0 || pos.y%2 != 0) continue
     var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
     svg.appendChild(rect)
     var transform = 'translate('+(center_x+pos.x*offset)+', '+(center_y+pos.y*offset)+')'
@@ -111,6 +112,7 @@ function _ylop(svg, params) {
   var center_y = (params.height - size - offset * (bounds.ymax + bounds.ymin)) / 2 + params.y
 
   for (var pos of polyomino) {
+    if (pos.x%2 != 0 || pos.y%2 != 0) continue
     var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
     svg.appendChild(poly)
     var points = [
