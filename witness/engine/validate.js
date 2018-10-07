@@ -218,11 +218,10 @@ function _polyWrapper(region, puzzle) {
     // console.log('No polyominos or onimylops inside the region, vacuously true')
     return true
   }
-  /*
-  if (polyCount > 0 && polyCount < region.cells.length) {
-    // console.log('Combined size of polyominos', polyCount, 'does not match region size', region.length)
+  if (polyCount > 0 && polyCount != region.cells.length) {
+    console.log('Combined size of polyominos', polyCount, 'does not match region size', region.cells.length)
     return false
-  }*/
+  }
 
   // For polyominos, we clear the grid to mark it up again:
   var copy = puzzle.clone()
@@ -233,7 +232,7 @@ function _polyWrapper(region, puzzle) {
   }
   // First, we mark all cells as 0: Cells outside the target region should be unaffected.
   for (var x=1; x<copy.grid.length; x+=2) {
-    for (var y=1; y<copy.grid.length; y+=2) {
+    for (var y=1; y<copy.grid[x].length; y+=2) {
       copy.setCell(x, y, 0)
     }
   }
@@ -264,6 +263,7 @@ function _ylopFit(ylops, polys, puzzle) {
       }
     }
   }
+  ylops.push(ylop)
 }
 
 // Returns whether or not a set of polyominos fit into a region.
