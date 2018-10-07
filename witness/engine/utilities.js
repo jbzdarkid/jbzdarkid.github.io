@@ -92,6 +92,10 @@ var animations = '.line { \
 @keyframes start-grow { \
   from {height: 12; width: 12; top: 6; left: 6;} \
   to {height: 48; width: 48; top: -12; left: -12;} \
+} \
+@keyframes error { \
+  from {} \
+  to {fill: red;} \
 }'
 var style = document.createElement('style')
 style.type = 'text/css'
