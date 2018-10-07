@@ -74,7 +74,7 @@ function _poly(svg, params) {
     bounds.ymin = Math.min(bounds.ymin, pos.y)
     bounds.ymax = Math.max(bounds.ymax, pos.y)
   }
-  var offset = (size+space)/2 // Offset between paramsents to create the gap
+  var offset = (size+space)/2 // Offset between elements to create the gap
   var center_x = (params.width - size - offset * (bounds.xmax + bounds.xmin)) / 2 + params.x
   var center_y = (params.height - size - offset * (bounds.ymax + bounds.ymin)) / 2 + params.y
 
@@ -106,7 +106,7 @@ function _ylop(svg, params) {
     bounds.ymin = Math.min(bounds.ymin, pos.y)
     bounds.ymax = Math.max(bounds.ymax, pos.y)
   }
-  var offset = (size+space)/2 // Offset between paramsents to create the gap
+  var offset = (size+space)/2 // Offset between elements to create the gap
   var center_x = (params.width - size - offset * (bounds.xmax + bounds.xmin)) / 2 + params.x
   var center_y = (params.height - size - offset * (bounds.ymax + bounds.ymin)) / 2 + params.y
 
