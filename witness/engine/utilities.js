@@ -98,3 +98,47 @@ style.type = 'text/css'
 style.title = 'animations'
 style.appendChild(document.createTextNode(animations))
 document.head.appendChild(style)
+
+// Custom logging to allow leveling
+var console_error = console.error
+var console_warn = console.warn
+var console_info = console.log
+var console_log = console.log
+var console_debug = console.log
+var console_spam = console.log
+
+function setLogLevel(level) {
+  console.error = function() {}
+  console.warn = function() {}
+  console.info = function() {}
+  console.log = function() {}
+  console.debug = function() {}
+  console.spam = function() {}
+
+  if (level == 'none') return
+
+  // Instead of throw, but still red flags and is easy to find
+  console.error = console_error
+  if (level == 'error') return
+
+  // Less serious than error, but flagged nonetheless
+  console.warn = console_warn
+  if (level == 'warn') return
+
+  // Default visible, important information
+  console.info = console_info
+  if (level == 'info') return
+
+  // Useful for debugging (mainly validation)
+  console.log = console_log
+  if (level == 'log') return
+
+  // Useful for serious debugging (mainly graphics/misc)
+  console.debug = console_debug
+  if (level == 'debug') return
+
+  // Useful for insane debugging (mainly tracing)
+  console.spam = console_spam
+  if (level == 'spam') return
+}
+setLogLevel('info')

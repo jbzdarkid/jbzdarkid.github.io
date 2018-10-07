@@ -1,7 +1,7 @@
 function draw(puzzle, target='puzzle') {
   if (puzzle == undefined) return
   var svg = document.getElementById(target)
-  console.log('Drawing', puzzle, 'into', svg)
+  console.info('Drawing', puzzle, 'into', svg)
   while (svg.firstChild) svg.removeChild(svg.firstChild)
 
   if (puzzle.pillar) {
@@ -181,16 +181,16 @@ function _drawSolution(puzzle, x, y) {
     var dx = 0
     var dy = 0
     if (lastDir != 'right' && puzzle.getCell(x - 1, y) == true) { // Left
-      // console.log('Tracing left')
+      console.debug('Tracing left')
       dx = -1
     } else if (lastDir != 'left' && puzzle.getCell(x + 1, y) == true) { // Right
-      // console.log('Tracing right')
+      console.debug('Tracing right')
       dx = 1
     } else if (lastDir != 'bottom' && puzzle.getCell(x, y - 1) == true) { // Top
-      // console.log('Tracing top')
+      console.debug('Tracing top')
       dy = -1
     } else if (lastDir != 'top' && puzzle.getCell(x, y + 1) == true) { // Bottom
-      // console.log('Tracing bottom')
+      console.debug('Tracing bottom')
       dy = 1
     }
 

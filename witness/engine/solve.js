@@ -1,9 +1,12 @@
 // Generates a solution via DFS recursive backtracking
 function solve(puzzle) {
   var solutions = []
+  var start = (new Date()).getTime()
   for (var startPoint of puzzle.startPoints) {
     _solveLoop(puzzle, startPoint.x, startPoint.y, solutions)
   }
+  var end = (new Date()).getTime()
+  console.info('Solved', puzzle, 'in', (end-start)/1000, 'seconds')
   return solutions
 }
 

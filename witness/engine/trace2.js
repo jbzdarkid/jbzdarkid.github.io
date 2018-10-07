@@ -271,6 +271,7 @@ function onMove(dx, dy) {
   while (true) {
     _gapCollision()
     var moveDir = _move()
+    console.debug('Moved', moveDir)
     data.path[data.path.length - 1].redraw()
     if (moveDir == 'none') break
     _changePos(moveDir)
@@ -336,6 +337,7 @@ function _push(dx, dy, dir, target_dir) {
 
 function _pushCursor(dx, dy, width, height) {
   // Outer wall collision
+  console.spam('Started outer wall collision')
   var endDir = data.puzzle.getEndDir(data.pos.x, data.pos.y)
   if (endDir == undefined) { // Only handle collision for non-endpoint case, it's handled by interesection collision
     if (!data.puzzle.pillar) { // Left/right walls are inner if we're a pillar
@@ -353,6 +355,7 @@ function _pushCursor(dx, dy, width, height) {
   }
 
   // Inner wall collision
+  console.spam('Started inner wall collision')
   if (data.pos.x%2 == 1 && data.pos.y%2 == 0) { // Horizontal cell
     if (data.x < data.bbox.middle.x) {
       _push(dx, dy, 'topbottom', 'left')
@@ -371,6 +374,7 @@ function _pushCursor(dx, dy, width, height) {
 
   // Intersection collision
   // Ratio of movement to be considered turning at an intersection
+  console.spam('Started intersection collision')
   var turnMod = 2
   if (data.pos.x%2 == 0 && data.pos.y%2 == 0) {
     if (data.x < data.bbox.middle.x) {
@@ -410,6 +414,7 @@ function _pushCursor(dx, dy, width, height) {
   }
 
   // No collision, limit movement to X or Y only to prevent out-of-bounds
+  console.spam('Default collision')
   if (Math.abs(dx) > Math.abs(dy)) {
     data.x += dx
   } else {
