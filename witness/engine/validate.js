@@ -231,8 +231,8 @@ function _polyWrapper(region, puzzle) {
     return false
   }
   // First, we mark all cells as 0: Cells outside the target region should be unaffected.
-  for (var x=1; x<copy.grid.length; x+=2) {
-    for (var y=1; y<copy.grid[x].length; y+=2) {
+  for (var x=0; x<copy.grid.length; x++) {
+    for (var y=0; y<copy.grid[x].length; y++) {
       copy.setCell(x, y, 0)
     }
   }
@@ -271,8 +271,8 @@ function _ylopFit(ylops, polys, puzzle) {
 // so try every piece to fill it, then recurse.
 function _polyFit(polys, puzzle) {
   // Check for overlapping polyominos, and handle exit cases for all polyominos placed.
-  for (var y=1; y<puzzle.grid[0].length; y+=2) {
-    for (var x=1; x<puzzle.grid.length; x+=2) {
+  for (var y=0; y<puzzle.grid[0].length; y++) {
+    for (var x=0; x<puzzle.grid.length; x++) {
       var cell = puzzle.getCell(x, y)
       if (cell < 0) {
         if (polys.length == 0) {
