@@ -1,4 +1,4 @@
-function drawSymbol(params/*, width, height*/) {
+function drawSymbol(params) {
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
   svg.setAttribute('viewBox', '0 0 ' + params.width + ' ' + params.height)
   if (!params.x) params.x = 0
@@ -33,6 +33,7 @@ function _square(svg, params) {
   rect.setAttribute('rx', 7)
   rect.setAttribute('ry', 7)
   rect.setAttribute('fill', params.color)
+  rect.setAttribute('class', params.class)
 }
 
 function _star(svg, params) {
@@ -59,6 +60,7 @@ function _star(svg, params) {
   poly.setAttribute('transform', 'translate(' + (params.width/2 + params.x) + ', ' + (params.height/2 + params.y) + ')')
   poly.setAttribute('points', points.join(', '))
   poly.setAttribute('fill', params.color)
+  poly.setAttribute('class', params.class)
 }
 
 function _poly(svg, params) {
@@ -91,6 +93,7 @@ function _poly(svg, params) {
     rect.setAttribute('height', size)
     rect.setAttribute('width', size)
     rect.setAttribute('fill', params.color)
+    rect.setAttribute('class', params.class)
   }
 }
 
@@ -127,21 +130,51 @@ function _ylop(svg, params) {
     }
     poly.setAttribute('transform', transform)
     poly.setAttribute('fill', params.color)
+    poly.setAttribute('class', params.class)
   }
 }
 
-// Adjusted 1 pixel down because it looks better
 function _nega(svg, params) {
-  for (var degrees of [60, 180, 300]) {
-    var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-    svg.appendChild(rect)
-    rect.setAttribute('height', 10.5)
-    rect.setAttribute('width', 6)
-    rect.setAttribute('x', params.width/2 - 3 + params.x)
-    rect.setAttribute('y', params.height/2 + 1 + params.y)
-    rect.setAttribute('transform', 'rotate(' + degrees + ', ' + (params.width/2 + params.x) + ', ' + (params.height/2 + 1 + params.y) + ')')
-    rect.setAttribute('fill', params.color)
-  }
+  var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
+  svg.appendChild(poly)
+  var points = [
+    '2.9 -1',
+    '2.9 -9.4',
+    '-2.9 -9.4',
+    '-2.9 -1',
+    '-10.2 3.2',
+    '-7.3 8.2',
+    '0 4',
+    '7.3 8.2',
+    '10.2 3.2',
+  ]
+  var mid_x = params.width/2 + params.x
+  var mid_y = params.height/2 + params.y
+  poly.setAttribute('transform', 'translate(' + mid_x + ', ' + mid_y + ')')
+  poly.setAttribute('points', points.join(', '))
+  poly.setAttribute('fill', params.color)
+  poly.setAttribute('class', params.class)
+
+  /*
+  var poly2 = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
+  svg.appendChild(poly2)
+  var points2 = [
+    '2.9 -1',
+    '2.9 -9.4',
+    '-2.9 -9.4',
+    '-2.9 -1',
+    '-10.2 3.2',
+    '-7.3 8.2',
+    '0 4',
+    '7.3 8.2',
+    '10.2 3.2',
+  ]
+  poly2.setAttribute('transform', 'translate(' + mid_x + ', ' + mid_y + ') rotate(120, 0, 0.6666)')
+  poly2.setAttribute('points', points2.join(', '))
+  poly2.setAttribute('fill', 'black')
+  poly2.setAttribute('opacity', 0.5)
+  poly2.setAttribute('class', params.class)
+  */
 }
 
 function _triangle(svg, params) {
@@ -153,6 +186,7 @@ function _triangle(svg, params) {
     var y_offset = params.height/2 - 7 + params.y
     poly.setAttribute('transform', 'translate(' + x_offset + ', ' + y_offset + ')')
     poly.setAttribute('fill', params.color)
+    poly.setAttribute('class', params.class)
   }
 }
 
@@ -232,6 +266,7 @@ function _dot(svg, params) {
   hex.setAttribute('points', '5.2 9, 10.4 0, 5.2 -9, -5.2 -9, -10.4 0, -5.2 9')
   hex.setAttribute('transform', 'translate(' + (params.width/2 + params.x) + ', ' + (params.height/2 + params.y) + ')')
   hex.setAttribute('fill', 'black')
+  hex.setAttribute('class', params.class)
 }
 
 function _gap(svg, params) {

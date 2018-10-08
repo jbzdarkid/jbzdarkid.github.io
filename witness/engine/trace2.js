@@ -160,14 +160,23 @@ function trace(elem, event, puzzle) {
       data.cursor.onclick = null
       validate(puzzle)
 
+      for (var combination of puzzle.negations) {
+        data.animations.insertRule('.' + svg.id + '_' + combination.source.x + '_' + combination.source.y + ' {animation: 0.75s 1 forwards fade}')
+        data.animations.insertRule('.' + svg.id + '_' + combination.target.x + '_' + combination.target.y + ' {animation: 0.75s 1 forwards fade}')
+      }
+
       if (puzzle.valid) {
         PLAY_SOUND('success')
-        var animation = 'line-success'
+        data.animations.insertRule('.' + svg.id + ' {animation: 1s 1 forwards line-success}')
       } else {
         PLAY_SOUND('fail')
-        var animation = 'line-fail'
+        data.animations.insertRule('.' + svg.id + ' {animation: 1s 1 forwards line-fail}')
+        // Get list of invalid elements
+        for (var invalidElement of puzzle.invalidElements) {
+          data.animations.insertRule('.' + svg.id + '_' + invalidElement.x + '_' + invalidElement.y + ' {animation: 0.4s 20 alternate-reverse error}')
+        }
       }
-      data.animations.insertRule('.' + svg.id + ' {animation: 1s 1 forwards ' + animation + '}')
+
     } else if (event.which == 3) { // Right-clicked, not at the end: Clear puzzle
       PLAY_SOUND('abort')
       _clearGrid(svg, puzzle)
@@ -233,7 +242,7 @@ function onTraceStart(svg, puzzle, start) {
   }
   for (var i = 0; i < data.animations.cssRules.length; i++) {
     var rule = data.animations.cssRules[i]
-    if (rule.selectorText == '.' + svg.id) {
+    if (rule.selectorText != undefined && rule.selectorText.startsWith('.' + svg.id)) {
       data.animations.deleteRule(i--)
     }
   }

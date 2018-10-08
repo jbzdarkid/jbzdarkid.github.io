@@ -1,8 +1,7 @@
 In vague order of importance.
 
-- Flash for errors
--- data.animations.insertRule('polygon {animation: 0.4s 20 alternate-reverse error}')
 - Start-grow animation
+- What is .line in animations doing?
 - Fix generation colors
 - Improve tracing for 1xN
 -- Some of it is endpoint handling -- it's preventing outer wall sliding even when endpoint is in another direction

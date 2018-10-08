@@ -30,7 +30,7 @@ function draw(puzzle, target='puzzle') {
   _drawGrid(puzzle, svg)
   var startData = _drawStartAndEnd(puzzle, svg) // Detects and returns the start element to begin tracing
   // Draw cell symbols after so they overlap the lines, if necessary
-  _drawSymbols(puzzle, svg)
+  _drawSymbols(puzzle, svg, target)
   if (startData) {
     onTraceStart(svg, puzzle, startData.elem)
     _drawSolution(puzzle, startData.x, startData.y)
@@ -98,7 +98,7 @@ function _drawGrid(puzzle, svg) {
   }
 }
 
-function _drawSymbols(puzzle, svg) {
+function _drawSymbols(puzzle, svg, target) {
   for (var x=1; x<puzzle.grid.length; x+=2) {
     for (var y=1; y<puzzle.grid[x].length; y+=2) {
       if (puzzle.grid[x][y]) {
@@ -107,6 +107,7 @@ function _drawSymbols(puzzle, svg) {
         params.height = 58
         params.x = x*41 + 23
         params.y = y*41 + 23
+        params.class = target + '_' + x + '_' + y
         drawSymbolWithSvg(svg, params)
       }
     }
@@ -124,6 +125,7 @@ function _drawSymbols(puzzle, svg) {
     var params = {'type':'dot', 'width':58, 'height':58}
     params.x = dot.x*41 + 23
     params.y = dot.y*41 + 23
+    params.class = target + '_' + dot.x + '_' + dot.y
     drawSymbolWithSvg(svg, params)
   }
 }

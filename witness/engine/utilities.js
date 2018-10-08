@@ -96,6 +96,10 @@ var animations = '.line { \
 @keyframes error { \
   from {} \
   to {fill: red;} \
+} \
+@keyframes fade { \
+  from {} \
+  to {opacity: 0.35;} \
 }'
 var style = document.createElement('style')
 style.type = 'text/css'
