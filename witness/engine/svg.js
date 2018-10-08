@@ -138,43 +138,20 @@ function _nega(svg, params) {
   var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
   svg.appendChild(poly)
   var points = [
-    '2.9 -1',
-    '2.9 -9.4',
-    '-2.9 -9.4',
-    '-2.9 -1',
-    '-10.2 3.2',
-    '-7.3 8.2',
-    '0 4',
-    '7.3 8.2',
-    '10.2 3.2',
+    '2.9 -2',
+    '2.9 -10.4',
+    '-2.9 -10.4',
+    '-2.9 -2',
+    '-10.2 2.2',
+    '-7.3 7.2',
+    '0 3',
+    '7.3 7.2',
+    '10.2 2.2',
   ]
-  var mid_x = params.width/2 + params.x
-  var mid_y = params.height/2 + params.y
-  poly.setAttribute('transform', 'translate(' + mid_x + ', ' + mid_y + ')')
+  poly.setAttribute('transform', 'translate(' + (params.width/2 + params.x) + ', ' + (params.height/2 + params.y) + ')')
   poly.setAttribute('points', points.join(', '))
   poly.setAttribute('fill', params.color)
   poly.setAttribute('class', params.class)
-
-  /*
-  var poly2 = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
-  svg.appendChild(poly2)
-  var points2 = [
-    '2.9 -1',
-    '2.9 -9.4',
-    '-2.9 -9.4',
-    '-2.9 -1',
-    '-10.2 3.2',
-    '-7.3 8.2',
-    '0 4',
-    '7.3 8.2',
-    '10.2 3.2',
-  ]
-  poly2.setAttribute('transform', 'translate(' + mid_x + ', ' + mid_y + ') rotate(120, 0, 0.6666)')
-  poly2.setAttribute('points', points2.join(', '))
-  poly2.setAttribute('fill', 'black')
-  poly2.setAttribute('opacity', 0.5)
-  poly2.setAttribute('class', params.class)
-  */
 }
 
 function _triangle(svg, params) {

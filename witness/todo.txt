@@ -1,6 +1,5 @@
 In vague order of importance.
 
-- Negation svg is not centered?
 - Start-grow animation
 - What is .line in animations doing?
 - Fix generation colors
