@@ -1,5 +1,6 @@
 In vague order of importance.
 
+- Negation svg is not centered?
 - Start-grow animation
 - What is .line in animations doing?
 - Fix generation colors
@@ -7,6 +8,7 @@ In vague order of importance.
 -- Some of it is endpoint handling -- it's preventing outer wall sliding even when endpoint is in another direction
 - Simple Symmetry (horiz/verti)
 !- Stable release
+- Favicon
 - Rich line data
 -- Dots & gaps into the grid
 -- Dots cancelled by negation
