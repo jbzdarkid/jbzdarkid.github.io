@@ -28,10 +28,10 @@ var urlParams
 })()
 
 var tracks = {
-  'start': new Audio('/witness/audio/panel_start_tracing.ogg'),
-  'success': new Audio('/witness/audio/panel_success.ogg'),
-  'fail': new Audio('/witness/audio/panel_failure.ogg'),
-  'abort': new Audio('/witness/audio/panel_abort_tracing.ogg')
+  'start': new Audio('/audio/panel_start_tracing.ogg'),
+  'success': new Audio('/audio/panel_success.ogg'),
+  'fail': new Audio('/audio/panel_failure.ogg'),
+  'abort': new Audio('/audio/panel_abort_tracing.ogg')
 }
 
 function PLAY_SOUND(track) {
