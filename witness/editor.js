@@ -236,6 +236,7 @@ function _tryUpdatePuzzle(serialized) {
     puzzle = Puzzle.deserialize(serialized)
     _redraw(puzzle) // Will throw for most invalid puzzles
     document.getElementById('puzzleName').innerText = puzzle.name
+    document.getElementById('publishData').innerText = serialized
     return true
   } catch (e) {
     console.log(e)

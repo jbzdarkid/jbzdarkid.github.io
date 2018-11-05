@@ -34,6 +34,10 @@
       <textarea style="display:none" id="export"></textarea>
       <button onclick="playPuzzle()">Play</button>
       <button onclick="solvePuzzle()">Solve</button>
+      <form style="display:inline" method="post" action="publish">
+        <input type="text" style="display:none" id="publishData">
+        <input type="submit" value="Publish">
+      </form>
       <br>
       <input class="checkbox" type="checkbox" id="hSymBox" onchange="setHSymmetry(this.checked)" disabled>
       <label cellpadding="10" for="pillarBox" style="margin-right: 20">Horizontal Symmetry</label>
