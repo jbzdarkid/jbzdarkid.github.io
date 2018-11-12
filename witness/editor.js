@@ -54,7 +54,8 @@ function savePuzzle() {
   // TODO: Some intelligence about showing day / month / etc depending on date age
   var savedPuzzle = puzzle.name + ' on ' + (new Date()).toLocaleString()
   _addPuzzleToList(savedPuzzle)
-  window.localStorage.setItem(savedPuzzle, puzzle.serialize())
+  var serialized = puzzle.serialize()
+  window.localStorage.setItem(savedPuzzle, serialized)
 }
 
 function loadPuzzle() {
@@ -236,7 +237,6 @@ function _tryUpdatePuzzle(serialized) {
     puzzle = Puzzle.deserialize(serialized)
     _redraw(puzzle) // Will throw for most invalid puzzles
     document.getElementById('puzzleName').innerText = puzzle.name
-    document.getElementById('publishData').innerText = serialized
     return true
   } catch (e) {
     console.log(e)
@@ -250,8 +250,10 @@ function _redraw(puzzle) {
   document.getElementById('puzzleName').innerText = puzzle.name
   document.getElementById('pillarBox').checked = puzzle.pillar
   draw(puzzle)
-  var puzzleElement = document.getElementById('puzzle')
+  document.getElementById('publishData').setAttribute('value', puzzle.serialize())
   document.getElementById('solutionViewer').style.display = 'none'
+
+  var puzzleElement = document.getElementById('puzzle')
   for (var child of puzzleElement.children) {
     child.onclick = null
   }

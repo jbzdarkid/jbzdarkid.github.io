@@ -1,5 +1,6 @@
 In vague order of importance.
 
+- Test ylop + center start
 - Start-grow animation
 - What is .line in animations doing?
 - Fix generation colors
