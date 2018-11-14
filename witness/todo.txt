@@ -1,5 +1,7 @@
 In vague order of importance.
 
+- Add <script>loadHeaader(...)</script> which calls back to utilities, this will add theme button / sensitivity slider / page title / login buttons
+-- Might also be able to handle recolor() from here
 - Test ylop + center start
 - Start-grow animation
 - What is .line in animations doing?
