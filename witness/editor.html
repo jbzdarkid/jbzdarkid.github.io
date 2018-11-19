@@ -13,11 +13,7 @@
     <title>Create a puzzle</title>
   </head>
   <body style="text-align: center">
-    <div style="position:absolute; float:left">
-      <input class="checkbox" type="checkbox" id="theme" onchange="localStorage.theme = this.checked; location.reload()">
-      <script>document.getElementById('theme').checked = (localStorage.theme == "true")</script>
-      <label for="theme">Dark theme</label>
-    </div>
+    <script>loadSettings()</script>
     <div id="solutionViewer" style="position:absolute; right:8; display:none">
       <button id="previousSolution">&larr;</button>
       <label id="solutionCount"></label>

@@ -5,7 +5,6 @@ var dragging = false
 var solutions = []
 
 window.onload = function() {
-  recolor()
   var activePuzzle = window.localStorage.getItem('activePuzzle')
   var serialized = window.localStorage.getItem(activePuzzle)
 

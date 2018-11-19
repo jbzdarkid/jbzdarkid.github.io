@@ -62,7 +62,6 @@ var styles = {
 var puzzleData = {'solutions': []}
 // Detect style + puzzle id, generate, validate, and display puzzle.
 window.onload = function() {
-  recolor()
   // Determine puzzle seed
   if (location.hash == "") {
     // If no seed is provided, choose a random one

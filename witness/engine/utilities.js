@@ -59,10 +59,6 @@ if (localStorage.theme == "true") { // Dark scheme
   LINE_SUCCESS = '#BBB' // '#FA0'
   LINE_FAIL = '#000'
   CURSOR = '#FFF'
-  recolor = function() {
-    document.body.style.background = '#000'
-    document.body.style.color = '#CCC'
-  }
 } else { // Light scheme
   BACKGROUND = '#0A8'
   FOREGROUND = '#344'
@@ -71,10 +67,6 @@ if (localStorage.theme == "true") { // Dark scheme
   LINE_SUCCESS = '#FFF'
   LINE_FAIL = '#000'
   CURSOR = '#FFF'
-  recolor = function() {
-    document.body.style.background = '#FFF'
-    document.body.style.color = '#000'
-  }
 }
 
 var animations = '.line { \
@@ -150,3 +142,34 @@ function setLogLevel(level) {
   if (level == 'spam') return
 }
 setLogLevel('info')
+
+function loadSettings() {
+  var parentDiv = document.createElement('div')
+  document.body.appendChild(parentDiv)
+  parentDiv.style = 'position:absolute; float:left'
+
+  // Theme
+  var themeBox = document.createElement('input')
+  parentDiv.appendChild(themeBox)
+  themeBox.className = 'checkbox'
+  themeBox.type = 'checkbox'
+  themeBox.id = 'theme'
+  themeBox.onchange = function() {
+    localStorage.theme = this.checked
+    location.reload()
+  }
+  themeBox.checked = (localStorage.theme == 'true')
+  if (themeBox.checked) { // Dark background
+    document.body.style.background = '#000'
+    document.body.style.color = '#CCC'
+  } else {
+    document.body.style.background = '#FFF'
+    document.body.style.color = '#000'
+  }
+  themeLabel = document.createElement('label')
+  parentDiv.appendChild(themeLabel)
+  themeLabel.for = 'theme'
+  themeLabel.innerText = 'Dark theme'
+
+  // Sensitivity
+}

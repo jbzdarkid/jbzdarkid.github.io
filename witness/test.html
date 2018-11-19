@@ -12,12 +12,8 @@
     <script type="text/javascript" src="test.js"></script>
     <title>Random tests or something</title>
   </head>
-  <body">
-    <div style="position:absolute; float:left">
-      <input class="checkbox" type="checkbox" id="theme" onchange="localStorage.theme = this.checked; location.reload()">
-      <script>document.getElementById('theme').checked = (localStorage.theme == "true")</script>
-      <label for="theme">Dark theme</label>
-    </div>
+  <body>
+    <script>loadSettings()</script>
     <div style="text-align: center"><label style="font-size: 72">Test Cases</label></div>
     <div style="text-align: center">
       <label for="sens">Mouse Speed 2D</label>
