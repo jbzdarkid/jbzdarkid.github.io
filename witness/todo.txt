@@ -2,9 +2,9 @@ In vague order of importance.
 
 - Move sensitivity into the loadSettings function (add an expandable box?)
 - Optimization: Scan entire grid before regions, check for overridden gaps (fail), missing dots + no negation symbols. If no symbols at all, skip region check.
-- Test ylop + center start
 - Start-grow animation
 - What is .line in animations doing?
+- Name the tests (i.e. change array to dictionary)
 - Fix generation colors
 - Improve tracing for 1xN
 -- Some of it is endpoint handling -- it's preventing outer wall sliding even when endpoint is in another direction
