@@ -12,25 +12,51 @@ function validate(puzzle) {
   puzzle.invalidElements = []
   puzzle.negations = []
 
-  // Check that individual regions are valid
-  var regions = puzzle.getRegions()
-  for (var region of regions) {
-    var key = region.grid.toString()
-    var regionData = puzzle.regionCache[key]
-    if (regionData == undefined) {
-      console.log('Cache miss for region', region, 'key', key)
-      regionData = _regionCheckNegations(puzzle, region)
-      // Entirely for convenience
-      regionData.valid = (regionData.invalidElements.length == 0)
-      console.log('Region valid:', regionData.valid)
+  // Perf optimization: We can skip iterating regions if the grid has no symbols.
+  var puzzleHasSymbols = false
+  for (var x=1; x<puzzle.grid.length; x+=2) {
+    for (var y=1; y<puzzle.grid[x].length; y+=2) {
+      if (puzzle.getCell(x, y) != false) puzzleHasSymbols = true
+    }
+  }
 
-      if (!window.DISABLE_CACHE) {
-        puzzle.regionCache[key] = regionData
+  if (!puzzleHasSymbols) {
+    // Only things to validate are gaps and dots
+    for (var gap of puzzle.gaps) {
+      if (puzzle.getCell(gap.x, gap.y)) {
+        console.log('Gap at grid['+gap.x+']['+gap.y+'] is covered')
+        puzzle.valid = false
+        break
       }
     }
-    puzzle.negations = puzzle.negations.concat(regionData.negations)
-    puzzle.invalidElements = puzzle.invalidElements.concat(regionData.invalidElements)
-    puzzle.valid &= regionData.valid
+    for (var dot of puzzle.dots) {
+      if (!puzzle.getCell(dot.x, dot.y)) {
+        console.log('Dot at', dot.x, dot.y, 'is not covered')
+        puzzle.invalidElements.push(dot)
+        puzzle.valid = false
+      }
+    }
+  } else {
+    // Check that individual regions are valid
+    var regions = puzzle.getRegions()
+    for (var region of regions) {
+      var key = region.grid.toString()
+      var regionData = puzzle.regionCache[key]
+      if (regionData == undefined) {
+        console.log('Cache miss for region', region, 'key', key)
+        regionData = _regionCheckNegations(puzzle, region)
+        // Entirely for convenience
+        regionData.valid = (regionData.invalidElements.length == 0)
+        console.log('Region valid:', regionData.valid)
+
+        if (!window.DISABLE_CACHE) {
+          puzzle.regionCache[key] = regionData
+        }
+      }
+      puzzle.negations = puzzle.negations.concat(regionData.negations)
+      puzzle.invalidElements = puzzle.invalidElements.concat(regionData.invalidElements)
+      puzzle.valid &= regionData.valid
+    }
   }
   console.log('Puzzle has', puzzle.invalidElements.length, 'invalid elements')
 }
@@ -91,7 +117,7 @@ function _regionCheckNegations(puzzle, region) {
   for (var invalidElement of invalidElements) {
     invalidElement.cell = puzzle.getCell(invalidElement.x, invalidElement.y)
     puzzle.setCell(invalidElement.x, invalidElement.y, false)
-    console.log('Negating other negation symbol at', invalidElement.x, invalidElement.y)
+    console.log('Negating other symbol at', invalidElement.x, invalidElement.y)
     // Remove the negation and target, then recurse
     var regionData = _regionCheckNegations(puzzle, region)
     // Restore the target

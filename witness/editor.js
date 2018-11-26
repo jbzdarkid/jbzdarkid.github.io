@@ -136,7 +136,14 @@ function playPuzzle() {
 }
 
 function solvePuzzle() {
-  if (puzzle.grid.length * puzzle.grid[0].length > 121) {
+  // If the puzzle has symbols and is large, issue a warning
+  var puzzleHasSymbols = false
+  for (var x=1; x<puzzle.grid.length; x+=2) {
+    for (var y=1; y<puzzle.grid[x].length; y+=2) {
+      if (puzzle.getCell(x, y) != false) puzzleHasSymbols = true
+    }
+  }
+  if (puzzleHasSymbols && puzzle.grid.length * puzzle.grid[0].length > 121) {
     // Larger than 5x5 (internal 11x11)
     if (!confirm('Caution: You are solving a large puzzle (>25 cells). This will take more than 5 minutes to run.')) {
       return
