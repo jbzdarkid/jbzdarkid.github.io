@@ -131,11 +131,13 @@ function _regionCheck(puzzle, region) {
 
   // Check that all dots are covered
   // FIXME: Check for invalid dot placement?
-  // TODO: This doesn't do anything until dots are actually IN THE GRID
-  for (var dot of puzzle.dots) {
-    if (!puzzle.getCell(dot.x, dot.y)) {
-      console.log('Dot at', dot.x, dot.y, 'is not covered')
-      invalidElements.push(dot)
+  // TODO: Don't iterate all dots once they're in the grid :)
+  for (var cell of region.cells) {
+    for (var dot of puzzle.dots) {
+      if (dot.x == cell.x && dot.y == cell.y && !puzzle.getCell(cell.x, cell.y)) {
+        console.log('Dot at', dot.x, dot.y, 'is not covered')
+        invalidElements.push(dot)
+      }
     }
   }
 

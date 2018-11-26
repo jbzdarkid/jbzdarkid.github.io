@@ -2,6 +2,10 @@ In vague order of importance.
 
 - Move sensitivity into the loadSettings function (add an expandable box?)
 - Optimization: Scan entire grid before regions, check for overridden gaps (fail), missing dots + no negation symbols. If no symbols at all, skip region check.
+- Hex over startpoint is not bubbling through the click event
+-- No obvious way to pass through (it's a baked SVG)
+-- No obvious way to change layering (would need a new SVG object to be inserted at the end, invisibly)
+-- Maybe make hex.onclick = start.onclick?
 - Start-grow animation
 - What is .line in animations doing?
 - Name the tests (i.e. change array to dictionary)
@@ -29,6 +33,7 @@ In vague order of importance.
 -- Signin?
 -- Preview images for puzzles (meta:og tag)
 -- Name for the project (so I can have a reasonable dns name)
+-- Telemetry
 - Invisible Dots
 !- Feature complete!
 
