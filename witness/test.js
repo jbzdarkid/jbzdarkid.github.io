@@ -1,7 +1,6 @@
 window.DISABLE_CACHE = true
 
 window.onload = function() {
-  recolor()
   var table = document.getElementById('meta')
   for (var i=0; i<tests.length; i+=3) {
     var row = table.insertRow()
