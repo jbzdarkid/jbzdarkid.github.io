@@ -244,6 +244,7 @@ function _dot(svg, params) {
   hex.setAttribute('transform', 'translate(' + (params.width/2 + params.x) + ', ' + (params.height/2 + params.y) + ')')
   hex.setAttribute('fill', 'black')
   hex.setAttribute('class', params.class)
+  hex.setAttribute('style', 'pointer-events:none;')
 }
 
 function _gap(svg, params) {
