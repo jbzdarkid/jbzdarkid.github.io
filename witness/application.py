@@ -1,12 +1,12 @@
-# https://www.youtube.com/watch?v=K_RTlbOOCts
-from application_base import application
+# TODO: Azure setup: https://www.youtube.com/watch?v=K_RTlbOOCts
+
+from flask import Flask
 from datetime import datetime
-from flask import redirect, render_template
 from flask_sqlalchemy import SQLAlchemy, event
-from flask_wtf import FlaskForm
 from os import environ
-from wtforms import StringField
 from hashlib import sha256
+
+application = Flask(__name__)
 
 if 'RDS_DB_NAME' in environ:
   application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://{user}:{pswd}@{host}:{port}/{name}'.format(
@@ -53,26 +53,3 @@ class User(db.Model):
   # msft_id
 
 db.create_all()
-
-class MyForm(FlaskForm):
-  publishData = StringField('publishData')
-
-def publish():
-  form = MyForm()
-  new_puzzle = Puzzle(data=form.publishData.data)
-  add_display_hash(new_puzzle)
-  db.session.add(new_puzzle)
-  db.session.commit()
-
-  return redirect(f'/play/{new_puzzle.display_hash}')
-application.add_url_rule('/publish', 'publish', publish, methods=['POST'])
-
-def play(display_hash):
-  puzzle = db.session.query(Puzzle).filter(Puzzle.display_hash == display_hash).first()
-  if not puzzle or not puzzle.data:
-    return render_template('404.html', display_hash=display_hash)
-  return render_template('play.html', test='foo', puzzle=puzzle.data)
-application.add_url_rule('/play/<display_hash>', 'play', play)
-
-if __name__ == "__main__":
-  application.run()
