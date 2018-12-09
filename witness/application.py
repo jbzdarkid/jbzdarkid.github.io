@@ -65,5 +65,9 @@ application.add_url_rule('/play/<display_hash>', 'play', play)
 if __name__ == '__main__':
   # Setting debug to True enables debug output. This line should be
   # removed before deploying a production app.
-  # application.debug = True
-  application.run()
+  application.debug = True # Required to do auto-reload
+  extra_files = []
+  for root, dirs, files in os.walk('.'):
+    for file in files:
+      extra_files.append(root + os.sep + file)
+  application.run(extra_files=extra_files)

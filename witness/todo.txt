@@ -1,6 +1,5 @@
 In vague order of importance.
 
-- Move sensitivity into the loadSettings function (add an expandable box?)
 - Start-grow animation
 - What is .line in animations doing?
 - Fix generation colors
@@ -22,12 +21,12 @@ In vague order of importance.
 -- Clean up solution to be a full path (start point = none, same as trace)
 - Hide solution (puzzleData) from global scope
 - Server
--- Shortnames for puzzles
+-+ Shortnames for puzzles
 -- A whole bunch of UI for browsing puzzles
 -- Signin?
 -- Preview images for puzzles (meta:og tag)
 -- Name for the project (so I can have a reasonable dns name)
--- Telemetry
+-- Telemetry - XMLHttpRequest() is pure JS, but how do I secure anything?
 - Invisible Dots
 !- Feature complete!
 
@@ -35,10 +34,8 @@ In vague order of importance.
 - What uses getRotations? Why do we need rot=null?
 - Solve with pillars is slow, maybe increase warning threshold / disable in play mode?
 - Maybe remove show solution for play mode entirely?
-- Move generate, etc out of engine? Probably need a new folder for 'legacy' anyways.
 - Add missing daily styles
 - Shape chooser is not centered
 - change all divs to auto-centering? It's all I seem to use them for rn
 -- Maybe have a class="centered"
-- Search for fixme/todo and move them here
 - transform: scale(2) doesn't work on safari?

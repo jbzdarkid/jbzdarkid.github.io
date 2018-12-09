@@ -143,14 +143,57 @@ function setLogLevel(level) {
 }
 setLogLevel('info')
 
+function hideSettings() {
+  localStorage.settings = 'hidden'
+  var settings = document.getElementById('settings')
+  settings.style.display = 'none'
+  var toggle = document.getElementById('settingsToggle')
+  toggle.innerHTML = '+'
+  toggle.onclick = function(){ showSettings() }
+  toggle.parentElement.style.width = '20px'
+  toggle.parentElement.style.height = '20px'
+  toggle.style.top = '-11px'
+}
+
+function showSettings() {
+  localStorage.settings = 'visible'
+  var settings = document.getElementById('settings')
+  settings.style.display = null
+  var toggle = document.getElementById('settingsToggle')
+  toggle.innerHTML = '– &nbsp; &nbsp; &nbsp; &nbsp;settings'
+  toggle.onclick = function(){ hideSettings() }
+  toggle.parentElement.style.width = '250px'
+  toggle.parentElement.style.height = '150px'
+  toggle.style.top = '-10px'
+}
+
 function loadSettings() {
   var parentDiv = document.createElement('div')
   document.body.appendChild(parentDiv)
-  parentDiv.style = 'position:absolute; float:left'
+  parentDiv.style = 'position:absolute; float:left; border: 2px solid ' + BORDER
+
+  var toggle = document.createElement('label')
+  parentDiv.appendChild(toggle)
+  toggle.style = 'cursor: pointer; position: absolute; left: 2'
+  toggle.id = 'settingsToggle'
+
+  var settings = document.createElement('div')
+  parentDiv.appendChild(settings)
+  settings.id = 'settings'
+  settings.style.margin = '10px'
+
+  if (localStorage.settings == 'hidden') {
+    hideSettings()
+  } else {
+    showSettings()
+  }
+
+  // Now, for the contents of the settings
+  settings.appendChild(document.createElement('br'))
 
   // Theme
   var themeBox = document.createElement('input')
-  parentDiv.appendChild(themeBox)
+  settings.appendChild(themeBox)
   themeBox.className = 'checkbox'
   themeBox.type = 'checkbox'
   themeBox.id = 'theme'
@@ -166,10 +209,40 @@ function loadSettings() {
     document.body.style.background = '#FFF'
     document.body.style.color = '#000'
   }
-  themeLabel = document.createElement('label')
-  parentDiv.appendChild(themeLabel)
+  var themeLabel = document.createElement('label')
+  settings.appendChild(themeLabel)
   themeLabel.for = 'theme'
-  themeLabel.innerText = 'Dark theme'
+  themeLabel.innerText = ' Dark theme'
+
+  settings.appendChild(document.createElement('br'))
+  settings.appendChild(document.createElement('br'))
 
   // Sensitivity
+  var sensLabel = document.createElement('label')
+  settings.appendChild(sensLabel)
+  sensLabel.for = 'sens'
+  sensLabel.innerText = 'Mouse Speed 2D'
+
+  var sens = document.createElement('input')
+  settings.appendChild(sens)
+  sens.style.width = '100%'
+  sens.type = 'range'
+  sens.id = 'sens'
+  sens.min = '0.1'
+  sens.max = '1.3'
+  sens.step = '0.1'
+  sens.value = localStorage.sensitivity
+  sens.onchange = function() {
+    localStorage.sensitivity = this.value
+  }
+  /*
+    <div style="text-align: center"><label id="title" style="font-size: 72"></label></div>
+    <div style="text-align: center">
+      <label for="sens">Mouse Speed 2D</label>
+      <input id="sens" type="range" min="0.1" max="1.3" step="0.1" onchange="localStorage.sensitivity = this.value"/>
+      <script>document.getElementById('sens').value = localStorage.sensitivity</script>
+    </div>
+  */
+
+
 }
