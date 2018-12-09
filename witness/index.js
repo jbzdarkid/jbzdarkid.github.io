@@ -75,8 +75,15 @@ window.onload = function() {
     puzzleData.puzzle = Puzzle.deserialize(urlParams.puzzle)
     document.head.title = puzzleData.puzzle.name
     document.getElementById('title').innerText = puzzleData.puzzle.name
-    // Only verify 5x5 (11x11 internally) and smaller
-    if (puzzleData.puzzle.grid.length * puzzleData.puzzle.grid[0].length <= 121) {
+
+    // If the puzzle has symbols, only verify 5x5 (11x11 internally) and smaller
+    var puzzleHasSymbols = false
+    for (var x=1; x<puzzle.grid.length; x+=2) {
+      for (var y=1; y<puzzle.grid[x].length; y+=2) {
+        if (puzzle.getCell(x, y) != false) puzzleHasSymbols = true
+      }
+    }
+    if (!puzzleHasSymbols || puzzleData.puzzle.grid.length * puzzleData.puzzle.grid[0].length <= 121) {
       puzzleData.solutions = solve(puzzleData.puzzle)
     }
   } else {

@@ -2,6 +2,7 @@ window.DISABLE_CACHE = true
 
 window.onload = function() {
   var table = document.getElementById('meta')
+  var numFailures = 0
   for (var i=0; i<tests.length; i+=3) {
     var row = table.insertRow()
     for (var j=i; j<i+3 && j < tests.length; j++) {
@@ -23,13 +24,16 @@ window.onload = function() {
           }
           var border = document.getElementById('test'+j).firstChild
           border.setAttribute('stroke', 'red')
+          numFailures++
         }
       } catch (e) {
         console.error('Puzzle', j, 'errored!')
         document.getElementById('test'+j).parentElement.innerHTML = e.stack || 'ERROR: '+e
+        numFailures++
       }
     }
   }
+  return numFailures
 }
 
 tests = [
@@ -164,6 +168,28 @@ tests = [
     puzzle.grid[1][1] = {'type':'poly', 'color':'yellow', 'polyshape':273}
     puzzle.grid[1][3] = {'type':'poly', 'color':'yellow', 'polyshape':273}
     return [puzzle, 4]
+  }, function() {
+    var puzzle = new Puzzle(3, 2)
+    puzzle.addStart(2, 2)
+    puzzle.addEnd(6, 0, 'right')
+    puzzle.grid[1][1] = {'type':'poly', 'color':'yellow', 'polyshape':273}
+    puzzle.grid[1][3] = {'type':'poly', 'color':'yellow', 'polyshape':273}
+    puzzle.grid[3][1] = {'type':'ylop', 'color':'blue', 'polyshape':3}
+    return [puzzle, 2]
+  }, function() {
+    var puzzle = new Puzzle(3, 3)
+    puzzle.addStart(2, 4)
+    puzzle.addEnd(6, 0, 'right')
+    puzzle.grid[1][1] = {'type':'poly', 'color':'yellow', 'polyshape':1911}
+    puzzle.grid[3][1] = {'type':'ylop', 'color':'blue', 'polyshape':51}
+    return [puzzle, 4]
+  }, function() {
+    var puzzle = new Puzzle(3, 3)
+    puzzle.addStart(0, 2)
+    puzzle.addEnd(6, 6, 'right')
+    puzzle.grid[1][1] = {'type':'poly', 'color':'yellow', 'polyshape':823}
+    puzzle.grid[3][1] = {'type':'ylop', 'color':'blue', 'polyshape':3}
+    return [puzzle, 3]
   }, function() {
     var puzzle = new Puzzle(2, 2)
     puzzle.addStart(0, 4)
