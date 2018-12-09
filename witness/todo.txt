@@ -3,7 +3,6 @@ In vague order of importance.
 - Move sensitivity into the loadSettings function (add an expandable box?)
 - Start-grow animation
 - What is .line in animations doing?
-- Name the tests (i.e. change array to dictionary)
 - Fix generation colors
 - Improve tracing for 1xN
 -- Some of it is endpoint handling -- it's preventing outer wall sliding even when endpoint is in another direction
