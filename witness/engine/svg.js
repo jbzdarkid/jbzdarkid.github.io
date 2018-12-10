@@ -154,16 +154,34 @@ function _nega(svg, params) {
   poly.setAttribute('class', params.class)
 }
 
+var triangleDistributions = [
+  [],
+  [1],
+  [2],
+  [3],
+  [2, 2],
+  [2, 3],
+  [3, 3],
+  [2, 3, 2],
+  [2, 3, 3],
+  [3, 3, 3]
+]
+
 function _triangle(svg, params) {
-  for (var i=0; i<params.count; i++) {
-    var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
-    svg.appendChild(poly)
-    poly.setAttribute('points', '0 0, -8 14, 8 14')
-    var x_offset = params.width/2 - 11*(params.count - 1) + 22*i + params.x
-    var y_offset = params.height/2 - 7 + params.y
-    poly.setAttribute('transform', 'translate(' + x_offset + ', ' + y_offset + ')')
-    poly.setAttribute('fill', params.color)
-    poly.setAttribute('class', params.class)
+  var distribution = triangleDistributions[params.count]
+  var high = distribution.length
+  for (var y=0; y<high; y++) {
+    var wide = distribution[y]
+    for (var x=0; x<wide; x++) {
+      var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
+      svg.appendChild(poly)
+      var x_coord = params.x + params.width/2 + 11*(2*x - wide + 1)
+      var y_coord = params.y + params.height/2 + 10*(2*y - high + 1)
+      poly.setAttribute('transform', 'translate(' + x_coord + ', ' + y_coord + ')')
+      poly.setAttribute('points', '0 -8, -8 6, 8 6')
+      poly.setAttribute('fill', params.color)
+      poly.setAttribute('class', params.class)
+    }
   }
 }
 

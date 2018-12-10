@@ -3,6 +3,7 @@ In vague order of importance.
 - Start-grow animation
 - What is .line in animations doing?
 - Fix generation colors
+- Verify 4 triangles in game (somewhere in treehouse?)
 - Simple Symmetry (horiz/verti)
 !- Stable release
 - Favicon

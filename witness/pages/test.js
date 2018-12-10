@@ -347,6 +347,32 @@ tests = {
     puzzle.grid[5][1] = {'type':'triangle', 'color':'orange', 'count':2}
     puzzle.grid[9][1] = {'type':'triangle', 'color':'orange', 'count':3}
     return [puzzle, 2]
+  }, 'impossible triangles': function() {
+    var puzzle = new Puzzle(3, 3)
+    puzzle.addStart(0, 0)
+    puzzle.addEnd(6, 0, 'right')
+    puzzle.grid[1][1] = {'type':'triangle', 'color':'orange', 'count':1}
+    puzzle.grid[3][1] = {'type':'triangle', 'color':'orange', 'count':2}
+    puzzle.grid[5][1] = {'type':'triangle', 'color':'orange', 'count':3}
+    puzzle.grid[1][3] = {'type':'triangle', 'color':'orange', 'count':4}
+    puzzle.grid[3][3] = {'type':'triangle', 'color':'orange', 'count':5}
+    puzzle.grid[5][3] = {'type':'triangle', 'color':'orange', 'count':6}
+    puzzle.grid[1][5] = {'type':'triangle', 'color':'orange', 'count':7}
+    puzzle.grid[3][5] = {'type':'triangle', 'color':'orange', 'count':8}
+    puzzle.grid[5][5] = {'type':'triangle', 'color':'orange', 'count':9}
+    return [puzzle, 0]
+  }, 'not quite impossible triangles': function() {
+    var puzzle = new Puzzle(3, 3)
+    puzzle.addStart(3, 6)
+    puzzle.addEnd(6, 0, 'right')
+    puzzle.grid[3][5] = {'type':'triangle', 'color':'orange', 'count':4}
+    return [puzzle, 12]
+  }, 'not quite impossible triangles 2': function() {
+    var puzzle = new Puzzle(3, 3)
+    puzzle.addStart(0, 6)
+    puzzle.addEnd(3, 0, 'top')
+    puzzle.grid[3][1] = {'type':'triangle', 'color':'orange', 'count':4}
+    return [puzzle, 12]
   }, 'triple negation': function() {
     var puzzle = new Puzzle(3, 3)
     puzzle.addStart(0, 6)
