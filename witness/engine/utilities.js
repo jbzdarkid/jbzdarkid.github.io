@@ -51,7 +51,7 @@ BLUE = 'blue'
 ORANGE = 'orange'
 YELLOW = 'yellow'
 
-if (localStorage.theme == "true") { // Dark scheme
+if (localStorage.theme == 'true') { // Dark scheme
   BACKGROUND = '#221' // '#000'
   FOREGROUND = '#751' // '#873'
   BORDER = '#666'
@@ -59,6 +59,8 @@ if (localStorage.theme == "true") { // Dark scheme
   LINE_SUCCESS = '#BBB' // '#FA0'
   LINE_FAIL = '#000'
   CURSOR = '#FFF'
+  TEXT_COLOR = '#CCC'
+  PAGE_BACKGROUND = '#000'
 } else { // Light scheme
   BACKGROUND = '#0A8'
   FOREGROUND = '#344'
@@ -67,6 +69,8 @@ if (localStorage.theme == "true") { // Dark scheme
   LINE_SUCCESS = '#FFF'
   LINE_FAIL = '#000'
   CURSOR = '#FFF'
+  TEXT_COLOR = '#000'
+  PAGE_BACKGROUND = '#FFF'
 }
 
 var animations = '.line { \
@@ -160,7 +164,7 @@ function showSettings() {
   var settings = document.getElementById('settings')
   settings.style.display = null
   var toggle = document.getElementById('settingsToggle')
-  toggle.innerHTML = '– &nbsp; &nbsp; &nbsp; &nbsp;settings'
+  toggle.innerHTML = '&ndash; &nbsp; &nbsp; &nbsp; &nbsp;settings'
   toggle.onclick = function(){ hideSettings() }
   toggle.parentElement.style.width = '250px'
   toggle.parentElement.style.height = '150px'
@@ -170,11 +174,16 @@ function showSettings() {
 function loadSettings() {
   var parentDiv = document.createElement('div')
   document.body.appendChild(parentDiv)
-  parentDiv.style = 'position:absolute; float:left; border: 2px solid ' + BORDER
+  parentDiv.style.position = 'absolute'
+  parentDiv.style.float = 'left'
+  parentDiv.style.border = '2px solid ' + BORDER
+  parentDiv.style.background = PAGE_BACKGROUND
 
   var toggle = document.createElement('label')
   parentDiv.appendChild(toggle)
-  toggle.style = 'cursor: pointer; position: absolute; left: 2'
+  toggle.style.position = 'absolute'
+  toggle.style.left = '2'
+  toggle.style.cursor = 'pointer'
   toggle.id = 'settingsToggle'
 
   var settings = document.createElement('div')
@@ -202,13 +211,10 @@ function loadSettings() {
     location.reload()
   }
   themeBox.checked = (localStorage.theme == 'true')
-  if (themeBox.checked) { // Dark background
-    document.body.style.background = '#000'
-    document.body.style.color = '#CCC'
-  } else {
-    document.body.style.background = '#FFF'
-    document.body.style.color = '#000'
-  }
+  // This needs to happen now, since the document body hasn't yet loaded.
+  document.body.style.color = TEXT_COLOR
+  document.body.style.background = PAGE_BACKGROUND
+
   var themeLabel = document.createElement('label')
   settings.appendChild(themeLabel)
   themeLabel.for = 'theme'
@@ -235,14 +241,4 @@ function loadSettings() {
   sens.onchange = function() {
     localStorage.sensitivity = this.value
   }
-  /*
-    <div style="text-align: center"><label id="title" style="font-size: 72"></label></div>
-    <div style="text-align: center">
-      <label for="sens">Mouse Speed 2D</label>
-      <input id="sens" type="range" min="0.1" max="1.3" step="0.1" onchange="localStorage.sensitivity = this.value"/>
-      <script>document.getElementById('sens').value = localStorage.sensitivity</script>
-    </div>
-  */
-
-
 }

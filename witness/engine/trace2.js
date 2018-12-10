@@ -257,7 +257,7 @@ document.onpointerlockchange = function() {
     document.onclick = null
     document.ontouchend = null
   } else {
-    var sens = document.getElementById('sens').value
+    var sens = parseFloat(document.getElementById('sens').value)
     document.onmousemove = function(event) {
       onMove(sens * event.movementX, sens * event.movementY)
     }
@@ -274,15 +274,16 @@ function onMove(dx, dy) {
   var height = (data.pos.y%2 == 0 ? 24 : 58)
 
   // Also handles some collision
-  _pushCursor(dx, dy, width, height)
+  var colliedWith = _pushCursor(dx, dy, width, height)
+  console.spam('Collided with', colliedWith)
 
   // Potentially move the location to a new cell, and make absolute boundary checks
   while (true) {
     _gapCollision()
     var moveDir = _move()
-    console.debug('Moved', moveDir)
     data.path[data.path.length - 1].redraw()
     if (moveDir == 'none') break
+    console.debug('Moved', moveDir)
     _changePos(moveDir)
   }
 
@@ -346,44 +347,48 @@ function _push(dx, dy, dir, target_dir) {
 
 function _pushCursor(dx, dy, width, height) {
   // Outer wall collision
-  console.spam('Started outer wall collision')
   var endDir = data.puzzle.getEndDir(data.pos.x, data.pos.y)
-  if (endDir == undefined) { // Only handle collision for non-endpoint case, it's handled by interesection collision
-    if (!data.puzzle.pillar) { // Left/right walls are inner if we're a pillar
+  if (!data.puzzle.pillar) { // Left/right walls are inner if we're a pillar
+    if ([undefined, 'top', 'bottom'].includes(endDir)) {
+      // Only consider non-endpoints or endpoints which are parallel
       if (data.pos.x == 0) { // Against left wall
-        if (_push(dx, dy, 'left', 'top')) return
-      } else if (data.pos.x == data.puzzle.grid.length - 1) { // Against right wall
-        if (_push(dx, dy, 'right', 'top')) return
+        if (_push(dx, dy, 'left', 'top')) return 'left outer wall'
+      }
+      if (data.pos.x == data.puzzle.grid.length - 1) { // Against right wall
+        if (_push(dx, dy, 'right', 'top')) return 'right outer wall'
       }
     }
+  }
+  if ([undefined, 'left', 'right'].includes(endDir)) {
     if (data.pos.y == 0) { // Against top wall
-      if (_push(dx, dy, 'top', 'right')) return
-    } else if (data.pos.y == data.puzzle.grid[data.pos.x].length - 1) { // Against bottom wall
-      if (_push(dx, dy, 'bottom', 'right')) return
+      if (_push(dx, dy, 'top', 'right')) return 'top outer wall'
+    }
+    if (data.pos.y == data.puzzle.grid[data.pos.x].length - 1) { // Against bottom wall
+      if (_push(dx, dy, 'bottom', 'right')) return 'bottom outer wall'
     }
   }
 
   // Inner wall collision
-  console.spam('Started inner wall collision')
   if (data.pos.x%2 == 1 && data.pos.y%2 == 0) { // Horizontal cell
     if (data.x < data.bbox.middle.x) {
       _push(dx, dy, 'topbottom', 'left')
+      return 'topbottom inner wall, moved left'
     } else {
       _push(dx, dy, 'topbottom', 'right')
+      return 'topbottom inner wall, moved right'
     }
-    return
   } else if (data.pos.x%2 == 0 && data.pos.y%2 == 1) { // Vertical cell
     if (data.y < data.bbox.middle.y) {
       _push(dx, dy, 'leftright', 'top')
+      return 'leftright inner wall, moved up'
     } else {
       _push(dx, dy, 'leftright', 'bottom')
+      return 'leftright inner wall, moved down'
     }
-    return
   }
 
   // Intersection collision
   // Ratio of movement to be considered turning at an intersection
-  console.spam('Started intersection collision')
   var turnMod = 2
   if (data.pos.x%2 == 0 && data.pos.y%2 == 0) {
     if (data.x < data.bbox.middle.x) {
@@ -392,16 +397,18 @@ function _pushCursor(dx, dy, width, height) {
       if (data.x > data.bbox.middle.x && Math.abs(dy) * turnMod > Math.abs(dx)) {
         data.y += Math.sign(dy) * (data.x - data.bbox.middle.x)
         data.x = data.bbox.middle.x
+        return 'overshot moving right'
       }
-      return
+      return 'intersection moving right'
     } else if (data.x > data.bbox.middle.x) {
       _push(dx, dy, 'topbottom', 'left')
       // Overshot the intersection and appears to be trying to turn
       if (data.x < data.bbox.middle.x && Math.abs(dy) * turnMod > Math.abs(dx)) {
         data.y += Math.sign(dy) * (data.bbox.middle.x - data.x)
         data.x = data.bbox.middle.x
+        return 'overshot moving left'
       }
-      return
+      return 'intersection moving left'
     }
     if (data.y < data.bbox.middle.y) {
       _push(dx, dy, 'leftright', 'bottom')
@@ -409,25 +416,28 @@ function _pushCursor(dx, dy, width, height) {
       if (data.y > data.bbox.middle.y && Math.abs(dx) * turnMod > Math.abs(dy)) {
         data.x += Math.sign(dx) * (data.y - data.bbox.middle.y)
         data.y = data.bbox.middle.y
+        return 'overshot moving down'
       }
-      return
+      return 'intersection moving down'
     } else if (data.y > data.bbox.middle.y) {
       _push(dx, dy, 'leftright', 'top')
       // Overshot the intersection and appears to be trying to turn
       if (data.y < data.bbox.middle.y && Math.abs(dx) * turnMod > Math.abs(dy)) {
         data.x += Math.sign(dx) * (data.bbox.middle.y - data.y)
         data.y = data.bbox.middle.y
+        return 'overshot moving up'
       }
-      return
+      return 'intersection moving up'
     }
   }
 
   // No collision, limit movement to X or Y only to prevent out-of-bounds
-  console.spam('Default collision')
   if (Math.abs(dx) > Math.abs(dy)) {
     data.x += dx
+    return 'nothing, x'
   } else {
     data.y += dy
+    return 'nothing, y'
   }
 }
 

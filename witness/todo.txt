@@ -3,8 +3,6 @@ In vague order of importance.
 - Start-grow animation
 - What is .line in animations doing?
 - Fix generation colors
-- Improve tracing for 1xN
--- Some of it is endpoint handling -- it's preventing outer wall sliding even when endpoint is in another direction
 - Simple Symmetry (horiz/verti)
 !- Stable release
 - Favicon
