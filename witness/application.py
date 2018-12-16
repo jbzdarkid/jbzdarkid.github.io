@@ -2,8 +2,7 @@ from flask import send_from_directory, redirect, render_template
 from flask_wtf import FlaskForm
 import os
 from wtforms import StringField
-from application_database import application, db, Puzzle
-from hashlib import sha256
+from application_database import *
 
 def __static_content_func(filename):
   root, file = filename.rsplit('/', 1)
@@ -32,34 +31,29 @@ host_statically('engine')
 host_statically('pages/editor.html', '/editor.html')
 host_statically('pages/editor.js', '/editor.js')
 
+@application.errorhandler(404)
+def page_not_found(error):
+  # TODO: Fire telemetry?
+  return render_template('404_generic.html'), 404
+
 # Publishing puzzles
 class MyForm(FlaskForm):
   publishData = StringField('publishData')
 
 def publish():
-  form = MyForm()
-  new_puzzle = Puzzle(data=form.publishData.data)
-  h = sha256()
-  h.update(new_puzzle.data.encode())
-  display_hash = h.hexdigest()[:8].upper()
-  display_hash = display_hash.replace('I', 'A')
-  display_hash = display_hash.replace('O', 'B')
-  display_hash = display_hash.replace('1', 'C')
-  display_hash = display_hash.replace('0', 'D')
-  new_puzzle.display_hash = display_hash
-
-  db.session.add(new_puzzle)
-  db.session.commit()
-
-  return redirect(f'/play/{new_puzzle.display_hash}')
+  data = MyForm().publishData.data
+  display_hash = create_puzzle(data)
+  return redirect(f'/play/{display_hash}')
 application.add_url_rule('/publish', 'publish', publish, methods=['POST'])
 
 # Playing published puzzles
 def play(display_hash):
-  puzzle = db.session.query(Puzzle).filter(Puzzle.display_hash == display_hash).first()
+  puzzle = get_puzzle(display_hash)
   if not puzzle or not puzzle.data:
-    return render_template('404_template.html', display_hash=display_hash)
-  return render_template('play_template.html', puzzle=puzzle.data)
+    return render_template('404_puzzle.html', display_hash=display_hash)
+
+  session_id = new_session()
+  return render_template('play_template.html', puzzle=puzzle.data, session_id=session_id)
 application.add_url_rule('/play/<display_hash>', 'play', play)
 
 if __name__ == '__main__':

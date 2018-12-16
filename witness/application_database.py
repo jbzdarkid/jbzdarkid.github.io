@@ -1,9 +1,10 @@
-# TODO: Azure setup: https://www.youtube.com/watch?v=K_RTlbOOCts
-
 from flask import Flask
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy_utils import UUIDType
 from os import environ
+from uuid import uuid4
+from hashlib import sha256
 
 application = Flask(__name__, template_folder='pages')
 
@@ -31,6 +32,26 @@ class Puzzle(db.Model):
   date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
   user_id = db.Column(db.Integer, db.ForeignKey('users.id')) #, nullable=False
 
+def create_puzzle(data):
+  h = sha256()
+  h.update(data.encode())
+  display_hash = h.hexdigest()[:8].upper()
+  display_hash = display_hash.replace('I', 'A')
+  display_hash = display_hash.replace('O', 'B')
+  display_hash = display_hash.replace('1', 'C')
+  display_hash = display_hash.replace('0', 'D')
+  puzzle = Puzzle(data=data, display_hash=display_hash)
+
+  db.session.add(puzzle)
+  db.session.commit()
+  return display_hash
+
+def get_puzzle(display_hash):
+  return db.session \
+    .query(Puzzle) \
+    .filter(Puzzle.display_hash == display_hash) \
+    .first()
+
 class User(db.Model):
   __tablename__ = 'users'
 
@@ -40,5 +61,18 @@ class User(db.Model):
   # faceb_id
   # apple_id
   # msft_id
+
+class Event(db.Model):
+  __tablename__ = 'telemetry'
+  session_id = db.Column(UUIDType, nullable=False, primary_key=True)
+  date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+  type = db.Column(db.String(32), nullable=False)
+
+def new_session():
+  uuid = uuid4()
+  event = Event(session_id=uuid, type='session_create')
+  db.session.add(event)
+  db.session.commit()
+  return uuid
 
 db.create_all()
