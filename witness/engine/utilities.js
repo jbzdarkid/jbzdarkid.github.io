@@ -164,7 +164,7 @@ function showSettings() {
   var settings = document.getElementById('settings')
   settings.style.display = null
   var toggle = document.getElementById('settingsToggle')
-  toggle.innerHTML = '&ndash; &nbsp; &nbsp; &nbsp; &nbsp;settings'
+  toggle.innerHTML = '&ndash; &nbsp; &nbsp; &nbsp; &nbsp;settings&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; '
   toggle.onclick = function(){ hideSettings() }
   toggle.parentElement.style.width = '250px'
   toggle.parentElement.style.height = '150px'

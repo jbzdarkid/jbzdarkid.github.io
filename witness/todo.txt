@@ -1,10 +1,5 @@
 In vague order of importance.
 
-For sunday:
-- Add default 404 / exception handler: http://flask.pocoo.org/docs/1.0/api/#flask.Flask.errorhandler
-- Add UUID + telemetry table, and wire up dummy telemetry: https://docs.python.org/3/library/uuid.html#uuid.uuid4
-- Get flask working on Azure
-
 - Start-grow animation
 - What is .line in animations doing?
 - Fix generation colors
