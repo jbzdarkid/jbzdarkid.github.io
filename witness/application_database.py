@@ -40,17 +40,14 @@ def create_puzzle(data):
   display_hash = display_hash.replace('O', 'B')
   display_hash = display_hash.replace('1', 'C')
   display_hash = display_hash.replace('0', 'D')
-  puzzle = Puzzle(data=data, display_hash=display_hash)
-
-  db.session.add(puzzle)
-  db.session.commit()
+  if not get_puzzle(display_hash):
+    puzzle = Puzzle(data=data, display_hash=display_hash)
+    db.session.add(puzzle)
+    db.session.commit()
   return display_hash
 
 def get_puzzle(display_hash):
-  return db.session \
-    .query(Puzzle) \
-    .filter(Puzzle.display_hash == display_hash) \
-    .first()
+  return db.session.query(Puzzle).filter(Puzzle.display_hash == display_hash).first()
 
 class User(db.Model):
   __tablename__ = 'users'
