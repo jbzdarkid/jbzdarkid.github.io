@@ -1,0 +1,23 @@
+<head>
+</head>
+<body>
+  <script type="text/javascript">
+    var params = new URLSearchParams(window.location.search)
+
+    var d = new Date()
+    d.setUTCMilliseconds(parseInt(params.get('millis')) || 0)
+    d.setUTCSeconds(parseInt(params.get('seconds')) || 0)
+    d.setUTCMinutes(parseInt(params.get('minutes')) || 0)
+    d.setUTCHours(0)
+    var hours = parseInt(params.get('hours')) || 0
+    var day = params.get('day')
+    if (day != null) {
+      day = 'sunday, monday, tuesday, wednesday, thursday, friday, saturday'.split(', ').indexOf(day.toLowerCase())
+      if (day != -1) {
+        hours += 24 * (day - d.getUTCDay())
+      }
+    }
+    d.setUTCHours(hours)
+    console.log(d)
+  </script>
+</body>
