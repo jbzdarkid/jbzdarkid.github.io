@@ -1,6 +1,16 @@
 <head>
 </head>
 <body>
+  <div style="display: flex">
+    <div id="title">The next event takes place in:&nbsp;</div>
+    <div id="days" style="display: flex">0 days</div>
+    <div>,&nbsp;</div>
+    <div id="hours" style="display: flex">00</div>
+    <div>:</div>
+    <div id="minutes" style="display: flex">00</div>
+    <div>:</div>
+    <div id="seconds" style="display: flex">00</div>
+  </div>
   <script type="text/javascript">
     var params = new URLSearchParams(window.location.search)
 
@@ -14,10 +24,36 @@
     if (day != null) {
       day = 'sunday, monday, tuesday, wednesday, thursday, friday, saturday'.split(', ').indexOf(day.toLowerCase())
       if (day != -1) {
-        hours += 24 * (day - d.getUTCDay())
+        var additionalDays = (day + 7 - d.getUTCDay()) % 7
+        hours += 24 * additionalDays
       }
     }
     d.setUTCHours(hours)
-    console.log(d)
+    var event = params.get('event')
+    if (event) {
+      var text = document.getElementById('title').innerText
+      document.getElementById('title').innerText = text.replace('event', event)
+    }
+
+    var ONE_DAY = 24 * 60 * 60
+    var ONE_HOUR = 60 * 60
+    var ONE_MINUTE = 60
+    function updateCountdown() {
+      var remaining = (d.getTime() - (new Date()).getTime()) / 1000 // Seconds
+      if (remaining > ONE_DAY) {
+        document.getElementById('days').innerText = Math.floor(remaining / ONE_DAY) + ' days'
+        remaining = remaining % ONE_DAY
+      } else {
+        document.getElementById('days').style.display = 'none'
+      }
+      document.getElementById('hours').innerText = Math.floor(remaining / ONE_HOUR)
+      remaining = remaining % ONE_HOUR
+      document.getElementById('minutes').innerText = Math.floor(remaining / ONE_MINUTE).toString().padStart(2, '0')
+      remaining = remaining % ONE_MINUTE
+      document.getElementById('seconds').innerText = Math.floor(remaining).toString().padStart(2, '0')
+
+      setTimeout(updateCountdown, 100)
+    }
+    updateCountdown()
   </script>
 </body>
