@@ -39,7 +39,7 @@
       var text = document.getElementById('title').innerText
       document.getElementById('title').innerText = text.replace('event', event)
     }
-    document.getElementById('date').innerText = d.toLocaleString(undefined, {'dateStyle': 'medium', 'timeStyle': 'short'})
+    document.getElementById('date').innerText = d.toLocaleString(undefined, {'dateStyle': 'medium', 'timeStyle': 'long'})
 
     var ONE_DAY = 24 * 60 * 60
     var ONE_HOUR = 60 * 60
