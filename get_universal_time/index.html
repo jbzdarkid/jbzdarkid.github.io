@@ -2,14 +2,17 @@
 </head>
 <body>
   <div style="display: flex">
-    <div id="title">The next event takes place in:&nbsp;</div>
-    <div id="days" style="display: flex">0 days</div>
-    <div>,&nbsp;</div>
-    <div id="hours" style="display: flex">00</div>
+    <div id="title">The next event is on&nbsp;</div>
+    <div id="date"></div>
+    <div>&nbsp;(in&nbsp;</div>
+    <div id="days" style="display: flex"></div>
+    <div id="days-separator">&nbsp;days,&nbsp;</div>
+    <div id="hours" style="display: flex"></div>
     <div>:</div>
-    <div id="minutes" style="display: flex">00</div>
+    <div id="minutes" style="display: flex"></div>
     <div>:</div>
-    <div id="seconds" style="display: flex">00</div>
+    <div id="seconds" style="display: flex"></div>
+    <div>)</div>
   </div>
   <script type="text/javascript">
     var params = new URLSearchParams(window.location.search)
@@ -29,11 +32,14 @@
       }
     }
     d.setUTCHours(hours)
+
+    // Date computation done
     var event = params.get('event')
     if (event) {
       var text = document.getElementById('title').innerText
       document.getElementById('title').innerText = text.replace('event', event)
     }
+    document.getElementById('date').innerText = d.toLocaleString(undefined, {'dateStyle': 'medium', 'timeStyle': 'short'})
 
     var ONE_DAY = 24 * 60 * 60
     var ONE_HOUR = 60 * 60
@@ -41,10 +47,11 @@
     function updateCountdown() {
       var remaining = (d.getTime() - (new Date()).getTime()) / 1000 // Seconds
       if (remaining > ONE_DAY) {
-        document.getElementById('days').innerText = Math.floor(remaining / ONE_DAY) + ' days'
+        document.getElementById('days').innerText = Math.floor(remaining / ONE_DAY)
         remaining = remaining % ONE_DAY
       } else {
         document.getElementById('days').style.display = 'none'
+        document.getElementById('days-separator').style.display = 'none'
       }
       document.getElementById('hours').innerText = Math.floor(remaining / ONE_HOUR)
       remaining = remaining % ONE_HOUR
