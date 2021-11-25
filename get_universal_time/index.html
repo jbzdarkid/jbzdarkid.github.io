@@ -17,35 +17,42 @@
   <script type="text/javascript">
     var params = new URLSearchParams(window.location.search)
 
-    var d = new Date()
-    d.setUTCMilliseconds(parseInt(params.get('millis')) || 0)
-    d.setUTCSeconds(parseInt(params.get('seconds')) || 0)
-    d.setUTCMinutes(parseInt(params.get('minutes')) || 0)
-    d.setUTCHours(0)
-    var hours = parseInt(params.get('hours')) || 0
-    var day = params.get('day')
-    if (day != null) {
-      day = 'sunday, monday, tuesday, wednesday, thursday, friday, saturday'.split(', ').indexOf(day.toLowerCase())
-      if (day != -1) {
-        var additionalDays = (day + 7 - d.getUTCDay()) % 7
-        hours += 24 * additionalDays
+    function computeDate() {
+      var d = new Date()
+      d.setUTCMilliseconds(parseInt(params.get('millis')) || 0)
+      d.setUTCSeconds(parseInt(params.get('seconds')) || 0)
+      d.setUTCMinutes(parseInt(params.get('minutes')) || 0)
+      d.setUTCHours(0)
+      var hours = parseInt(params.get('hours')) || 0
+      var day = params.get('day')
+      if (day != null) {
+        day = 'sunday, monday, tuesday, wednesday, thursday, friday, saturday'.split(', ').indexOf(day.toLowerCase())
+        if (day != -1) {
+          var additionalDays = (day - d.getUTCDay()) % 7
+          hours += 24 * additionalDays
+        }
       }
-    }
-    d.setUTCHours(hours)
+      d.setUTCHours(hours)
+      document.getElementById('date').innerText = d.toLocaleString(undefined, {'dateStyle': 'medium', 'timeStyle': 'long'})
 
-    // Date computation done
+      return d
+    }
+
     var event = params.get('event')
     if (event) {
       var text = document.getElementById('title').innerText
       document.getElementById('title').innerText = text.replace('event', event)
     }
-    document.getElementById('date').innerText = d.toLocaleString(undefined, {'dateStyle': 'medium', 'timeStyle': 'long'})
 
-    var ONE_DAY = 24 * 60 * 60
-    var ONE_HOUR = 60 * 60
+    var d = computeDate()
+
+    var ONE_WEEK   = 7 * 24 * 60 * 60
+    var ONE_DAY    = 24 * 60 * 60
+    var ONE_HOUR   = 60 * 60
     var ONE_MINUTE = 60
     function updateCountdown() {
       var remaining = (d.getTime() - (new Date()).getTime()) / 1000 // Seconds
+      while (remaining < 0) remaining += ONE_WEEK
       if (remaining > ONE_DAY) {
         document.getElementById('days').innerText = Math.floor(remaining / ONE_DAY)
         remaining = remaining % ONE_DAY
