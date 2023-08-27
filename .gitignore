@@ -1,0 +1,8 @@
+*.pyc
+*.log
+*.jar
+venv/
+sourcemaps/
+*.zip
+puzzles.tsv
+config.txt

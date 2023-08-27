@@ -1,0 +1,91 @@
+@font-face {
+  font-family: "Constantia-Bold";
+  src: url("Constantia.eot?")  format("embedded-opentype"),
+       url("Constantia.otf")   format("opentype"),
+       url("Constantia.ttf")   format("truetype"),
+       url("Constantia.woff2") format("woff2");
+}
+label, select, option, input, a, button {
+  font-family: "Constantia-Bold";
+  font-variant: small-caps;
+  font-size: 28px;
+}
+a { text-decoration: none; }
+table { margin: auto; }
+.resize { position: absolute; }
+body { text-align: center; }
+
+@media only screen and (min-width: 1300px) {
+  .navbar { height: 60px; }
+  .navbar-padding { margin-top: 60px; }
+  .navbar-content { padding-top: 0px; }
+}
+@media only screen and (max-width: 1300px) {
+  .navbar { height: 90px; }
+  .navbar-padding { margin-top: 90px; }
+  .navbar-content { padding-top: 40px; }
+}
+
+/* https://stackoverflow.com/a/4407335 */
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+/* Use with "animation: turnOn 1s linear" to simulate panel power-on */
+@keyframes turnOn {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Use with "animation: slideOpen 4.5s linear" to simulate random doors uncovering/covering */
+@keyframes slideUp {
+  0%   { height: 100%; }
+  100% { height: 0%;   }
+}
+
+/* Slider control main bar */
+input[type="range"] {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  border-radius: 3px;
+  height: 15px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  outline: none;
+  width: 100%;
+}
+/* Slider control icon */
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: url('slider.png');
+  background-size: 17px 33px;
+  height: 33px;
+  width: 17px;
+}
+input[type="range"]::-moz-range-thumb {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: url('slider.png');
+  background-size: 17px 33px;
+  height: 33px;
+  width: 17px;
+}
+input[type="range"]::-ms-thumb {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: url('slider.png');
+  background-size: 17px 33px;
+  height: 33px;
+  width: 17px;
+}

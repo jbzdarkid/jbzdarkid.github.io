@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/2000/xhtml">
+  <head>
+    <meta name="robots" content="noindex, nofollow, nosnippet"/>
+    <link rel="stylesheet" type="text/css" href="data/style.css" id="stylesheet">
+    <link rel="icon" type="image/png" href="data/favicon.png">
+    <title>404: Page not found</title>
+  </head>
+  <body>
+    <label id="pageNotFound">
+      Sorry, that page doesn't exist.<br>
+      Were you looking for <a href="/browse.html">the list of puzzles</a> or <a href="/editor.html">the editor</a>?
+    </label><label id="puzzleNotFound" style="display: none">
+      Sorry, we weren't able to find puzzle %display_hash%. Please check your spelling and try again.<br>
+      Note that puzzle IDs are case sensitive!<br>
+      <br>
+      Maybe try going to <a href="/browse.html">the list of puzzles</a>?
+    </label>
+    <script>
+      if (window.location.pathname.startsWith('/play/')) {
+        document.title = '404: Puzzle not found'
+        
+        var puzzleNotFound = document.getElementById('puzzleNotFound')
+        puzzleNotFound.innerHTML = puzzleNotFound.innerHTML.replace('%display_hash%', window.location.pathname.substring(22))
+        document.getElementById('pageNotFound').style.display = 'none'
+        puzzleNotFound.style.display = null
+      }
+    </script>
+  </body>
+</html>
