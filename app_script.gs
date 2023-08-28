@@ -17,7 +17,7 @@ function onSubmit(e) {
     'payload': payload,
     'headers': headers,
   }
-  var response = UrlFetchApp.fetch('https://api.github.com/repos/jbzdarkid/jbzdarkid.github.io/actions/workflows/62200595/dispatches', options);
+  var response = UrlFetchApp.fetch('https://api.github.com/repos/jbzdarkid/jbzdarkid.github.io/actions/workflows/67527847/dispatches', options);
   console.info(response.getResponseCode(), response.getContentText())
 }
 
