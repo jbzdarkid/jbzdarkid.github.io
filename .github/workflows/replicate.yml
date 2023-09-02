@@ -23,7 +23,7 @@ jobs:
       with:
         python-version: '3.x'
     - name: Installing dependencies
-      run: pip install Flask-SQLAlchemy Flask
+      run: pip install Flask-SQLAlchemy Flask mysqlclient
     - name: Validating puzzle
       id: validate
       run: python -u .github/workflows/convert.py 0 100
