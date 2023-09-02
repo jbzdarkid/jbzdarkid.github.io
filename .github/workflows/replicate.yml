@@ -1,18 +1,6 @@
-name: Validate and publish
+name: Replicate puzzles
 on:
   workflow_dispatch:
-    inputs:
-      puzzle:
-        required: true
-        type: string
-      requestId:
-        required: true
-        type: string
-
-run-name: Validating request ${{ inputs.requestId }}
-
-concurrency:
-  group: ${{ github.workflow }} # Limit to one publish action at a time, others will queue behind.
 
 jobs:
   run:
