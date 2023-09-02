@@ -29,7 +29,7 @@ def get_puzzles(offset=0, limit=100):
     return db.session.query(Puzzle).order_by(Puzzle.date.asc()).offset(offset).limit(limit)
 
 if __name__ == '__main__':
-    with app.app_context():
+    with application.app_context():
         offset = 0 if len(sys.argv) < 1 else int(sys.argv[1])
         limit = 100 if len(sys.argv) < 2 else int(sys.argv[2])
         puzzles = get_puzzles(offset, limit)
