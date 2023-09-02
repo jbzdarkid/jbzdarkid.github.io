@@ -1,6 +1,7 @@
 name: Replicate puzzles
 on:
   workflow_dispatch:
+  push:
 
 jobs:
   run:
@@ -22,7 +23,7 @@ jobs:
       with:
         python-version: '3.x'
     - name: Installing dependencies
-      run: pip install Flask-SQLAlchemy==2.4.4 Flask==1.1.1
+      run: pip install Flask-SQLAlchemy Flask
     - name: Validating puzzle
       id: validate
       run: python -u .github/workflows/convert.py 0 100
