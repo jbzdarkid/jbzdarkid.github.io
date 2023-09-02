@@ -19,7 +19,7 @@ jobs:
         git config user.name "Validate and publish workflow"
         git config http.https://github.com/.extraheader AUTHORIZATION: basic $GITHUB_TOKEN
     - name: Installing dependencies
-      run: pip install Flask-SQLAlchemy==2.4.4 Flask==1.1.1
+      run: python -m pip install Flask-SQLAlchemy==2.4.4 Flask==1.1.1
     - name: Validating puzzle
       id: validate
       run: python -u .github/workflows/convert.py 0 100
