@@ -15,6 +15,7 @@
     window.setLogLevel('error')
 
     var setData = function(data) {
+      // This does not use the raw strings because then they would be caught by the .replace call later.
       document.body.innerHTML = '!'.repeat(3) + JSON.stringify(data) + '@'.repeat(3)
     }
 
