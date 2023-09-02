@@ -5,4 +5,5 @@ venv/
 sourcemaps/
 *.zip
 puzzles.tsv
+puzzles.json
 config.txt
