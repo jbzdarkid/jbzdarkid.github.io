@@ -38,6 +38,20 @@ def get_puzzles(order='asc', offset=0, limit=100):
     r = s.get('https://witnesspuzzles.com/browse', params=payload, timeout=60)
     return r.json()
 
+def get_solution_path(solution):
+    j = json.loads(solution)
+    if 'path' in j:
+        return j['path']
+        
+    print(j.keys())
+    exit()
+    grid = j['grid']
+    
+    
+    path = []
+    
+
+
 if __name__ == '__main__':
     offset = 0 if len(sys.argv) < 1 else int(sys.argv[1])
     limit = 100 if len(sys.argv) < 2 else int(sys.argv[2])
@@ -49,7 +63,7 @@ if __name__ == '__main__':
         # Extract data from the data (in case we fail, not that we should)
         title = data['title']
         puzzle_json = data['puzzle_json']
-        solution_path = json.dumps(json.loads(data['solution_json'])['path'])
+        solution_path = get_solution_path(data['solution_json')
 
         # Encrypt this since we'll be saving it directly on the page
         solution_path = gpg_encrypt(solution_path, os.environ['SECRET'])
