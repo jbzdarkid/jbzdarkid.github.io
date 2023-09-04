@@ -28,7 +28,7 @@ def get_puzzles(order='asc', offset=0, limit=100):
         'limit': 1,
     }
 
-    r = s.get('https://witnesspuzzles.com/browse', params=payload)
+    r = s.get('https://witnesspuzzles.com/browse', params=payload, timeout=60)
     return r.json()
 
 if __name__ == '__main__':
@@ -38,6 +38,7 @@ if __name__ == '__main__':
     puzzle_list = open('puzzle_list.js', 'r', encoding='utf-8').read().split('\n')
 
     for data in puzzles:
+        print(data.keys())
         # Extract data from the data (in case we fail, not that we should)
         title = data['title']
         puzzle_json = data['puzzle_json']
