@@ -20,7 +20,7 @@ def get_puzzles(order='asc', offset=0, limit=100):
 
     payload = {
         'username': os.environ['RDS_USERNAME'],
-        'password': os.envrion['RDS_PASSWORD'],
+        'password': os.environ['RDS_PASSWORD'],
         'csrf_token': csrf_token,
     }
     headers = {
