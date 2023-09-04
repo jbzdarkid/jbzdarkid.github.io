@@ -14,16 +14,20 @@ def get_puzzles(order='asc', offset=0, limit=100):
     r = s.get('https://witnesspuzzles.com/pages/login.html')
 
     for line in r.text.split('\n'):
-      if 'csrf_token' in line:
-        csrf_token = line.split('value="')[1][:-2]
-        break
+        if 'csrf_token' in line:
+            csrf_token = line.split('value="')[1][:-2]
+            break
 
     payload = {
-        'username': 'foo',
-        'password': 'bar',
+        'username': os.environ['RDS_USERNAME'],
+        'password': os.envrion['RDS_PASSWORD'],
         'csrf_token': csrf_token,
     }
-    r = s.post('https://witnesspuzzles.com/login', data=payload)
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Referer': r.url,
+    }
+    r = s.post('https://witnesspuzzles.com/login', data=payload, headers=headers)
 
     payload = {
         'order': order,
