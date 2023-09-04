@@ -1,32 +1,35 @@
 import json
 import os
 import sys
-import urllib.request
 from pathlib import Path
-from datetime import datetime
+import requests
 
 from validate import gpg_encrypt
 
-# Obviously flask is overkill here, but this way I don't have to fight SQLAlchemy any more.
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-application = Flask(__name__)
-application.debug = False
-application.config['SQLALCHEMY_DATABASE_URI'] = os.environ['SQLALCHEMY_DATABASE_URI'] # mysql://user:pswd@host:port/database'
-application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+def get_puzzles(order='asc', offset=0, limit=100):
+    s = requests.Session()
+    r = s.get('https://witnesspuzzles.com/pages/login.html')
 
-db = SQLAlchemy(application)
+    for line in r.text.split('\n'):
+      if 'csrf_token' in line:
+        csrf_token = line.split('value="')[1][:-2]
+        break
 
-class Puzzle(db.Model):
-    display_hash = db.Column(db.String(8), unique=True, primary_key=True)
-    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    puzzle_json = db.Column(db.Text, nullable=False)
-    solution_json = db.Column(db.Text, nullable=False)
-    url = db.Column(db.Text)
-    title = db.Column(db.Text)
+    payload = {
+        'username': 'foo',
+        'password': 'bar',
+        'csrf_token': csrf_token,
+    }
+    r = s.post('https://witnesspuzzles.com/login', data=payload)
 
-def get_puzzles(offset=0, limit=100):
-    return db.session.query(Puzzle).order_by(Puzzle.date.asc()).offset(offset).limit(limit)
+    payload = {
+        'order': 'asc',
+        'offset': 0,
+        'limit': 1,
+    }
+
+    r = s.get('https://witnesspuzzles.com/browse', params=payload)
+    return r.json()
 
 if __name__ == '__main__':
     with application.app_context():
