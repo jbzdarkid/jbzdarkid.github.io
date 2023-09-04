@@ -1,13 +1,16 @@
 import json
 import os
-import sys
-from pathlib import Path
 import requests
+import sys
+import urllib
+from pathlib import Path
+from requests.adapters import HTTPAdapter
 
 from validate import gpg_encrypt
 
 def get_puzzles(order='asc', offset=0, limit=100):
     s = requests.Session()
+    s.mount('https://witnesspuzzles.com', HTTPAdapter(max_retries=3))
     r = s.get('https://witnesspuzzles.com/pages/login.html')
 
     for line in r.text.split('\n'):
@@ -23,9 +26,9 @@ def get_puzzles(order='asc', offset=0, limit=100):
     r = s.post('https://witnesspuzzles.com/login', data=payload)
 
     payload = {
-        'order': 'asc',
-        'offset': 0,
-        'limit': 1,
+        'order': order,
+        'offset': offset,
+        'limit': limit,
     }
 
     r = s.get('https://witnesspuzzles.com/browse', params=payload, timeout=60)
