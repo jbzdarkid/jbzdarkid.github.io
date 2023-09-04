@@ -63,7 +63,7 @@ if __name__ == '__main__':
         # Extract data from the data (in case we fail, not that we should)
         title = data['title']
         puzzle_json = data['puzzle_json']
-        solution_path = get_solution_path(data['solution_json')
+        solution_path = get_solution_path(data['solution_json'])
 
         # Encrypt this since we'll be saving it directly on the page
         solution_path = gpg_encrypt(solution_path, os.environ['SECRET'])
