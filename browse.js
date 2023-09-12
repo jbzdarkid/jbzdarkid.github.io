@@ -11,7 +11,8 @@ window.onload = function() {
 var offset = 0
 function addPuzzles(count) {
   var table = document.getElementById('puzzleTable')
-  for (; offset < offset + count; offset++) {
+  var initial_offset = offset
+  for (; offset < initial_offset + count; offset++) {
     var puzzleData = window.puzzleList[offset] // Concatenation of display hash and title.
     if (puzzleData == null || puzzleData.length < 8) return false
     var displayHash = puzzleData.substring(0, 8)
@@ -44,10 +45,13 @@ window.onscroll = function() {
   var scrollToTop = document.getElementById('scrollToTop')
   if (scrollToTop) scrollToTop.style.display = (document.body.scrollTop > 800 ? null : 'none')
 
+  var numberOfPixelsScrolled = document.body.scrollTop
+  var windowHeightInPixels = document.body.clientHeight
+  var pageHeightInPixels = document.body.scrollHeight
+
   // Start loading content when we get close to the bottom
-  var currentHeight = document.body.scrollTop + document.body.clientHeight
-  if (currentHeight / document.body.scrollHeight > 0.8) {
-    addPuzzles(100)
+  if (pageHeightInPixels - windowHeightInPixels - numberOfPixelsScrolled < 1000) {
+    addPuzzles(20)
   }
 }
 
