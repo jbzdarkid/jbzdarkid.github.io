@@ -19,17 +19,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Cloning the repo
-      run: |
-        mkdir -p $GITHUB_WORKSPACE
-        cd $GITHUB_WORKSPACE
-        git init
-        git remote add origin $GITHUB_SERVER_URL/$GITHUB_REPOSITORY
-        git fetch origin --depth 1 $GITHUB_REF_NAME
-        git checkout $GITHUB_REF_NAME
-        git config user.email "jbzdarkid@users.noreply.github.com"
-        git config user.name "Validate and publish workflow"
-        git config http.https://github.com/.extraheader AUTHORIZATION: basic $GITHUB_TOKEN
+    - uses: actions/checkout@v3
+      with:
+        name: Cloning the repo
     - name: Validating puzzle
       id: validate
       run: python -u .github/workflows/validate.py
@@ -38,8 +30,9 @@ jobs:
         SECRET: ${{ secrets.GPG_KEY }}
     - name: Publishing puzzle ${{ steps.validate.outputs.display_hash }}
       run: |
+        git config --global user.email "jbzdarkid@users.noreply.github.com"
+        git config --global user.name "Validate and publish workflow"
         git add .
         git commit -m "Published puzzle ${{ steps.validate.outputs.display_hash }}"
-        # git push
-        git show HEAD
+        git push
 
