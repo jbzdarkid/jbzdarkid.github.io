@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/2000/xhtml">
+  <head>
+    <meta property="og:title" content="ocarina"/>
+    <meta property="og:description" content="Witness Puzzle BA269E56"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Witness Puzzles"/>
+    <meta property="og:image" content="../images/BA269E56.png"/>
+    <meta name="robots" content="noindex, nofollow, nosnippet"/>
+    <link rel="stylesheet" type="text/css" href="../data/style.css" id="stylesheet">
+    <link rel="icon" type="image/png" href="../data/favicon.png">
+    <script type="text/javascript" src="../engine/utilities.js"></script>
+    <script type="text/javascript" src="../engine/svg.js"></script>
+    <script async type="text/javascript" src="../engine/polyominos.js"></script>
+    <script async type="text/javascript" src="../engine/puzzle.js"></script>
+    <script async type="text/javascript" src="../engine/validate.js"></script>
+    <script async type="text/javascript" src="../engine/custom_mechanics.js"></script>
+    <script async type="text/javascript" src="../engine/display2.js"></script>
+    <script async type="text/javascript" src="../engine/trace2.js"></script>
+    <title>ocarina</title>
+  </head>
+  <body>
+    <script>loadHeader("ocarina")</script>
+    <div style="display: flex; justify-content: center; align-items: center">
+      <svg id="puzzle" style="pointer-events: auto"></svg>
+    </div>
+  </body>
+  <script>
+    window.onload = function() {
+      <!-- 8c0d040903021a3d171640ecc71aead2750101be321685d44eab84884d8340780542b68cc80ec611a81439189324c935628d814f23cd41ab90714465258b2e72820a3a694337c8b015dcc7b3180708978003da86049932de26898ac7291bdf811749033b8325565dc88b44af762bfc24a2423b05ae0683c9fddad94c8941d5c55ba43fc3f71c -->
+      var puzzle = Puzzle.deserialize("{\"grid\":[[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"start\":true,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":null},{\"type\":\"square\",\"color\":\"black\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null,\"end\":null,\"start\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":null,\"gap\":null,\"end\":null,\"start\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":null,\"gap\":null,\"end\":null,\"start\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null,\"end\":null,\"start\":null,\"dot\":null,\"gap\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":null,\"gap\":null,\"end\":null,\"start\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null,\"end\":null,\"start\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"triangle\",\"color\":\"orange\",\"count\":1,\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"star\",\"color\":\"black\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"square\",\"color\":\"white\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"star\",\"color\":\"white\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"end\":\"right\",\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"end\":null,\"start\":null,\"dot\":null,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"end\":null,\"start\":null,\"gap\":null}]],\"largezero\":81,\"width\":9,\"height\":9,\"pillar\":false,\"settings\":{\"NEGATIONS_CANCEL_NEGATIONS\":true,\"SHAPELESS_ZERO_POLY\":false,\"PRECISE_POLYOMINOS\":true,\"FLASH_FOR_ERRORS\":true,\"FAT_STARTPOINTS\":false,\"CUSTOM_MECHANICS\":false},\"name\":\"ocarina\",\"autoSolved\":true,\"startPoint\":{\"x\":0,\"y\":8},\"valid\":true,\"hasNegations\":false,\"hasPolyominos\":false,\"invalidElements\":[],\"negations\":[]}")
+      draw(puzzle)
+    }
+  </script>
+</html>

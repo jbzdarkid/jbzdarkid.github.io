@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/2000/xhtml">
+  <head>
+    <meta property="og:title" content="Snake10"/>
+    <meta property="og:description" content="Witness Puzzle 8F9BBDFD"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Witness Puzzles"/>
+    <meta property="og:image" content="../images/8F9BBDFD.png"/>
+    <meta name="robots" content="noindex, nofollow, nosnippet"/>
+    <link rel="stylesheet" type="text/css" href="../data/style.css" id="stylesheet">
+    <link rel="icon" type="image/png" href="../data/favicon.png">
+    <script type="text/javascript" src="../engine/utilities.js"></script>
+    <script type="text/javascript" src="../engine/svg.js"></script>
+    <script async type="text/javascript" src="../engine/polyominos.js"></script>
+    <script async type="text/javascript" src="../engine/puzzle.js"></script>
+    <script async type="text/javascript" src="../engine/validate.js"></script>
+    <script async type="text/javascript" src="../engine/custom_mechanics.js"></script>
+    <script async type="text/javascript" src="../engine/display2.js"></script>
+    <script async type="text/javascript" src="../engine/trace2.js"></script>
+    <title>Snake10</title>
+  </head>
+  <body>
+    <script>loadHeader("Snake10")</script>
+    <div style="display: flex; justify-content: center; align-items: center">
+      <svg id="puzzle" style="pointer-events: auto"></svg>
+    </div>
+  </body>
+  <script>
+    window.onload = function() {
+      <!-- 8c0d040903024e39a115c487b146ead26f011312ea36e804c32c9df71eb1c9a21cc6da8a75a5db1c782b226b856cde8816514ef6a4867b2801575f8a34adcd02832682dcc55acfa9375d4b57ebc26e9df72c073003c283f731947b54d35592eb0643f056253b4175eb0e9329b313354d432e1651e95d68c593b1975c6073dbfd -->
+      var puzzle = Puzzle.deserialize("{\"grid\":[[{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"dot\":4,\"line\":0},{\"type\":\"line\",\"dot\":4,\"line\":0},{\"type\":\"line\",\"line\":0,\"start\":true}],[{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"dot\":4,\"line\":0},{\"type\":\"line\",\"dot\":4,\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0,\"dot\":4}],[{\"type\":\"line\",\"line\":0},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"dot\":4,\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4}],[{\"type\":\"line\",\"line\":0},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"dot\":4,\"line\":0},{\"type\":\"nega\",\"color\":\"white\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0,\"dot\":4,\"end\":\"top\"},{\"type\":\"line\",\"dot\":4,\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"dot\":4,\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0,\"dot\":4}]],\"largezero\":77,\"width\":7,\"height\":11,\"pillar\":false,\"settings\":{\"NEGATIONS_CANCEL_NEGATIONS\":true,\"SHAPELESS_ZERO_POLY\":false,\"PRECISE_POLYOMINOS\":true,\"FLASH_FOR_ERRORS\":true},\"name\":\"Snake10\",\"autoSolved\":true}")
+      draw(puzzle)
+    }
+  </script>
+</html>

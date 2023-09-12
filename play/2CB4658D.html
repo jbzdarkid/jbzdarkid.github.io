@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/2000/xhtml">
+  <head>
+    <meta property="og:title" content="weird dots"/>
+    <meta property="og:description" content="Witness Puzzle 2CB4658D"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Witness Puzzles"/>
+    <meta property="og:image" content="../images/2CB4658D.png"/>
+    <meta name="robots" content="noindex, nofollow, nosnippet"/>
+    <link rel="stylesheet" type="text/css" href="../data/style.css" id="stylesheet">
+    <link rel="icon" type="image/png" href="../data/favicon.png">
+    <script type="text/javascript" src="../engine/utilities.js"></script>
+    <script type="text/javascript" src="../engine/svg.js"></script>
+    <script async type="text/javascript" src="../engine/polyominos.js"></script>
+    <script async type="text/javascript" src="../engine/puzzle.js"></script>
+    <script async type="text/javascript" src="../engine/validate.js"></script>
+    <script async type="text/javascript" src="../engine/custom_mechanics.js"></script>
+    <script async type="text/javascript" src="../engine/display2.js"></script>
+    <script async type="text/javascript" src="../engine/trace2.js"></script>
+    <title>weird dots</title>
+  </head>
+  <body>
+    <script>loadHeader("weird dots")</script>
+    <div style="display: flex; justify-content: center; align-items: center">
+      <svg id="puzzle" style="pointer-events: auto"></svg>
+    </div>
+  </body>
+  <script>
+    window.onload = function() {
+      <!-- 8c0d04090302716ae2da7307ab72ead26b01b4590a720fd14532ab0f2ed21cf6a814b549c3ad9383d5b9e08b9bedc52f4d109a48995aa6584c88f5b7ba25af273a213c8bef2a16cfb7ddb9f62e5cc8c01815376c022aa30fae847daca73244fb981ae815d402c7fc7eb400de34ab7e696983b34ac2b92b5be86a0a3a -->
+      var puzzle = Puzzle.deserialize("{\"grid\":[[{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":1},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0,\"start\":true},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":1},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"end\":\"bottom\"}],[{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0,\"end\":\"top\"},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":1},{\"type\":\"line\",\"line\":0,\"start\":true}],[{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":1},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0,\"dot\":1},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":1},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0,\"dot\":1},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0,\"dot\":1},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0}]],\"largezero\":156,\"width\":12,\"height\":13,\"pillar\":true,\"settings\":{\"NEGATIONS_CANCEL_NEGATIONS\":true,\"SHAPELESS_ZERO_POLY\":false,\"PRECISE_POLYOMINOS\":true,\"FLASH_FOR_ERRORS\":true,\"FAT_STARTPOINTS\":false},\"symmetry\":{\"x\":true,\"y\":true}}")
+      draw(puzzle)
+    }
+  </script>
+</html>

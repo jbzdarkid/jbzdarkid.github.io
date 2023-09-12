@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/2000/xhtml">
+  <head>
+    <meta property="og:title" content="Dots"/>
+    <meta property="og:description" content="Witness Puzzle EBBDAC2B"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Witness Puzzles"/>
+    <meta property="og:image" content="../images/EBBDAC2B.png"/>
+    <meta name="robots" content="noindex, nofollow, nosnippet"/>
+    <link rel="stylesheet" type="text/css" href="../data/style.css" id="stylesheet">
+    <link rel="icon" type="image/png" href="../data/favicon.png">
+    <script type="text/javascript" src="../engine/utilities.js"></script>
+    <script type="text/javascript" src="../engine/svg.js"></script>
+    <script async type="text/javascript" src="../engine/polyominos.js"></script>
+    <script async type="text/javascript" src="../engine/puzzle.js"></script>
+    <script async type="text/javascript" src="../engine/validate.js"></script>
+    <script async type="text/javascript" src="../engine/custom_mechanics.js"></script>
+    <script async type="text/javascript" src="../engine/display2.js"></script>
+    <script async type="text/javascript" src="../engine/trace2.js"></script>
+    <title>Dots</title>
+  </head>
+  <body>
+    <script>loadHeader("Dots")</script>
+    <div style="display: flex; justify-content: center; align-items: center">
+      <svg id="puzzle" style="pointer-events: auto"></svg>
+    </div>
+  </body>
+  <script>
+    window.onload = function() {
+      <!-- 8c0d0409030287a0fac334683e59ead2710112a7b297816599c827f0b8d7b1527684ef307dd9aabc781945db0e503a44533fc02c54f15dc72e5fe14560a13fc807fcbb4e6359dcb92a74b42911889c7e6553a689cc317a45018513d81407131a879a78d02fbb541aa8b17980dd8f5dea01d78f0b616d5a9a1e50cc9abe9823b831d7 -->
+      var puzzle = Puzzle.deserialize("{\"grid\":[[{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"start\":true}],[{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0,\"dot\":1},null,{\"type\":\"line\",\"line\":0,\"dot\":1},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":1},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":1},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":1},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":1},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0,\"dot\":1},null,{\"type\":\"line\",\"line\":0,\"dot\":1},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0,\"end\":\"right\"},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0}]],\"largezero\":81,\"width\":9,\"height\":9,\"pillar\":false,\"settings\":{\"NEGATIONS_CANCEL_NEGATIONS\":true,\"SHAPELESS_ZERO_POLY\":false,\"PRECISE_POLYOMINOS\":true,\"FLASH_FOR_ERRORS\":true,\"FAT_STARTPOINTS\":false}}")
+      draw(puzzle)
+    }
+  </script>
+</html>

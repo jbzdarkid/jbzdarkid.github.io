@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/2000/xhtml">
+  <head>
+    <meta property="og:title" content="placid"/>
+    <meta property="og:description" content="Witness Puzzle BDCCDEAE"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Witness Puzzles"/>
+    <meta property="og:image" content="../images/BDCCDEAE.png"/>
+    <meta name="robots" content="noindex, nofollow, nosnippet"/>
+    <link rel="stylesheet" type="text/css" href="../data/style.css" id="stylesheet">
+    <link rel="icon" type="image/png" href="../data/favicon.png">
+    <script type="text/javascript" src="../engine/utilities.js"></script>
+    <script type="text/javascript" src="../engine/svg.js"></script>
+    <script async type="text/javascript" src="../engine/polyominos.js"></script>
+    <script async type="text/javascript" src="../engine/puzzle.js"></script>
+    <script async type="text/javascript" src="../engine/validate.js"></script>
+    <script async type="text/javascript" src="../engine/custom_mechanics.js"></script>
+    <script async type="text/javascript" src="../engine/display2.js"></script>
+    <script async type="text/javascript" src="../engine/trace2.js"></script>
+    <title>placid</title>
+  </head>
+  <body>
+    <script>loadHeader("placid")</script>
+    <div style="display: flex; justify-content: center; align-items: center">
+      <svg id="puzzle" style="pointer-events: auto"></svg>
+    </div>
+  </body>
+  <script>
+    window.onload = function() {
+      <!-- 8c0d040903021183d53dac42afa3ead25601b20e95738c3f2cefa1759f0db02d505e86ade8716aa2d625297b5aff74c07193e2d8b3439e6c51a3f83c62ad7a00575ae9f2c653086e4c589903d67ebb7c0a41c364b5a39998a45a54b34fc9364f69424407801ef6 -->
+      var puzzle = Puzzle.deserialize("{\"grid\":[[{\"type\":\"line\",\"line\":0,\"end\":\"left\",\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"end\":\"left\"},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"start\":true,\"dir\":null,\"end\":\"left\"}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"end\":null}],[{\"type\":\"line\",\"end\":\"right\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"end\":\"right\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"end\":\"right\",\"start\":true,\"line\":0,\"dir\":null}]],\"largezero\":27,\"width\":3,\"height\":9,\"pillar\":false,\"settings\":{\"NEGATIONS_CANCEL_NEGATIONS\":true,\"SHAPELESS_ZERO_POLY\":false,\"PRECISE_POLYOMINOS\":true,\"FLASH_FOR_ERRORS\":true,\"FAT_STARTPOINTS\":false,\"CUSTOM_MECHANICS\":false},\"name\":\"placid\",\"symmetry\":{\"x\":true,\"y\":false},\"startPoint\":{\"x\":2,\"y\":8},\"hasNegations\":false,\"hasPolyominos\":false}")
+      draw(puzzle)
+    }
+  </script>
+</html>

@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/2000/xhtml">
+  <head>
+    <meta property="og:title" content="tutorial1"/>
+    <meta property="og:description" content="Witness Puzzle 63CC5C5D"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Witness Puzzles"/>
+    <meta property="og:image" content="../images/63CC5C5D.png"/>
+    <meta name="robots" content="noindex, nofollow, nosnippet"/>
+    <link rel="stylesheet" type="text/css" href="../data/style.css" id="stylesheet">
+    <link rel="icon" type="image/png" href="../data/favicon.png">
+    <script type="text/javascript" src="../engine/utilities.js"></script>
+    <script type="text/javascript" src="../engine/svg.js"></script>
+    <script async type="text/javascript" src="../engine/polyominos.js"></script>
+    <script async type="text/javascript" src="../engine/puzzle.js"></script>
+    <script async type="text/javascript" src="../engine/validate.js"></script>
+    <script async type="text/javascript" src="../engine/custom_mechanics.js"></script>
+    <script async type="text/javascript" src="../engine/display2.js"></script>
+    <script async type="text/javascript" src="../engine/trace2.js"></script>
+    <title>tutorial1</title>
+  </head>
+  <body>
+    <script>loadHeader("tutorial1")</script>
+    <div style="display: flex; justify-content: center; align-items: center">
+      <svg id="puzzle" style="pointer-events: auto"></svg>
+    </div>
+  </body>
+  <script>
+    window.onload = function() {
+      <!-- 8c0d0409030260a6747b4b63ef36ead26501e2d812e3f82fc24a27a3749968f73ade769c2d386048de6799e19f7fbcba7ebde4ba3a7f6650101c2b5b1544fd256a0928c142f7337b7a68b33668849c98c016fc73793ef82619ebdb8aa3d48097f845e22661cbd0d83994ed8a0642e285004074b5fdb0 -->
+      var puzzle = Puzzle.deserialize("{\"grid\":[[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":2,\"dot\":null,\"start\":null,\"end\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"start\":true,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":2,\"dot\":null,\"start\":null,\"end\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":2,\"dot\":null,\"start\":null,\"end\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":2,\"dot\":null,\"start\":null,\"end\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":2,\"dot\":null,\"start\":null,\"end\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":2,\"dot\":null,\"start\":null,\"end\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":2,\"dot\":null,\"start\":null,\"end\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":2,\"dot\":null,\"start\":null,\"end\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":null,\"start\":null,\"end\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":2,\"dot\":null,\"start\":null,\"end\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":2,\"dot\":null,\"start\":null,\"end\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":2,\"dot\":null,\"start\":null,\"end\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":2,\"dot\":null,\"start\":null,\"end\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":2,\"dot\":null,\"start\":null,\"end\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":2,\"dot\":null,\"start\":null,\"end\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":2,\"dot\":null,\"start\":null,\"end\":null}],[{\"type\":\"line\",\"line\":0,\"end\":\"top\",\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":2,\"dot\":null,\"start\":null,\"end\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}]],\"largezero\":81,\"width\":9,\"height\":9,\"pillar\":false,\"settings\":{\"NEGATIONS_CANCEL_NEGATIONS\":true,\"SHAPELESS_ZERO_POLY\":false,\"PRECISE_POLYOMINOS\":true,\"FLASH_FOR_ERRORS\":true,\"FAT_STARTPOINTS\":false,\"CUSTOM_MECHANICS\":false},\"name\":\"tutorial1\",\"startPoint\":{\"x\":0,\"y\":8},\"hasNegations\":false,\"hasPolyominos\":false}")
+      draw(puzzle)
+    }
+  </script>
+</html>

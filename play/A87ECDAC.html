@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/2000/xhtml">
+  <head>
+    <meta property="og:title" content="Tower"/>
+    <meta property="og:description" content="Witness Puzzle A87ECDAC"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Witness Puzzles"/>
+    <meta property="og:image" content="../images/A87ECDAC.png"/>
+    <meta name="robots" content="noindex, nofollow, nosnippet"/>
+    <link rel="stylesheet" type="text/css" href="../data/style.css" id="stylesheet">
+    <link rel="icon" type="image/png" href="../data/favicon.png">
+    <script type="text/javascript" src="../engine/utilities.js"></script>
+    <script type="text/javascript" src="../engine/svg.js"></script>
+    <script async type="text/javascript" src="../engine/polyominos.js"></script>
+    <script async type="text/javascript" src="../engine/puzzle.js"></script>
+    <script async type="text/javascript" src="../engine/validate.js"></script>
+    <script async type="text/javascript" src="../engine/custom_mechanics.js"></script>
+    <script async type="text/javascript" src="../engine/display2.js"></script>
+    <script async type="text/javascript" src="../engine/trace2.js"></script>
+    <title>Tower</title>
+  </head>
+  <body>
+    <script>loadHeader("Tower")</script>
+    <div style="display: flex; justify-content: center; align-items: center">
+      <svg id="puzzle" style="pointer-events: auto"></svg>
+    </div>
+  </body>
+  <script>
+    window.onload = function() {
+      <!-- 8c0d04090302a06d359eb3e5bd73ead26401c1cf7841ed3e0904c56e6fef1fb4f02a7ae021323ede8c730fa973613998108ca751601af6bd1fe11addd3768616fcdd950a94d5277cdaa1c79871eb878dc4c9f225a1ccf40a5957290b0a4a33c3f0e84ab082c88c76ad6b2de66ce3765037b8203a22 -->
+      var puzzle = Puzzle.deserialize("{\"grid\":[[{\"type\":\"line\",\"line\":0,\"start\":false},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"start\":true}],[{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0},{\"type\":\"triangle\",\"color\":\"orange\",\"count\":3,\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":1124,\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":4,\"line\":0},{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0},null,{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0,\"end\":\"top\"},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0}]],\"largezero\":49,\"width\":7,\"height\":7,\"pillar\":false,\"settings\":{\"NEGATIONS_CANCEL_NEGATIONS\":true,\"SHAPELESS_ZERO_POLY\":false,\"PRECISE_POLYOMINOS\":true,\"FLASH_FOR_ERRORS\":true,\"FAT_STARTPOINTS\":false},\"autoSolved\":true}")
+      draw(puzzle)
+    }
+  </script>
+</html>

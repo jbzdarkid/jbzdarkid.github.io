@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/2000/xhtml">
+  <head>
+    <meta property="og:title" content="One stick maze"/>
+    <meta property="og:description" content="Witness Puzzle AD78682B"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Witness Puzzles"/>
+    <meta property="og:image" content="../images/AD78682B.png"/>
+    <meta name="robots" content="noindex, nofollow, nosnippet"/>
+    <link rel="stylesheet" type="text/css" href="../data/style.css" id="stylesheet">
+    <link rel="icon" type="image/png" href="../data/favicon.png">
+    <script type="text/javascript" src="../engine/utilities.js"></script>
+    <script type="text/javascript" src="../engine/svg.js"></script>
+    <script async type="text/javascript" src="../engine/polyominos.js"></script>
+    <script async type="text/javascript" src="../engine/puzzle.js"></script>
+    <script async type="text/javascript" src="../engine/validate.js"></script>
+    <script async type="text/javascript" src="../engine/custom_mechanics.js"></script>
+    <script async type="text/javascript" src="../engine/display2.js"></script>
+    <script async type="text/javascript" src="../engine/trace2.js"></script>
+    <title>One stick maze</title>
+  </head>
+  <body>
+    <script>loadHeader("One stick maze")</script>
+    <div style="display: flex; justify-content: center; align-items: center">
+      <svg id="puzzle" style="pointer-events: auto"></svg>
+    </div>
+  </body>
+  <script>
+    window.onload = function() {
+      <!-- 8c0d0409030230ef2fe160b219b5ead27201669d42471e56ad2b7ca01aba7565f4219f9f1234af3baaf5d7a63747af36cd6dc22d186e141160e36a42d1cf30388ee99e447ac54afc4806e191fe9b0cb4908140f0291ed0e095bd0604b20578239f68b814799d471f62caa2994cfd3e4304d4048a05bab8a89f901a173e7216dafd8262 -->
+      var puzzle = Puzzle.deserialize("{\"grid\":[[{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":null,\"gap\":null,\"end\":null,\"start\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":null,\"gap\":null,\"end\":null,\"start\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":1,\"dot\":null,\"start\":null,\"end\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":null,\"gap\":null,\"end\":null,\"start\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":1,\"dot\":null,\"start\":null,\"end\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":null,\"gap\":null,\"end\":null,\"start\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null,\"end\":\"top\",\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"start\":true}],[{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":1,\"dot\":null,\"start\":null,\"end\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"end\":null,\"dir\":null,\"start\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":null,\"dot\":null,\"start\":null,\"end\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":1,\"dot\":null,\"start\":null,\"end\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":1,\"dot\":null,\"start\":null,\"end\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null},null,{\"type\":\"line\",\"line\":0,\"dir\":null}]],\"largezero\":90,\"width\":10,\"height\":9,\"pillar\":true,\"settings\":{\"NEGATIONS_CANCEL_NEGATIONS\":true,\"SHAPELESS_ZERO_POLY\":false,\"PRECISE_POLYOMINOS\":true,\"FLASH_FOR_ERRORS\":true,\"FAT_STARTPOINTS\":false,\"CUSTOM_MECHANICS\":false},\"name\":\"One stick maze\",\"autoSolved\":true,\"startPoint\":{\"x\":4,\"y\":8},\"valid\":true,\"hasNegations\":false,\"hasPolyominos\":false,\"invalidElements\":[],\"negations\":[]}")
+      draw(puzzle)
+    }
+  </script>
+</html>

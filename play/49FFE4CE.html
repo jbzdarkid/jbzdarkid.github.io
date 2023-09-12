@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/2000/xhtml">
+  <head>
+    <meta property="og:title" content="Snake12"/>
+    <meta property="og:description" content="Witness Puzzle 49FFE4CE"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Witness Puzzles"/>
+    <meta property="og:image" content="../images/49FFE4CE.png"/>
+    <meta name="robots" content="noindex, nofollow, nosnippet"/>
+    <link rel="stylesheet" type="text/css" href="../data/style.css" id="stylesheet">
+    <link rel="icon" type="image/png" href="../data/favicon.png">
+    <script type="text/javascript" src="../engine/utilities.js"></script>
+    <script type="text/javascript" src="../engine/svg.js"></script>
+    <script async type="text/javascript" src="../engine/polyominos.js"></script>
+    <script async type="text/javascript" src="../engine/puzzle.js"></script>
+    <script async type="text/javascript" src="../engine/validate.js"></script>
+    <script async type="text/javascript" src="../engine/custom_mechanics.js"></script>
+    <script async type="text/javascript" src="../engine/display2.js"></script>
+    <script async type="text/javascript" src="../engine/trace2.js"></script>
+    <title>Snake12</title>
+  </head>
+  <body>
+    <script>loadHeader("Snake12")</script>
+    <div style="display: flex; justify-content: center; align-items: center">
+      <svg id="puzzle" style="pointer-events: auto"></svg>
+    </div>
+  </body>
+  <script>
+    window.onload = function() {
+      <!-- 8c0d040903023e07938470444ae5ead2740178d1c51b7976bdbcf17cf01ed86866f9a5cfd5325530a19fce3d151caec1c65ce7a0a76a243c254b738919743ba9d17fd167ad8f11d60efe9cdda746a68060f1e5045620d03a5a853c4452089385d5405490d6e4846ca39f959aeaa5817a3f32424e8e627a2caad5ec53b86ce2a8046e8931ea -->
+      var puzzle = Puzzle.deserialize("{\"grid\":[[{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"dot\":4,\"line\":0},{\"type\":\"line\",\"dot\":4,\"line\":0},{\"type\":\"line\",\"line\":0,\"start\":true}],[{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"nega\",\"color\":\"white\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"nega\",\"color\":\"white\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"nega\",\"color\":\"white\",\"line\":0},{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"dot\":4,\"line\":0},{\"type\":\"line\",\"dot\":4,\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0,\"dot\":4}],[{\"type\":\"line\",\"line\":0},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"poly\",\"color\":\"white\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"dot\":4,\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4}],[{\"type\":\"line\",\"line\":0},{\"type\":\"nega\",\"color\":\"white\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"nega\",\"color\":\"white\",\"line\":0},{\"type\":\"line\",\"dot\":4,\"line\":0},{\"type\":\"nega\",\"color\":\"white\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":64,\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"nega\",\"color\":\"white\",\"line\":0},{\"type\":\"line\",\"line\":0}],[{\"type\":\"line\",\"line\":0,\"dot\":4,\"end\":\"top\"},{\"type\":\"line\",\"dot\":4,\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"dot\":4,\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0,\"dot\":4},{\"type\":\"line\",\"line\":0,\"dot\":4}]],\"largezero\":77,\"width\":7,\"height\":11,\"pillar\":false,\"settings\":{\"NEGATIONS_CANCEL_NEGATIONS\":true,\"SHAPELESS_ZERO_POLY\":false,\"PRECISE_POLYOMINOS\":true,\"FLASH_FOR_ERRORS\":true},\"name\":\"Snake12\",\"autoSolved\":true}")
+      draw(puzzle)
+    }
+  </script>
+</html>
