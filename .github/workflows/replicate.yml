@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
       with:
         python-version: '3.x'
@@ -26,7 +26,7 @@ jobs:
       run: |
         git config user.email "jbzdarkid@users.noreply.github.com"
         git config user.name "Validate and publish workflow"
-        git config http.https://github.com/.extraheader AUTHORIZATION: basic $GITHUB_TOKEN
+        git config http.https://github.com/.extraheader AUTHORIZATION: basic {{ $secrets.GITHUB_TOKEN }}
         git add .
         git commit -m "Replicated latest puzzles"
         git push
