@@ -24,8 +24,6 @@ jobs:
         SECRET: ${{ secrets.GPG_KEY }}
     - name: Publishing changes
       run: |
-        #git config --global user.email "jbzdarkid@users.noreply.github.com"
-        #git config --global user.name "Validate and publish workflow"
         git config http.https://github.com/.extraheader AUTHORIZATION: basic {{ $secrets.GITHUB_TOKEN }}
         git add .
         git commit -m "Replicated latest puzzles"
