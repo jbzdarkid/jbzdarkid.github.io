@@ -1,4 +1,7 @@
 window.puzzleList = [
+"52E9FDEDUnnamed Puzzle",
+"984ED8B4The Witness is You Symmetry Island-5",
+"DCD46C2CNebula-M09 6",
 "39DC8CB8Unnamed Pillar Puzzle",
 "8C5CBF64Unnamed Puzzle",
 "C884EFEANebula-M09 5",
