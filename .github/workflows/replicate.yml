@@ -24,7 +24,6 @@ jobs:
         SECRET: ${{ secrets.GPG_KEY }}
     - name: Publishing changes
       run: |
-        git config http.https://github.com/.extraheader AUTHORIZATION: basic {{ $secrets.GITHUB_TOKEN }}
         git add .
         git commit -m "Replicated latest puzzles"
         git push
