@@ -1,5 +1,7 @@
 name: Replicate puzzles
 on:
+  schedule:
+    - cron: '0 1 * * *' # Run the script daily, the script itself controls which reports are run
   push:
 
 jobs:
@@ -7,17 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Cloning the repo
-      run: |
-        mkdir -p $GITHUB_WORKSPACE
-        cd $GITHUB_WORKSPACE
-        git init
-        git remote add origin $GITHUB_SERVER_URL/$GITHUB_REPOSITORY
-        git fetch origin --depth 1 $GITHUB_REF_NAME
-        git checkout $GITHUB_REF_NAME
-        git config user.email "jbzdarkid@users.noreply.github.com"
-        git config user.name "Validate and publish workflow"
-        git config http.https://github.com/.extraheader AUTHORIZATION: basic $GITHUB_TOKEN
+    - uses: actions/checkout@v4
     - uses: actions/setup-python@v2
       with:
         python-version: '3.x'
@@ -32,6 +24,9 @@ jobs:
         SECRET: ${{ secrets.GPG_KEY }}
     - name: Publishing changes
       run: |
+        git config user.email "jbzdarkid@users.noreply.github.com"
+        git config user.name "Validate and publish workflow"
+        git config http.https://github.com/.extraheader AUTHORIZATION: basic $GITHUB_TOKEN
         git add .
         git commit -m "Replicated latest puzzles"
         git push
