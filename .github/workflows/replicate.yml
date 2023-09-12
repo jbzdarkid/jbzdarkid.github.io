@@ -1,6 +1,5 @@
 name: Replicate puzzles
 on:
-  workflow_dispatch:
   push:
 
 jobs:
@@ -34,7 +33,6 @@ jobs:
     - name: Publishing changes
       run: |
         git add .
-        git commit -m "Replicated 100 puzzles"
-        # git push
-        git show HEAD
+        git commit -m "Replicated latest puzzles"
+        git push
 

@@ -149,7 +149,7 @@ if __name__ == '__main__':
     offset = 0 if len(sys.argv) <= 1 else int(sys.argv[1])
     limit = 100 if len(sys.argv) <= 2 else int(sys.argv[2])
 
-    puzzles = get_puzzles('desc', offset=offset, limit=limit)[::-1]
+    puzzles = get_puzzles(order='desc', offset=offset, limit=limit)[::-1]
 
     puzzle_list = Path('puzzle_list.js').open('r', encoding='utf-8').read().split('\n')
     puzzle_ids = {row[1:9] for row in puzzle_list}
