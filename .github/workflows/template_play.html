@@ -1,25 +1,25 @@
 <html xmlns="http://www.w3.org/2000/xhtml">
   <head>
-    <meta property="og:title" content="%title%"/>
+    <meta property="og:title" content="%title_html%"/>
     <meta property="og:description" content="Witness Puzzle %display_hash%"/>
     <meta property="og:type" content="website"/>
     <meta property="og:site_name" content="Witness Puzzles"/>
-    <meta property="og:image" content="%image_url%"/>
+    <meta property="og:image" content="../%image_url%"/>
     <meta name="robots" content="noindex, nofollow, nosnippet"/>
-    <link rel="stylesheet" type="text/css" href="data/style.css" id="stylesheet">
-    <link rel="icon" type="image/png" href="data/favicon.png">
-    <script type="text/javascript" src="engine/utilities.js"></script>
-    <script type="text/javascript" src="engine/svg.js"></script>
-    <script async type="text/javascript" src="engine/polyominos.js"></script>
-    <script async type="text/javascript" src="engine/puzzle.js"></script>
-    <script async type="text/javascript" src="engine/validate.js"></script>
-    <script async type="text/javascript" src="engine/custom_mechanics.js"></script>
-    <script async type="text/javascript" src="engine/display2.js"></script>
-    <script async type="text/javascript" src="engine/trace2.js"></script>
-    <title>%title%</title>
+    <link rel="stylesheet" type="text/css" href="../data/style.css" id="stylesheet">
+    <link rel="icon" type="image/png" href="../data/favicon.png">
+    <script type="text/javascript" src="../engine/utilities.js"></script>
+    <script type="text/javascript" src="../engine/svg.js"></script>
+    <script async type="text/javascript" src="../engine/polyominos.js"></script>
+    <script async type="text/javascript" src="../engine/puzzle.js"></script>
+    <script async type="text/javascript" src="../engine/validate.js"></script>
+    <script async type="text/javascript" src="../engine/custom_mechanics.js"></script>
+    <script async type="text/javascript" src="../engine/display2.js"></script>
+    <script async type="text/javascript" src="../engine/trace2.js"></script>
+    <title>%title_html%</title>
   </head>
   <body>
-    <script>loadHeader('Loading puzzle...')</script>
+    <script>loadHeader("%title_js%")</script>
     <div style="display: flex; justify-content: center; align-items: center">
       <svg id="puzzle" style="pointer-events: auto"></svg>
     </div>

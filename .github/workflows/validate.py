@@ -7,17 +7,17 @@ import subprocess
 
 def gpg_encrypt(plaintext, key):
     # For security reasons, GPG always prefers to read and write from files.
-    tmp = os.environ.get('RUNNER_TEMP', '/tmp')
+    tmp = os.environ.get('RUNNER_TEMP', Path.home() / 'AppData/Local/Temp')
     with open(f'{tmp}/plaintext.txt', 'w') as f:
         f.write(plaintext)
     with open(f'{tmp}/key.txt', 'w') as f:
         f.write(key)
     subprocess.run([
-        'gpg', '--batch', '--symmetric',
+        'gpg', '--batch', '--yes', '--symmetric',
         '--cipher-algo', 'AES256',
         '--passphrase-file', f'{tmp}/key.txt',
-        '-o', f'{tmp}/ciphertext.txt',
-        '-c', f'{tmp}/plaintext.txt', # Inexplicably, the plaintext *must* be the last option.
+        '--output', f'{tmp}/ciphertext.txt',
+        f'{tmp}/plaintext.txt', # Inexplicably, the input file must be the last option.
     ], check=True, stdout=subprocess.DEVNULL)
     with open(f'{tmp}/ciphertext.txt', 'rb') as f:
         return f.read().hex()
