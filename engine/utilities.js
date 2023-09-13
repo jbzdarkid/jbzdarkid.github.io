@@ -64,11 +64,13 @@ var proxy = {
 }
 window.settings = new Proxy({}, proxy.init())
 
+var relative = ''
+if (window.location.href.includes('/play/')) relative = '../'
 var tracks = {
-  'start':   new Audio(src = 'data/panel_start_tracing.aac'),
-  'success': new Audio(src = 'data/panel_success.aac'),
-  'fail':    new Audio(src = 'data/panel_failure.aac'),
-  'abort':   new Audio(src = 'data/panel_abort_tracing.aac'),
+  'start':   new Audio(src = relative + 'data/panel_start_tracing.aac'),
+  'success': new Audio(src = relative + 'data/panel_success.aac'),
+  'fail':    new Audio(src = relative + 'data/panel_failure.aac'),
+  'abort':   new Audio(src = relative + 'data/panel_abort_tracing.aac'),
 }
 
 var currentAudio = null
@@ -280,7 +282,7 @@ window.loadHeader = function(titleText) {
 
   } else if (window.location.href.includes('/play/')) {
     link.innerText = 'Back to all puzzles'
-    link.onpointerdown = function() {window.location = 'browse.html'}
+    link.onpointerdown = function() {window.location = '../browse.html'}
   } else /* All other pages */ {
     link.innerText = 'Browse all puzzles'
     link.onpointerdown = function() {window.location = 'browse.html'}
