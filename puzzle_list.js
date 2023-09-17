@@ -1,4 +1,5 @@
 window.puzzleList = [
+"58256CD6Stones Pillar 9/16/23",
 "672DCD64Stones pillar 9/13/23",
 "DCAC5B65Nebula-M09 7",
 "C8FD44B3The Witness is You Symmetry Island-7",
