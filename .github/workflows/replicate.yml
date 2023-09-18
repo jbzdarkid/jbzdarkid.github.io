@@ -28,6 +28,10 @@ jobs:
         git config --global user.email "jbzdarkid@users.noreply.github.com"
         git config --global user.name "Validate and publish workflow"
         git add .
-        git commit -m "Replicated latest puzzles"
-        git push
+
+        # https://stackoverflow.com/a/68479810
+        if ! git diff-index --quiet HEAD; then
+          git commit -m "Replicated latest puzzles"
+          git push
+        fi
 
