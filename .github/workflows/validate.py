@@ -86,7 +86,7 @@ if __name__ == '__main__':
     with open(page_url, 'x', encoding='utf-8') as f:
         f.write(contents)
 
-    puzzle_list.insert(1, f'"{display_hash}{title}",')
+    puzzle_list.insert(1, f'"{display_hash}{title_py}",')
     with open('puzzle_list.js', 'w', encoding='utf-8') as f:
         f.write('\n'.join(puzzle_list))
 
