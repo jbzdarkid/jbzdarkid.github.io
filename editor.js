@@ -355,7 +355,10 @@ window.importPuzzle = function(serialized) {
 }
 
 window.setSolveMode = function(value) {
-  document.getElementById('solveMode').checked = value
+  var solveMode = document.getElementById('solveMode')
+  solveMode.checked = value
+  solveMode.style.background = (solveMode.checked ? window.BORDER : window.PAGE_BACKGROUND)
+
   if (value === true) {
     window.TRACE_COMPLETION_FUNC = function(solution, path) {
       puzzle = solution

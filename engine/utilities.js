@@ -555,6 +555,7 @@ window.addSolveButtons = function() {
   solveMode.onpointerdown = function() {
     this.checked = !this.checked
     this.style.background = (this.checked ? window.BORDER : window.PAGE_BACKGROUND)
+    document.getElementById('solutionViewer').style.display = 'none'
     if (window.setSolveMode) window.setSolveMode(this.checked)
   }
 
