@@ -3,7 +3,7 @@ function onSubmit(e) {
   var puzzle = JSON.parse(e.response.getItemResponses()[0].getResponse().trim())
   var requestId = JSON.parse(e.response.getItemResponses()[0].getResponse().trim())
   var payload = JSON.stringify({
-    'ref': 'gh-pages',
+    'ref': 'master',
     'inputs': {'requestId': requestId, 'puzzle': JSON.stringify(puzzle)},
   })
   var headers = {
