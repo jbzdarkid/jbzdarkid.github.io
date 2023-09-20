@@ -1,4 +1,7 @@
 window.puzzleList = [
+"EDE9AD4BUnnamed Puzzle",
+"8B92ACDBUnnamed Puzzle",
+"A94CDD94Nebula-M09 8",
 "UJ46RS4DRotation",
 "58256CD6Stones Pillar 9/16/23",
 "672DCD64Stones pillar 9/13/23",
