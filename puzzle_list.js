@@ -1,4 +1,10 @@
 window.puzzleList = [
+"2BE93DA4jhlhjvfjhgf",
+"D2A8A7DC3",
+"FC5EB38F3",
+"9B4BA6D32",
+"FDBC338F1",
+"82CDC357Nebula-M09 9",
 "EDE9AD4BUnnamed Puzzle",
 "8B92ACDBUnnamed Puzzle",
 "A94CDD94Nebula-M09 8",
