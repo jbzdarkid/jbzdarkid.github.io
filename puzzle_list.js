@@ -1,4 +1,7 @@
 window.puzzleList = [
+"CD739F52Dots Pillar 9/24/23",
+"DC9D5EF4Unnamed Rotational Symmetry Puzzle",
+"9D24DA9EUnnamed Puzzle",
 "E3D27478Unnamed Puzzle",
 "4EE9EDD8Unnamed Puzzle",
 "4D6A6CCDUnnamed Puzzle",
