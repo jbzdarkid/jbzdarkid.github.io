@@ -458,10 +458,10 @@ var puzzleGenerators = {
     puzzle.grid[0][8].start = true
     puzzle.grid[8][0].end = 'top'
 
-    for (var cell of randomNonEmptyCells(puzzle, 7)) {
+    for (var cell of randomCells(puzzle, 7)) {
       puzzle.grid[cell.x][cell.y] = {'type': 'square', 'color': 'white'}
     }
-    for (var cell of randomNonEmptyCells(puzzle, 4)) {
+    for (var cell of randomCells(puzzle, 4)) {
       puzzle.grid[cell.x][cell.y] = {'type': 'square', 'color': 'black'}
     }
     cutRandomEdges(puzzle, 5)
@@ -693,7 +693,7 @@ function randomEmptyCells(puzzle, count) {
   })
 }
 
-function randomNonEmptyCells(puzzle, count) {
+function randomCells(puzzle, count) {
   return getCells(puzzle, getRandomElement, count, function(x, y) {
     return (x%2 === 1 && y%2 === 1)
   })
