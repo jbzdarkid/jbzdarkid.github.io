@@ -1,4 +1,7 @@
 window.puzzleList = [
+"5EACC25CDots Pillar 9/26/2023",
+"95644EE5Easy Puzzle",
+"ABA4A773Twin Peaks",
 "CA223BA9?",
 "CD739F52Dots Pillar 9/24/23",
 "DC9D5EF4Unnamed Rotational Symmetry Puzzle",
