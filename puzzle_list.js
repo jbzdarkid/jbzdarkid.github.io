@@ -1,4 +1,6 @@
 window.puzzleList = [
+"C5D88DC8Triangle Shenanigans (FIXED)",
+"6ADC4CDFTriangle Shenanigans",
 "5EACC25CDots Pillar 9/26/2023",
 "95644EE5Easy Puzzle",
 "ABA4A773Twin Peaks",
