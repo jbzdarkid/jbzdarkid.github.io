@@ -17,6 +17,10 @@
     </label>
     <script>
       if (window.location.pathname.startsWith('/play/')) {
+        // When this was a flask app, the puzzle pages were dynamic urls at /play/display_hash
+        // Now that this is statically hosted, they are actual .html pages. Redirect to preserve old links/bookmarks.
+        if (!window.location.href.endsWith('.html')) window.location = window.location.href + '.html'
+
         document.title = '404: Puzzle not found'
         
         var puzzleNotFound = document.getElementById('puzzleNotFound')
