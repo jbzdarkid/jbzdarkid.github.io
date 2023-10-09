@@ -149,7 +149,7 @@ l('@keyframes line-success {to {fill: ' + window.LINE_SUCCESS + ';}}')
 l('@keyframes line-fail {to {fill: ' + window.LINE_FAIL + ';}}')
 l('@keyframes error {to {fill: red;}}')
 l('@keyframes fade {to {opacity: 0.35;}}')
-l('@keyframes start-grow {from {r:12;} to {r: 24;}}')
+l('@keyframes start-grow {from {r:12;} to {r:24;}}')
 // Neutral button style
 l('button {')
 l('  background-color: ' + window.ALT_BACKGROUND + ';')

@@ -20,8 +20,8 @@ window.draw = function(puzzle, target='puzzle') {
   }
   var pixelHeight = 41 * puzzle.height + 63
   svg.setAttribute('viewbox', '0 0 ' + pixelWidth + ' ' + pixelHeight)
-  svg.style.width = pixelWidth
-  svg.style.height = pixelHeight
+  svg.setAttribute('width', pixelWidth)
+  svg.setAttribute('height', pixelHeight)
 
   var rect = createElement('rect')
   svg.appendChild(rect)
