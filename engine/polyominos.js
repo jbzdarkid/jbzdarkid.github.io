@@ -58,10 +58,11 @@ window.rotatePolyshape = function(polyshape, count=1) {
 // placing the shape at (x, y) will fill (x, y)
 // Ylops will have -1s on all adjacent cells, to break "overlaps" for polyominos.
 window.polyominoFromPolyshape = function(polyshape, ylop=false, precise=true) {
+  var topLeft = null
   for (var y=0; y<4; y++) {
     for (var x=0; x<4; x++) {
       if (isSet(polyshape, x, y)) {
-        var topLeft = {'x':x, 'y':y}
+        topLeft = {'x':x, 'y':y}
         break
       }
     }
@@ -101,6 +102,29 @@ window.polyominoFromPolyshape = function(polyshape, ylop=false, precise=true) {
     }
   }
   return polyomino
+}
+
+window.polyshapeFromPolyomino = function(polyomino) {
+  var topLeft = {'x': 9999, 'y': 9999}
+  for (var pos of polyomino) {
+    if (pos.x%2 != 1 || pos.y%2 != 1) continue // We only care about cells, not edges or intersections
+    
+    // Unlike when we're making a polyomino, we just want to top and left flush the shape,
+    // we don't actually need (0, 0) to be filled.
+    if (pos.x < topLeft.x) topLeft.x = pos.x
+    if (pos.y < topLeft.y) topLeft.y = pos.y
+  }
+  if (topLeft == null) return 0 // Empty polyomino
+
+  var polyshape = 0
+  for (var pos of polyomino) {
+    if (pos.x%2 != 1 || pos.y%2 != 1) continue // We only care about cells, not edges or intersections
+    var x = (pos.x - topLeft.x) / 2 // 0.5x to convert from puzzle coordinates to polyshape coordinates
+    var y = (pos.y - topLeft.y) / 2 // 0.5x to convert from puzzle coordinates to polyshape coordinates
+    polyshape |= mask(x, y)
+  }
+  
+  return polyshape
 }
 
 // In some cases, polyominos and onimoylops will fully cancel each other out.

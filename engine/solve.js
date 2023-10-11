@@ -361,6 +361,8 @@ window.drawPath = function(puzzle, path, target='puzzle') {
   window.deleteElementsByClassName(puzzleElem, 'line-2')
   window.deleteElementsByClassName(puzzleElem, 'line-3')
   puzzle.clearLines()
+  
+  if (path == null || path.length === 0) return // "drawing" an empty path is a shorthand for clearing the grid.
 
   // Extract the start data from the first path element
   var x = path[0].x
