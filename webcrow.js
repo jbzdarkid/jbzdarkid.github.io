@@ -26,6 +26,7 @@ function drawPuzzle() {
     child.onpointerdown = null
   }
 
+  // This needs to be declared outside of the loop
   var addOnClick = function(elem, x, y) {
     elem.onpointerdown = function(event) {onElementClicked(event, x, y)}
   }

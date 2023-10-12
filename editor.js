@@ -1001,7 +1001,7 @@ function shapeChooser() {
         cell.style.background = 'black'
       } else {
         cell.clicked = false
-        cell.style.background = FOREGROUND
+        cell.style.background = window.FOREGROUND
       }
     }
   }
