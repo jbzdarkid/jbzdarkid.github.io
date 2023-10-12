@@ -21,8 +21,8 @@
     <script>loadHeader('Metapuzzle Solver')</script>
 
     <div style="display: flex; justify-content: space-evenly; align-items: center">
-      <div><table id="chooserTable-left" style="display: none"></table></div>
-      <div><svg id="subpuzzle-left" style="display: none"></svg></div>
+      <div><table id="chooserTable-left" style="display: none; position: relative; z-index: 3"></table></div>
+      <div><svg id="subpuzzle-left" style="display: none; position: relative; z-index: 3"></svg></div>
       <div style="display: flex; flex-direction: column">
         <svg id="metapuzzle"></svg>
         <button style="margin: auto" onpointerdown="solvePuzzle()">Solve</button>
@@ -32,8 +32,8 @@
           <button id="nextSolution-metapuzzle" disabled>&rarr;</button>
         </div>
       </div>
-      <div><table id="chooserTable-right" style="display: none"></table></div>
-      <div><svg id="subpuzzle-right" style="display: none"></svg></div>
+      <div><svg id="subpuzzle-right" style="display: none; position: relative; z-index: 3"></svg></div>
+      <div><table id="chooserTable-right" style="display: none; position: relative; z-index: 3"></table></div>
     </div>
   </body>
 </html>

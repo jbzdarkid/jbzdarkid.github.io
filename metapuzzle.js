@@ -47,6 +47,8 @@ window.onload = function() {
   subpuzzles = [topLeft, topRight, bottomLeft, bottomRight]
   
   activePolyshape = 0
+  drawChooserTable('chooserTable-left')
+  drawChooserTable('chooserTable-right')
 
   drawPuzzle()
 }
@@ -75,12 +77,8 @@ function drawPuzzle() {
   svg.outerHTML = svg.outerHTML // Force a redraw because resizing doesn't work otherwise.
   document.getElementById('topLeft').onpointerdown = function() {
     drawSubpuzzle(subpuzzles[0], 'subpuzzle-left')
-    drawChooserTable('chooserTable-left')
-    /*
-    var anchor = createAnchor()
-    anchor.style.opacity = '0%'
-    anchor.onpointerdown = function(event) {shapeChooserClick(event)}
-    */
+    document.getElementById('chooserTable-left').style.display = null
+    drawAnchor()
   }
 
   var svg = createElement('svg')
@@ -92,6 +90,11 @@ function drawPuzzle() {
   svg.setAttribute('width', 58)
   svg.setAttribute('height', 58)
   svg.outerHTML = svg.outerHTML // Force a redraw because resizing doesn't work otherwise.
+  document.getElementById('topRight').onpointerdown = function() {
+    drawSubpuzzle(subpuzzles[1], 'subpuzzle-right')
+    document.getElementById('chooserTable-right').style.display = null
+    drawAnchor()
+  }
 
   var svg = createElement('svg')
   puzzleElement.appendChild(svg)
@@ -102,6 +105,11 @@ function drawPuzzle() {
   svg.setAttribute('width', 58)
   svg.setAttribute('height', 58)
   svg.outerHTML = svg.outerHTML // Force a redraw because resizing doesn't work otherwise.
+  document.getElementById('bottomLeft').onpointerdown = function() {
+    drawSubpuzzle(subpuzzles[2], 'subpuzzle-left')
+    document.getElementById('chooserTable-left').style.display = null
+    drawAnchor()
+  }
 
   var svg = createElement('svg')
   puzzleElement.appendChild(svg)
@@ -112,6 +120,11 @@ function drawPuzzle() {
   svg.setAttribute('width', 58)
   svg.setAttribute('height', 58)
   svg.outerHTML = svg.outerHTML // Force a redraw because resizing doesn't work otherwise.
+  document.getElementById('bottomRight').onpointerdown = function() {
+    drawSubpuzzle(subpuzzles[3], 'subpuzzle-right')
+    document.getElementById('chooserTable-right').style.display = null
+    drawAnchor()
+  }
 }
 
 function drawSubpuzzle(puzzle, target) {
@@ -160,7 +173,8 @@ function onElementClicked(event, puzzle, x, y) {
     if (cell == null) cell = {'type': 'nega', 'color': 'white'}
     else              cell = null
   } else { // Left click: Toggle polyomino
-    if (cell == null || cell.type != 'poly')    cell = null
+    if (cell != null && cell.type != 'poly')    cell = null
+    else if (cell == null)                      cell = {'type': 'poly', 'color': 'yellow', 'polyshape': activePolyshape}
     else if (cell.polyshape != activePolyshape) cell.polyshape = activePolyshape
     else                                        cell.polyshape = activePolyshape | window.ROTATION_BIT
   }
@@ -171,13 +185,25 @@ function onElementClicked(event, puzzle, x, y) {
 
 function drawChooserTable(target) {
   var chooserTable = document.getElementById(target)
-  chooserTable.style.display = null
   chooserTable.setAttribute('cellspacing', '24px')
   chooserTable.setAttribute('cellpadding', '0px')
   chooserTable.style.padding = 25
   chooserTable.style.background = window.BACKGROUND
   chooserTable.style.border = window.BORDER
-  chooserTable.onpointerdown = function(event) {shapeChooserClick(event, this)}
+  // Clicks inside the green box are non-closing but don't do anything
+  chooserTable.onpointerdown = function(event) {event.stopPropagation()}
+
+  // This needs to be declared outside of the loop
+  var shapeChooserClick = function(event, cell) {
+    cell.clicked = !cell.clicked
+    activePolyshape ^= cell.powerOfTwo
+    if (cell.clicked) {
+      cell.style.background = 'black'
+    } else {
+      cell.style.background = window.FOREGROUND
+    }
+  }
+
   for (var x=0; x<4; x++) {
     var row = chooserTable.insertRow(x)
     for (var y=0; y<4; y++) {
@@ -197,33 +223,23 @@ function drawChooserTable(target) {
   }
 }
 
-function shapeChooserClick(event, cell) {
-  var chooser = document.getElementById('chooserTable')
-  if (cell == null) { // Clicked outside the chooser, close the selection window
-    //var anchor = document.getElementById('anchor')
-    var puzzle = document.getElementById('puzzle')
-
-    if (activePolyshape === 0 || activePolyshape === 1048576) {
-      activePolyshape += 1 // Ensure that at least one square is filled
-    }
-    chooser.parentElement.removeChild(chooser)
-    //anchor.parentElement.removeChild(anchor)
-    puzzle.style.opacity = null
-    puzzle.style.minWidth = null
-    event.stopPropagation()
-    return
-  }
-  // Clicks inside the green box are non-closing
-  if (cell.id == 'chooserTable') {
-    event.stopPropagation()
-    return
-  }
-  cell.clicked = !cell.clicked
-  activePolyshape ^= cell.powerOfTwo
-  if (cell.clicked) {
-    cell.style.background = 'black'
-  } else {
-    cell.style.background = window.FOREGROUND
+function drawAnchor() {
+  var anchor = document.createElement('div')
+  document.body.appendChild(anchor)
+  anchor.id = 'anchor'
+  anchor.style.width = '100%'
+  anchor.style.height = '100%'
+  anchor.style.position = 'absolute'
+  anchor.style.opacity = '0%'
+  anchor.style.background = 'black'
+  anchor.style.top = 0
+  anchor.style.zIndex = 2 // Position in front of the header bar
+  anchor.onpointerdown = function(event) {
+    document.getElementById('subpuzzle-left').style.display = 'none'
+    document.getElementById('chooserTable-left').style.display = 'none'
+    document.getElementById('chooserTable-right').style.display = 'none'
+    document.getElementById('subpuzzle-right').style.display = 'none'
+    anchor.parentElement.removeChild(anchor)
   }
 }
 
