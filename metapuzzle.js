@@ -4,49 +4,58 @@ var metapuzzle = null
 var subpuzzles = []
 var activePolyshape = 0
 window.onload = function() {
-  // TODO: Pull these (instead) from localStorage.
-  metapuzzle = new Puzzle(5, 5)
-  metapuzzle.symmetry = {'x': true}
-  metapuzzle.grid[0][10].start = true
-  metapuzzle.grid[3][3] = {'type': 'poly', 'polyshape': 1, 'color': 'red'}
-  metapuzzle.grid[3][7] = {'type': 'poly', 'polyshape': 1, 'color': 'yellow'}
-  metapuzzle.grid[4][0].end = 'top'
-  metapuzzle.grid[7][3] = {'type': 'poly', 'polyshape': 1, 'color': 'green'}
-  metapuzzle.grid[7][7] = {'type': 'poly', 'polyshape': 1, 'color': 'blue'}
-  metapuzzle.grid[6][0].end = 'top'
-  metapuzzle.grid[10][10].start = true
-  
-  var topLeft = new Puzzle(4, 4)
-  topLeft.grid[0][8].start = true
-  topLeft.grid[3][3] = {'type': 'poly', 'polyshape': 50, 'color': 'yellow'}
-  topLeft.grid[5][3] = {'type': 'nega', 'color': 'white'}
-  topLeft.grid[5][5] = {'type': 'poly', 'polyshape': 35, 'color': 'yellow'}
-  topLeft.grid[8][0].end = 'top'
+  try {
+    metapuzzle = Puzzle.deserialize(window.localStorage.getItem('metapuzzle'))
+    subpuzzles[0] = Puzzle.deserialize(window.localStorage.getItem('subpuzzle0'))
+    subpuzzles[1] = Puzzle.deserialize(window.localStorage.getItem('subpuzzle1'))
+    subpuzzles[2] = Puzzle.deserialize(window.localStorage.getItem('subpuzzle2'))
+    subpuzzles[3] = Puzzle.deserialize(window.localStorage.getItem('subpuzzle3'))
+    activePolyshape = parseInt(window.localStorage.getItem('activePolyshape'))
+  } catch (e) {
+    console.error(e)
 
-  var topRight = new Puzzle(4, 4)
-  topRight.grid[0][0].end = 'top'
-  topRight.grid[1][1] = {'type': 'poly', 'polyshape': 19, 'color': 'yellow'}
-  topRight.grid[1][5] = {'type': 'poly', 'polyshape': 785, 'color': 'yellow'}
-  topRight.grid[3][3] = {'type': 'nega', 'color': 'white'}
-  topRight.grid[8][8].start = true
+    metapuzzle = new Puzzle(5, 5)
+    metapuzzle.symmetry = {'x': true}
+    metapuzzle.grid[0][10].start = true
+    metapuzzle.grid[3][3] = {'type': 'poly', 'polyshape': 1, 'color': 'red'}
+    metapuzzle.grid[3][7] = {'type': 'poly', 'polyshape': 1, 'color': 'yellow'}
+    metapuzzle.grid[4][0].end = 'top'
+    metapuzzle.grid[7][3] = {'type': 'poly', 'polyshape': 1, 'color': 'green'}
+    metapuzzle.grid[7][7] = {'type': 'poly', 'polyshape': 1, 'color': 'blue'}
+    metapuzzle.grid[6][0].end = 'top'
+    metapuzzle.grid[10][10].start = true
 
-  var bottomLeft = new Puzzle(4, 4)
-  bottomLeft.grid[0][8].start = true
-  bottomLeft.grid[1][5] = {'type': 'poly', 'polyshape': 51, 'color': 'yellow'}
-  bottomLeft.grid[3][5] = {'type': 'nega', 'color': 'white'}
-  bottomLeft.grid[3][7] = {'type': 'poly', 'polyshape': 273, 'color': 'yellow'}
-  bottomLeft.grid[8][0].end = 'top'
+    var topLeft = new Puzzle(4, 4)
+    topLeft.grid[0][8].start = true
+    topLeft.grid[3][3] = {'type': 'poly', 'polyshape': 50, 'color': 'yellow'}
+    topLeft.grid[5][3] = {'type': 'nega', 'color': 'white'}
+    topLeft.grid[5][5] = {'type': 'poly', 'polyshape': 35, 'color': 'yellow'}
+    topLeft.grid[8][0].end = 'top'
+    
+    var topRight = new Puzzle(4, 4)
+    topRight.grid[0][0].end = 'top'
+    topRight.grid[1][1] = {'type': 'poly', 'polyshape': 19, 'color': 'yellow'}
+    topRight.grid[1][5] = {'type': 'poly', 'polyshape': 785, 'color': 'yellow'}
+    topRight.grid[3][3] = {'type': 'nega', 'color': 'white'}
+    topRight.grid[8][8].start = true
 
-  var bottomRight = new Puzzle(4, 4)
-  bottomRight.grid[0][0].end = 'top'
-  bottomRight.grid[3][3] = {'type': 'poly', 'polyshape': 1049361, 'color': 'yellow'}
-  bottomRight.grid[5][3] = {'type': 'poly', 'polyshape': 1048851, 'color': 'yellow'}
-  bottomRight.grid[5][5] = {'type': 'nega', 'color': 'white'}
-  bottomRight.grid[8][8].start = true
+    var bottomLeft = new Puzzle(4, 4)
+    bottomLeft.grid[0][8].start = true
+    bottomLeft.grid[1][5] = {'type': 'poly', 'polyshape': 51, 'color': 'yellow'}
+    bottomLeft.grid[3][5] = {'type': 'nega', 'color': 'white'}
+    bottomLeft.grid[3][7] = {'type': 'poly', 'polyshape': 273, 'color': 'yellow'}
+    bottomLeft.grid[8][0].end = 'top'
 
-  subpuzzles = [topLeft, topRight, bottomLeft, bottomRight]
-  
-  activePolyshape = 0
+    var bottomRight = new Puzzle(4, 4)
+    bottomRight.grid[0][0].end = 'top'
+    bottomRight.grid[3][3] = {'type': 'poly', 'polyshape': 1049361, 'color': 'yellow'}
+    bottomRight.grid[5][3] = {'type': 'poly', 'polyshape': 1048851, 'color': 'yellow'}
+    bottomRight.grid[5][5] = {'type': 'nega', 'color': 'white'}
+    bottomRight.grid[8][8].start = true
+
+    subpuzzles = [topLeft, topRight, bottomLeft, bottomRight]
+  }
+
   drawChooserTable('chooserTable-left')
   drawChooserTable('chooserTable-right')
 
@@ -58,6 +67,11 @@ function drawPuzzle() {
 
   window.draw(metapuzzle, 'metapuzzle')
   window.clearAnimations()
+  window.localStorage.setItem('metapuzzle', metapuzzle.serialize())
+  window.localStorage.setItem('subpuzzle0', subpuzzles[0].serialize())
+  window.localStorage.setItem('subpuzzle1', subpuzzles[1].serialize())
+  window.localStorage.setItem('subpuzzle2', subpuzzles[2].serialize())
+  window.localStorage.setItem('subpuzzle3', subpuzzles[3].serialize())
 
   // @Robustness: Maybe I should be cleaning house more thoroughly? A class or something would let me just remove these...
   var puzzleElement = document.getElementById('metapuzzle')
@@ -197,6 +211,7 @@ function drawChooserTable(target) {
   var shapeChooserClick = function(event, cell) {
     cell.clicked = !cell.clicked
     activePolyshape ^= cell.powerOfTwo
+    window.localStorage.setItem('activePolyshape', activePolyshape)
     if (cell.clicked) {
       cell.style.background = 'black'
     } else {
