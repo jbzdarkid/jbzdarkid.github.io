@@ -72,8 +72,5 @@ This is a very straightforwards brute-force solver. We do depth-first recursive 
 Once we hit a wall, we can validate the region we've just enclosed. If it's invalid (or we've just cut off our only exit), there's no reason to keep going.   
 The solution path is saved on the grid to allow for easy re-tracing.
 
-# Contributing
-I'm not accepting contributions at this time, but I am accepting feedback via the main site. Thank you for your interest!
-
 # Legal
 This code is licensed under BSD 3-Clause. You are free to fork this project and play with it, within the limits of [the license](LICENSE.md).
