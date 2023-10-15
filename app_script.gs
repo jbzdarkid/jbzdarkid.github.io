@@ -1,7 +1,7 @@
 function onSubmit(e) {
   // This input is untrusted, so we must validate it before sending it further downstream.
   var puzzle = JSON.parse(e.response.getItemResponses()[0].getResponse().trim())
-  var requestId = JSON.parse(e.response.getItemResponses()[0].getResponse().trim())
+  var requestId = e.response.getItemResponses()[1].getResponse().trim()
   var payload = JSON.stringify({
     'ref': 'master',
     'inputs': {'requestId': requestId, 'puzzle': JSON.stringify(puzzle)},
@@ -20,4 +20,3 @@ function onSubmit(e) {
   var response = UrlFetchApp.fetch('https://api.github.com/repos/jbzdarkid/jbzdarkid.github.io/actions/workflows/67527847/dispatches', options);
   console.info(response.getResponseCode(), response.getContentText())
 }
-
