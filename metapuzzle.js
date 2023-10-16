@@ -221,6 +221,7 @@ function drawSubpuzzle(puzzle, target) {
   }
 }
 
+// TODO: What if you left click with activePolyshape = 0?
 function onElementClicked(event, puzzle, x, y) {
   if (x%2 !== 1 || y%2 !== 1) return
   var cell = puzzle.grid[x][y]
@@ -292,22 +293,25 @@ window.solvePuzzle = function() {
   status.disabled = true
     
   // I couldn't find a way to do this more simply with Promises. I'm sure there is one, but I have only so much mental capacity for learning javascript.
+  status.innerText = 'Solving subpuzzle 1 of 4'
   window.setTimeout(() => {
-    status.innerText = 'Solving subpuzzle 1 of 4'
     var polyshapes0 = getPolyshapes(subpuzzles[0], 'topLeft')
-    window.setTimeout(() => {
-      status.innerText = 'Solving subpuzzle 2 of 4'
-      var polyshapes1 = getPolyshapes(subpuzzles[1], 'topRight')
-      window.setTimeout(() => {
-        status.innerText = 'Solving subpuzzle 3 of 4'
-        var polyshapes2 = getPolyshapes(subpuzzles[2], 'bottomLeft')
-        window.setTimeout(() => {
-          status.innerText = 'Solving subpuzzle 4 of 4'
-          var polyshapes3 = getPolyshapes(subpuzzles[3], 'bottomRight')
-          window.setTimeout(() => {
-            var combinations = polyshapes0.length * polyshapes1.length * polyshapes2.length * polyshapes3.length
-            status.innerText = 'Solving ' + combinations + ' possible metapuzzles'
 
+    status.innerText = 'Solving subpuzzle 2 of 4'
+    window.setTimeout(() => {
+      var polyshapes1 = getPolyshapes(subpuzzles[1], 'topRight')
+
+      status.innerText = 'Solving subpuzzle 3 of 4'
+      window.setTimeout(() => {
+        var polyshapes2 = getPolyshapes(subpuzzles[2], 'bottomLeft')
+
+        status.innerText = 'Solving subpuzzle 4 of 4'
+        window.setTimeout(() => {
+          var polyshapes3 = getPolyshapes(subpuzzles[3], 'bottomRight')
+
+          var combinations = Object.keys(polyshapes0).length * Object.keys(polyshapes1).length * Object.keys(polyshapes2).length * Object.keys(polyshapes3).length
+          status.innerText = 'Solving ' + combinations + ' possible metapuzzles'
+          window.setTimeout(() => {
             var allPaths = []
             for (var polyshape0 in polyshapes0) {
               metapuzzle.grid[3][3].polyshape = polyshape0

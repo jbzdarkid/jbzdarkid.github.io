@@ -474,7 +474,7 @@ window.Puzzle = class {
       for (var x=0; x<this.width; x++) {
         var cell = this.getCell(x, y)
         if (cell == null)                  row[x] = ' '
-        // else if (typeof(cell) == 'number') row[x] = cell
+        else if (cell.type === 'nonce')    row[x] = ' '
         else if (cell.start === true)      row[x] = 'S'
         else if (cell.end != null)         row[x] = 'E'
         else if (cell.type === 'line') {
