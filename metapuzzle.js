@@ -10,9 +10,8 @@ window.onload = function() {
     subpuzzles[1] = Puzzle.deserialize(window.localStorage.getItem('subpuzzle1'))
     subpuzzles[2] = Puzzle.deserialize(window.localStorage.getItem('subpuzzle2'))
     subpuzzles[3] = Puzzle.deserialize(window.localStorage.getItem('subpuzzle3'))
-    activePolyshape = parseInt(window.localStorage.getItem('activePolyshape'))
   } catch (e) {
-    console.error(e)
+    console.error('Deserialization failed, restoring defaults' + e)
 
     metapuzzle = new Puzzle(5, 5)
     metapuzzle.symmetry = {'x': true}
@@ -58,12 +57,55 @@ window.onload = function() {
 
   drawChooserTable('chooserTable-left')
   drawChooserTable('chooserTable-right')
+  activePolyshape = 0
 
   drawPuzzle()
 }
 
+function drawChooserTable(target) {
+  var chooserTable = document.getElementById(target)
+  chooserTable.setAttribute('cellspacing', '24px')
+  chooserTable.setAttribute('cellpadding', '0px')
+  chooserTable.style.padding = 25
+  chooserTable.style.background = window.BACKGROUND
+  chooserTable.style.border = window.BORDER
+  // Clicks inside the green box are non-closing but don't do anything
+  chooserTable.onpointerdown = function(event) {event.stopPropagation()}
+
+  // This needs to be declared outside of the loop
+  var shapeChooserClick = function(event, cell) {
+    cell.clicked = !cell.clicked
+    activePolyshape ^= cell.powerOfTwo
+    if (cell.clicked) {
+      cell.style.background = 'black'
+    } else {
+      cell.style.background = window.FOREGROUND
+    }
+  }
+
+  for (var x=0; x<4; x++) {
+    var row = chooserTable.insertRow(x)
+    for (var y=0; y<4; y++) {
+      var cell = row.insertCell(y)
+      cell.powerOfTwo = 1 << (x + y*4)
+      cell.onpointerdown = function(event) {shapeChooserClick(event, this)}
+      cell.style.width = 58
+      cell.style.height = 58
+      if ((activePolyshape & cell.powerOfTwo) !== 0) {
+        cell.clicked = true
+        cell.style.background = 'black'
+      } else {
+        cell.clicked = false
+        cell.style.background = window.FOREGROUND
+      }
+    }
+  }
+}
+
 function drawPuzzle() {
   document.getElementById('solutionViewer-metapuzzle').style.display = 'none'
+  document.getElementById('solve').innerText = 'Solve'
+  document.getElementById('solve').disabled = false
 
   window.draw(metapuzzle, 'metapuzzle')
   window.clearAnimations()
@@ -197,47 +239,6 @@ function onElementClicked(event, puzzle, x, y) {
   drawPuzzle()
 }
 
-function drawChooserTable(target) {
-  var chooserTable = document.getElementById(target)
-  chooserTable.setAttribute('cellspacing', '24px')
-  chooserTable.setAttribute('cellpadding', '0px')
-  chooserTable.style.padding = 25
-  chooserTable.style.background = window.BACKGROUND
-  chooserTable.style.border = window.BORDER
-  // Clicks inside the green box are non-closing but don't do anything
-  chooserTable.onpointerdown = function(event) {event.stopPropagation()}
-
-  // This needs to be declared outside of the loop
-  var shapeChooserClick = function(event, cell) {
-    cell.clicked = !cell.clicked
-    activePolyshape ^= cell.powerOfTwo
-    window.localStorage.setItem('activePolyshape', activePolyshape)
-    if (cell.clicked) {
-      cell.style.background = 'black'
-    } else {
-      cell.style.background = window.FOREGROUND
-    }
-  }
-
-  for (var x=0; x<4; x++) {
-    var row = chooserTable.insertRow(x)
-    for (var y=0; y<4; y++) {
-      var cell = row.insertCell(y)
-      cell.powerOfTwo = 1 << (x + y*4)
-      cell.onpointerdown = function(event) {shapeChooserClick(event, this)}
-      cell.style.width = 58
-      cell.style.height = 58
-      if ((activePolyshape & cell.powerOfTwo) !== 0) {
-        cell.clicked = true
-        cell.style.background = 'black'
-      } else {
-        cell.clicked = false
-        cell.style.background = window.FOREGROUND
-      }
-    }
-  }
-}
-
 function drawAnchor() {
   var anchor = document.createElement('div')
   document.body.appendChild(anchor)
@@ -262,7 +263,7 @@ function getPolyshapes(puzzle, target) {
   var polyshapes = {}
   
   for (var path of window.solve(puzzle)) {
-    window.drawPath(puzzle, path, target)
+    window.drawPathNoUI(puzzle, path, target)
     for (var region of puzzle.getRegions()) {
       var numberOfPolys = 0
       for (var pos of region) {
@@ -287,41 +288,62 @@ function getPolyshapes(puzzle, target) {
 }
 
 window.solvePuzzle = function() {
-  var polyshapes0 = getPolyshapes(subpuzzles[0], 'topLeft')
-  var polyshapes1 = getPolyshapes(subpuzzles[1], 'topRight')
-  var polyshapes2 = getPolyshapes(subpuzzles[2], 'bottomLeft')
-  var polyshapes3 = getPolyshapes(subpuzzles[3], 'bottomRight')
-  
-  var allPaths = []
-  for (var polyshape0 in polyshapes0) {
-    metapuzzle.grid[3][3].polyshape = polyshape0
-    for (var polyshape1 in polyshapes1) {
-      metapuzzle.grid[7][3].polyshape = polyshape1
-      for (var polyshape2 in polyshapes2) {
-        metapuzzle.grid[3][7].polyshape = polyshape2
-        for (var polyshape3 in polyshapes3) {
-          metapuzzle.grid[7][7].polyshape = polyshape3
-          
-          for (var path of window.solve(metapuzzle)) {
-            allPaths.push([
-              path,
-              polyshapes0[polyshape0],
-              polyshapes1[polyshape1],
-              polyshapes2[polyshape2],
-              polyshapes3[polyshape3],
-            ])
-          }
-        }
-      }
-    }
-  }
-  
-  document.getElementById('solutionViewer-metapuzzle').style.display = null
-  window.showSolution(
-    [metapuzzle, subpuzzles[0], subpuzzles[1], subpuzzles[2], subpuzzles[3]],
-    allPaths,
-    0,
-    ['metapuzzle', 'topLeft', 'topRight', 'bottomLeft', 'bottomRight'])
+  var status = document.getElementById('solve')
+  status.disabled = true
+    
+  // I couldn't find a way to do this more simply with Promises. I'm sure there is one, but I have only so much mental capacity for learning javascript.
+  window.setTimeout(() => {
+    status.innerText = 'Solving subpuzzle 1 of 4'
+    var polyshapes0 = getPolyshapes(subpuzzles[0], 'topLeft')
+    window.setTimeout(() => {
+      status.innerText = 'Solving subpuzzle 2 of 4'
+      var polyshapes1 = getPolyshapes(subpuzzles[1], 'topRight')
+      window.setTimeout(() => {
+        status.innerText = 'Solving subpuzzle 3 of 4'
+        var polyshapes2 = getPolyshapes(subpuzzles[2], 'bottomLeft')
+        window.setTimeout(() => {
+          status.innerText = 'Solving subpuzzle 4 of 4'
+          var polyshapes3 = getPolyshapes(subpuzzles[3], 'bottomRight')
+          window.setTimeout(() => {
+            var combinations = polyshapes0.length * polyshapes1.length * polyshapes2.length * polyshapes3.length
+            status.innerText = 'Solving ' + combinations + ' possible metapuzzles'
+
+            var allPaths = []
+            for (var polyshape0 in polyshapes0) {
+              metapuzzle.grid[3][3].polyshape = polyshape0
+              for (var polyshape1 in polyshapes1) {
+                metapuzzle.grid[7][3].polyshape = polyshape1
+                for (var polyshape2 in polyshapes2) {
+                  metapuzzle.grid[3][7].polyshape = polyshape2
+                  for (var polyshape3 in polyshapes3) {
+                    metapuzzle.grid[7][7].polyshape = polyshape3
+                    
+                    for (var path of window.solve(metapuzzle)) {
+                      allPaths.push([
+                        path,
+                        polyshapes0[polyshape0],
+                        polyshapes1[polyshape1],
+                        polyshapes2[polyshape2],
+                        polyshapes3[polyshape3],
+                      ])
+                    }
+                  }
+                }
+              }
+            }
+            
+            status.innerText = 'Done!'
+            document.getElementById('solutionViewer-metapuzzle').style.display = null
+            window.showSolution(
+              [metapuzzle, subpuzzles[0], subpuzzles[1], subpuzzles[2], subpuzzles[3]],
+              allPaths,
+              0,
+              ['metapuzzle', 'topLeft', 'topRight', 'bottomLeft', 'bottomRight'])
+          }, 0)
+        }, 0)
+      }, 0)
+    }, 0)
+  }, 0)
 }
 
 })

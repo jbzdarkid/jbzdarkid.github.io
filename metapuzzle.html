@@ -25,7 +25,7 @@
       <div><svg id="subpuzzle-left" style="display: none; position: relative; z-index: 3"></svg></div>
       <div style="display: flex; flex-direction: column">
         <svg id="metapuzzle"></svg>
-        <button style="margin: auto" onpointerdown="solvePuzzle()">Solve</button>
+        <button id="solve" style="margin: auto; z-index: 3" onpointerdown="solvePuzzle()">Solve</button>
         <div id="solutionViewer-metapuzzle" style="display: none">
           <button id="previousSolution-metapuzzle" disabled>&larr;</button>
           <label id="solutionCount-metapuzzle" style="padding: 6px">0 of 0</label>
