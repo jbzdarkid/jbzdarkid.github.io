@@ -686,7 +686,7 @@ function sendHttpRequest(verb, url, timeoutSeconds, data, onResponse) {
 window.addEventListener('error', function(event) {
   console.error('Please disregard the following CORS exception. It is expected and the request will succeed regardless.')
   var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSeXwtuKTbhXlQ5dUYtGjMQtkseFMBFka0jbBeOwd8tKiJb_ug/formResponse'
-  window.fireAndForget('POST', formUrl, 'entry.909077667=' + encodeURIComponent(event.error) + '&entry.2145672989=' + encodeURIComponent(event.filename) + '%20:' + event.lineno)
+  window.fireAndForget('POST', formUrl, 'entry.909077667=' + encodeURIComponent(event.error) + '&entry.2145672989=' + encodeURIComponent(event.filename + ': ' + event.lineno))
 })
 
 function sendFeedback(feedback) {
