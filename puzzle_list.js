@@ -1,4 +1,7 @@
 window.puzzleList = [
+"ED65C9C4?",
+"3D795EC7sun-2",
+"CAA9669Csun",
 "C29CAFEFStepMania x The Witness 2D",
 "6AE75499StepMania x The Witness 2C",
 "A992DCEFA",
