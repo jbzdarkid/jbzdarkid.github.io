@@ -208,6 +208,7 @@ function reloadPuzzle() {
 window.createEmptyPuzzle = function() {
   var style = document.getElementById('puzzleStyle').value
   console.log('Creating new puzzle with style', style)
+  var newPuzzle = null
 
   switch (style) {
   default:
@@ -215,13 +216,13 @@ window.createEmptyPuzzle = function() {
     style = 'Default'
     // Intentional fall-through
   case 'Default':
-    var newPuzzle = new Puzzle(4, 4)
+    newPuzzle = new Puzzle(4, 4)
     newPuzzle.grid[0][8].start = true
     newPuzzle.grid[8][0].end = 'right'
     break;
 
   case 'Horizontal Symmetry':
-    var newPuzzle = new Puzzle(4, 4)
+    newPuzzle = new Puzzle(4, 4)
     newPuzzle.symmetry = {'x':true, 'y':false}
     newPuzzle.grid[0][8].start = true
     newPuzzle.grid[8][8].start = true
@@ -230,7 +231,7 @@ window.createEmptyPuzzle = function() {
     break;
 
   case 'Vertical Symmetry':
-    var newPuzzle = new Puzzle(4, 4)
+    newPuzzle = new Puzzle(4, 4)
     newPuzzle.symmetry = {'x':false, 'y':true}
     newPuzzle.grid[0][0].start = true
     newPuzzle.grid[0][8].start = true
@@ -239,7 +240,7 @@ window.createEmptyPuzzle = function() {
     break;
 
   case 'Rotational Symmetry':
-    var newPuzzle = new Puzzle(4, 4)
+    newPuzzle = new Puzzle(4, 4)
     newPuzzle.symmetry = {'x':true, 'y':true}
     newPuzzle.grid[0][0].start = true
     newPuzzle.grid[8][8].start = true
@@ -248,13 +249,13 @@ window.createEmptyPuzzle = function() {
     break;
 
   case 'Pillar':
-    var newPuzzle = new Puzzle(6, 5, true)
+    newPuzzle = new Puzzle(6, 5, true)
     newPuzzle.grid[6][10].start = true
     newPuzzle.grid[6][0].end = 'top'
     break;
 
   case 'Pillar (H Symmetry)':
-    var newPuzzle = new Puzzle(6, 6, true)
+    newPuzzle = new Puzzle(6, 6, true)
     newPuzzle.symmetry = {'x':true, 'y':false}
     newPuzzle.grid[2][12].start = true
     newPuzzle.grid[4][12].start = true
@@ -263,7 +264,7 @@ window.createEmptyPuzzle = function() {
     break;
 
   case 'Pillar (V Symmetry)':
-    var newPuzzle = new Puzzle(6, 6, true)
+    newPuzzle = new Puzzle(6, 6, true)
     newPuzzle.symmetry = {'x':false, 'y':true}
     newPuzzle.grid[2][12].start = true
     newPuzzle.grid[8][0].start = true
@@ -272,7 +273,7 @@ window.createEmptyPuzzle = function() {
     break;
 
   case 'Pillar (R Symmetry)':
-    var newPuzzle = new Puzzle(6, 6, true)
+    newPuzzle = new Puzzle(6, 6, true)
     newPuzzle.symmetry = {'x':true, 'y':true}
     newPuzzle.grid[2][0].start = true
     newPuzzle.grid[4][12].start = true
@@ -281,7 +282,7 @@ window.createEmptyPuzzle = function() {
     break;
 
   case 'Pillar (Two Lines)':
-    var newPuzzle = new Puzzle(6, 6, true)
+    newPuzzle = new Puzzle(6, 6, true)
     newPuzzle.symmetry = {'x':false, 'y':false}
     newPuzzle.grid[2][12].start = true
     newPuzzle.grid[8][12].start = true
@@ -388,7 +389,7 @@ window.onload = function() {
 
   var puzzleName = document.getElementById('puzzleName')
 
-  puzzleName.onfocus = function(event) {
+  puzzleName.onfocus = function() {
     // On initial focus, select all text within the box
     window.getSelection().removeAllRanges()
     var range = document.createRange()
@@ -413,7 +414,7 @@ window.onload = function() {
   // Use oninput for backup processing
   // You should always use a conditional here, because every time you modify the text,
   // the cursor resets to the start of the string.
-  puzzleName.oninput = function(event) {
+  puzzleName.oninput = function() {
     // Prevent newlines in titles
     if (this.innerText.includes('\n')) this.innerText = this.innerText.replace('\n', '')
     if (this.innerText.includes('\r')) this.innerText = this.innerText.replace('\r', '')
@@ -424,7 +425,7 @@ window.onload = function() {
   }
 
   // Use onblur for final name confirmation.
-  puzzleName.onblur = function(event) {
+  puzzleName.onblur = function() {
     // Remove leading/trailing whitespace
     this.innerText = this.innerText.trim()
     this.innerText = this.innerText.replace('\u200B', '')
@@ -501,10 +502,10 @@ window.publishPuzzle = function() {
   publish.innerText = 'Sending puzzle to the server...'
 
   window.httpGetLoop('https://api.github.com/repos/jbzdarkid/jbzdarkid.github.io/actions/runs?per_page=10', 30, function(response) {
-    var runs = response['workflow_runs']
+    var runs = response.workflow_runs
     for (var run of runs) {
-      if (run['name'].includes(requestId)) {
-        return run['url']
+      if (run.name.includes(requestId)) {
+        return run.url
       }
     }
 
@@ -515,17 +516,17 @@ window.publishPuzzle = function() {
     publish.innerText = 'Waiting for the server to validate your puzzle...'
     window.httpGetLoop(runUrl, 60, function(response) {
       // Request is still pending
-      var status = response['status']
+      var status = response.status
       if (['in_progress', 'queued', 'requested', 'waiting', 'pending'].includes(status)) return null
-      else if (status == 'completed') return response['jobs_url']
+      else if (status == 'completed') return response.jobs_url
       else return null
     }, /* onError */ function() {
       publish.innerText = 'Error: Validation failed'
     }, /* onSuccess */ function(jobsUrl) {
       window.httpGetLoop(jobsUrl, 10, function(response) {
-        var publishStep = response['jobs'][0]['steps'][3]
-        if (publishStep['conclusion'] == 'success') { // This is the only valid exit state.
-          return publishStep['name'].substring(18) // Strip off "Publishing puzzle "
+        var publishStep = response.jobs[0].steps[3]
+        if (publishStep.conclusion == 'success') { // This is the only valid exit state.
+          return publishStep.name.substring(18) // Strip off "Publishing puzzle "
         }
         
         return '' // Signal value
@@ -1050,20 +1051,20 @@ function resizePuzzle(dx, dy, drag) {
 
   if (puzzle.getSizeError(newWidth, newHeight) != null) return false
 
-  if (puzzle.pillar && puzzle.symmetry != null) {
-    // Symmetry pillar puzzles always expand horizontally in both directions.
-    var xOffset = dx / 2
-  } else {
-    var xOffset = (drag == 'left' ? dx : 0)
-  }
+  var xOffset = (drag == 'left' ? dx : 0)
   var yOffset = (drag == 'top' ? dy : 0)
-
+  // Symmetry pillar puzzles always expand horizontally in both directions.
+  if (puzzle.pillar && puzzle.symmetry != null) xOffset /= 2
   console.log('Shifting contents by', xOffset, yOffset, 'with drag', drag)
 
   // Determine if the cell at x, y should be copied from the original.
   // For non-symmetrical puzzles, the answer is always 'no' -- all elements should be directly copied across.
-  // For non-pillar symmetry puzzles, we should persist all elements on the half the puzzle which is furthest from the dragged edge. This will keep the puzzle contents stable as we add a row. The exception to this rule is when we expand: We are creating one new row or column which has no source location.
-  // For example, a horizontal puzzle with width=3 gets expanded to newWidth=5 (from the right edge), the column at x=2 is new -- it is not being copied nor persisted. This is especially apparent in rotational symmetry puzzles.
+  // For non-pillar symmetry puzzles, we should persist all elements on the half the puzzle which is furthest from the dragged edge.
+  // This will keep the puzzle contents stable as we add a row.
+  //
+  // The exception to this rule is when we expand: We are creating one new row or column which has no source location.
+  // For example, a horizontal puzzle with width=3 gets expanded to newWidth=5 (from the right edge), the column at x=2 is new --
+  // it is not being copied nor persisted. This is especially apparent in rotational symmetry puzzles.
   var PERSIST = 0
   var COPY = 1
   var CLEAR = 2
