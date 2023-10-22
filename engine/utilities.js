@@ -16,6 +16,16 @@ Event.prototype.movementY = Event.prototype.movementY || Event.prototype.mozMove
 Event.prototype.isRightClick = function() {
   return this.which === 3 || (this.touches && this.touches.length > 1)
 }
+Element.prototype.disable = function() {
+  this.disabled = true
+  this.style.pointerEvents = 'none'
+  this.class = 'noselect'
+}
+Element.prototype.enable = function() {
+  this.disabled = false
+  this.style.pointerEvents = null
+  this.class = null
+}
 Object.defineProperty(Event.prototype, 'position', {
   'get': function() {
     return {
