@@ -373,8 +373,8 @@ function generatePuzzlesAsync(puzzlesToGenerate, i, finalCallback) {
 
     // Add a cover to panels, so that they can "power on" in sequence.
     var panelCover = window.createElement('rect')
-    panelCover.setAttribute('width', panel.style.width)
-    panelCover.setAttribute('height', panel.style.height)
+    panelCover.setAttribute('width', panel.getAttribute('width'))
+    panelCover.setAttribute('height', panel.getAttribute('height'))
     panelCover.setAttribute('opacity', 1)
     panelCover.setAttribute('fill', window.BORDER)
     panelCover.setAttribute('style', 'pointer-events: all')
@@ -384,7 +384,7 @@ function generatePuzzlesAsync(puzzlesToGenerate, i, finalCallback) {
     // Doors need a second cover to simulate "sliding open"
     if (puzzleName.includes('door')) {
       var panelCover2 = window.createElement('rect')
-      panelCover2.setAttribute('width', panel.style.width)
+      panelCover2.setAttribute('width', panel.getAttribute('width'))
       panelCover2.setAttribute('height', '100%')
       panelCover2.setAttribute('opacity', 1)
       panelCover2.setAttribute('fill', window.BACKGROUND)
