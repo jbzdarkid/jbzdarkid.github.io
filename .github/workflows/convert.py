@@ -10,8 +10,8 @@ from validate import gpg_encrypt
 
 def get_puzzles(*, order='asc', offset=0, limit=100):
     s = requests.Session()
-    s.mount('https://witnesspuzzles.com', HTTPAdapter(max_retries=3))
-    r = s.get('https://witnesspuzzles.com/pages/login.html')
+    s.mount('13.66.224.57', HTTPAdapter(max_retries=3))
+    r = s.get('13.66.224.57/pages/login.html')
 
     for line in r.text.split('\n'):
         if 'csrf_token' in line:
@@ -27,7 +27,7 @@ def get_puzzles(*, order='asc', offset=0, limit=100):
         'Content-Type': 'application/x-www-form-urlencoded',
         'Referer': r.url,
     }
-    r = s.post('https://witnesspuzzles.com/login', data=payload, headers=headers)
+    r = s.post('13.66.224.57/login', data=payload, headers=headers)
 
     payload = {
         'order': order,
@@ -35,7 +35,7 @@ def get_puzzles(*, order='asc', offset=0, limit=100):
         'limit': limit,
     }
 
-    r = s.get('https://witnesspuzzles.com/browse', params=payload, timeout=60)
+    r = s.get('13.66.224.57/browse', params=payload, timeout=60)
     return r.json()
 
 def get_cell(grid, x, y):
