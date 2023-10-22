@@ -143,7 +143,8 @@ window.solve = function(p, partialCallback, finalCallback) {
 
       for (var pos of startPoints) {
         // ;(function(a){}(a))
-        // This syntax is used to forcibly copy all of the arguments
+        // This syntax is used to forcibly copy arguments which are otherwise part of the loop.
+        // Note that we don't need to copy objects, just value types.
         ;(function(pos) {
           newTasks.push(function() {
             path = [pos]
@@ -254,9 +255,10 @@ function solveLoop(x, y, numEndpoints, earlyExitData) {
     if (numEndpoints === 0) return tailRecurse(x, y)
   }
 
+  var newEarlyExitData = null
   if (doPruning) {
     var isEdge = x <= 0 || y <= 0 || x >= puzzle.width - 1 || y >= puzzle.height - 1
-    var newEarlyExitData = [
+    newEarlyExitData = [
       earlyExitData[0] || (!isEdge && earlyExitData[2].isEdge), // Have we ever left an edge?
       earlyExitData[2],                                         // The position before our current one
       {'x':x, 'y':y, 'isEdge':isEdge}                           // Our current position.
@@ -280,8 +282,6 @@ function solveLoop(x, y, numEndpoints, earlyExitData) {
         if (numEndpoints === 0) return tailRecurse(x, y)
       }
     }
-  } else {
-    var newEarlyExitData = earlyExitData // Unused, just make a cheap copy.
   }
 
   if (SOLVE_SYNC || path.length > SYNC_THRESHOLD) {

@@ -48,7 +48,6 @@ function getRotations(polyshape) {
 // 90 degree rotations of the polyomino
 window.rotatePolyshape = function(polyshape, count=1) {
   var rotations = getRotations(polyshape | window.ROTATION_BIT)
-  if (rotations[count % 4] === 0) debugger
   return rotations[count % 4]
 }
 

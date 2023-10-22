@@ -715,13 +715,6 @@ function placeRandomCornerDots(puzzle, count, dotColor) {
   for (var cell of cells) puzzle.grid[cell.x][cell.y].dot = dotColor
 }
 
-function placeRandomEdgeDots(puzzle, count, dotColor) {
-  var cells = getCells(puzzle, popRandomElement, count, function(x, y) {
-    return (x%2 !== y%2 && puzzle.grid[x][y].dot == null)
-  })
-  for (var cell of cells) puzzle.grid[cell.x][cell.y].dot = dotColor
-}
-
 function randomTriangle() {
   var rng = randInt(100)
   if (rng >=  0 && rng <= 50) return 1 // 51%

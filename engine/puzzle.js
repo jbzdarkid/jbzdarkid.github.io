@@ -372,11 +372,10 @@ window.Puzzle = class {
     for (var x=0; x<this.width; x++) {
       var savedRow = savedGrid[x]
       var row = new Array(this.height)
+      var skip = 1
       if (x%2 === 1) { // Cells are always part of the region
         for (var y=1; y<this.height; y+=2) row[y] = MASKED_INB_COUNT
-        var skip = 2 // Skip these cells during iteration
-      } else {
-        var skip = 1
+        skip = 2 // Skip these cells during iteration
       }
       for (var y=0; y<this.height; y+=skip) {
         var cell = savedRow[y]

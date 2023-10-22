@@ -251,7 +251,7 @@ function drawAnchor() {
   anchor.style.background = 'black'
   anchor.style.top = 0
   anchor.style.zIndex = 2 // Position in front of the header bar
-  anchor.onpointerdown = function(event) {
+  anchor.onpointerdown = function() {
     document.getElementById('subpuzzle-left').style.display = 'none'
     document.getElementById('chooserTable-left').style.display = 'none'
     document.getElementById('chooserTable-right').style.display = 'none'

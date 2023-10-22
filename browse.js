@@ -11,8 +11,8 @@ window.onload = function() {
 var offset = 0
 function addPuzzles(count) {
   var table = document.getElementById('puzzleTable')
-  var initial_offset = offset
-  for (; offset < initial_offset + count; offset++) {
+  var initialOffset = offset
+  for (; offset < initialOffset + count; offset++) {
     var puzzleData = window.puzzleList[offset] // Concatenation of display hash and title.
     if (puzzleData == null || puzzleData.length < 8) return false
     var displayHash = puzzleData.substring(0, 8)

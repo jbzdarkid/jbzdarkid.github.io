@@ -422,7 +422,7 @@ window.trace = function(event, puzzle, pos, start, symStart=null) {
       window.PLAY_SOUND('abort')
       clearGrid(data.svg, puzzle)
     } else { // Exit lock but allow resuming from the cursor (Desktop only)
-      data.cursor.onpointerdown = function(event) {
+      data.cursor.onpointerdown = function() {
         if (start.parentElement !== data.svg) return // Another puzzle is live, so data is gone
         data.tracing = true
         hookMovementEvents(start)
