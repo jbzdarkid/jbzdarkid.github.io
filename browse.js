@@ -25,8 +25,7 @@ function addPuzzles(count) {
     var img = document.createElement('img')
     cell.appendChild(img)
     img.style.maxHeight = '200px'
-    img.src = 'https://witnesspuzzles-images.s3.amazonaws.com/' + displayHash.substring(0, 2) + '/' + displayHash + '.png'
-    // img.src = 'images/' + displayHash + '.png'
+    img.src = 'images/' + displayHash + '.png'
 
     cell.appendChild(document.createElement('br'))
 
