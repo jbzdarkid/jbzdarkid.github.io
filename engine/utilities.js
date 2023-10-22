@@ -149,7 +149,7 @@ l('@keyframes line-success {to {fill: ' + window.LINE_SUCCESS + ';}}')
 l('@keyframes line-fail {to {fill: ' + window.LINE_FAIL + ';}}')
 l('@keyframes error {to {fill: red;}}')
 l('@keyframes fade {to {opacity: 0.35;}}')
-l('@keyframes start-grow {from {r:12;} to {r: 24;}}')
+l('@keyframes start-grow {from {r:12;} to {r:24;}}')
 // Neutral button style
 l('button {')
 l('  background-color: ' + window.ALT_BACKGROUND + ';')
@@ -475,6 +475,10 @@ window.showSolution = function(puzzle, paths, num, suffix) {
     var previousSolution = document.getElementById('previousSolution')
     var solutionCount = document.getElementById('solutionCount')
     var nextSolution = document.getElementById('nextSolution')
+  } else if (suffix instanceof Array) {
+    var previousSolution = document.getElementById('previousSolution-' + suffix[0])
+    var solutionCount = document.getElementById('solutionCount-' + suffix[0])
+    var nextSolution = document.getElementById('nextSolution-' + suffix[0])
   } else {
     var previousSolution = document.getElementById('previousSolution-' + suffix)
     var solutionCount = document.getElementById('solutionCount-' + suffix)
@@ -518,10 +522,19 @@ window.showSolution = function(puzzle, paths, num, suffix) {
   }
 
   if (paths[num] != null) {
-    // Save the current path on the puzzle object (so that we can pass it along with publishing)
-    puzzle.path = paths[num]
-    // Draws the given path, and also updates the puzzle to have path annotations on it.
-    window.drawPath(puzzle, paths[num], suffix)
+    if (puzzle instanceof Array) { // Special case for multiple related panels
+      for (var i = 0; i < puzzle.length; i++) {
+        // Save the current path on the puzzle object (so that we can pass it along with publishing)
+        puzzle.path = paths[num][i]
+        // Draws the given path, and also updates the puzzle to have path annotations on it.
+        window.drawPath(puzzle[i], paths[num][i], suffix[i])
+      }
+    } else { // Default case for a single panel
+      // Save the current path on the puzzle object (so that we can pass it along with publishing)
+      puzzle.path = paths[num]
+      // Draws the given path, and also updates the puzzle to have path annotations on it.
+      window.drawPath(puzzle, paths[num], suffix)
+    }
   }
 }
 
@@ -673,7 +686,7 @@ function sendHttpRequest(verb, url, timeoutSeconds, data, onResponse) {
 window.addEventListener('error', function(event) {
   console.error('Please disregard the following CORS exception. It is expected and the request will succeed regardless.')
   var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSeXwtuKTbhXlQ5dUYtGjMQtkseFMBFka0jbBeOwd8tKiJb_ug/formResponse'
-  window.fireAndForget('POST', formUrl, 'entry.909077667=' + encodeURIComponent(event.error) + '&entry.2145672989=' + encodeURIComponent(event.filename) + '%20:' + event.lineno)
+  window.fireAndForget('POST', formUrl, 'entry.909077667=' + encodeURIComponent(event.error) + '&entry.2145672989=' + encodeURIComponent(event.filename + ': ' + event.lineno))
 })
 
 function sendFeedback(feedback) {

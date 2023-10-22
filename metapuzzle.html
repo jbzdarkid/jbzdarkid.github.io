@@ -1,0 +1,39 @@
+<html xmlns="http://www.w3.org/2000/xhtml">
+  <head>
+    <meta property="og:title" content="Metapuzzle Solver"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Witness Puzzles"/>
+    <meta name="robots" content="nosnippet"/>
+    <link rel="stylesheet" type="text/css" href="./data/style.css" id="stylesheet">
+    <link rel="icon" type="image/png" href="./data/favicon.png">
+    <script type="text/javascript" src="./engine/utilities.js"></script>
+    <script type="text/javascript" src="./engine/svg.js"></script>
+    <script async type="text/javascript" src="./engine/polyominos.js"></script>
+    <script async type="text/javascript" src="./engine/puzzle.js"></script>
+    <script async type="text/javascript" src="./engine/solve.js"></script>
+    <script async type="text/javascript" src="./engine/validate.js"></script>
+    <script async type="text/javascript" src="./engine/display2.js"></script>
+    <script async type="text/javascript" src="./engine/trace2.js"></script>
+    <script async type="text/javascript" src="./metapuzzle.js"></script>
+    <title>Metapuzzle Solver</title>
+  </head>
+  <body>
+    <script>loadHeader('Metapuzzle Solver')</script>
+
+    <div style="display: flex; justify-content: space-evenly; align-items: center">
+      <div><table id="chooserTable-left" style="display: none; position: relative; z-index: 3"></table></div>
+      <div><svg id="subpuzzle-left" style="display: none; position: relative; z-index: 3"></svg></div>
+      <div style="display: flex; flex-direction: column">
+        <svg id="metapuzzle"></svg>
+        <button id="solve" style="margin: auto; z-index: 3" onpointerdown="solvePuzzle()">Solve</button>
+        <div id="solutionViewer-metapuzzle" style="display: none">
+          <button id="previousSolution-metapuzzle" disabled>&larr;</button>
+          <label id="solutionCount-metapuzzle" style="padding: 6px">0 of 0</label>
+          <button id="nextSolution-metapuzzle" disabled>&rarr;</button>
+        </div>
+      </div>
+      <div><svg id="subpuzzle-right" style="display: none; position: relative; z-index: 3"></svg></div>
+      <div><table id="chooserTable-right" style="display: none; position: relative; z-index: 3"></table></div>
+    </div>
+  </body>
+</html>

@@ -351,6 +351,47 @@ window.cancelSolving = function() {
   tasks = []
 }
 
+// Only modifies the puzzle object (does not do any graphics updates). Used by metapuzzle.js to determine subpuzzle polyshapes.
+window.drawPathNoUI = function(puzzle, path) {
+  puzzle.clearLines()
+
+  // Extract the start data from the first path element
+  var x = path[0].x
+  var y = path[0].y
+  var cell = puzzle.getCell(x, y)
+  if (cell == null || cell.start !== true) throw Error('Path does not begin with a startpoint: ' + JSON.stringify(cell))
+
+  for (var i=1; i<path.length; i++) {
+    var cell = puzzle.getCell(x, y)
+
+    var dx = 0
+    var dy = 0
+    if (path[i] === PATH_NONE) { // Reached an endpoint, move into it
+      console.debug('Reached endpoint')
+      if (i != path.length-1) throw Error('Path contains ' + (path.length - 1 - i) + ' trailing directions')
+      break
+    } else if (path[i] === PATH_LEFT) dx = -1
+    else if (path[i] === PATH_RIGHT)  dx = +1
+    else if (path[i] === PATH_TOP)    dy = -1
+    else if (path[i] === PATH_BOTTOM) dy = +1
+    else throw Error('Path element ' + (i-1) + ' was not a valid path direction: ' + path[i])
+
+    x += dx
+    y += dy
+    // Set the cell color
+    if (puzzle.symmetry == null) {
+      cell.line = window.LINE_BLACK
+    } else {
+      cell.line = window.LINE_BLUE
+      var sym = puzzle.getSymmetricalPos(x, y)
+      puzzle.updateCell2(sym.x, sym.y, 'line', window.LINE_YELLOW)
+    }
+  }
+
+  var cell = puzzle.getCell(x, y)
+  if (cell == null || cell.end == null) throw Error('Path does not end at an endpoint: ' + JSON.stringify(cell))
+}
+
 // Uses trace2 to draw the path on the grid, logs a graphical representation of the solution,
 // and also modifies the puzzle to contain the solution path.
 window.drawPath = function(puzzle, path, target='puzzle') {
@@ -361,6 +402,8 @@ window.drawPath = function(puzzle, path, target='puzzle') {
   window.deleteElementsByClassName(puzzleElem, 'line-2')
   window.deleteElementsByClassName(puzzleElem, 'line-3')
   puzzle.clearLines()
+  
+  if (path == null || path.length === 0) return // "drawing" an empty path is a shorthand for clearing the grid.
 
   // Extract the start data from the first path element
   var x = path[0].x

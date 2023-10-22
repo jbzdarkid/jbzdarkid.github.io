@@ -976,7 +976,7 @@ function shapeChooser() {
   chooser.style.width = '100%'
   chooser.style.height = '100%'
   chooser.style.minWidth = '400px'
-  chooser.style.zIndex = 1 // Position in front of the puzzle
+  chooser.style.zIndex = 3 // Position in front of the anchor
   chooser.onpointerdown = function(event) {shapeChooserClick(event)}
 
   var chooserTable = document.createElement('table')
@@ -1001,7 +1001,7 @@ function shapeChooser() {
         cell.style.background = 'black'
       } else {
         cell.clicked = false
-        cell.style.background = FOREGROUND
+        cell.style.background = window.FOREGROUND
       }
     }
   }
