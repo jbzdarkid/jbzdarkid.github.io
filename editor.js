@@ -360,7 +360,8 @@ window.setSolveMode = function(value) {
   solveMode.checked = value
   solveMode.style.background = (solveMode.checked ? window.BORDER : window.PAGE_BACKGROUND)
 
-  if (value === true) {
+  if (value === true) { // Enabling manual solve mode
+    document.getElementById('publish').disable()
     window.TRACE_COMPLETION_FUNC = function(solution, path) {
       puzzle = solution
       puzzle.path = path
