@@ -114,20 +114,20 @@ window.generate = function(scene) {
   var generateNew = document.getElementById('generateNew')
   var showSolutions = document.getElementById('showSolutions')
 
-  generateNew.disabled = true
+  generateNew.disable()
   generateNew.innerText = 'Generating:'
-  challengeType.disabled = true // Changing type while solving is very damaging
-  showSolutions.disabled = true // Meaningless until regenerated
+  challengeType.disable() // Changing type while solving is very damaging
+  showSolutions.disable() // Meaningless until regenerated
 
   generatePuzzlesAsync(puzzlesToGenerate, 0, function() {
     setLogLevel('info')
     document.getElementById('progressBox').style.display = 'none'
     console.info('All done!')
 
-    generateNew.disabled = false
+    generateNew.enable()
     generateNew.innerText = 'Generate New'
-    challengeType.disabled = false
-    showSolutions.disabled = false
+    challengeType.enable()
+    showSolutions.enable()
 
     showScene(scene) // From outer scope
   })

@@ -105,7 +105,7 @@ function drawChooserTable(target) {
 function drawPuzzle() {
   document.getElementById('solutionViewer-metapuzzle').style.display = 'none'
   document.getElementById('solve').innerText = 'Solve'
-  document.getElementById('solve').disabled = false
+  document.getElementById('solve').enable()
 
   window.draw(metapuzzle, 'metapuzzle')
   window.clearAnimations()
@@ -290,7 +290,7 @@ function getPolyshapes(puzzle, target) {
 
 window.solvePuzzle = function() {
   var status = document.getElementById('solve')
-  status.disabled = true
+  status.disable()
     
   // I couldn't find a way to do this more simply with Promises. I'm sure there is one, but I have only so much mental capacity for learning javascript.
   status.innerText = 'Solving subpuzzle 1 of 4'

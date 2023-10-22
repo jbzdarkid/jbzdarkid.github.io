@@ -497,8 +497,8 @@ window.showSolution = function(puzzle, paths, num, suffix) {
 
   if (paths.length === 0) { // 0 paths, arrows are useless
     solutionCount.innerText = '0 of 0'
-    previousSolution.disabled = true
-    nextSolution.disabled = true
+    previousSolution.disable()
+    nextSolution.disable()
     return
   }
 
@@ -508,13 +508,13 @@ window.showSolution = function(puzzle, paths, num, suffix) {
   if (paths.length === 1) { // 1 path, arrows are useless
     solutionCount.innerText = '1 of 1'
     if (paths.length >= window.MAX_SOLUTIONS) solutionCount.innerText += '+'
-    previousSolution.disabled = true
-    nextSolution.disabled = true
+    previousSolution.disable()
+    nextSolution.disable()
   } else {
     solutionCount.innerText = (num + 1) + ' of ' + paths.length
     if (paths.length >= window.MAX_SOLUTIONS) solutionCount.innerText += '+'
-    previousSolution.disabled = false
-    nextSolution.disabled = false
+    previousSolution.enable()
+    nextSolution.enable()
     previousSolution.onpointerdown = function(event) {
       if (event.shiftKey) {
         window.showSolution(puzzle, paths, num - 10, suffix)

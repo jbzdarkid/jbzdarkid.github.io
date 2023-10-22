@@ -29,12 +29,12 @@ function readPuzzle() {
   var puzzleList = readPuzzleList()
   if (puzzleList.length === 0) {
     console.log('No puzzles left, clearing storage and creating new one')
-    document.getElementById('loadButton').disabled = true
-    document.getElementById('deleteButton').disabled = true
+    document.getElementById('loadButton').disable()
+    document.getElementById('deleteButton').disable()
     createEmptyPuzzle()
     return
   } else if (puzzleList.length === 1) {
-    document.getElementById('loadButton').disabled = true
+    document.getElementById('loadButton').disable()
   }
 
   try {
@@ -58,8 +58,8 @@ function writeNewPuzzle(newPuzzle) {
   writePuzzleList(puzzleList)
 
   if (puzzleList.length > 1) {
-    document.getElementById('loadButton').disabled = false
-    document.getElementById('deleteButton').disabled = false
+    document.getElementById('loadButton').enable()
+    document.getElementById('deleteButton').enable()
   }
 
   puzzle = newPuzzle
@@ -73,7 +73,7 @@ function writePuzzle(newPuzzle) {
   console.log('Writing puzzle', puzzle)
   var puzzleToSave = puzzle.clone()
   puzzleToSave.clearLines()
-  if (!newPuzzle) document.getElementById('deleteButton').disabled = false
+  if (!newPuzzle) document.getElementById('deleteButton').enable()
 
   var puzzleList = readPuzzleList()
   // @Robustness: Some intelligence about showing day / month / etc depending on date age
@@ -87,11 +87,11 @@ window.deletePuzzle = function() {
   if (document.getElementById('deleteButton').disabled) return
   var puzzleList = readPuzzleList()
   if (puzzleList.length === 0) {
-    document.getElementById('deleteButton').disabled = true
+    document.getElementById('deleteButton').disable()
     return
   }
   if (puzzleList.length === 1) {
-    document.getElementById('loadButton').disabled = true
+    document.getElementById('loadButton').disable()
   }
   var puzzleName = puzzleList.shift()
   console.log('Removing puzzle', puzzleName)
@@ -153,26 +153,26 @@ function reloadPuzzle() {
   document.getElementById('puzzleName').innerText = puzzle.name
   document.getElementById('solutionViewer').style.display = 'none'
 
-  document.getElementById('solveAuto').disabled = false
+  document.getElementById('solveAuto').enable()
   if (puzzle.symmetry != null) {
     // 6x6 is the max for symmetry puzzles
     if (puzzle.width > 13 || puzzle.height > 13) {
-      document.getElementById('solveAuto').disabled = true
+      document.getElementById('solveAuto').disable()
     }
   } else if (puzzle.pillar === true) {
     // 5x6 is the max for non-symmetry, pillar puzzles
     if (puzzle.width > 13 || puzzle.height > 11) {
-      document.getElementById('solveAuto').disabled = true
+      document.getElementById('solveAuto').disable()
     }
   } else {
     // 6x6 is the max for non-symmetry, non-pillar puzzles
     if (puzzle.width > 13 || puzzle.height > 13) {
-      document.getElementById('solveAuto').disabled = true
+      document.getElementById('solveAuto').disable()
     }
   }
 
   var publish = document.getElementById('publish')
-  publish.disabled = true
+  publish.disable()
   publish.innerText = 'Publish'
   publish.onpointerdown = publishPuzzle
   currentPublishRequest = null
@@ -364,7 +364,7 @@ window.setSolveMode = function(value) {
     window.TRACE_COMPLETION_FUNC = function(solution, path) {
       puzzle = solution
       puzzle.path = path
-      document.getElementById('publish').disabled = false
+      document.getElementById('publish').enable()
     }
     // Redraw the puzzle, without interaction points. This is a bit of a @Hack, but it works.
     window.draw(puzzle)
@@ -466,7 +466,7 @@ window.onload = function() {
 window.onSolvedPuzzle = function(paths) {
   // Only enable the publish button if there was a valid path.
   if (paths.length > 0) {
-    document.getElementById('publish').disabled = false
+    document.getElementById('publish').enable()
   }
   return paths
 }
@@ -537,7 +537,7 @@ window.publishPuzzle = function() {
           publish.innerText = 'Error: Publishing failed'
         } else {
           publish.innerText = 'Published, click here to play your puzzle!'
-          publish.disabled = false
+          publish.enable()
           publish.onpointerdown = function() { window.location = 'play/' + displayHash + '.html' }
         }
       })
