@@ -2,7 +2,10 @@ JavaScript implementation of the puzzles in The Witness
 
 If you want to see the product, head over to [witnesspuzzles.com](https://witnesspuzzles.com)
 
+
+
 # Table of Contents
+1. [List of pages](#Pages)
 1. [Overview / Explanation of files](#Overview)
     1. [utilities.js](#utilitiesjs)
     1. [puzzle.js](#puzzlejs)
@@ -14,6 +17,13 @@ If you want to see the product, head over to [witnesspuzzles.com](https://witnes
     1. [solve.js](#solvejs)
 1. [Contributing](#Contributing)
 1. [Legal](#Legal)
+
+# Pages
+- [browse.html](https://witnesspuzzles.com/browse.html) - List of all puzzles
+- [challenge.html](https://witnesspuzzles.com/challenge.html) - Challenge practice
+- [editor.html](https://witnesspuzzles.com/editor.html) - Create a new puzzle
+- [metapuzzle.html](https://witnesspuzzles.com/metapuzzle.html) - Automatic solver for the Mountain metapuzzle
+- [webcrow.html](https://witnesspuzzles.com/webcrow.html) - Automatic solver for the challenge triangle puzzles
 
 # Overview
 This repo handles puzzle creation, solution, and displaying. The core engine is made of 8 files:
