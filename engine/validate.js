@@ -23,7 +23,7 @@ class RegionData {
 // Sanity checks for data which comes from the user. Now that people have learned that /publish is an open endpoint,
 // we have to make sure they don't submit data which passes validation but is untrustworthy.
 // These checks should always pass for puzzles created by the built-in editor.
-window.validate_user_data = function(puzzle, path) {
+window.validateUserData = function(puzzle, path) {
   if (path == null) throw Error('Path cannot be null')
 
   var sizeError = puzzle.getSizeError(puzzle.width, puzzle.height)

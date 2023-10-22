@@ -26,7 +26,7 @@
         var input_data = %input_data%
         var puzzle = Puzzle.deserialize(JSON.stringify(input_data))
         var path = input_data['path'] // Path is passed as an extra property on the solution_json
-        validate_user_data(puzzle, path)
+        window.validateUserData(puzzle, path)
 
         // Although we were passed a drawn solution object, we clear, redraw, and revalidate to make sure
         // we weren't passed invalid or malformed data. This javascript is running serverside,
