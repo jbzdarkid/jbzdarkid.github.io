@@ -221,7 +221,6 @@ function drawSubpuzzle(puzzle, target) {
   }
 }
 
-// TODO: What if you left click with activePolyshape = 0?
 function onElementClicked(event, puzzle, x, y) {
   if (x%2 !== 1 || y%2 !== 1) return
   var cell = puzzle.grid[x][y]
@@ -231,6 +230,7 @@ function onElementClicked(event, puzzle, x, y) {
     else              cell = null
   } else { // Left click: Toggle polyomino
     if (cell != null && cell.type != 'poly')    cell = null
+    else if (activePolyshape === 0)             cell = null
     else if (cell == null)                      cell = {'type': 'poly', 'color': 'yellow', 'polyshape': activePolyshape}
     else if (cell.polyshape != activePolyshape) cell.polyshape = activePolyshape
     else                                        cell.polyshape = activePolyshape | window.ROTATION_BIT
