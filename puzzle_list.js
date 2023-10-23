@@ -1,4 +1,5 @@
 window.puzzleList = [
+"FGKTB9T4Form Pratice",
 "PF3QAV6YRotation",
 "USC5X3XPStepMania x The Witness 2F",
 "C9GWB28SStepMania x The Witness 2E",
