@@ -1,4 +1,3 @@
-name: Validate and publish
 on:
   workflow_dispatch:
     inputs:
@@ -13,6 +12,7 @@ run-name: Validating request ${{ inputs.requestId }}
 
 concurrency:
   group: ${{ github.workflow }} # Limit to one publish action at a time, others will queue behind.
+  cancel-in-progress: false
 
 jobs:
   run:
