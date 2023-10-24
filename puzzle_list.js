@@ -1,4 +1,6 @@
 window.puzzleList = [
+"ED7C63CAUnnamed Puzzle",
+"F85CC88Bsun-3",
 "FGKTB9T4Form Pratice",
 "PF3QAV6YRotation",
 "USC5X3XPStepMania x The Witness 2F",
