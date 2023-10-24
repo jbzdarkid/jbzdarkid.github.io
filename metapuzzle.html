@@ -23,9 +23,10 @@
     <div style="display: flex; justify-content: space-evenly; align-items: center">
       <div><table id="chooserTable-left" style="display: none; position: relative; z-index: 3"></table></div>
       <div><svg id="subpuzzle-left" style="display: none; position: relative; z-index: 3"></svg></div>
-      <div style="display: flex; flex-direction: column">
+      <div style="display: flex; flex-direction: column; align-items: center">
         <svg id="metapuzzle"></svg>
-        <button id="solve" style="margin: auto; z-index: 3" onpointerdown="solvePuzzle()">Solve</button>
+        <div style="display: flex; align-items: center; justify-content: center" id="hardModeBox"></div>
+        <button id="solve" style="z-index: 3" onpointerdown="solvePuzzle()">Solve</button>
         <div id="solutionViewer-metapuzzle" style="display: none">
           <button id="previousSolution-metapuzzle" disabled>&larr;</button>
           <label id="solutionCount-metapuzzle" style="padding: 6px">0 of 0</label>

@@ -2,7 +2,8 @@ namespace(function() {
 
 var metapuzzle = null
 var subpuzzles = []
-var activePolyshape = 0
+var activePolyshape = {'left': 0, 'right': 0}
+var hardModeEnabled = false
 window.onload = function() {
   try {
     metapuzzle = Puzzle.deserialize(window.localStorage.getItem('metapuzzle'))
@@ -30,7 +31,7 @@ window.onload = function() {
     topLeft.grid[5][3] = {'type': 'nega', 'color': 'white'}
     topLeft.grid[5][5] = {'type': 'poly', 'polyshape': 35, 'color': 'yellow'}
     topLeft.grid[8][0].end = 'top'
-    
+
     var topRight = new Puzzle(4, 4)
     topRight.grid[0][0].end = 'top'
     topRight.grid[1][1] = {'type': 'poly', 'polyshape': 19, 'color': 'yellow'}
@@ -55,15 +56,64 @@ window.onload = function() {
     subpuzzles = [topLeft, topRight, bottomLeft, bottomRight]
   }
 
-  drawChooserTable('chooserTable-left')
-  drawChooserTable('chooserTable-right')
-  activePolyshape = 0
+  var hardModeBox = document.getElementById('hardModeBox')
 
+  var hardMode = createCheckbox()
+  hardModeBox.appendChild(hardMode)
+  hardMode.id = 'hardMode'
+  hardMode.onpointerdown = function() {
+    this.checked = !this.checked
+    this.style.background = (this.checked ? window.BORDER : window.PAGE_BACKGROUND)
+    setHardMode(this.checked)
+  }
+
+  var hardModeLabel = document.createElement('label')
+  hardModeBox.appendChild(hardModeLabel)
+  hardModeLabel.innerText = 'Sigma hard mode'
+  hardModeLabel.onpointerdown = function() {hardMode.onpointerdown()}
+  hardModeLabel.style.marginRight = '14px'
+  hardModeLabel.className = 'noselect'
+
+  drawChooserTable('left')
+  drawChooserTable('right')
+  leftActivePolyshape = 0
+  rightActivePolyshape = 0
+
+  if (window.localStorage.getItem('hardMode') == 'true') {
+    // Also calls drawPuzzle
+    hardMode.onpointerdown()
+  } else {
+    drawPuzzle()
+  }
+}
+
+function setHardMode(enable) {
+  if (enable) {
+    hardModeEnabled = true
+    window.localStorage.setItem('hardMode', true)
+    metapuzzle.symmetry = {'x': true, 'y': true}
+    metapuzzle.grid[0][0]   = {'type': 'line', 'line': 0, 'end': 'top'}
+    metapuzzle.grid[0][10]  = {'type': 'line', 'line': 0, 'start': true}
+    metapuzzle.grid[4][0]   = {'type': 'line', 'line': 0}
+    metapuzzle.grid[6][0]   = {'type': 'line', 'line': 0}
+    metapuzzle.grid[10][0]  = {'type': 'line', 'line': 0, 'start': true}
+    metapuzzle.grid[10][10] = {'type': 'line', 'line': 0, 'end': 'bottom'}
+  } else {
+    hardModeEnabled = false
+    window.localStorage.setItem('hardMode', false)
+    metapuzzle.symmetry = {'x': true}
+    metapuzzle.grid[0][0]   = {'type': 'line', 'line': 0}
+    metapuzzle.grid[0][10]  = {'type': 'line', 'line': 0, 'start': true}
+    metapuzzle.grid[4][0]   = {'type': 'line', 'line': 0, 'end': 'top'}
+    metapuzzle.grid[6][0]   = {'type': 'line', 'line': 0, 'end': 'top'}
+    metapuzzle.grid[10][0]  = {'type': 'line', 'line': 0}
+    metapuzzle.grid[10][10] = {'type': 'line', 'line': 0, 'start': true}
+  }
   drawPuzzle()
 }
 
-function drawChooserTable(target) {
-  var chooserTable = document.getElementById(target)
+function drawChooserTable(side) {
+  var chooserTable = document.getElementById('chooserTable-' + side)
   chooserTable.setAttribute('cellspacing', '24px')
   chooserTable.setAttribute('cellpadding', '0px')
   chooserTable.style.padding = 25
@@ -75,7 +125,7 @@ function drawChooserTable(target) {
   // This needs to be declared outside of the loop
   var shapeChooserClick = function(event, cell) {
     cell.clicked = !cell.clicked
-    activePolyshape ^= cell.powerOfTwo
+    activePolyshape[side] ^= cell.powerOfTwo
     if (cell.clicked) {
       cell.style.background = 'black'
     } else {
@@ -91,7 +141,7 @@ function drawChooserTable(target) {
       cell.onpointerdown = function(event) {shapeChooserClick(event, this)}
       cell.style.width = 58
       cell.style.height = 58
-      if ((activePolyshape & cell.powerOfTwo) !== 0) {
+      if ((activePolyshape[side] & cell.powerOfTwo) !== 0) {
         cell.clicked = true
         cell.style.background = 'black'
       } else {
@@ -132,7 +182,7 @@ function drawPuzzle() {
   svg.setAttribute('height', 58)
   svg.outerHTML = svg.outerHTML // Force a redraw because resizing doesn't work otherwise.
   document.getElementById('topLeft').onpointerdown = function() {
-    drawSubpuzzle(subpuzzles[0], 'subpuzzle-left')
+    drawSubpuzzle(subpuzzles[0], 'left')
     document.getElementById('chooserTable-left').style.display = null
     drawAnchor()
   }
@@ -147,7 +197,7 @@ function drawPuzzle() {
   svg.setAttribute('height', 58)
   svg.outerHTML = svg.outerHTML // Force a redraw because resizing doesn't work otherwise.
   document.getElementById('topRight').onpointerdown = function() {
-    drawSubpuzzle(subpuzzles[1], 'subpuzzle-right')
+    drawSubpuzzle(subpuzzles[1], 'right')
     document.getElementById('chooserTable-right').style.display = null
     drawAnchor()
   }
@@ -162,7 +212,7 @@ function drawPuzzle() {
   svg.setAttribute('height', 58)
   svg.outerHTML = svg.outerHTML // Force a redraw because resizing doesn't work otherwise.
   document.getElementById('bottomLeft').onpointerdown = function() {
-    drawSubpuzzle(subpuzzles[2], 'subpuzzle-left')
+    drawSubpuzzle(subpuzzles[2], 'left')
     document.getElementById('chooserTable-left').style.display = null
     drawAnchor()
   }
@@ -177,13 +227,14 @@ function drawPuzzle() {
   svg.setAttribute('height', 58)
   svg.outerHTML = svg.outerHTML // Force a redraw because resizing doesn't work otherwise.
   document.getElementById('bottomRight').onpointerdown = function() {
-    drawSubpuzzle(subpuzzles[3], 'subpuzzle-right')
+    drawSubpuzzle(subpuzzles[3], 'right')
     document.getElementById('chooserTable-right').style.display = null
     drawAnchor()
   }
 }
 
-function drawSubpuzzle(puzzle, target) {
+function drawSubpuzzle(puzzle, side) {
+  target = 'subpuzzle-' + side
   window.draw(puzzle, target)
   var puzzleElement = document.getElementById(target)
   puzzleElement.style.display = null
@@ -191,8 +242,8 @@ function drawSubpuzzle(puzzle, target) {
   // This needs to be declared outside of the loop
   var addOnClick = function(elem, x, y) {
     elem.onpointerdown = function(event) {
-      onElementClicked(event, puzzle, x, y)
-      drawSubpuzzle(puzzle, target)
+      onElementClicked(event, side, puzzle, x, y)
+      drawSubpuzzle(puzzle, side)
     }
   }
 
@@ -221,21 +272,24 @@ function drawSubpuzzle(puzzle, target) {
   }
 }
 
-function onElementClicked(event, puzzle, x, y) {
+function onElementClicked(event, side, puzzle, x, y) {
   if (x%2 !== 1 || y%2 !== 1) return
   var cell = puzzle.grid[x][y]
+  var polyshape = activePolyshape[side]
 
   if (event.isRightClick()) { // Right click: Toggle negation
     if (cell == null) cell = {'type': 'nega', 'color': 'white'}
     else              cell = null
   } else { // Left click: Toggle polyomino
-    if (cell != null && cell.type != 'poly')    cell = null
-    else if (activePolyshape === 0)             cell = null
-    else if (cell == null)                      cell = {'type': 'poly', 'color': 'yellow', 'polyshape': activePolyshape}
-    else if (cell.polyshape != activePolyshape) cell.polyshape = activePolyshape
-    else                                        cell.polyshape = activePolyshape | window.ROTATION_BIT
+    if (cell != null && cell.type == 'nega')    cell = null
+    else if (polyshape === 0)             cell = null
+    else if (cell == null)                cell = {'type': 'poly', 'color': 'yellow', 'polyshape': polyshape}
+    else if (cell.polyshape != polyshape) cell.polyshape = polyshape
+    else if (cell.type == 'ylop')         cell = {'type': 'poly', 'color': 'yellow', 'polyshape': polyshape}
+    else if (hardModeEnabled)             cell = {'type': 'ylop', 'color': 'blue', 'polyshape': polyshape}
+    else if (!hardModeEnabled)            cell.polyshape = polyshape | window.ROTATION_BIT
   }
-  
+
   puzzle.grid[x][y] = cell
   drawPuzzle()
 }
@@ -262,7 +316,7 @@ function drawAnchor() {
 
 function getPolyshapes(puzzle, target) {
   var polyshapes = {}
-  
+
   for (var path of window.solve(puzzle)) {
     window.drawPathNoUI(puzzle, path, target)
     for (var region of puzzle.getRegions()) {
@@ -283,7 +337,7 @@ function getPolyshapes(puzzle, target) {
       }
     }
   }
-  
+
   window.drawPath(puzzle, null, target) // Clear the temp solution
   return polyshapes
 }
@@ -291,7 +345,7 @@ function getPolyshapes(puzzle, target) {
 window.solvePuzzle = function() {
   var status = document.getElementById('solve')
   status.disable()
-    
+
   // I couldn't find a way to do this more simply with Promises. I'm sure there is one, but I have only so much mental capacity for learning javascript.
   status.innerText = 'Solving subpuzzle 1 of 4'
   window.setTimeout(() => {
@@ -309,45 +363,57 @@ window.solvePuzzle = function() {
         window.setTimeout(() => {
           var polyshapes3 = getPolyshapes(subpuzzles[3], 'bottomRight')
 
-          var combinations = Object.keys(polyshapes0).length * Object.keys(polyshapes1).length * Object.keys(polyshapes2).length * Object.keys(polyshapes3).length
-          status.innerText = 'Solving ' + combinations + ' possible metapuzzles'
-          window.setTimeout(() => {
-            var allPaths = []
-            for (var polyshape0 in polyshapes0) {
-              metapuzzle.grid[3][3].polyshape = polyshape0
-              for (var polyshape1 in polyshapes1) {
-                metapuzzle.grid[7][3].polyshape = polyshape1
-                for (var polyshape2 in polyshapes2) {
-                  metapuzzle.grid[3][7].polyshape = polyshape2
-                  for (var polyshape3 in polyshapes3) {
-                    metapuzzle.grid[7][7].polyshape = polyshape3
-                    
-                    for (var path of window.solve(metapuzzle)) {
-                      allPaths.push([
-                        path,
-                        polyshapes0[polyshape0],
-                        polyshapes1[polyshape1],
-                        polyshapes2[polyshape2],
-                        polyshapes3[polyshape3],
-                      ])
-                    }
-                  }
+          var combinations = []
+          for (var polyshape0 in polyshapes0) {
+            for (var polyshape1 in polyshapes1) {
+              for (var polyshape2 in polyshapes2) {
+                for (var polyshape3 in polyshapes3) {
+                  combinations.push([polyshape0, polyshape1, polyshape2, polyshape3])
                 }
               }
             }
-            
-            status.innerText = 'Done!'
-            document.getElementById('solutionViewer-metapuzzle').style.display = null
-            window.showSolution(
-              [metapuzzle, subpuzzles[0], subpuzzles[1], subpuzzles[2], subpuzzles[3]],
-              allPaths,
-              0,
-              ['metapuzzle', 'topLeft', 'topRight', 'bottomLeft', 'bottomRight'])
-          }, 0)
+          }
+
+          solveMetapuzzle(combinations, polyshapes0, polyshapes1, polyshapes2, polyshapes3, 0, [])
         }, 0)
       }, 0)
     }, 0)
   }, 0)
+}
+
+function solveMetapuzzle(combinations, polyshapes0, polyshapes1, polyshapes2, polyshapes3, i, allPaths) {
+  if (i < combinations.length) {
+    document.getElementById('solve').innerText = 'Solving metapuzzle combination ' + i + ' of ' + combinations.length
+
+    window.setTimeout(function() {
+      metapuzzle.grid[3][3].polyshape = combinations[i][0]
+      metapuzzle.grid[7][3].polyshape = combinations[i][1]
+      metapuzzle.grid[3][7].polyshape = combinations[i][2]
+      metapuzzle.grid[7][7].polyshape = combinations[i][3]
+      window.solve(metapuzzle, null, function(paths) {
+        for (var path of paths) {
+          allPaths.push([
+            path,
+            polyshapes0[combinations[i][0]],
+            polyshapes1[combinations[i][1]],
+            polyshapes2[combinations[i][2]],
+            polyshapes3[combinations[i][3]],
+          ])
+        }
+
+        solveMetapuzzle(combinations, polyshapes0, polyshapes1, polyshapes2, polyshapes3, i + 1, allPaths)
+      })
+    }, 0)
+  } else {
+    document.getElementById('solve').innerText = 'Done!'
+    document.getElementById('solutionViewer-metapuzzle').style.display = null
+    window.showSolution(
+      [metapuzzle, subpuzzles[0], subpuzzles[1], subpuzzles[2], subpuzzles[3]],
+      allPaths,
+      0,
+      ['metapuzzle', 'topLeft', 'topRight', 'bottomLeft', 'bottomRight'])
+  }
+
 }
 
 })

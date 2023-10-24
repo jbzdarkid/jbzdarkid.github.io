@@ -19,12 +19,12 @@ Event.prototype.isRightClick = function() {
 Element.prototype.disable = function() {
   this.disabled = true
   this.style.pointerEvents = 'none'
-  this.class = 'noselect'
+  this.className = 'noselect'
 }
 Element.prototype.enable = function() {
   this.disabled = false
   this.style.pointerEvents = null
-  this.class = null
+  this.className = null
 }
 Object.defineProperty(Event.prototype, 'position', {
   'get': function() {
