@@ -1,4 +1,5 @@
 window.puzzleList = [
+"VA42WZA4practice Finite Water",
 "PDGHVC5Ypractice Finite Water",
 "ED7C63CAUnnamed Puzzle",
 "F85CC88Bsun-3",
