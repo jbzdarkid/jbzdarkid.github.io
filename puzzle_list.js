@@ -1,4 +1,11 @@
 window.puzzleList = [
+"4RBH78YPUnnamed Puzzle",
+"73KYGWUZpractice Finite Water",
+"VA42WZA4practice Finite Water",
+"PDGHVC5Ypractice Finite Water",
+"ED7C63CAUnnamed Puzzle",
+"F85CC88Bsun-3",
+"FGKTB9T4Form Pratice",
 "PF3QAV6YRotation",
 "USC5X3XPStepMania x The Witness 2F",
 "C9GWB28SStepMania x The Witness 2E",
