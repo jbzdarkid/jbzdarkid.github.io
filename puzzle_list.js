@@ -1,4 +1,8 @@
 window.puzzleList = [
+"VAJZD6HWUnnamed Rotational Symmetry Puzzle",
+"5SAE7NSCpair with square",
+"GUPA35FN2",
+"APBSHSNJUnnamed Pillar Puzzle",
 "4RBH78YPUnnamed Puzzle",
 "73KYGWUZpractice Finite Water",
 "VA42WZA4practice Finite Water",
