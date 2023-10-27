@@ -1,3 +1,4 @@
+name: Validate and publish
 on:
   workflow_dispatch:
     inputs:
@@ -11,7 +12,7 @@ on:
 run-name: Validating request ${{ inputs.requestId }}
 
 concurrency:
-  group: ${{ github.workflow }} # Limit to one publish action at a time, others will queue behind.
+  group: publish-puzzle # Limit to one publish action at a time, others will queue behind.
   cancel-in-progress: false
 
 jobs:
@@ -19,9 +20,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-      with:
-        name: Cloning the repo
+    - name: Cloning the repo
+      uses: actions/checkout@v4
     - name: Validating puzzle
       id: validate
       run: python -u .github/workflows/validate.py
