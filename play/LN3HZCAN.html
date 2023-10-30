@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/2000/xhtml">
+  <head>
+    <meta property="og:title" content="polynomino"/>
+    <meta property="og:description" content="Witness Puzzle LN3HZCAN"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Witness Puzzles"/>
+    <meta property="og:image" content="../images/LN3HZCAN.png"/>
+    <meta name="robots" content="noindex, nofollow, nosnippet"/>
+    <link rel="stylesheet" type="text/css" href="../data/style.css" id="stylesheet">
+    <link rel="icon" type="image/png" href="../data/favicon.png">
+    <script type="text/javascript" src="../engine/utilities.js"></script>
+    <script type="text/javascript" src="../engine/svg.js"></script>
+    <script async type="text/javascript" src="../engine/polyominos.js"></script>
+    <script async type="text/javascript" src="../engine/puzzle.js"></script>
+    <script async type="text/javascript" src="../engine/validate.js"></script>
+    <script async type="text/javascript" src="../engine/custom_mechanics.js"></script>
+    <script async type="text/javascript" src="../engine/display2.js"></script>
+    <script async type="text/javascript" src="../engine/trace2.js"></script>
+    <title>polynomino</title>
+  </head>
+  <body>
+    <script>loadHeader("polynomino")</script>
+    <div style="display: flex; justify-content: center; align-items: center">
+      <svg id="puzzle" style="pointer-events: auto"></svg>
+    </div>
+  </body>
+  <script>
+    window.onload = function() {
+      <!-- 8c0d04090302fb1f5ec822c0462effd25f01b40c00d38c5ea42d57b8360f1a977f3575ecdcfdcec851031ae66bc367d29d6c4cafcd3002c4adfab98b35be46a236c099e730775f30c9ad507e3efcf735546e859d0a971425ed9d1c0be8a701646a68be08a3838f341f3b7bf70fd258c2 -->
+      var puzzle = Puzzle.deserialize("{\"grid\":[[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"start\":true,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":8800,\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":612,\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"square\",\"color\":\"white\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":608,\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":2,\"dot\":null,\"start\":null,\"end\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"square\",\"color\":\"black\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":2,\"dot\":null,\"start\":null,\"end\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"start\":false,\"end\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":2,\"dot\":null,\"start\":null,\"end\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":2,\"dot\":null,\"start\":null,\"end\":null},{\"type\":\"square\",\"color\":\"white\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":1092,\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"square\",\"color\":\"white\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"square\",\"color\":\"black\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":1536,\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"end\":\"top\",\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}]],\"largezero\":162,\"width\":9,\"height\":9,\"pillar\":false,\"settings\":{\"NEGATIONS_CANCEL_NEGATIONS\":true,\"SHAPELESS_ZERO_POLY\":false,\"PRECISE_POLYOMINOS\":true,\"FLASH_FOR_ERRORS\":true,\"FAT_STARTPOINTS\":false,\"CUSTOM_MECHANICS\":false},\"name\":\"polynomino\",\"autoSolved\":true,\"startPoint\":{\"x\":0,\"y\":8},\"hasNegations\":false,\"hasPolyominos\":true}")
+      draw(puzzle)
+    }
+  </script>
+</html>
