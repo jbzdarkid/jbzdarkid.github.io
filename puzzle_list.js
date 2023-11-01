@@ -1,4 +1,5 @@
 window.puzzleList = [
+"MHWRTFQ7Entering Mountain1(Re-simulated them as hints?)",
 "JVCPD8A4Unnamed Puzzle",
 "LN3HZCANpolynomino",
 "CQWTQUBBpolynomino",
