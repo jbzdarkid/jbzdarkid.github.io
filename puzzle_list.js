@@ -1,4 +1,5 @@
 window.puzzleList = [
+"LPSNMZZ5Flame Arrow",
 "ENY4LAEMUnnamed Vertical Symmetry Puzzle",
 "CA94HP4H4*4",
 "WPUTRLWNEntering Mountain 3 (Re-simulated them as hints?)",
