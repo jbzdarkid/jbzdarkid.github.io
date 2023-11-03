@@ -1,4 +1,5 @@
 window.puzzleList = [
+"4CR8PFP4simple.",
 "B2KS7HLVlong",
 "GH5R5FJ3simple",
 "FLQBBPKJFor Creator of Sun Puzzle",
