@@ -1,4 +1,5 @@
 window.puzzleList = [
+"7YTUHRVDSwamp tutorial",
 "EN3K757ZUnnamed Puzzle",
 "UUSPEX9AUnnamed Puzzle",
 "KLGQAA2JUnnamed Pillar (V Symmetry) Puzzle",
