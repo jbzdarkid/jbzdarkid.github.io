@@ -1,4 +1,5 @@
 window.puzzleList = [
+"D4KK7J7NOpen Door",
 "8JL5FYA5EASY",
 "XBPJQ7AWEASY",
 "LC7356LQTromino is outside",
