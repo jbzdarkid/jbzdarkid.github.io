@@ -103,10 +103,11 @@ if __name__ == '__main__':
 
     subprocess.run(['git', 'config', '--global', 'user.email', 'jbzdarkid@users.noreply.github.com'], check=True)
     subprocess.run(['git', 'config', '--global', 'user.name', 'Validate and publish workflow'], check=True)
+    subprocess.run(['git', 'config', '--global', 'core.editor', 'true'], check=True)
     subprocess.run(['git', 'add', '.'], check=True)
     subprocess.run(['git', 'commit', '-m', f'Published puzzle {display_hash}'], check=True)
 
-    print('Created puzzle pages for display_hash={display_hash}, updating puzzle_list...')
+    print(f'Created puzzle pages for display_hash={display_hash}, updating puzzle_list...')
     while True:
         puzzle_list = Path('puzzle_list.js').open('r', encoding='utf-8').read().split('\n')
         puzzle_list.insert(1, f'"{display_hash}{title_py}",')
