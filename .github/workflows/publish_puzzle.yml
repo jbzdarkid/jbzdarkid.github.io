@@ -11,10 +11,6 @@ on:
 
 run-name: Validating request ${{ inputs.requestId }}
 
-concurrency:
-  group: publish-puzzle # Limit to one publish action at a time, others will queue behind.
-  cancel-in-progress: false
-
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -28,11 +24,6 @@ jobs:
       env:
         PUZZLE: ${{ inputs.puzzle }}
         SECRET: ${{ secrets.GPG_KEY }}
-    - name: Publishing puzzle ${{ steps.validate.outputs.display_hash }}
-      run: |
-        git config --global user.email "jbzdarkid@users.noreply.github.com"
-        git config --global user.name "Validate and publish workflow"
-        git add .
-        git commit -m "Published puzzle ${{ steps.validate.outputs.display_hash }}"
-        git push
+    - name: Published puzzle ${{ steps.validate.outputs.display_hash }}
+      run: git show HEAD
 

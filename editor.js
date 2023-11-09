@@ -527,7 +527,7 @@ window.publishPuzzle = function() {
       window.httpGetLoop(jobsUrl, 10, function(response) {
         var publishStep = response.jobs[0].steps[3]
         if (publishStep.conclusion == 'success') { // This is the only valid exit state.
-          return publishStep.name.substring(18) // Strip off "Publishing puzzle "
+          return publishStep.name.substring(17) // Strip off "Published puzzle "
         }
         
         return '' // Signal value
