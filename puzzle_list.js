@@ -1,4 +1,5 @@
 window.puzzleList = [
+"3FVSJ23KFinite Water Challenge",
 "AESZSMULUnnamed Puzzle",
 "HYJ7X8GVquarry 73",
 "MBNHNE38Letter a",
