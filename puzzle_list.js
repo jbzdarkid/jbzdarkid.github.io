@@ -1,4 +1,5 @@
 window.puzzleList = [
+"APEZW3E9Jungle 3",
 "6NKPSQCAJungle 2",
 "AFYESNQUJungle 1",
 "DDBDYDPGMoanstary laser",
