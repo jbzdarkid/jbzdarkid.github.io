@@ -1,4 +1,5 @@
 window.puzzleList = [
+"8Z22KZFNUnnamed Pillar (V Symmetry) Puzzle",
 "JS8D979S1-1",
 "V3E24XMXUnnamed Puzzle",
 "3FVSJ23KFinite Water Challenge",
