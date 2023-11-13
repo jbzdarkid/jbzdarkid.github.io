@@ -1,4 +1,5 @@
 window.puzzleList = [
+"ZWEU3Z3CUnnamed Pillar (V Symmetry) Puzzle",
 "LSX4BXBNUnnamed Pillar (V Symmetry) Puzzle",
 "8Z22KZFNUnnamed Pillar (V Symmetry) Puzzle",
 "JS8D979S1-1",
