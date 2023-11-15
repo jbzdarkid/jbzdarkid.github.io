@@ -1,4 +1,5 @@
 window.puzzleList = [
+"2N7T6SNRSymmetry island Colors 7",
 "2JCZV7QJSymmetry island Colors 2",
 "7ZATEPTBUnnamed Horizontal Symmetry Puzzle",
 "SAUACEPDUnnamed Vertical Symmetry Puzzle",
