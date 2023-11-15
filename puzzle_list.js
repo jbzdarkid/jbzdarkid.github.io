@@ -1,4 +1,5 @@
 window.puzzleList = [
+"59B3952ESymmetry island  Colors 10",
 "7LSA5HP5Symmetry island  Colors 10",
 "DVB7H7MKInvisible dots symmetry 1",
 "2N7T6SNRSymmetry island Colors 7",
