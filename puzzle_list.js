@@ -1,4 +1,5 @@
 window.puzzleList = [
+"TSFLVCFCSole Survivor A",
 "AMXU8AHFSymmetry island Vault [Concept]",
 "6NGJYDQ5Symmetry island Vault [Concept]",
 "N9XR5CVTjungle Vault [Concept]",
