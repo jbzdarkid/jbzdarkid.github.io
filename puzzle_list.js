@@ -1,4 +1,5 @@
 window.puzzleList = [
+"N9XR5CVTjungle Vault [Concept]",
 "UCP3VUHZjungle Vault [Concept]",
 "PZN5LLEHEasy, except the dots",
 "FTKV8DYVUnnamed Pillar (R Symmetry) Puzzle",
