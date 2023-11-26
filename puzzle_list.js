@@ -1,4 +1,5 @@
 window.puzzleList = [
+"RPLKV8SXSimul-Solve A",
 "UWPRWN54Simul-Solve B",
 "E6HYH27HSimul-Solve C",
 "GSZZ4KH3Sole Survivor B",
