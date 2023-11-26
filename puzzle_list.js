@@ -1,4 +1,5 @@
 window.puzzleList = [
+"E6HYH27HSimul-Solve C",
 "GSZZ4KH3Sole Survivor B",
 "TSFLVCFCSole Survivor A",
 "AMXU8AHFSymmetry island Vault [Concept]",
