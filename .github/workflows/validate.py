@@ -44,7 +44,7 @@ def validate_puzzle(puzzle):
     return data
 
 
-def save_puzzle_files(data):
+def generate_display_hash():
     # This is a slightly updated display_hash solution -- rather than hashing the puzzle, I'm just generating a random ID every time.
     # (Also, I'm flattening the alphabet ahead of time to avoid letter bias.)
     # Alphabet of size 32: [0-9A-Z] / [I1O0]
@@ -59,6 +59,10 @@ def save_puzzle_files(data):
         if display_hash not in puzzle_ids:
             break
 
+    return display_hash
+
+
+def save_puzzle_files(data):
     # Encrypt this since we'll be saving it directly on the page
     solution_path = gpg_encrypt(data['solution_path'], os.environ['SECRET'])
 
@@ -67,6 +71,8 @@ def save_puzzle_files(data):
     title_js   = data['title'].replace('"', '\\"')
     title_py   = data['title'].replace('"', '\\"')
 
+    display_hash = generate_display_hash()
+ 
     image_url = f'images/{display_hash}.png'
     page_url = f'play/{display_hash}.html'
 
