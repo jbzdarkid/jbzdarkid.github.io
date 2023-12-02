@@ -1,5 +1,6 @@
 from pathlib import Path
 import base64
+import copy
 import json
 import os
 import random
@@ -44,17 +45,19 @@ def validate_puzzle(puzzle):
     return data
 
 
-def generate_display_hash(title):
+def generate_display_hash(data, title):
     with Path('puzzle_list.js').open('r', encoding='utf-8') as f:
         puzzle_list = f.read().split('\n')
 
     # Check against the most recent 5 puzzles to see if this was a duplicate submission
     is_duplicate_puzzle = False
-    puzzle_json = json.dumps(data['puzzle_json'])
+    puzzle_json = copy.deepcopy(data['puzzle_json']) # The puzzle contents includes the name, so to check for duplicates we need to update it.
     for i in range(1, 6):
         puzzle_id = puzzle_list[i][1:9]
+        puzzle_name = puzzle_list[i][9:]
+        puzzle_json['name'] = puzzle_name # For a 1:1 match we need the exact same puzzle body.
         with Path(f'play/{puzzle_id}.html').open('r', encoding='utf-8') as f:
-            if puzzle_json in f.read():
+            if json.dumps(puzzle_json) in f.read():
                 print(f'This puzzle has the same json as puzzle {i} ({puzzle_id}), deduplicating')
                 is_duplicate_puzzle = True
                 puzzle_list.pop(i)
@@ -87,7 +90,7 @@ def save_puzzle_files(data):
     title_js   = data['title'].replace('"', '\\"')
     title_py   = data['title'].replace('"', '\\"')
 
-    display_hash = generate_display_hash(title_py)
+    display_hash = generate_display_hash(data, title_py)
  
     image_url = f'images/{display_hash}.png'
     page_url = f'play/{display_hash}.html'
