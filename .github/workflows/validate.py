@@ -45,23 +45,34 @@ def validate_puzzle(puzzle):
 
 
 def generate_display_hash(title):
-    # This is a slightly updated display_hash solution -- rather than hashing the puzzle, I'm just generating a random ID every time.
-    # (Also, I'm flattening the alphabet ahead of time to avoid letter bias.)
-    # Alphabet of size 32: [0-9A-Z] / [I1O0]
-    # 8 characters at 5 bits each = 40 bits = 2^40 words
-    # 50% of collision if I ever get 2^20 (~1,000,000) puzzles
-    # Also I can just reroll for non-duplicate puzzle IDs now.
-    alphabet = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ'
-    puzzle_list = Path('puzzle_list.js').open('r', encoding='utf-8').read().split('\n')
-    puzzle_ids = {row[1:9] for row in puzzle_list}
+    with Path('puzzle_list.js').open('r', encoding='utf-8') as f:
+        puzzle_list = f.read().split('\n')
 
-    while 1:
-        display_hash = ''.join(random.choices(alphabet, k=8))
-        if display_hash not in puzzle_ids:
-            break
+    # Check against the most recent 5 puzzles to see if this was a duplicate submission
+    is_duplicate_puzzle = False
+    puzzle_json = json.dumps(data['puzzle_json'])
+    for i in range(1, 6):
+        puzzle_id = puzzle_list[i]
+        with Path(f'play/{puzzle_id}.html').open('r', encoding='utf-8') as f:
+            if puzzle_json in f.read():
+                print(f'This puzzle has the same json as puzzle {i} ({puzzle_id}), deduplicating')
+                is_duplicate_puzzle = True
+                puzzle_list.pop(i)
+                display_hash = puzzle_id
+                break
+
+    if not is_duplicate_puzzle:
+        # This is a slightly updated display_hash solution -- rather than hashing the puzzle, I'm just generating a random ID every time.
+        # I'm also just rerolling on duplicates, so the collision chance is mostly irrelevant.
+        alphabet = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ' # [0-9A-Z] / [I1O0]
+        puzzle_ids = {row[1:9] for row in puzzle_list}
+        while 1:
+            display_hash = ''.join(random.choices(alphabet, k=8))
+            if display_hash not in puzzle_ids:
+                break
 
     puzzle_list.insert(1, f'"{display_hash}{title}",')
-    with open('puzzle_list.js', 'w', encoding='utf-8') as f:
+    with Path('puzzle_list.js').open('w', encoding='utf-8') as f:
         f.write('\n'.join(puzzle_list))
 
     return display_hash
