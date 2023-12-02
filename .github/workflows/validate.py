@@ -58,7 +58,7 @@ def generate_display_hash(data, title):
         with Path(f'play/{puzzle_id}.html').open('r', encoding='utf-8') as f:
             contents = f.read()
             print(f'Considering puzzle id {puzzle_id}, contents[29]:')
-            print(contents.split('\n')[29]
+            print(contents.split('\n')[29])
             print('puzzle_json:')
             print(json.dumps(puzzle_json))
             if json.dumps(puzzle_json) in f.read():
