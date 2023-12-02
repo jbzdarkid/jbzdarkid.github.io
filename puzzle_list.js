@@ -1,4 +1,5 @@
 window.puzzleList = [
+"5X8JRMXYTesting deduplication",
 "CX2RGH5CMessage.",
 "WQCFJM8HThing",
 "QC9ABX5UThing",
