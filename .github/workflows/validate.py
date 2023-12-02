@@ -44,12 +44,13 @@ def validate_puzzle(puzzle):
     return data
 
 
-def generate_display_hash():
+def generate_display_hash(title):
     # This is a slightly updated display_hash solution -- rather than hashing the puzzle, I'm just generating a random ID every time.
     # (Also, I'm flattening the alphabet ahead of time to avoid letter bias.)
     # Alphabet of size 32: [0-9A-Z] / [I1O0]
     # 8 characters at 5 bits each = 40 bits = 2^40 words
     # 50% of collision if I ever get 2^20 (~1,000,000) puzzles
+    # Also I can just reroll for non-duplicate puzzle IDs now.
     alphabet = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ'
     puzzle_list = Path('puzzle_list.js').open('r', encoding='utf-8').read().split('\n')
     puzzle_ids = {row[1:9] for row in puzzle_list}
@@ -58,6 +59,10 @@ def generate_display_hash():
         display_hash = ''.join(random.choices(alphabet, k=8))
         if display_hash not in puzzle_ids:
             break
+
+    puzzle_list.insert(1, f'"{display_hash}{title}",')
+    with open('puzzle_list.js', 'w', encoding='utf-8') as f:
+        f.write('\n'.join(puzzle_list))
 
     return display_hash
 
@@ -71,7 +76,7 @@ def save_puzzle_files(data):
     title_js   = data['title'].replace('"', '\\"')
     title_py   = data['title'].replace('"', '\\"')
 
-    display_hash = generate_display_hash()
+    display_hash = generate_display_hash(title_py)
  
     image_url = f'images/{display_hash}.png'
     page_url = f'play/{display_hash}.html'
@@ -106,12 +111,7 @@ if __name__ == '__main__':
 
     print('Puzzle validated, saving...')
     while True:
-        display_hash, title_py = save_puzzle_files(data)
-
-        puzzle_list = Path('puzzle_list.js').open('r', encoding='utf-8').read().split('\n')
-        puzzle_list.insert(1, f'"{display_hash}{title_py}",')
-        with open('puzzle_list.js', 'w', encoding='utf-8') as f:
-            f.write('\n'.join(puzzle_list))
+        display_hash = save_puzzle_files(data)
 
         subprocess.run(['git', 'config', '--global', 'user.email', 'jbzdarkid@users.noreply.github.com'], check=True)
         subprocess.run(['git', 'config', '--global', 'user.name', 'Validate and publish workflow'], check=True)
