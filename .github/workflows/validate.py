@@ -1,6 +1,5 @@
 from pathlib import Path
 import base64
-import copy
 import json
 import os
 import random
@@ -51,7 +50,7 @@ def generate_display_hash(data, title):
 
     # Check against the most recent 5 puzzles to see if this was a duplicate submission
     is_duplicate_puzzle = False
-    puzzle_json = copy.deepcopy(data['puzzle_json']) # The puzzle contents includes the name, so to check for duplicates we need to update it.
+    puzzle_json = json.loads(data['puzzle_json']) # The puzzle contents includes the name, so to check for duplicates we need to update it.
     for i in range(1, 6):
         puzzle_id = puzzle_list[i][1:9]
         puzzle_name = puzzle_list[i][9:]
@@ -107,7 +106,7 @@ def save_puzzle_files(data):
         .replace('%title_js%', title_js) \
         .replace('%display_hash%', display_hash) \
         .replace('%image_url%', image_url) \
-        .replace('%puzzle%', json.dumps(data['puzzle_json'])) \
+        .replace('%puzzle%', data['puzzle_json']) \
         .replace('%solution%', solution_path)
     with open(page_url, 'x', encoding='utf-8') as f:
         f.write(contents)
