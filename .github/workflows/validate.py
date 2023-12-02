@@ -105,23 +105,21 @@ if __name__ == '__main__':
     data = validate_puzzle(os.environ['PUZZLE'])
 
     print('Puzzle validated, saving...')
-    display_hash, title_py = save_puzzle_files(data)
-
-    subprocess.run(['git', 'config', '--global', 'user.email', 'jbzdarkid@users.noreply.github.com'], check=True)
-    subprocess.run(['git', 'config', '--global', 'user.name', 'Validate and publish workflow'], check=True)
-    subprocess.run(['git', 'config', '--global', 'core.editor', 'true'], check=True)
-    subprocess.run(['git', 'add', '.'], check=True)
-    subprocess.run(['git', 'commit', '-m', f'Published puzzle {display_hash}'], check=True)
-
-    print(f'Created puzzle pages for display_hash={display_hash}, updating puzzle_list...')
     while True:
+        display_hash, title_py = save_puzzle_files(data)
+
         puzzle_list = Path('puzzle_list.js').open('r', encoding='utf-8').read().split('\n')
         puzzle_list.insert(1, f'"{display_hash}{title_py}",')
         with open('puzzle_list.js', 'w', encoding='utf-8') as f:
             f.write('\n'.join(puzzle_list))
 
-        subprocess.run(['git', 'commit', '--amend', 'puzzle_list.js'])
+        subprocess.run(['git', 'config', '--global', 'user.email', 'jbzdarkid@users.noreply.github.com'], check=True)
+        subprocess.run(['git', 'config', '--global', 'user.name', 'Validate and publish workflow'], check=True)
+        subprocess.run(['git', 'config', '--global', 'core.editor', 'true'], check=True)
+        subprocess.run(['git', 'add', '.'], check=True)
+        subprocess.run(['git', 'commit', '-m', f'Published puzzle {display_hash}'], check=True)
 
+        print(f'Created puzzle pages for display_hash={display_hash}, attempting to push...')
         output = subprocess.run(['git', 'push'])
         if output.returncode != 0:
             print('Git push failed:', output)
