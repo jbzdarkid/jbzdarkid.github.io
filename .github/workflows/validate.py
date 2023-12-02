@@ -52,7 +52,7 @@ def generate_display_hash(title):
     is_duplicate_puzzle = False
     puzzle_json = json.dumps(data['puzzle_json'])
     for i in range(1, 6):
-        puzzle_id = puzzle_list[i]
+        puzzle_id = puzzle_list[i][1:9]
         with Path(f'play/{puzzle_id}.html').open('r', encoding='utf-8') as f:
             if puzzle_json in f.read():
                 print(f'This puzzle has the same json as puzzle {i} ({puzzle_id}), deduplicating')
