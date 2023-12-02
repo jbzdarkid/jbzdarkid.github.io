@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/2000/xhtml">
+  <head>
+    <meta property="og:title" content="Simple Puzzle"/>
+    <meta property="og:description" content="Witness Puzzle QQ8G8E23"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Witness Puzzles"/>
+    <meta property="og:image" content="../images/QQ8G8E23.png"/>
+    <meta name="robots" content="noindex, nofollow, nosnippet"/>
+    <link rel="stylesheet" type="text/css" href="../data/style.css" id="stylesheet">
+    <link rel="icon" type="image/png" href="../data/favicon.png">
+    <script type="text/javascript" src="../engine/utilities.js"></script>
+    <script type="text/javascript" src="../engine/svg.js"></script>
+    <script async type="text/javascript" src="../engine/polyominos.js"></script>
+    <script async type="text/javascript" src="../engine/puzzle.js"></script>
+    <script async type="text/javascript" src="../engine/validate.js"></script>
+    <script async type="text/javascript" src="../engine/custom_mechanics.js"></script>
+    <script async type="text/javascript" src="../engine/display2.js"></script>
+    <script async type="text/javascript" src="../engine/trace2.js"></script>
+    <title>Simple Puzzle</title>
+  </head>
+  <body>
+    <script>loadHeader("Simple Puzzle")</script>
+    <div style="display: flex; justify-content: center; align-items: center">
+      <svg id="puzzle" style="pointer-events: auto"></svg>
+    </div>
+  </body>
+  <script>
+    window.onload = function() {
+      <!-- 8c0d04090302e4b1b5fa12f4561affd26801678071ef3e22702e96c913f0bcffce00571257fe220489f390a66a1f0cb142d8316cf6bebf7d0959b1cb1974cc9ba5788f7c4a6c2c64ad1f62a8495382b2ab081a8e2c5b4c9e58b9734bd04014bbcf09b421753e6cd003f7980be1e2915066c6e52f3857096204 -->
+      var puzzle = Puzzle.deserialize("{\"grid\":[[{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"start\":true,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nega\",\"color\":\"white\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"square\",\"color\":\"green\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"square\",\"color\":\"blue\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nega\",\"color\":\"white\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"square\",\"color\":\"green\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"square\",\"color\":\"green\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"square\",\"color\":\"blue\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"square\",\"color\":\"blue\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"square\",\"color\":\"red\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"square\",\"color\":\"red\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"square\",\"color\":\"yellow\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"square\",\"color\":\"yellow\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nega\",\"color\":\"white\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"square\",\"color\":\"red\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"square\",\"color\":\"yellow\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nega\",\"color\":\"white\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"end\":\"right\",\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":1,\"gap\":null}]],\"largezero\":81,\"width\":9,\"height\":9,\"pillar\":false,\"settings\":{\"NEGATIONS_CANCEL_NEGATIONS\":true,\"SHAPELESS_ZERO_POLY\":false,\"PRECISE_POLYOMINOS\":true,\"FLASH_FOR_ERRORS\":true,\"FAT_STARTPOINTS\":false,\"CUSTOM_MECHANICS\":false},\"name\":\"Simple Puzzle\",\"autoSolved\":true,\"startPoint\":{\"x\":0,\"y\":8},\"hasNegations\":true,\"hasPolyominos\":false}")
+      draw(puzzle)
+    }
+  </script>
+</html>
