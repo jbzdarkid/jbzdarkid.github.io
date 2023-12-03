@@ -53,7 +53,7 @@ def generate_display_hash(data, title):
     puzzle_json = json.loads(data['puzzle_json']) # The puzzle contents includes the name, so to check for duplicates we need to update it.
     for i in range(1, 6):
         puzzle_id = puzzle_list[i][1:9]
-        puzzle_name = puzzle_list[i][9:]
+        puzzle_name = puzzle_list[i][9:-2]
         puzzle_json['name'] = puzzle_name # For a 1:1 match we need the exact same puzzle body.
         with Path(f'play/{puzzle_id}.html').open('r', encoding='utf-8') as f:
             print(f'Considering puzzle id {puzzle_id}')
