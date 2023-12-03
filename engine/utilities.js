@@ -715,12 +715,14 @@ function sendHttpRequest(verb, url, timeoutSeconds, data, onResponse) {
 
 // https://stackoverflow.com/q/12571650
 window.addEventListener('error', function(event) {
+  if (window.location.hostname != 'witnesspuzzles.com') return
   console.error('Please disregard the following CORS exception. It is expected and the request will succeed regardless.')
   var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSeXwtuKTbhXlQ5dUYtGjMQtkseFMBFka0jbBeOwd8tKiJb_ug/formResponse'
   window.fireAndForget('POST', formUrl, 'entry.909077667=' + encodeURIComponent(event.error) + '&entry.2145672989=' + encodeURIComponent(event.filename + ': ' + event.lineno))
 })
 
 function sendFeedback(feedback) {
+  if (window.location.hostname != 'witnesspuzzles.com') return
   console.error('Please disregard the following CORS exception. It is expected and the request will succeed regardless.')
   var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSe6kWD2rC7qaBVExJBUmAhU5qnhLzaY98ZQ3xp6Gq5fkizNHQ/formResponse'
   window.fireAndForget('POST', formUrl, 'entry.188054716=' + encodeURIComponent(feedback) + '&entry.508151484=' + encodeURIComponent(window.location.href))

@@ -365,7 +365,11 @@ window.setSolveMode = function(value) {
     window.TRACE_COMPLETION_FUNC = function(solution, path) {
       puzzle = solution
       puzzle.path = path
-      document.getElementById('publish').enable()
+
+      // Only encourage publishing when you're on witnesspuzzles.com
+      if (window.location.hostname == 'witnesspuzzles.com') {
+        document.getElementById('publish').enable()
+      }
     }
     // Redraw the puzzle, without interaction points. This is a bit of a @Hack, but it works.
     window.draw(puzzle)
@@ -466,7 +470,8 @@ window.onload = function() {
 
 window.onSolvedPuzzle = function(paths) {
   // Only enable the publish button if there was a valid path.
-  if (paths.length > 0) {
+  // Only encourage publishing when you're on witnesspuzzles.com
+  if (paths.length > 0 && window.location.hostname == 'witnesspuzzles.com') {
     document.getElementById('publish').enable()
   }
   return paths
