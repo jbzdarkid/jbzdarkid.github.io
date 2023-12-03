@@ -525,9 +525,11 @@ window.publishPuzzle = function() {
       publish.innerText = 'Error: Validation failed'
     }, /* onSuccess */ function(jobsUrl) {
       window.httpGetLoop(jobsUrl, 10, function(response) {
-        var publishStep = response.jobs[0].steps[3]
-        if (publishStep.conclusion == 'success') { // This is the only valid exit state.
-          return publishStep.name.substring(17) // Strip off "Published puzzle "
+        if (response.jobs.length > 0) {
+          var publishStep = response.jobs[0].steps[3]
+          if (publishStep.conclusion == 'success') { // This is the only valid exit state.
+            return publishStep.name.substring(17) // Strip off "Published puzzle "
+          }
         }
         
         return '' // Signal value
