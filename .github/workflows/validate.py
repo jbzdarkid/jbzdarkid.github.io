@@ -50,18 +50,18 @@ def generate_display_hash(data, title):
 
     # Check against the most recent 5 puzzles to see if this was a duplicate submission
     is_duplicate_puzzle = False
-    puzzle_json = json.loads(data['puzzle_json']) # The puzzle contents includes the name, so to check for duplicates we need to update it.
     for i in range(1, 6):
         puzzle_id = puzzle_list[i][1:9]
         puzzle_name = puzzle_list[i][9:-2]
-        puzzle_json['name'] = puzzle_name # For a 1:1 match we need the exact same puzzle body.
+        # For a 1:1 match we need the exact same puzzle body, with the same name and representation.
+        print(type(data['puzzle_json']))
+        puzzle_json = json.loads(data['puzzle_json'])
+        puzzle_json['name'] = puzzle_name 
+        expected = json.dumps(json.dumps(puzzle_json, separators=(',', ':')))
+
         with Path(f'play/{puzzle_id}.html').open('r', encoding='utf-8') as f:
             print(f'Considering puzzle id {puzzle_id}')
-            contents = f.read()
-            actual = contents.split('\n')[29][38:]
-            # Compacted representation, double-encoded (to match the version in the html file)
-            expected = json.dumps(json.dumps(puzzle_json, separators=(',', ':')))
-            if expected in contents:
+            if expected in f.read():
                 print(f'This puzzle has the same json as puzzle {i} ({puzzle_id}), deduplicating')
                 is_duplicate_puzzle = True
                 puzzle_list.pop(i)
@@ -100,7 +100,7 @@ def save_puzzle_files(data):
     page_url = f'play/{display_hash}.html'
 
     print('Saving image...')
-    with open(image_url, 'xb') as f:
+    with open(image_url, 'wb') as f:
         img_bytes = base64.b64decode(data['screenshot'][len('data:image/png;base64,'):])
         f.write(img_bytes)
 
@@ -113,7 +113,7 @@ def save_puzzle_files(data):
         .replace('%image_url%', image_url) \
         .replace('%puzzle%', json.dumps(data['puzzle_json'])) \
         .replace('%solution%', solution_path)
-    with open(page_url, 'x', encoding='utf-8') as f:
+    with open(page_url, 'w', encoding='utf-8') as f:
         f.write(contents)
 
     # Needed to signal back to the frontend. Don't use the title because it's user-controlled, and thus an attack vector.
