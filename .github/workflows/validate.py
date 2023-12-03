@@ -56,13 +56,16 @@ def generate_display_hash(data, title):
         puzzle_name = puzzle_list[i][9:]
         puzzle_json['name'] = puzzle_name # For a 1:1 match we need the exact same puzzle body.
         with Path(f'play/{puzzle_id}.html').open('r', encoding='utf-8') as f:
+            print(f'Considering puzzle id {puzzle_id}')
             contents = f.read()
-            print(f'Considering puzzle id {puzzle_id}, contents[29]:')
-            print(contents.split('\n')[29])
-            print('puzzle_json:')
+            actual = contents.split('\n')[29][39:]
             # Compacted representation, double-encoded (to match the version in the html file)
             expected = json.dumps(json.dumps(puzzle_json, separators=(',', ':')))
-            print(expected)
+            for j in range(len(actual)):
+                if actual[j] != expected[j]:
+                    print('Actual:  ', actual[:j])
+                    print('Expected:', expected[:j])
+                    break
             if expected in contents:
                 print(f'This puzzle has the same json as puzzle {i} ({puzzle_id}), deduplicating')
                 is_duplicate_puzzle = True
