@@ -63,8 +63,9 @@ def generate_display_hash(data, title):
             expected = json.dumps(json.dumps(puzzle_json, separators=(',', ':')))
             for j in range(len(actual)):
                 if actual[j] != expected[j]:
-                    print('Actual:  ', actual[j], actual[:j])
-                    print('Expected:', expected[j], expected[:j])
+                    print(j)
+                    print('Actual:  ', actual[j-10:j])
+                    print('Expected:', expected[j-10:j])
                     break
             if expected in contents:
                 print(f'This puzzle has the same json as puzzle {i} ({puzzle_id}), deduplicating')
