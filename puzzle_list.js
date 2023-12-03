@@ -1,4 +1,5 @@
 window.puzzleList = [
+"7STUCTEGTesting deduplication (2)",
 "RMPLBALTTesting deduplication (2)",
 "WJUTHPKRTesting deduplication (2)",
 "89T3GWPTTesting deduplication (2)",
