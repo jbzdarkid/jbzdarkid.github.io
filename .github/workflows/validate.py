@@ -119,7 +119,7 @@ def save_puzzle_files(data):
     with open(os.environ['GITHUB_OUTPUT'], 'w') as f:
       f.write(f'display_hash={display_hash}')
 
-    return display_hash, title_py
+    return display_hash
 
 
 if __name__ == '__main__':
