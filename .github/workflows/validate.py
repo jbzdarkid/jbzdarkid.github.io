@@ -60,7 +60,7 @@ def generate_display_hash(data, title):
             print(f'Considering puzzle id {puzzle_id}, contents[29]:')
             print(contents.split('\n')[29])
             print('puzzle_json:')
-            print(json.dumps(puzzle_json, indent=0)) # Pass a non-default indent to get an equivalent (compacted) representation.
+            print(json.dumps(puzzle_json, separators=(',', ':'))) # Compacted representation
             if json.dumps(puzzle_json) in f.read():
                 print(f'This puzzle has the same json as puzzle {i} ({puzzle_id}), deduplicating')
                 is_duplicate_puzzle = True
