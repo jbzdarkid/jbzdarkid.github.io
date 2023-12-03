@@ -53,8 +53,7 @@ def generate_display_hash(data, title):
     for i in range(1, 6):
         puzzle_id = puzzle_list[i][1:9]
         puzzle_name = puzzle_list[i][9:-2]
-        # For a 1:1 match we need the exact same puzzle body, with the same name and representation.
-        print(type(data['puzzle_json']))
+        # For a 1:1 match we need the exact same puzzle body, with the same name and encoding.
         puzzle_json = json.loads(data['puzzle_json'])
         puzzle_json['name'] = puzzle_name 
         expected = json.dumps(json.dumps(puzzle_json, separators=(',', ':')))
