@@ -540,8 +540,8 @@ window.publishPuzzle = function() {
           publish.innerText = 'Error: Publishing failed'
         } else {
           publish.innerText = 'Published, click here to play your puzzle!'
-          publish.enable()
           publish.onpointerdown = function() { window.location = 'play/' + displayHash + '.html' }
+          publish.enable()
         }
       })
     })
