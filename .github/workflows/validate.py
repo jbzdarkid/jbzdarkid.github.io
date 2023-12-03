@@ -58,13 +58,13 @@ def generate_display_hash(data, title):
         with Path(f'play/{puzzle_id}.html').open('r', encoding='utf-8') as f:
             print(f'Considering puzzle id {puzzle_id}')
             contents = f.read()
-            actual = contents.split('\n')[29][39:]
+            actual = contents.split('\n')[29][38:]
             # Compacted representation, double-encoded (to match the version in the html file)
             expected = json.dumps(json.dumps(puzzle_json, separators=(',', ':')))
             for j in range(len(actual)):
                 if actual[j] != expected[j]:
-                    print('Actual:  ', actual[:j])
-                    print('Expected:', expected[:j])
+                    print('Actual:  ', actual[j], actual[:j])
+                    print('Expected:', expected[j], expected[:j])
                     break
             if expected in contents:
                 print(f'This puzzle has the same json as puzzle {i} ({puzzle_id}), deduplicating')
