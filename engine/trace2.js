@@ -605,9 +605,15 @@ var MOVE_BOTTOM = 4
 
 window.onMove = function(dx, dy) {
   {
-    // Also handles some collision
-    var collidedWith = pushCursor(dx, dy)
-    console.spam('Collided with', collidedWith)
+    if (window.settings.wittleTracing == 'true') {
+      // Also handles some collision
+      var collidedWith = pushCursorWittle(dx, dy)
+      console.spam('Collided with', collidedWith)
+    } else {
+      // Also handles some collision
+      var collidedWith = pushCursor(dx, dy)
+      console.spam('Collided with', collidedWith)
+    }
   }
 
   while (true) {
@@ -665,11 +671,10 @@ function push(dx, dy, dir, targetDir) {
   // Fraction of movement to redirect in the other direction
   var movementRatio = null
   if (targetDir === 'left' || targetDir === 'top') {
-    movementRatio = -3
+    movementRatio = window.settings.wittleTracing == 'true' ? -1 : -3
   } else if (targetDir === 'right' || targetDir === 'bottom') {
-    movementRatio = 3
+    movementRatio = window.settings.wittleTracing == 'true' ? 1 : 3
   }
-  if (window.settings.disablePushing === true) movementRatio *= 1000
 
   if (dir === 'left') {
     var overshoot = data.bbox.x1 - (data.x + dx) + 12
@@ -707,6 +712,116 @@ function push(dx, dy, dir, targetDir) {
     return true
   }
   return false
+}
+
+
+// Redirect momentum from pushing against walls, so that all further moment steps
+// will be strictly linear. Returns a string for logging purposes only.
+function pushCursorWittle(dx, dy) {
+  // Outer wall collision
+  var cell = data.puzzle.getCell(data.pos.x, data.pos.y)
+  if (cell == null) return 'nothing'
+
+  // Only consider non-endpoints or endpoints which are parallel
+  if ([undefined, 'top', 'bottom'].includes(cell.end)) {
+    var leftCell = data.puzzle.getCell(data.pos.x - 1, data.pos.y)
+    if (leftCell == null || leftCell.gap === window.GAP_FULL) {
+      if (dy <= 0 && push(dx, dy, 'left', 'top'))   return 'left outer wall, top'
+      if (dy > 0 && push(dx, dy, 'left', 'bottom')) return 'left outer wall, bottom'
+    }
+    var rightCell = data.puzzle.getCell(data.pos.x + 1, data.pos.y)
+    if (rightCell == null || rightCell.gap === window.GAP_FULL) {
+      if (dy <= 0 && push(dx, dy, 'right', 'top'))   return 'right outer wall, top'
+      if (dy > 0 && push(dx, dy, 'right', 'bottom')) return 'right outer wall, bottom'
+    }
+  }
+  // Only consider non-endpoints or endpoints which are parallel
+  if ([undefined, 'left', 'right'].includes(cell.end)) {
+    var topCell = data.puzzle.getCell(data.pos.x, data.pos.y - 1)
+    if (topCell == null || topCell.gap === window.GAP_FULL) {
+      if (dx <= 0 && push(dx, dy, 'top', 'left')) return 'top outer wall, left'
+      if (dx > 0 && push(dx, dy, 'top', 'right')) return 'top outer wall, right'
+    }
+    var bottomCell = data.puzzle.getCell(data.pos.x, data.pos.y + 1)
+    if (bottomCell == null || bottomCell.gap === window.GAP_FULL) {
+      if (dx <= 0 && push(dx, dy, 'bottom', 'left')) return 'bottom outer wall, left'
+      if (dx > 0 && push(dx, dy, 'bottom', 'right')) return 'bottom outer wall, right'
+    }
+  }
+
+  // Inner wall collision
+  if (cell.end == null) {
+    if (data.pos.x%2 === 1 && data.pos.y%2 === 0) { // Horizontal cell
+      if (dx < 0 || (dx == 0 && data.x < data.bbox.middle.x)) {
+        push(dx, dy, 'topbottom', 'left')
+        return 'topbottom inner wall, moved left'
+      } else {
+        push(dx, dy, 'topbottom', 'right')
+        return 'topbottom inner wall, moved right'
+      }
+    } else if (data.pos.x%2 === 0 && data.pos.y%2 === 1) { // Vertical cell
+      if (dy < 0 || (dy == 0 && data.y < data.bbox.middle.y)) {
+        push(dx, dy, 'leftright', 'top')
+        return 'leftright inner wall, moved up'
+      } else {
+        push(dx, dy, 'leftright', 'bottom')
+        return 'leftright inner wall, moved down'
+      }
+    }
+  }
+
+  // Intersection & endpoint collision
+  // Ratio of movement to be considered turning at an intersection
+  var turnMod = 2
+  if ((data.pos.x%2 === 0 && data.pos.y%2 === 0) || cell.end != null) {
+    if (data.x < data.bbox.middle.x) {
+      push(dx, dy, 'topbottom', 'right')
+      // Overshot the intersection and appears to be trying to turn
+      if (data.x > data.bbox.middle.x && Math.abs(dy) * turnMod > Math.abs(dx)) {
+        data.y += Math.sign(dy) * (data.x - data.bbox.middle.x)
+        data.x = data.bbox.middle.x
+        return 'overshot moving right'
+      }
+      return 'intersection moving right'
+    } else if (data.x > data.bbox.middle.x) {
+      push(dx, dy, 'topbottom', 'left')
+      // Overshot the intersection and appears to be trying to turn
+      if (data.x < data.bbox.middle.x && Math.abs(dy) * turnMod > Math.abs(dx)) {
+        data.y += Math.sign(dy) * (data.bbox.middle.x - data.x)
+        data.x = data.bbox.middle.x
+        return 'overshot moving left'
+      }
+      return 'intersection moving left'
+    }
+    if (data.y < data.bbox.middle.y) {
+      push(dx, dy, 'leftright', 'bottom')
+      // Overshot the intersection and appears to be trying to turn
+      if (data.y > data.bbox.middle.y && Math.abs(dx) * turnMod > Math.abs(dy)) {
+        data.x += Math.sign(dx) * (data.y - data.bbox.middle.y)
+        data.y = data.bbox.middle.y
+        return 'overshot moving down'
+      }
+      return 'intersection moving down'
+    } else if (data.y > data.bbox.middle.y) {
+      push(dx, dy, 'leftright', 'top')
+      // Overshot the intersection and appears to be trying to turn
+      if (data.y < data.bbox.middle.y && Math.abs(dx) * turnMod > Math.abs(dy)) {
+        data.x += Math.sign(dx) * (data.bbox.middle.y - data.y)
+        data.y = data.bbox.middle.y
+        return 'overshot moving up'
+      }
+      return 'intersection moving up'
+    }
+  }
+
+  // No collision, limit movement to X or Y only to prevent out-of-bounds
+  if (Math.abs(dx) > Math.abs(dy)) {
+    data.x += dx
+    return 'nothing, x'
+  } else {
+    data.y += dy
+    return 'nothing, y'
+  }
 }
 
 // Redirect momentum from pushing against walls, so that all further moment steps

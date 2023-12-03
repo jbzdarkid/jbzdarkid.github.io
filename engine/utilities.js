@@ -341,6 +341,7 @@ window.loadHeader = function(titleText) {
   expandedSettings.style = 'width: 300px; position: absolute; left: 0; display: none; padding: 10px'
   expandedSettings.style.border = '2px solid ' + window.BORDER
   expandedSettings.style.background = window.PAGE_BACKGROUND
+  expandedSettings.className = 'noselect'
   expandedSettings.id = 'expandedSettings'
 
   var minus = drawSymbol({'type':'minus', 'width':20, 'height':20})
@@ -424,6 +425,26 @@ window.loadHeader = function(titleText) {
     window.settings.volume = this.value
   }
   volume.style.backgroundImage = 'linear-gradient(to right, ' + window.ALT_BACKGROUND + ', ' + window.ACTIVE_COLOR + ')'
+
+  var wittleTracing = createCheckbox()
+  expandedSettings.appendChild(wittleTracing)
+  wittleTracing.id = 'wittleTracing'
+  if (window.settings.wittleTracing == 'true') {
+    wittleTracing.style.background = window.BORDER
+    wittleTracing.checked = true
+  }
+
+  wittleTracing.onpointerdown = function() {
+    this.checked = !this.checked
+    this.style.background = (this.checked ? window.BORDER : window.PAGE_BACKGROUND)
+    window.settings.wittleTracing = this.checked
+  }
+
+  var wittleLabel = document.createElement('label')
+  expandedSettings.appendChild(wittleLabel)
+  wittleLabel.htmlFor = 'wittleTracing'
+  wittleLabel.innerText = 'Wittle tracing'
+  wittleLabel.onpointerdown = function() { wittleTracing.onpointerdown() }
 
   // Custom mechanics -- disabled for now
   window.settings.customMechanics = false
