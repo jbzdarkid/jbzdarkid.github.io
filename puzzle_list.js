@@ -1,4 +1,5 @@
 window.puzzleList = [
+"A4AGFX5YAnother Evil Stone Star Pillar",
 "SFZHHH43Path Control",
 "BRV2HQ2ZA simple Puzzle",
 "5A63TV4BDefault Puzzle No. 1",
