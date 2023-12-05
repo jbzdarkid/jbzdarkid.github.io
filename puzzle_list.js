@@ -1,4 +1,5 @@
 window.puzzleList = [
+"88AHF2BSThis is a Dot Pillar",
 "A4AGFX5YAnother Evil Stone Star Pillar",
 "SFZHHH43Path Control",
 "BRV2HQ2ZA simple Puzzle",
