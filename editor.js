@@ -536,18 +536,18 @@ window.publishPuzzle = function() {
             return publishStep.name.substring(17) // Strip off "Published puzzle "
           }
         }
-        
-        return '' // Signal value
       }, /* onError */ function() {
         publish.innerText = 'Error: Publishing failed'
       }, /* onSuccess */ function(displayHash) {
-        if (displayHash == '') {
+        window.httpGetLoop('https://witnesspuzzles.com/play/' + displayHash, 10, function(response) {
+          return response // We just care if the puzzle exists, which should already be indicated by the HTTP status.
+        }, /* onError */ function() {
           publish.innerText = 'Error: Publishing failed'
-        } else {
+        }, /* onSuccess */ function() {
           publish.innerText = 'Published, click here to play your puzzle!'
           publish.onpointerdown = function() { window.location = 'play/' + displayHash + '.html' }
           publish.enable()
-        }
+        })
       })
     })
   })
