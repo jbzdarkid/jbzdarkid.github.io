@@ -1,4 +1,5 @@
 window.puzzleList = [
+"S2WYDKFHMount Bridge Floor 2D (Sorry for bad simulations)",
 "FEAUS34DMount Bridge Floor 2C (Sorry for bad simulations)",
 "PSWWU5TZMount Bridge Floor 2B (Sorry for bad simulations)",
 "V6JGG6A2Mountain Bridge Floor 2A",
