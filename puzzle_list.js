@@ -1,4 +1,5 @@
 window.puzzleList = [
+"V6JGG6A2Mountain Bridge Floor 2A",
 "R2Z37L5Knearly incompletable puzzle",
 "22YTTKSLOne Solution",
 "88AHF2BSThis is a Dot Pillar",
