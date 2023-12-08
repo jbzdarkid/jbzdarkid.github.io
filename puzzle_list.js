@@ -1,4 +1,5 @@
 window.puzzleList = [
+"3HVWFUBSah",
 "M3RZB6F6aagtjtj",
 "63X3R4Y7simusolve real???",
 "AQ76D546simusolve real???",
