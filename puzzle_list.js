@@ -1,4 +1,5 @@
 window.puzzleList = [
+"AQ76D546simusolve real???",
 "JLULBQFM1way",
 "WLZLTRVZUnnamed Rotational Symmetry Puzzle",
 "V5TY663Chard 2",
