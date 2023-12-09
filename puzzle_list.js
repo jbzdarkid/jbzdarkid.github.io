@@ -473,7 +473,6 @@ window.puzzleList = [
 "C9AF8E66Unnamed Puzzle",
 "725CAC693polynominos",
 "4342867Esecond",
-"49E24B3C?",
 "E438B2A4Nebula-M09 3",
 "2B9E2CF6The Witness is You Symmetry Island-1",
 "A67F74E3Bedtopia",
