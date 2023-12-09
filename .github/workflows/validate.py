@@ -109,7 +109,7 @@ def save_puzzle_files(data):
         .replace('%title_html%', title_html) \
         .replace('%title_js%', title_js) \
         .replace('%display_hash%', display_hash) \
-        .replace('%image_url%', image_url) \
+        .replace('%image_url%', f'https://witnesspuzzles.com/{image_url}') \
         .replace('%puzzle%', json.dumps(data['puzzle_json'])) \
         .replace('%solution%', solution_path)
     with open(page_url, 'w', encoding='utf-8') as f:
