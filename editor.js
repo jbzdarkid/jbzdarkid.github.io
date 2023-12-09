@@ -496,9 +496,7 @@ window.publishPuzzle = function() {
   // Last-minute call to blur (deselect) the puzzle name, to ensure that changes are flushed.
   document.getElementById('puzzleName').blur()
 
-  // Adapted from https://stackoverflow.com/a/2117523
-  var requestId = ('10000000-1000-4000-8000-100000000000').replace(/[018]/g, c =>
-    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16))
+  var requestId = window.createGuid()
 
   console.error('Please disregard the following CORS exception. It is expected and the request will succeed regardless.')
   var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSe7V_JSIq4NtYipSxtPtkIlXBjX0aWIFYJuzJKzQ9h-MaB5tQ/formResponse'
