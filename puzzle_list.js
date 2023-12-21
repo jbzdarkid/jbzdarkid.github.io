@@ -1,4 +1,5 @@
 window.puzzleList = [
+"28URXN43Unnamed Pillar (V Symmetry) Puzzle",
 "7DCQUZ54One Solution",
 "QNUWPF69Interlock",
 "TBLAK8PJ1",
