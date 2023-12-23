@@ -341,11 +341,7 @@ function clearGrid(svg, puzzle) {
     data.symbbox = null
   }
 
-  window.deleteElementsByClassName(svg, 'cursor')
-  window.deleteElementsByClassName(svg, 'line-1')
-  window.deleteElementsByClassName(svg, 'line-2')
-  window.deleteElementsByClassName(svg, 'line-3')
-  puzzle.clearLines()
+  window.drawPath(puzzle, null, svg.id) // drawPath(null) is shorthand for "clear the grid"
 }
 
 // This copy is an exact copy of puzzle.getSymmetricalDir, except that it uses MOVE_* values instead of strings
