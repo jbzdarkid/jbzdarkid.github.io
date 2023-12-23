@@ -59,7 +59,7 @@ Polyominos in this engine are represented by bitmask -- each one fits into 16 bi
 The key bit of logic here is polyominoFromPolyshape, which converts one of these masks (very small, easy to manage) into a list of grid locations. Recall that the grid is double-sized, so this also does the job of filling out the spaces between the polyomino's "squares".  
 
 ## trace2.js
-Tracing (drawing lines on the grid) is one of the most complex parts of this engine. While drawing a line, yoru position is tracked in four ways:  
+Tracing (drawing lines on the grid) is one of the most complex parts of this engine. While drawing a line, your position is tracked in four ways:  
 First, data.pos tracks your position in the puzzle grid.  
 Second, data.x and data.y track the position of the cursor in the rendered puzzle.  
 Third, data.bbox (bounding box) tracks the edges of the current cell.  
