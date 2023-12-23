@@ -395,7 +395,6 @@ window.drawPathNoUI = function(puzzle, path) {
 // Uses trace2 to draw the path on the grid, logs a graphical representation of the solution,
 // and also modifies the puzzle to contain the solution path.
 window.drawPath = function(puzzle, path, target='puzzle') {
-  // @Duplicated with trace2.clearGrid
   var puzzleElem = document.getElementById(target)
   window.deleteElementsByClassName(puzzleElem, 'cursor')
   window.deleteElementsByClassName(puzzleElem, 'line-1')
