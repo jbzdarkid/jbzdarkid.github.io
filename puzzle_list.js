@@ -1,7 +1,7 @@
 window.puzzleList = [
+"GT3NK4XRUnnamed Puzzle",
 "AP9DHMGFUnnamed Pillar (V Symmetry) Puzzle",
 "897W5AY9Two Trangle",
-"GT3NK4XRUnnamed Puzzle",
 "U3MF9D7X7",
 "FWTU7RBLUnnamed Puzzle",
 "STCY5FQ5Unnamed Horizontal Symmetry Puzzle",
