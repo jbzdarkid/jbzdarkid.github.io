@@ -1,4 +1,5 @@
 window.puzzleList = [
+"PRM9DCZLAldo puzzle no.1",
 "M8V8GT8Kdot example",
 "MH3DT2TCdefalt valuts but 44",
 "ZA3NA8AEUnnamed Puzzle",
