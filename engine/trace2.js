@@ -94,6 +94,12 @@ class BoundingBox {
 
 class PathSegment {
   constructor(dir) {
+    if (!data.svg.contains(data.cursor)) {
+      // According to telemetry, there are rare cases where the cursor is not a child of the svg.
+      // This is probably a race condition between exiting with right click and tracing, but whatever.
+      data.svg.insertBefore(data.cursor, data.svg.getElementById('cursorPos'))
+    }
+
     this.poly1 = createElement('polygon')
     this.circ = createElement('circle')
     this.poly2 = createElement('polygon')
@@ -364,8 +370,7 @@ function getSymmetricalDir(puzzle, dir) {
 }
 
 window.trace = function(event, puzzle, pos, start, symStart=null) {
-  /*if (data.start == null) {*/
-  if (data.tracing !== true) { // could be undefined or false
+  if (start != null && data.tracing !== true) { // data.tracing could be undefined or false
     var svg = start.parentElement
     data.tracing = true
     window.PLAY_SOUND('start')

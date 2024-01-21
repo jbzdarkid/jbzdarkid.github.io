@@ -667,7 +667,12 @@ window.httpGetLoop = function(url, maxTimeout, action, onError, onSuccess) {
 
   sendHttpRequest('GET', url, SECONDS_PER_LOOP, null, function(httpCode, response) {
     if (httpCode >= 200 && httpCode <= 299) {
-      var output = action(JSON.parse(response))
+      try {
+        var output = action(JSON.parse(response))
+      } catch (exc) {
+        if (!(exc instanceof SyntaxError)) throw exc;
+        console.error('Failed to parse JSON response:\n' + response)
+      }
       if (output) {
         onSuccess(output)
         return
