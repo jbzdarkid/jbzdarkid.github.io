@@ -718,19 +718,35 @@ function sendHttpRequest(verb, url, timeoutSeconds, data, onResponse) {
   currentHttpRequest.send(data)
 }
 
+// Adapted from https://stackoverflow.com/a/2117523
+window.createGuid = function() {
+  return ('10000000-1000-4000-8000-100000000000').replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16))
+}
+
+// Regenerated every page load, so it's not trackable in any way beyond "these two errors/feedback were from the same person during the same page load"
+var sessionId = createGuid()
+
 // https://stackoverflow.com/q/12571650
 window.addEventListener('error', function(event) {
   if (window.location.hostname != 'witnesspuzzles.com') return
   console.error('Please disregard the following CORS exception. It is expected and the request will succeed regardless.')
   var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSeXwtuKTbhXlQ5dUYtGjMQtkseFMBFka0jbBeOwd8tKiJb_ug/formResponse'
-  window.fireAndForget('POST', formUrl, 'entry.909077667=' + encodeURIComponent(event.error) + '&entry.2145672989=' + encodeURIComponent(event.filename + ': ' + event.lineno))
+  window.fireAndForget('POST', formUrl,
+    'entry.603156546=' + encodeURIComponent(sessionId) +
+    '&entry.909077667=' + encodeURIComponent(event.error) +
+    '&entry.2145672989=' + encodeURIComponent(event.filename + ':' + event.lineno) +
+    '&entry.587895622=' + encodeURIComponent(window.location.href))
 })
 
 function sendFeedback(feedback) {
   if (window.location.hostname != 'witnesspuzzles.com') return
   console.error('Please disregard the following CORS exception. It is expected and the request will succeed regardless.')
   var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSe6kWD2rC7qaBVExJBUmAhU5qnhLzaY98ZQ3xp6Gq5fkizNHQ/formResponse'
-  window.fireAndForget('POST', formUrl, 'entry.188054716=' + encodeURIComponent(feedback) + '&entry.508151484=' + encodeURIComponent(window.location.href))
+  window.fireAndForget('POST', formUrl,
+    'entry.1993425622=' + encodeURIComponent(sessionId) +
+    '&entry.188054716=' + encodeURIComponent(feedback) +
+    '&entry.508151484=' + encodeURIComponent(window.location.href))
 }
 
 })
