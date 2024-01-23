@@ -1,4 +1,5 @@
 window.puzzleList = [
+"H4T98UEDSocial Distancing",
 "HMJP2LMLSimple Mix-Up",
 "P27WWAHWUnnamed Puzzle",
 "BSZVDCSZUnnamed Rotational Symmetry Puzzle",
