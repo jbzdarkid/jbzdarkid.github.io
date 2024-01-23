@@ -1,4 +1,5 @@
 window.puzzleList = [
+"KVC99T6LSocial Distancing",
 "H4T98UEDSocial Distancing",
 "HMJP2LMLSimple Mix-Up",
 "P27WWAHWUnnamed Puzzle",
