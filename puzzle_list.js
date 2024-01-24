@@ -1,4 +1,5 @@
 window.puzzleList = [
+"DTVSAVN8Storage Boxes",
 "TXFUV9JTBottle Rack",
 "KVC99T6LSocial Distancing",
 "H4T98UEDSocial Distancing",
