@@ -1,4 +1,5 @@
 window.puzzleList = [
+"2RZRHBJXPerfecta",
 "GW2MKVECThree Perfect",
 "PGL7KAZ3Gearshift Box",
 "4FV2A42ZBlackstone Steps",
