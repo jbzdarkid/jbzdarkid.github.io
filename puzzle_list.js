@@ -1,4 +1,5 @@
 window.puzzleList = [
+"6AEDGEX6Unnamed Pillar (V Symmetry) Puzzle",
 "WK9LGNGSeasy pillar",
 "2RZRHBJXPerfecta",
 "GW2MKVECThree Perfect",
