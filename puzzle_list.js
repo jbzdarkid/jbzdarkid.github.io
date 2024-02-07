@@ -1,4 +1,5 @@
 window.puzzleList = [
+"F794SRMWByzantine Flower Garden",
 "DC8VHERLShipping Container",
 "8GPZDY9RFour Puzzles",
 "CW62HGDBUnnamed Puzzle",
