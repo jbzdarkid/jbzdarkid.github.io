@@ -1,4 +1,5 @@
 window.puzzleList = [
+"TZYQ6SCTDuplo Bricks",
 "PM37YZC9Lego Bricks",
 "MCQHDAT2Inlaid Script",
 "F794SRMWByzantine Flower Garden",
