@@ -1,4 +1,5 @@
 window.puzzleList = [
+"RJ2L9WCD\"SUN\"tutorial4panel",
 "W2BHDE8XUnnamed Puzzle",
 "TZQ6GLT4I Sawed This Puzzle In Half!",
 "TZYQ6SCTDuplo Bricks",
