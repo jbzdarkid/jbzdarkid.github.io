@@ -1,4 +1,5 @@
 window.puzzleList = [
+"KGGZNEXNRandom Entry Area Puzzle #1",
 "BX7W2VV3Tetris Star",
 "RJ2L9WCD\"SUN\"tutorial4panel",
 "W2BHDE8XUnnamed Puzzle",
