@@ -835,6 +835,28 @@ function drawSymbolButtons() {
         drawSymbolButtons()
       }
       button.oncontextmenu = function(event) {event.preventDefault()}
+    } else if (button.id == 'dot' && event.shiftKey) {
+      // Shift-clicking on the 'dot' symbol will attempt to fill all the intersections with dots.
+      // Or, if they're already filled, it will clear them out.
+      // First, figure out if the grid is full of dots:
+      var fullOfDots = true
+      for (var x=0; x<puzzle.width; x++) {
+        for (var y=0; y<puzzle.height; y++) {
+          if (x%2 == 0 && y%2 == 0) {
+            if (!(puzzle.grid[x][y].dot >= 1)) fullOfDots = false
+          }
+        }
+      }
+      // Then, toggle state to the opposite:
+      var newDotState = fullOfDots ? undefined : 1
+      for (var x=0; x<puzzle.width; x++) {
+        for (var y=0; y<puzzle.height; y++) {
+          if (x%2 == 0 && y%2 == 0) {
+            puzzle.grid[x][y].dot = newDotState
+          }
+        }
+      }
+      drawPuzzle()
     } else if (button.id == 'arrow') {
       if (localStorage.customMechanics != 'true') {
         button.style.display = 'none'
