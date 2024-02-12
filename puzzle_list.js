@@ -1,4 +1,10 @@
 window.puzzleList = [
+"DQ77QHGNSpeed challenge",
+"A8RNKAY9not hard",
+"XVYV2CAJ1-1",
+"GPSRYUW9Hue Shift",
+"CXRLVL9Va",
+"T9WJVFY4idk lol",
 "Y6CWFZYMUnnamed Rotational Symmetry Puzzle",
 "KGGZNEXNRandom Entry Area Puzzle #1",
 "BX7W2VV3Tetris Star",
