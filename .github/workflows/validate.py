@@ -36,7 +36,13 @@ def validate_puzzle(puzzle):
     tempfile.unlink() # So that it doesn't get committed
 
     data = dom[dom.index('!!!')+3:dom.index('@@@')]
-    data = json.loads(data)
+    try:
+        data = json.loads(data)
+    except json.decoder.JsonDecodeError as e:
+        print(e)
+        print(data)
+        exit(2)
+
     if not data.get('valid', False):
         print('Puzzle was not valid:', data['error'])
         exit(1)
