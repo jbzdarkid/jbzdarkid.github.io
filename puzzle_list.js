@@ -1,4 +1,5 @@
 window.puzzleList = [
+"UALPCM6S44 easy",
 "DQ77QHGNSpeed challenge",
 "A8RNKAY9not hard",
 "XVYV2CAJ1-1",
