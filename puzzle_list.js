@@ -1,4 +1,5 @@
 window.puzzleList = [
+"5C8S2P3NUnnamed Puzzle",
 "4ZZ77XVGDouble Peaks",
 "LG9EZUF7Unnamed Puzzle",
 "HX6A62ZTif you solve this easily,you are pro.",
