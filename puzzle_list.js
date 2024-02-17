@@ -1,8 +1,8 @@
 window.puzzleList = [
+"B8XN9TZYtriangles",
 "VGD9ACYGtriangles",
 "MHEGGCYYrandomized hexagon intro 3 (5 ways to solve)",
 "4AVZRVTWrandomized hexagon intro 3 (5 ways to solve)",
-"B8XN9TZYtriangles",
 "8JC38BR4randomized hexagon intro 2",
 "KMJYV45Rrandomized hexagon intro 1 (3 ways to solve)",
 "YR6P3DZLUnnamed Puzzle",
