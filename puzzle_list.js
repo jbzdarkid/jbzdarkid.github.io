@@ -1,8 +1,8 @@
 window.puzzleList = [
+"SBP83R94Easy",
 "SJDYAUUFGreen and red 3",
 "BNTWBW3Zgreen and red 2",
 "FZR6W8ZCgreen and red",
-"SBP83R94Easy",
 "8XWTM48BUnnamed Puzzle",
 "W9MTGQ4HUnnamed Rotational Symmetry Puzzle",
 "VRXGVA72Unnamed Puzzle",
