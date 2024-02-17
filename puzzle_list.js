@@ -1,4 +1,5 @@
 window.puzzleList = [
+"KMJYV45Rrandomized hexagon intro 1",
 "B8XN9TZYtriangles",
 "YR6P3DZLUnnamed Puzzle",
 "LC7ZL6MQEasy?",
