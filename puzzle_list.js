@@ -1,4 +1,5 @@
 window.puzzleList = [
+"GRZPMU6Qrandomized entry area briefcase room",
 "5YT6FPRGrandomized colored squares intro 9 (48wts)",
 "67MTTFJCrandomized colored squares intro 9 (48wts)",
 "FHG8BN6Arandomized colored squares intro 8 (8wts)",
