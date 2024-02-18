@@ -1,4 +1,5 @@
 window.puzzleList = [
+"W9D5235WSeparate the rainbow",
 "D2CU88BSrandomized intro puzzle 5 (20 ways to solve)",
 "EYKWU7YErandomized hexagon intro 4 (4 ways to solve)",
 "B8XN9TZYtriangles",
