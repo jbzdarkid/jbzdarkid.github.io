@@ -1,4 +1,5 @@
 window.puzzleList = [
+"CPN955CDrandomized color squares intro 3 (13wts)",
 "WD8MDEEPrandomized color squares intro 3 (13wts)",
 "WPLGWL9Zrandomized colored squares intro 2 (4wts)",
 "S8NF8TUTrandomized color squares intro 1 (9wts)",
