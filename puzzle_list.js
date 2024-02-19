@@ -1,4 +1,5 @@
 window.puzzleList = [
+"RSZSCPFNEasy v2",
 "W2ZS2UQAsymmetry island entrance randomized (14wts)",
 "2TGC6DH2glass factory randomized 10",
 "DPHP5TGWglass factory randomized 9",
