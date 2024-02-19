@@ -1,4 +1,5 @@
 window.puzzleList = [
+"3VAFGAYRglass factory randomized 8",
 "Q8WS42QEglass factory randomized 7 (2wts)",
 "EGBUNPPLglass factory randomized 6 (2wts)",
 "B643WUNJglass factory randomized 5 (2wts)",
