@@ -1,4 +1,5 @@
 window.puzzleList = [
+"XP3DD8SASolvable",
 "W4EWGTYVSeparate the rainbow",
 "RSZSCPFNEasy v2",
 "W2ZS2UQAsymmetry island entrance randomized (14wts)",
