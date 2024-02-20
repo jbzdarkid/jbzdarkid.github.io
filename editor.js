@@ -575,8 +575,8 @@ function onElementClicked(event, x, y) {
       delete puzzle.grid[x][y].gap
       if (puzzle.symmetry != null) {
         var sym = puzzle.getSymmetricalPos(x, y)
-        delete puzzle.grid[x][y].start
-        delete puzzle.grid[x][y].end
+        delete puzzle.grid[sym.x][sym.y].start
+        delete puzzle.grid[sym.x][sym.y].end
       }
     }
   } else if (activeParams.type == 'start') {
