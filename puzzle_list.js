@@ -1,7 +1,7 @@
 window.puzzleList = [
+"KCDJYE4QYoure a star",
 "ARBBSHXVUnnamed Pillar (V Symmetry) Puzzle",
 "RCHFYWJZmountain balls",
-"KCDJYE4QYoure a star",
 "WMQW7ELJSolvable",
 "XP3DD8SASolvable",
 "M8SY8M3APeadastool",
