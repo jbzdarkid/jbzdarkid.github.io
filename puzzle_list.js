@@ -1,4 +1,5 @@
 window.puzzleList = [
+"RCHFYWJZmountain balls",
 "KCDJYE4QYoure a star",
 "WMQW7ELJSolvable",
 "XP3DD8SASolvable",
