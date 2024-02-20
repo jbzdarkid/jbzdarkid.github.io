@@ -153,21 +153,25 @@ function reloadPuzzle() {
   document.getElementById('puzzleName').innerText = puzzle.name
   document.getElementById('solutionViewer').style.display = 'none'
 
-  document.getElementById('solveAuto').enable()
+  var canAutoSolve = true
   if (puzzle.symmetry != null) {
     // 6x6 is the max for symmetry puzzles
-    if (puzzle.width > 13 || puzzle.height > 13) {
-      document.getElementById('solveAuto').disable()
-    }
+    if (puzzle.width > 13 || puzzle.height > 13) canAutoSolve = false
   } else if (puzzle.pillar === true) {
     // 5x6 is the max for non-symmetry, pillar puzzles
-    if (puzzle.width > 13 || puzzle.height > 11) {
-      document.getElementById('solveAuto').disable()
-    }
+    if (puzzle.width > 13 || puzzle.height > 11) canAutoSolve = false
   } else {
     // 6x6 is the max for non-symmetry, non-pillar puzzles
-    if (puzzle.width > 13 || puzzle.height > 13) {
-      document.getElementById('solveAuto').disable()
+    if (puzzle.width > 13 || puzzle.height > 13) canAutoSolve = false
+  }
+
+  if (canAutoSolve) {
+    document.getElementById('solveAuto').onpointerdown = window.solvePuzzle
+  } else {
+    document.getElementById('solveAuto').onpointerdown = function() {
+      var warning = 'This puzzle is very large. Attempting to solve it automatically may cause your browser to become unresponsive.\nDo you want to continue?'
+      if (!window.confirm(warning)) return
+      window.solvePuzzle()
     }
   }
 
