@@ -1,7 +1,7 @@
 window.puzzleList = [
+"8CE7ZEQ2Fan made puzzle 5.1",
 "4DBDP58NFan made puzzle 6",
 "3NF73X28Fan made puzzle 5",
-"8CE7ZEQ2Fan made puzzle 5.1",
 "YLYMMJYFFan made puzzle 4",
 "E3P9U6AKFan made puzzle 3",
 "F6TJKYD4ONE way",
