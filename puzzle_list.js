@@ -1,4 +1,5 @@
 window.puzzleList = [
+"HK93WGPPUnnamed Puzzle",
 "EKTD4SV7Unnamed Puzzle",
 "G7U6JRHCUnnamed Puzzle",
 "WTH4RFG5Expert random Hex 3",
