@@ -1,4 +1,5 @@
 window.puzzleList = [
+"DCPX7868Mutual",
 "RTTJMLEPQuarry Bonus",
 "F52P2SVALarge Maze",
 "A56BM35NBlack and White Hedgemaze",
