@@ -1,4 +1,5 @@
 window.puzzleList = [
+"AXEPJY9WTetris Star!",
 "47GT2MSJSirius",
 "KVW3FZUMQuarry Bonus",
 "DCPX7868Mutual",
