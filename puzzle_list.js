@@ -1,6 +1,6 @@
 window.puzzleList = [
-"BDX9449VExpert random hex 2",
 "WTH4RFG5Expert random Hex 3",
+"BDX9449VExpert random hex 2",
 "CGBDFGCSExpert random hex 2",
 "RALTCMPNExpert Random Hex 1",
 "EDXZC7VSExpert Random Hex 1",
