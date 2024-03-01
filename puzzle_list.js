@@ -1,4 +1,5 @@
 window.puzzleList = [
+"CGBDFGCSExpert random hex 2",
 "RALTCMPNExpert Random Hex 1",
 "EDXZC7VSExpert Random Hex 1",
 "AXEPJY9WTetris Star!",
