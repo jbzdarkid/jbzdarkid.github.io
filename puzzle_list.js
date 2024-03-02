@@ -1,6 +1,6 @@
 window.puzzleList = [
-"YJXECF4CAAAAAAAAAAAAAAAAAAAbsubddhvdhuddbudbudhuf",
 "T55MS8S9Swamp 1",
+"YJXECF4CAAAAAAAAAAAAAAAAAAAbsubddhvdhuddbudbudhuf",
 "T5LASGZTSwamp door",
 "8SP82G38Keep door 1",
 "Y8K7AYDKExpert Random Hex 4",
