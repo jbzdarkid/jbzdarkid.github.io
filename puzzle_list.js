@@ -1,4 +1,5 @@
 window.puzzleList = [
+"JFBPBYN6Wall paper",
 "T55MS8S9Swamp 1",
 "YJXECF4CAAAAAAAAAAAAAAAAAAAbsubddhvdhuddbudbudhuf",
 "T5LASGZTSwamp door",
