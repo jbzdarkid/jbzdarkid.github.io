@@ -1,6 +1,6 @@
 window.puzzleList = [
-"U8WV8JTRUnnamed Puzzle",
 "Y8K7AYDKExpert Random Hex 4",
+"U8WV8JTRUnnamed Puzzle",
 "DFY8G74LUnnamed Horizontal Symmetry Puzzle",
 "B6UGPJ4KUnnamed Vertical Symmetry Puzzle",
 "C3SL8QLGUnnamed Vertical Symmetry Puzzle",
