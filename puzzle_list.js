@@ -1,4 +1,5 @@
 window.puzzleList = [
+"788UD82REasy simu",
 "BNS84TTLBoat mountain ep",
 "CV6M977CUnnamed Puzzle",
 "2BGYSHBJUnnamed Puzzle",
