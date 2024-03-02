@@ -1,4 +1,5 @@
 window.puzzleList = [
+"T5LASGZTSwamp door",
 "8SP82G38Keep door 1",
 "Y8K7AYDKExpert Random Hex 4",
 "U8WV8JTRUnnamed Puzzle",
