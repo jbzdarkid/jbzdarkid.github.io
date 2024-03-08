@@ -1,4 +1,5 @@
 window.puzzleList = [
+"GUMMYCTDWit.nes 2",
 "B67AW8SSWit.nes",
 "R29RDGLBGreen puzzle",
 "6Q89V63FBlue scuti",
