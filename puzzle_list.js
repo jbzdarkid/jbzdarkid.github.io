@@ -1,4 +1,5 @@
 window.puzzleList = [
+"AQEUBSE2The Six Sisters, Revived",
 "37D4EAJRUzlrprp",
 "XH3TERA8wtw challenge2",
 "R2275W4Hwtw challenge",
