@@ -1,4 +1,5 @@
 window.puzzleList = [
+"J4SMFKEU11",
 "W6CKTU9DNORMAL",
 "BYAYGDKF1320way",
 "JLAN4ZBNsimple but 1way",
