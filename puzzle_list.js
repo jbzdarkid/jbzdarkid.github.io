@@ -1,4 +1,5 @@
 window.puzzleList = [
+"NUN3H5N59 easy palels",
 "QS4MPS4Phint",
 "DSBJ58UEtriangle",
 "AV8HBMCZ1 way",
