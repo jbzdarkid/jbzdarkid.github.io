@@ -1,4 +1,5 @@
 window.puzzleList = [
+"CLUD7MLCnegativity",
 "ZLDCEAMJthe lower gap",
 "JNAQLL28the first difficulty",
 "NUN3H5N59 easy palels",
