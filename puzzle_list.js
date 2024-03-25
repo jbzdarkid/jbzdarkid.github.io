@@ -1,4 +1,5 @@
 window.puzzleList = [
+"QY2SWXMGyesssss 1way puzzle",
 "4Q2S25C8fake dead end",
 "4G7ZBFZQ",
 "MQFYRGU7too easy",
