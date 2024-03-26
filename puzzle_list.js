@@ -1,4 +1,5 @@
 window.puzzleList = [
+"7XD4NQ9Ceasy",
 "F268N9361 symbol",
 "QY2SWXMGyesssss 1way puzzle",
 "4Q2S25C8fake dead end",
