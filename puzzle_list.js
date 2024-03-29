@@ -1,5 +1,5 @@
 window.puzzleList = [
-"JJP6B6DYUnnamed Puzzle",
+"JJP6B6DYUnexpected Familiar Being",
 "YLRFPQMYrandomize",
 "D7ZXYANU4 Triangles 2",
 "U5MUZASUUnnamed Puzzle",
