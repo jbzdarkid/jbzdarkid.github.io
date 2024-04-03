@@ -1,4 +1,5 @@
 window.puzzleList = [
+"CJFUX366tricky sticking in the hole",
 "LAUVLX4Zimage color 2",
 "PWPZLSZZnot here",
 "46AHAESPsimple but 1way part2",
