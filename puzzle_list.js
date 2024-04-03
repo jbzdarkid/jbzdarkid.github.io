@@ -1,4 +1,5 @@
 window.puzzleList = [
+"MPASHEM5image color",
 "CBZEYTR7-_-",
 "LSBWMQKVwdym",
 "N6X5UKNMTLF",
