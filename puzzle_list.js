@@ -1,4 +1,5 @@
 window.puzzleList = [
+"C36WP7TPCross Contamination",
 "7KTVVDRUCross Contamination",
 "CJFUX366tricky sticking in the hole",
 "LAUVLX4Zimage color 2",
