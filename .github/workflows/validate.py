@@ -38,7 +38,7 @@ def validate_puzzle(puzzle):
     data = dom[dom.index('!!!')+3:dom.index('@@@')]
     try:
         data = json.loads(data)
-    except json.decoder.JsonDecodeError as e:
+    except json.decoder.JSONDecodeError as e:
         print(e)
         print(data)
         exit(2)
