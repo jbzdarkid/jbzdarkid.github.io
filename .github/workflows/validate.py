@@ -35,7 +35,7 @@ def validate_puzzle(puzzle):
 
     tempfile.unlink() # So that it doesn't get committed
 
-    data = dom[dom.index('!~!!~!!~!')+3:dom.index('@~@@~@@~@')]
+    data = dom[dom.index('!~!!~!!~!')+9:dom.index('@~@@~@@~@')]
     try:
         data = json.loads(data)
     except json.decoder.JSONDecodeError as e:
