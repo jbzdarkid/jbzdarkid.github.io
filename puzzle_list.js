@@ -1,4 +1,5 @@
 window.puzzleList = [
+"WUZTV2JFintro to squares",
 "73JDQ6N4intro to hexegons",
 "W4EGNXU34 but 2",
 "NEEV6DHMTOO EASY LOL",
