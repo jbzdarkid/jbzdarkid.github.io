@@ -1,4 +1,5 @@
 window.puzzleList = [
+"7NBHDWCXFull dots madness",
 "AFNEN2MVNormal Puzzle",
 "73JDQ6N4intro to hexegons",
 "WUZTV2JFintro to squares",
