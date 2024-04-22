@@ -1,4 +1,5 @@
 window.puzzleList = [
+"RJPDSBY7Triangles and Squares",
 "D5J5S3ZRUnnamed Puzzle",
 "8RN3ZTLJJust symmetry",
 "XLUMVWBSeasy",
