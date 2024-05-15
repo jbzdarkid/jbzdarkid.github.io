@@ -1,8 +1,8 @@
 window.puzzleList = [
+"483K4W4NDots pillar 05/14/2024",
 "MC2KYNVZmonochrome1",
 "GFRTWX72variety desert",
 "6HYFURKNWhat?",
-"483K4W4NDots pillar 05/14/2024",
 "RZ2PZ7H2Unnamed Rotational Symmetry Puzzle",
 "4NNGY65VUnnamed Rotational Symmetry Puzzle",
 "4KMPBJ39Code 5679009",
