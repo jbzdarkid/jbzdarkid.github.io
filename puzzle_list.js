@@ -1,4 +1,5 @@
 window.puzzleList = [
+"MC2KYNVZmonochrome1",
 "GFRTWX72variety desert",
 "6HYFURKNWhat?",
 "483K4W4NDots pillar 05/14/2024",
