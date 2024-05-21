@@ -1,4 +1,5 @@
 window.puzzleList = [
+"2D3JGH55The Pillar Garden one stroke 6",
 "2468VWWXUnnamed Puzzle",
 "SS4E6E2JUnnamed Pillar (Two Lines) Puzzle",
 "VV74QFEEUnnamed Puzzle",
