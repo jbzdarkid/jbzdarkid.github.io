@@ -1,4 +1,5 @@
 window.puzzleList = [
+"SDBTZLDBUnnamed Puzzle",
 "BYVD98YFThe Pillar Gorge one stroke 7",
 "E5DJTMMYThe Pillar Gorge one stroke 6",
 "N42SKJ7VUnnamed Puzzle",
