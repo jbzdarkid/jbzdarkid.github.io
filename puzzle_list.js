@@ -1,4 +1,5 @@
 window.puzzleList = [
+"JNEJ7WXDThe Pillar Stonehenge one stroke 7",
 "53YWM8L7The Pillar Stonehenge one stroke 5",
 "PXRSMZK5Unnamed Puzzle",
 "TJ97XPPUWindmill door",
