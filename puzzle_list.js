@@ -1,4 +1,5 @@
 window.puzzleList = [
+"36MQVY7CUnnamed Puzzle",
 "Z5L3SYHWLunar Cycle I",
 "X4PQMECXLunar Cycle I",
 "JNEJ7WXDThe Pillar Stonehenge one stroke 7",
