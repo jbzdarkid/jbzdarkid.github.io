@@ -1,4 +1,5 @@
 window.puzzleList = [
+"UDDN53YCvariety what dot-tetris!?",
 "KGAL496PUnnamed Rotational Symmetry Puzzle",
 "TZHTZWAMUnnamed Puzzle",
 "FLBP9TKSUnnamed Puzzle",
