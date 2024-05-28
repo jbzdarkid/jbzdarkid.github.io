@@ -1,4 +1,5 @@
 window.puzzleList = [
+"JEHN8UBYThe Pillar Planetarium one stroke 2",
 "TJ6HNWHSThe Pillar 8 Stones one stroke 7",
 "B4S72Y3QThe Pillar 8 Stones one stroke 4",
 "MCBDQ65XThe Pillar 8 Stones one stroke 2",
