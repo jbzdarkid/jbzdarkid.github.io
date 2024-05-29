@@ -1,4 +1,5 @@
 window.puzzleList = [
+"MHZP5Y8QComputer Processing Unit Desk 314-7",
 "CXXF2METComputer Processing Unit Desk 314-6",
 "JXUQ2DL2Computer Processing Unit Desk 301-7",
 "2BTQQVYAThe Pillar Planetarium one stroke End",
