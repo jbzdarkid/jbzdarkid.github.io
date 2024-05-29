@@ -1,4 +1,5 @@
 window.puzzleList = [
+"HVMZP8DEComputer Processing Unit Desk 314-8",
 "MHZP5Y8QComputer Processing Unit Desk 314-7",
 "CXXF2METComputer Processing Unit Desk 314-6",
 "JXUQ2DL2Computer Processing Unit Desk 301-7",
