@@ -1,4 +1,5 @@
 window.puzzleList = [
+"DPB8SJ4RUnnamed Pillar (Two Lines) Puzzle",
 "596N4BKAthis is hard puzzle,right?????",
 "VLER59WLyim and yam",
 "HVMZP8DEComputer Processing Unit Desk 314-8",
