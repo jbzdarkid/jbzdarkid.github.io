@@ -1,4 +1,5 @@
 window.puzzleList = [
+"EY7WNTWLStorage #",
 "SRGPMTV2Bunker Array 2: TV Puzzles",
 "ZWKK9TQEBunker Array 1: West Gate",
 "6VTS3YVFBunker Array 0: Triangle Tutorial",
