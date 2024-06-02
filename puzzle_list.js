@@ -1,4 +1,5 @@
 window.puzzleList = [
+"ZWKK9TQEBunker Array 1: West Gate",
 "6VTS3YVFBunker Array 0: Triangle Tutorial",
 "UD88H3SCThe Ascent",
 "DPB8SJ4RUnnamed Pillar (Two Lines) Puzzle",
