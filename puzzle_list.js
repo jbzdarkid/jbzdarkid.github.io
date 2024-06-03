@@ -1,4 +1,5 @@
 window.puzzleList = [
+"NB9L4WELBunker Misc. Panel 1: Elevator Control",
 "RHKARVKWNO",
 "EY7WNTWLStorage #",
 "SRGPMTV2Bunker Array 2: TV Puzzles",
