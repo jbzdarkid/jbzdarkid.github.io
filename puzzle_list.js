@@ -1,4 +1,5 @@
 window.puzzleList = [
+"RQLHAZATUnnamed Rotational Symmetry Puzzle",
 "EWAAQJ9LBunker Puzzle 1: East Gate",
 "NB9L4WELBunker Misc. Panel 1: Elevator Control",
 "RHKARVKWNO",
