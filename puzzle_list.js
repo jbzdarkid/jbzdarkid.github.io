@@ -1,4 +1,5 @@
 window.puzzleList = [
+"HTJA9UWTUnnamed Puzzle",
 "HEUBFBT9The Holy Four Triangle",
 "X4Y47MP4The Holy Four Triangle",
 "MEU9UAQNpillar this dick",
