@@ -1,4 +1,5 @@
 window.puzzleList = [
+"BKS7H3BTNumber block 12",
 "3TS4Z9G6Number block 11",
 "AYD6Y3H8Universe corporation from we lost our human",
 "W37KMNZ3Unnamed Puzzle",
