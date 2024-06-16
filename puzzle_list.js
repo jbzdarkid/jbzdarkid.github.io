@@ -1,4 +1,5 @@
 window.puzzleList = [
+"NMLN3WHDLetter o",
 "NCMDHWCRKeep plesare plates 2",
 "ZZLMWL3FG major 1",
 "JMNVP2RMG major 2",
