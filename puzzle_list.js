@@ -1,4 +1,5 @@
 window.puzzleList = [
+"AYD6Y3H8Universe corporation from we lost our human",
 "W37KMNZ3Unnamed Puzzle",
 "QMD8V5XYUnnamed Puzzle",
 "NMLN3WHDLetter o",
