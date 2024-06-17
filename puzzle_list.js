@@ -1,4 +1,5 @@
 window.puzzleList = [
+"R4CKYQ8DUnnamed Puzzle",
 "XUGJLPQPUnnamed Puzzle",
 "WCSM68LZ4: Block",
 "YNQ8C2SBsigmatown population : ohio",
