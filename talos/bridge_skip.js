@@ -131,22 +131,22 @@ class Piece {
     for (var x = -1; x < 5; x++) {
       for (var y = -1; y < 5; y++) {
         if (this.contains(x, y)) {
-          if (this.enter == loc(x, y, NORTH))   { output += "^"; } else
-          if (this.enter == loc(x, y, SOUTH))   { output += "v"; } else
-          if (this.enter == loc(x, y, WEST))    { output += "<"; } else
-          if (this.enter == loc(x, y, EAST))    { output += ">"; } else
-          if (this.exit  == loc(x-1, y, NORTH)) { output += "^"; } else
-          if (this.exit  == loc(x+1, y, SOUTH)) { output += "v"; } else
-          if (this.exit  == loc(x, y-1, WEST))  { output += "<"; } else
-          if (this.exit  == loc(x, y+1, EAST))  { output += ">"; } else
-                                                { output += "#"; }
+          if (this.enter == loc(x, y, NORTH))        output += "^";
+          else if (this.enter == loc(x, y, SOUTH))   output += "v";
+          else if (this.enter == loc(x, y, WEST))    output += "<";
+          else if (this.enter == loc(x, y, EAST))    output += ">";
+          else if (this.exit  == loc(x-1, y, NORTH)) output += "^";
+          else if (this.exit  == loc(x+1, y, SOUTH)) output += "v";
+          else if (this.exit  == loc(x, y-1, WEST))  output += "<";
+          else if (this.exit  == loc(x, y+1, EAST))  output += ">";
+          else                                       output += "#";
         } else {
           var x_edge = (x == -1 || x == 4);
           var y_edge = (y == -1 || y == 4);
-          if (x_edge && y_edge)              { output += "+"; } else
-          if (x_edge && !y_edge)             { output += "-"; } else
-          if (!x_edge && y_edge)             { output += "|"; } else
-          if (!x_edge && !y_edge)            { output += " "; }
+          if (x_edge && y_edge)                      output += "+";
+          else if (x_edge && !y_edge)                output += "-";
+          else if (!x_edge && y_edge)                output += "|";
+          else if (!x_edge && !y_edge)               output += " ";
         }
       }
       output += "\n";
