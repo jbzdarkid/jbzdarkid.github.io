@@ -1,4 +1,5 @@
 window.puzzleList = [
+"MWFMVFVPIntroduction Puzzle",
 "Q76YYLP5Introduction Puzzle",
 "TGPFZQTW3 Sections",
 "TASTWWX6johnny is gay!",
