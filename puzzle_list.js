@@ -1,5 +1,5 @@
 window.puzzleList = [
-"29893JSGUnnamed Pillar (R Symmetry) Puzzle",
+"29893JSGBack to the Start",
 "FVBUCVXU3 Sections",
 "MWFMVFVPIntroduction Puzzle",
 "Q76YYLP5Introduction Puzzle",
