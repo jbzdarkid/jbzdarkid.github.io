@@ -1,4 +1,5 @@
 window.puzzleList = [
+"C9RFHFCNUtter Chaos Edited",
 "XGFGKP7VUtter Chaos",
 "P5ESAFPKfart",
 "TGVY3YX7Le Parts Puzzle",
