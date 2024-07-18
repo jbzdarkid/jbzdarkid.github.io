@@ -1,4 +1,5 @@
 window.puzzleList = [
+"S7XZU7MQTriangle but hard",
 "LH2DY93HUnnamed Pillar (R Symmetry) Puzzle",
 "22EL8QW7Unnamed Puzzle",
 "LVZPR72GA puzzle for me to frame",
