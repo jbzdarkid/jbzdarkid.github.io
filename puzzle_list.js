@@ -1,4 +1,5 @@
 window.puzzleList = [
+"8445BSDSDotsTutorialLevel6",
 "BWD9FRCJTriangles Puzzle",
 "MAGLJAHHSymmetry..?",
 "JVSN9LM4Unnamed Puzzle",
