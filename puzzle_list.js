@@ -1,4 +1,5 @@
 window.puzzleList = [
+"PEDPDVUMPointer",
 "7VAL5GPMGigazle",
 "NTWVUTCVGigazle",
 "ZNVV5CXBamezled PuzUnn",
