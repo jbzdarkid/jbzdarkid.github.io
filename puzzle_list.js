@@ -1,4 +1,5 @@
 window.puzzleList = [
+"7VAL5GPMGigazle",
 "NTWVUTCVGigazle",
 "ZNVV5CXBamezled PuzUnn",
 "8445BSDSDotsTutorialLevel6",
