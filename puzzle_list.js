@@ -1,4 +1,5 @@
 window.puzzleList = [
+"7RA7N8CKColoured Maze",
 "3V8AAZAYTreeHouse",
 "NYSSG543Swamp Related",
 "H35L2RC7More Swamp",
