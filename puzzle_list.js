@@ -1,4 +1,5 @@
 window.puzzleList = [
+"UCFH33YJSymmetry",
 "XQYCQE9BSquares",
 "QKVQFBMUSuns",
 "A5E3VKSESub Tetris",
