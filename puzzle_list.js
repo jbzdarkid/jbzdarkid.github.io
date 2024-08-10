@@ -1,4 +1,5 @@
 window.puzzleList = [
+"FFGGMC6XDiscarded panel",
 "7SW6P8S7Isi",
 "X8CL4RWTQuarry thing",
 "7RA7N8CKColoured Maze",
