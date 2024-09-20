@@ -1,4 +1,5 @@
 window.puzzleList = [
+"DKQK3HRUThe Rainbow (by FrankyUP)",
 "PGJZR9QCFrankyUP -1-",
 "F37YQYN4FrankyUP -1-",
 "MW7NDMQVUnnamed Puzzle",
