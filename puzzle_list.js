@@ -1,4 +1,5 @@
 window.puzzleList = [
+"KHCWD59ZUnnamed Rotational Symmetry Puzzle",
 "ZSJGMWLYDaily Maze (by FrankyUP)",
 "MN2C2DQGFrankyUP -2-",
 "DKQK3HRUThe Rainbow (by FrankyUP)",
