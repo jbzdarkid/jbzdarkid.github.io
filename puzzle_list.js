@@ -1,4 +1,5 @@
 window.puzzleList = [
+"M4WTX64LIntroduction of Synced Panels",
 "DVBVHTTTchallenging",
 "2FC63L4LCode",
 "RJ8MY5T2Unnamed Puzzle",
