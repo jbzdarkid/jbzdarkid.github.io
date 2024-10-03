@@ -1,4 +1,5 @@
 window.puzzleList = [
+"HQHJS2UUDouble Double Deletion",
 "58WBC6ULUnnamed Puzzle",
 "M4WTX64LIntroduction of Synced Panels",
 "DVBVHTTTchallenging",
