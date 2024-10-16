@@ -1,4 +1,5 @@
 window.puzzleList = [
+"6JAF89BJJusto symetri 2",
 "VEL5MJU5Trapped Variety Deletion",
 "KP46YCUEjusto simetric I",
 "4DEP2LSJjusto 6",
