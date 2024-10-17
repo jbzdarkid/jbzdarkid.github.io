@@ -1,4 +1,5 @@
 window.puzzleList = [
+"CN38GAZHJusto asterisco 6",
 "VRMDBW9Zjusto asterisco 5",
 "FQGLLWDHJusto asterisco 4",
 "RVWREW2UJusto asterisco 3",
