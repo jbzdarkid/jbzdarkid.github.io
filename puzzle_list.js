@@ -1,4 +1,5 @@
 window.puzzleList = [
+"R52XBQYYmezcla justo 2",
 "9BHTTRY4Justo mezcla 1",
 "6KAPLBDP\"ELF\" is the answer",
 "NUF49CJ9\"ELF\" is the answer",
