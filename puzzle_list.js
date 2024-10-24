@@ -1,4 +1,5 @@
 window.puzzleList = [
+"QGT4GVKCI &lt; 3 U So",
 "GA5JMV7TConfusing Symmetries",
 "W49EW3XE100 Solutions",
 "24JX6RUYUnnamed Rotational Symmetry Puzzle",
