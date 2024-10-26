@@ -1,4 +1,5 @@
 window.puzzleList = [
+"VSSVKR4Dsecret",
 "ZBSDPNRLUnnamed Puzzle",
 "QGT4GVKCI &lt; 3 U So",
 "GA5JMV7TConfusing Symmetries",
