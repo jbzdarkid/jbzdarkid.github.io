@@ -1,4 +1,5 @@
 window.puzzleList = [
+"UFJE7BFELooks Intimidating...",
 "6NL699X5Tetrominoes",
 "3G3QZMMNSkipped Normal 10/29 ChallengePillarL",
 "WZYFBTKCSkipped Normal 10/28 LPillar",
