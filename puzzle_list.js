@@ -1,4 +1,5 @@
 window.puzzleList = [
+"ALQZ7WGPThe answer is 1",
 "LWXNGPFQthe answer is 6",
 "3W9MNDTKSegmentry",
 "Y7YY7PAGEmotion",
