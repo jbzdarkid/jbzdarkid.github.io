@@ -1,7 +1,7 @@
 window.puzzleList = [
+"M6J5BVSGRGB-W",
 "MMWD3NH5Only 3 air blocks",
 "LF7ASH2FOnly 3 air blocks",
-"M6J5BVSGRGB-W",
 "BPF4549DRGB-W",
 "HU3G3PU6???",
 "E48ZM5QHRGB-W",
