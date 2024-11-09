@@ -1,5 +1,5 @@
 window.puzzleList = [
-"SGW97M6PUnnamed Puzzle",
+"SGW97M6PRemember?",
 "M6J5BVSGRGB-W",
 "MMWD3NH5Only 3 air blocks",
 "LF7ASH2FOnly 3 air blocks",
