@@ -1,4 +1,5 @@
 window.puzzleList = [
+"JEJTWMF3Remember?",
 "SGW97M6PRemember?",
 "M6J5BVSGRGB-W",
 "MMWD3NH5Only 3 air blocks",
