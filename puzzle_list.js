@@ -1,4 +1,5 @@
 window.puzzleList = [
+"TK9XKASXMind The Gaps",
 "D6XJU6YWWhat The Witness Honeycomb Mod Try",
 "3UXZZ5R8Unnamed Puzzle",
 "K6RHRX4FUnnamed Puzzle",
