@@ -1,4 +1,5 @@
 window.puzzleList = [
+"MVV3FZTTSuspicious",
 "8ZS3LD5Wthe answer is 7",
 "TK9XKASXMind The Gaps",
 "D6XJU6YWWhat The Witness Honeycomb Mod Try",
