@@ -1,4 +1,5 @@
 window.puzzleList = [
+"NENSWMPEHuerschgehege 3",
 "9KXKXEUVHuerschgehege 2",
 "MKDLENSGHuerschgehege 1",
 "K2J85RVNHrschgehege #1",
