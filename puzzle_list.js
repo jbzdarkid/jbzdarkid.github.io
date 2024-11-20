@@ -1,6 +1,6 @@
 window.puzzleList = [
-"4VZVLJNJA Symmetry",
 "CPGLKFPWBack To The Start",
+"4VZVLJNJA Symmetry",
 "BQJSBZLZ3x3",
 "VY7YN52XHmmmmmm",
 "Z6AQBDGMUnnamed Puzzle",
