@@ -1,4 +1,5 @@
 window.puzzleList = [
+"NAGJ9MTFLimited Options",
 "43GUPW7ALook Familiar?",
 "BYZXQ8STonly...1 way...",
 "CPGLKFPWBack To The Start",
