@@ -1,4 +1,5 @@
 window.puzzleList = [
+"BYZXQ8STonly...1 way...",
 "CPGLKFPWBack To The Start",
 "4VZVLJNJA Symmetry",
 "BQJSBZLZ3x3",
