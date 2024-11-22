@@ -1,4 +1,5 @@
 window.puzzleList = [
+"957J77NXBrick Laying",
 "NAGJ9MTFLimited Options",
 "43GUPW7ALook Familiar?",
 "BYZXQ8STonly...1 way...",
