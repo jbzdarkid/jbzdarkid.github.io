@@ -1,4 +1,5 @@
 window.puzzleList = [
+"BL5V8CA34 Quarters Negation. There is 1 solution.",
 "PZAPMFFTUnnamed Puzzle",
 "7F5RH942Unnamed Puzzle",
 "HJSRS73USkipped Variety Nov 2024 Green Bridge 4",
