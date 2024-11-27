@@ -1,4 +1,5 @@
 window.puzzleList = [
+"HJSRS73USkipped Variety Nov 2024 Green Bridge 4",
 "C63EHQL6Good Luck",
 "957J77NXBrick Laying",
 "NAGJ9MTFLimited Options",
