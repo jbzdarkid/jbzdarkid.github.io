@@ -1,4 +1,5 @@
 window.puzzleList = [
+"HUTKEX2WUnnamed Puzzle",
 "FDZCH5XWUnnamed Puzzle",
 "BL5V8CA34 Quarters Negation. There is 1 solution.",
 "PZAPMFFTUnnamed Puzzle",
