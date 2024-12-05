@@ -1,4 +1,5 @@
 window.puzzleList = [
+"L53A4YHZtreehouse 3-1",
 "WCRX6Z5BHard logic panel",
 "8WDDK6QZHard logic panel",
 "XCE8HWKBHard logic panel",
