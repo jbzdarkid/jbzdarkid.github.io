@@ -1,4 +1,5 @@
 window.puzzleList = [
+"XCE8HWKBHard logic panel",
 "JWFFMF5FUnnamed Horizontal Symmetry Puzzle",
 "RVZ78WC3Checkerboarded Eliminations",
 "WSEJ6Q75BN and Dots Challenge#1",
