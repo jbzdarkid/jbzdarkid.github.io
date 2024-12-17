@@ -1,4 +1,5 @@
 window.puzzleList = [
+"LU3TSDTEUnnamed Puzzle",
 "N4L8TMMKSkipped Variety Dec 2024 Quarry Control Room Left",
 "NDDGG4YSUnnamed Puzzle",
 "W7M48CE6Puzzle",
