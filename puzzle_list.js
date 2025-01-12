@@ -1,4 +1,5 @@
 window.puzzleList = [
+"JT99KTNCcopy",
 "V85HT3P6i think this puzzle is hard",
 "5SSKKANRUnnamed Puzzle",
 "J97ZX29K2025/01/01 Symmetry",
