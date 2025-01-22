@@ -1,4 +1,5 @@
 window.puzzleList = [
+"XQV592DFSkipped Normal Jan 2025 Mountain Vault",
 "SBCW96KZUnnamed Rotational Symmetry Puzzle",
 "6B9FQLSPUnnamed Rotational Symmetry Puzzle",
 "VNSBYJUGUnnamed Rotational Symmetry Puzzle",
