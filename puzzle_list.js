@@ -1,4 +1,5 @@
 window.puzzleList = [
+"4A4ZXUM5Unnamed Puzzle",
 "Y7JG5E7ZUnnamed Puzzle",
 "THP3EZTKmishary puzzle",
 "XQV592DFSkipped Normal Jan 2025 Mountain Vault",
