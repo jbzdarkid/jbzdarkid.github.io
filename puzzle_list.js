@@ -1,4 +1,5 @@
 window.puzzleList = [
+"M6RFMFX3variety tutorial vault",
 "E3B9PE3Ylockpicker",
 "FTLC2TDJMiddle",
 "BT2U2BWHmountained",
