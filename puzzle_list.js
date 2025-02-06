@@ -1,4 +1,5 @@
 window.puzzleList = [
+"SX9UD5QEInconspicuous triangle puzzle",
 "3UGMWD8PHalf and Half Again",
 "FCN2XBAPUnnamed Puzzle",
 "YMYK59AAFull Dot Twin Stars",
