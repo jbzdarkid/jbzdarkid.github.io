@@ -1,4 +1,5 @@
 window.puzzleList = [
+"M49ZT7WJmazepanel'd",
 "SVPRPK6Uwhy does the shape works?",
 "SX9UD5QEInconspicuous triangle puzzle",
 "3UGMWD8PHalf and Half Again",
