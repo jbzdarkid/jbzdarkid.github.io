@@ -1,4 +1,5 @@
 window.puzzleList = [
+"WJYE459N2 starts, 2 ends, 2 types",
 "QQ29MRPTIt's not round, I'll tell you that.",
 "TWFQY8BWUnnamed Rotational Symmetry Puzzle",
 "T5KGKXQ6Symbols in Black",
