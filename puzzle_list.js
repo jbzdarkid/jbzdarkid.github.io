@@ -1,4 +1,5 @@
 window.puzzleList = [
+"8BVS7A4YTOWN Door Puzzle",
 "HUR8DMLXYellow Door",
 "WJYE459N2 starts, 2 ends, 2 types",
 "QQ29MRPTIt's not round, I'll tell you that.",
