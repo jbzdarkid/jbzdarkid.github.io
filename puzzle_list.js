@@ -1,4 +1,5 @@
 window.puzzleList = [
+"S65C7REKMassive triangle maze",
 "8BVS7A4YTOWN Door Puzzle",
 "HUR8DMLXYellow Door",
 "WJYE459N2 starts, 2 ends, 2 types",
