@@ -1,4 +1,5 @@
 window.puzzleList = [
+"DSMNPNH4Bad Donut(s)",
 "5WUQDM9MSymmetrically Confused",
 "N7TSGV7JRapidly-Narrowing Bridge",
 "NRD5JFCDA Kind of Symmetry",
