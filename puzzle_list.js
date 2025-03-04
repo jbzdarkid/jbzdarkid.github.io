@@ -1,4 +1,5 @@
 window.puzzleList = [
+"N7TSGV7JRapidly-Narrowing Bridge",
 "NRD5JFCDA Kind of Symmetry",
 "5DMDJ6ZJEasy LOL Boot",
 "XH526WWBTraining Puzzle",
