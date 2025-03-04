@@ -1,4 +1,5 @@
 window.puzzleList = [
+"F7PWT3DXCrossed Sabres",
 "KQ3JWNR8Deceptively Round",
 "DSMNPNH4Bad Donut(s)",
 "5WUQDM9MSymmetrically Confused",
