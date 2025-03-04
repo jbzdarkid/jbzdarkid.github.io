@@ -1,4 +1,5 @@
 window.puzzleList = [
+"Q65UWV5RYou Shall Not Pass!",
 "QJBSGEFHCrossed Sabres",
 "F7PWT3DXCrossed Sabres",
 "KQ3JWNR8Deceptively Round",
