@@ -1,4 +1,5 @@
 window.puzzleList = [
+"5DMDJ6ZJEasy LOL Boot",
 "XH526WWBTraining Puzzle",
 "CVZWCM8DUnnamed Rotational Symmetry Puzzle",
 "MJ7Q2TWRsnake",
