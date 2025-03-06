@@ -1,4 +1,5 @@
 window.puzzleList = [
+"WC6M359ELimited Options #1",
 "UMKDJF8UUnnamed Puzzle",
 "Q65UWV5RYou Shall Not Pass!",
 "QJBSGEFHCrossed Sabres",
