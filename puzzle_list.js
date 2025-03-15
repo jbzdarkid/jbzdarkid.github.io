@@ -1,4 +1,5 @@
 window.puzzleList = [
+"PBYCNCGXLimited Options #3",
 "TJ4V2M63By u/Revolutionary-Yam903",
 "XGMZQ2SDBy u/Revolutionary-Yam903 (correction)",
 "FGCW62QXBy u/Revolutionary-Yam903",
