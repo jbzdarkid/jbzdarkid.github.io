@@ -1,4 +1,5 @@
 window.puzzleList = [
+"X59L6XKLUnnamed Horizontal Symmetry Puzzle",
 "SGM9SGTALimited Options #5",
 "H78KY2TGLimited Options #4",
 "PBYCNCGXLimited Options #3",
