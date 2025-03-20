@@ -1,4 +1,5 @@
 window.puzzleList = [
+"MHM7D8MFGuruGuruuuuu!!!!!!!!!!!!!!!",
 "CHJ94CKKHard but Possible",
 "KAN5HMWVHard but Possible",
 "JRDJVN7QHumanity - Perceive",
