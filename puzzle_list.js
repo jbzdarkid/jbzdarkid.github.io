@@ -1,6 +1,6 @@
 window.puzzleList = [
-"KAN5HMWVHard but Possible",
 "CHJ94CKKHard but Possible",
+"KAN5HMWVHard but Possible",
 "JRDJVN7QHumanity - Perceive",
 "3W7GYHXSUnnamed Puzzle",
 "9V5DTHJ2Tiles and Tetrominoes",
