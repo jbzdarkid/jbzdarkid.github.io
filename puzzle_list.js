@@ -1,4 +1,5 @@
 window.puzzleList = [
+"CHJ94CKKHard but Possible",
 "JRDJVN7QHumanity - Perceive",
 "3W7GYHXSUnnamed Puzzle",
 "9V5DTHJ2Tiles and Tetrominoes",
