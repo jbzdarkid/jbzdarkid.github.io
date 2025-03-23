@@ -1,4 +1,5 @@
 window.puzzleList = [
+"PS8C9NJFSquareTriangle",
 "Y95ZCE4Ta laser.",
 "5D565VY6Ez puzzle",
 "WHW44U7WJust a symmetry",
