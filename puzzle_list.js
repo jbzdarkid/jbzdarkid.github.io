@@ -1,5 +1,5 @@
 window.puzzleList = [
-"CN23PQW6at a loss",
+"CN23PQW6at a loss (colorized)",
 "F947YMZ3at a loss",
 "H4FVW7QUdpp1",
 "HVY5ALQESWNoIHdldHRlIEphbiBicmF1Y2h0IG5lIHN0dW5kZSB1bSBkYX",
