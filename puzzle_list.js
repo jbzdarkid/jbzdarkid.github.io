@@ -1,4 +1,5 @@
 window.puzzleList = [
+"SDDTJTYPNL250402",
 "32BM3ARGYAP DAY 1: &lt;3",
 "CN23PQW6at a loss (colorized)",
 "F947YMZ3at a loss",
