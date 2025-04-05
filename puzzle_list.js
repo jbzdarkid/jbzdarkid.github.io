@@ -1,4 +1,5 @@
 window.puzzleList = [
+"4WBX6MTDNL250405",
 "FSCA7GLAYAP DAY 4: City Tour",
 "5S6QVVV6Simple Collection",
 "SXWAHNE3NL250404",
