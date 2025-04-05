@@ -1,4 +1,5 @@
 window.puzzleList = [
+"FSCA7GLAYAP DAY 4: City Tour",
 "5S6QVVV6Simple Collection",
 "SXWAHNE3NL250404",
 "R45D8VE3rule showcase",
