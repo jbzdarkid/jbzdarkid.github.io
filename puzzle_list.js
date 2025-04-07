@@ -1,4 +1,5 @@
 window.puzzleList = [
+"UX2G8PFTUnnamed Puzzle",
 "X8S6EPAMYAP Day 6: Constellation",
 "4STBBZT3NL250406",
 "4WBX6MTDNL250405",
