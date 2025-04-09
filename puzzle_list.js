@@ -1,4 +1,5 @@
 window.puzzleList = [
+"U6GHFQWKend game close door",
 "D2XAGTXSUnnamed Puzzle",
 "9T2YC5A2NL250408",
 "3R79SZ54Bess's Puzzle 02",
