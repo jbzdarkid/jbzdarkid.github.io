@@ -1,4 +1,5 @@
 window.puzzleList = [
+"JF93QDKFTurtle Pattern",
 "78QKKWTMUnnamed Horizontal Symmetry Puzzle",
 "AP9XUWQEUnnamed Pillar (R Symmetry) Puzzle",
 "RCBB5B9QAncient Roman Sculptures (Colorized)",
