@@ -1,4 +1,5 @@
 window.puzzleList = [
+"4DJVKSCFAncient Tessellations",
 "QY7ST4GKNL250414",
 "JF93QDKFTurtle Pattern",
 "78QKKWTMUnnamed Horizontal Symmetry Puzzle",
