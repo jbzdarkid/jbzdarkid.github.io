@@ -1,4 +1,5 @@
 window.puzzleList = [
+"AP9XUWQEUnnamed Pillar (R Symmetry) Puzzle",
 "RCBB5B9QAncient Roman Sculptures (Colorized)",
 "YUMY2YTCbias",
 "6WMZE5CZUnnamed Puzzle",
