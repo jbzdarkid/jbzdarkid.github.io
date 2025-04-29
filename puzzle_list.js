@@ -1,4 +1,5 @@
 window.puzzleList = [
+"NCK32K29Almost Full Dot Double Eraser",
 "UYX8NQLPSeveral Polyominos",
 "XH9SFP44NL250428",
 "XTLUDPPYUnnamed Puzzle",
