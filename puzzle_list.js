@@ -1,4 +1,5 @@
 window.puzzleList = [
+"KGY57A2F41(10)",
 "CJ8TTFP9Unnamed Puzzle",
 "587DK7X3NL250430",
 "4AJDJ96GSkipped Normal Apr.2025 Desert Vault",
