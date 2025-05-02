@@ -1,4 +1,5 @@
 window.puzzleList = [
+"AVR4ZL3Cbird listening",
 "7BB3NK5Cchallenge puzzle",
 "NUA5TQFQbroken starter pillar",
 "XJVX3ZZKOne Fair Treehouse Puzzle",
