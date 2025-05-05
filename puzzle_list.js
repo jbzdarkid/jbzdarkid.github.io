@@ -1,4 +1,5 @@
 window.puzzleList = [
+"W3L4BSW8Just Pick Up the Dot",
 "MHZELVWRchallenge puzzle",
 "SCN9DE7QSymmetrical Mistakes",
 "C8TCAR2SSymmetrical Mistakes",
