@@ -1,4 +1,5 @@
 window.puzzleList = [
+"ASZ9DUH5Two Color Stars and Squares 5x5",
 "MFEXED7GUnnamed Puzzle",
 "QRQJLEBFUnnamed Puzzle",
 "7ZB4KDG3TRIANGLE PILLAR",
