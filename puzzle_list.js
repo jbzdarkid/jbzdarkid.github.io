@@ -1,4 +1,5 @@
 window.puzzleList = [
+"GR7EHV63Skipped Variety May 2025 Mountainside Vault",
 "GBFNLX9FSkipped Variety May 2025 Swamp Beyond 5",
 "J7JS3XR7Unnamed Puzzle",
 "6MEWX58RUnnamed Puzzle",
