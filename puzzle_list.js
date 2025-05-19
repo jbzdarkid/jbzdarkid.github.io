@@ -1,4 +1,5 @@
 window.puzzleList = [
+"LPZCZQ8Awho doesn't love a symmetrical solve?",
 "M59MCAUGnot much to take in",
 "Q49454L6Unnamed Pillar (V Symmetry) Puzzle",
 "6W955JCKUnnamed Puzzle",
