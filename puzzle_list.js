@@ -1,4 +1,5 @@
 window.puzzleList = [
+"PMETKTEN[music box challange] start/stop puzzle",
 "8MKGEYG4Unnamed Puzzle",
 "5QW5ZWQHUnnamed Puzzle",
 "AZ7N3TEX1.",
