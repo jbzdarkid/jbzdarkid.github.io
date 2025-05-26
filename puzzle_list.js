@@ -1,8 +1,8 @@
 window.puzzleList = [
+"5QW5ZWQHUnnamed Puzzle",
 "AZ7N3TEX1.",
 "NCBP59ZVrandome",
 "7A8P69CYUnnamed Puzzle",
-"5QW5ZWQHUnnamed Puzzle",
 "Z9X58HN6Unnamed Horizontal Symmetry Puzzle",
 "LPZCZQ8Awho doesn't love a symmetrical solve?",
 "9XVDSLLRthe elusive quad-triangle",
