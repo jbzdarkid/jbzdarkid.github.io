@@ -1,4 +1,5 @@
 window.puzzleList = [
+"KY77LVWANEW ERROR EFFEC! all solutions",
 "PMETKTEN[music box challange] start/stop puzzle",
 "8MKGEYG4Unnamed Puzzle",
 "5QW5ZWQHUnnamed Puzzle",
