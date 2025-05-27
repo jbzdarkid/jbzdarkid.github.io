@@ -1,4 +1,5 @@
 window.puzzleList = [
+"K2ETP9NWUnnamed Puzzle",
 "YTEDHEUXUnnamed Puzzle",
 "4D494MHTSkipped Normal May 2025 Purple Bridge 5",
 "KY77LVWANEW ERROR EFFEC! all solutions",
