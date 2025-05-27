@@ -1,4 +1,5 @@
 window.puzzleList = [
+"UZVU33FJeasy?",
 "K2ETP9NWUnnamed Puzzle",
 "YTEDHEUXUnnamed Puzzle",
 "4D494MHTSkipped Normal May 2025 Purple Bridge 5",
