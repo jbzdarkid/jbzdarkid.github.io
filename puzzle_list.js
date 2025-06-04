@@ -1,4 +1,5 @@
 window.puzzleList = [
+"D4HVGETTtoo many useless things",
 "HX72N4LXout of panel - ii",
 "GMXUDR8Ksecond puzzle",
 "H5BLYMQ6first puzzle",
