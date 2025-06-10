@@ -1,4 +1,5 @@
 window.puzzleList = [
+"BYUUBHABUnnamed Puzzle",
 "LPVVQ8S4Unnamed Puzzle",
 "S8LRGUHRCircle/Combiner new symbols egnore all in green",
 "YMHAJHDARandom puzzle IDK",
