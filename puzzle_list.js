@@ -1,4 +1,5 @@
 window.puzzleList = [
+"S2QKZ77Da lesson in half-merged polyominoes",
 "ZTN6KD3Xthe color",
 "75XABNUGUnnamed Puzzle",
 "ZP56S6AYUnnamed Puzzle",
