@@ -1,4 +1,5 @@
 window.puzzleList = [
+"G9H95XJYonly yellow can solve the left side???? why?",
 "S2QKZ77Da lesson in half-merged polyominoes",
 "ZTN6KD3Xthe color",
 "75XABNUGUnnamed Puzzle",
