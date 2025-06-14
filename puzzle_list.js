@@ -1,8 +1,8 @@
 window.puzzleList = [
+"CWQD52FTBeginner 6",
 "3E8487XEBeginner 4",
 "9M5PNUZVBeginner 8",
 "GN4MPGFSBeginner 7",
-"CWQD52FTBeginner 6",
 "2H39CS8CBeginner 3",
 "3KBENLXNBeginner 5",
 "Q665QTN2Beginner 2",
