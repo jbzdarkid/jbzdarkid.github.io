@@ -1,4 +1,5 @@
 window.puzzleList = [
+"Q665QTN2Beginner 2",
 "BUC2X968Beginner 1",
 "VLM9YKZBlow effort half-merged polyomino puzzle",
 "P3EJ8AK8half-merged polyominoes 1",
