@@ -1,4 +1,5 @@
 window.puzzleList = [
+"PHQZCB9CThird Black and White puzzle",
 "MLX9QD3NSecond Black and White puzzle",
 "Y2V2ZP2CLimited Options #9",
 "SVWW8SWCUnnamed Puzzle",
