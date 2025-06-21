@@ -1,6 +1,6 @@
 window.puzzleList = [
-"6JQZA8LCSkipped Variety Town RGB House Entry",
 "C7RAWFJHSkipped Variety Boathouse Back First Row 3",
+"6JQZA8LCSkipped Variety Town RGB House Entry",
 "7B6ZW25VFirst Oakwood House Puzzle",
 "EUFGRKXQSecond Large Blue Pannel Puzzle",
 "TQQG4X5BFirst Large Blue Pannel Puzzle",
