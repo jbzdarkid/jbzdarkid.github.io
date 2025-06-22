@@ -1,4 +1,5 @@
 window.puzzleList = [
+"QMMXWN2MUnnamed Puzzle",
 "C7RAWFJHSkipped Variety Boathouse Back First Row 3",
 "6JQZA8LCSkipped Variety Town RGB House Entry",
 "7B6ZW25VFirst Oakwood House Puzzle",
