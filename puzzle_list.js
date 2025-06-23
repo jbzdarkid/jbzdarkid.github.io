@@ -1,4 +1,5 @@
 window.puzzleList = [
+"6YDRAGXAUnnamed Puzzle",
 "BM3JCPDXUnnamed Pillar (Two Lines) Puzzle",
 "QMMXWN2MUnnamed Puzzle",
 "C7RAWFJHSkipped Variety Boathouse Back First Row 3",
