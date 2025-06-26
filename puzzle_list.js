@@ -1,4 +1,5 @@
 window.puzzleList = [
+"GFF2UDTNFirst Symmetry Island Puzzle Part 2",
 "245KUN7ZFourth Symmetry Island Puzzle",
 "8NLGLYD5Fourth Symmetry Island Puzzle",
 "2U855VM6Third Symmetry Island Puzzle",
