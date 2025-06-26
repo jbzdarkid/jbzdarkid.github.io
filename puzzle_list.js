@@ -1,7 +1,7 @@
 window.puzzleList = [
+"ZL7583YNSecond Symmetry Island Puzzle",
 "5NJ8AFPULimited Options #11",
 "K3WBBFRGLimited Options #10",
-"ZL7583YNFirst Symmetry Island Puzzle",
 "TCUWT9ZAFirst Symmetry Island Puzzle",
 "DNALHXWGFirst Symmetry Door Puzzle",
 "A78JLCAZhard puzzle",
