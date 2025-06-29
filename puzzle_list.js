@@ -1,4 +1,5 @@
 window.puzzleList = [
+"XM8MWX2DStrange Shapes",
 "LMCBTMBRHotdog Deposit",
 "BXDEJR4QHotdog Deposit",
 "BDLEV8PWCurvy",
