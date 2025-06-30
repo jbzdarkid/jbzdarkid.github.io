@@ -1,7 +1,7 @@
 window.puzzleList = [
+"2UJPMG9HUnnamed Puzzle",
 "SQ7LYLBKUnnamed Puzzle",
 "7XNXBJT2Unnamed Puzzle",
-"2UJPMG9HUnnamed Puzzle",
 "DDP4B7W416 Quarry Symbols",
 "53ZLET9TUnnamed Puzzle",
 "HCJ6HA2GStrange Shapes",
