@@ -1,6 +1,6 @@
 window.puzzleList = [
-"B3S59NYW2",
 "KYAGSFJB2",
+"B3S59NYW2",
 "UQLJPFQA1",
 "C992MXEF1",
 "W4TWYYJQOnly One Mistake(CHEATED)",
