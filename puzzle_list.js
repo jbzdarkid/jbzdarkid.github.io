@@ -1,4 +1,5 @@
 window.puzzleList = [
+"Z33HEBDWOverlap II",
 "8WRAYFYMOverlap II",
 "S6TP7CBTFirst Colored Dot Symmetry Puzzle",
 "C4PJ72XYFifth Dot Symmetry Puzzle",
