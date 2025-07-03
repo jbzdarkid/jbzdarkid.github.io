@@ -1,4 +1,5 @@
 window.puzzleList = [
+"ECXDQEHUPurple Triangle Theater",
 "6X42L8B72 for 1",
 "XCU42MBXtotaly easy puzzle",
 "Z33HEBDWOverlap II",
