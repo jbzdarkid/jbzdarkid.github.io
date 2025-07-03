@@ -1,4 +1,5 @@
 window.puzzleList = [
+"XCU42MBXtotaly easy puzzle",
 "Z33HEBDWOverlap II",
 "8WRAYFYMOverlap II",
 "S6TP7CBTFirst Colored Dot Symmetry Puzzle",
