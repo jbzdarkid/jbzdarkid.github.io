@@ -1,4 +1,5 @@
 window.puzzleList = [
+"5UK2QQFJExpo line",
 "BCVGM2XHExpo line",
 "HNZ7TBGEOverlap I",
 "7Q3FMQ3Gcan you do it?",
