@@ -1,4 +1,5 @@
 window.puzzleList = [
+"Y9N9W63ASymmetry Island 6",
 "MH34HY2DHorizontal 2",
 "JXQUQ69STetris Dots",
 "F9H7DFR7Unnamed Puzzle",
