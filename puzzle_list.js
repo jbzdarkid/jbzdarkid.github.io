@@ -1,4 +1,5 @@
 window.puzzleList = [
+"4BLQ6KGHSecond Colored Dot Puzzle",
 "L947FC8Tvery hard",
 "LSGA625Ptriangle madness",
 "HV85EPZGUnnamed Puzzle",
