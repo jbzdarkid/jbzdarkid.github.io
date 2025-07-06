@@ -1,4 +1,5 @@
 window.puzzleList = [
+"BTEBTRGXShady Trees 8",
 "UP9QVLG7Shady Trees 7",
 "EUL5JZXMShady Trees 6",
 "9VMGESHNShady Trees 5",
