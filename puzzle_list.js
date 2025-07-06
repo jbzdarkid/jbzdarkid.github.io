@@ -1,4 +1,5 @@
 window.puzzleList = [
+"BK7248P6Shady Trees 2",
 "FR6TJB2FShady Trees 1",
 "XY2ZKSN6Fourth Colored Dot Puzzle",
 "G2QMR8NMThird Colored Dot Puzzle",
