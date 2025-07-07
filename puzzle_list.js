@@ -1,4 +1,5 @@
 window.puzzleList = [
+"LPNTAZ2GEXTRA-Town",
 "FCNCZW7NTest",
 "Y63RQLZNEighth Shadow Puzzle",
 "ZEYTBQCZUnnamed Puzzle",
