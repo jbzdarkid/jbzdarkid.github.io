@@ -1,4 +1,5 @@
 window.puzzleList = [
+"QELD5FZGDouble puzzle",
 "CLKKPC7KSmall Differences",
 "CVW7E8NW22",
 "WPB6HS2JAddition",
