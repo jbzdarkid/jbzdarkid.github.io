@@ -1,4 +1,5 @@
 window.puzzleList = [
+"949MMQRUTriangle Practice 2",
 "AM2GSEE8Triangle Practice 1",
 "9YDDSF8Bstarry night",
 "RYBKSQAWUnnamed Puzzle",
