@@ -1,4 +1,5 @@
 window.puzzleList = [
+"93GM4BC2Third Melting Puzzle(pls pretend this is symmetry)",
 "FP8RJXAFThird Melting Puzzle(pls pretend this is symmetry)",
 "FS25FLKHSecond Melting Puzzle",
 "GGYCMPYEFirst Melting Puzzle",
