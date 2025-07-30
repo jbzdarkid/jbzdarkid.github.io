@@ -1,4 +1,5 @@
 window.puzzleList = [
+"FS25FLKHSecond Melting Puzzle",
 "GGYCMPYEFirst Melting Puzzle",
 "KU2SWSW4Triangle Practice 1o",
 "TKFQX3RETriangle Practice 9",
