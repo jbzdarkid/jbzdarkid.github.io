@@ -1,4 +1,5 @@
 window.puzzleList = [
+"2SZVK3E9The Last Door",
 "E9V43LP2Third Melting Puzzle(pls pretend this is symmetry)",
 "93GM4BC2Third Melting Puzzle(pls pretend this is symmetry)",
 "FP8RJXAFThird Melting Puzzle(pls pretend this is symmetry)",
