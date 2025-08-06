@@ -1,4 +1,5 @@
 window.puzzleList = [
+"7X7KNMW5random Expert 3",
 "M32ZCYHPrandom Expert 2",
 "Y3HHGJYWrandom expert 1",
 "HH3ZCK7AWhat The Randomizer Sees",
