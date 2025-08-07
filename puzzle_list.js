@@ -1,4 +1,5 @@
 window.puzzleList = [
+"626L3E2SFirst Tetris Puzzle Puzzle",
 "6GZC623TSecond Quarry Door Puzzle",
 "YY4W83HRQuarry Door Puzzle",
 "TH7KG5ZFEasy puzzle",
