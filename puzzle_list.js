@@ -1,4 +1,5 @@
 window.puzzleList = [
+"SLXREH6ACustom Treehouse 2",
 "ANUWJKC2Custom Treehouse 1",
 "L2RS2S4KThink outside the box",
 "CRL3255TDaily Puzzle II (Easy)",
