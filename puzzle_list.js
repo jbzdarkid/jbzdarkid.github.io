@@ -1,4 +1,5 @@
 window.puzzleList = [
+"WLFZJPF4Bridge II",
 "QCFZXKFSVery hard Puzzle",
 "FPT8ZR5XBridge I",
 "D3GMYMTKBridge (NO need to consider orange)",
