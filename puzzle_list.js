@@ -1,4 +1,5 @@
 window.puzzleList = [
+"ZKYH8QVSTriangle Puzzle N2",
 "8RYLM5GTmaze puzzle N13 - 14",
 "3WG4NVLGRemix Puzzle (quarry)",
 "HRSKK47HTSItest",
