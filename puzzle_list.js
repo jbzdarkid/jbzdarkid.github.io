@@ -1,4 +1,5 @@
 window.puzzleList = [
+"5HVMNZD7Mother 3",
 "R6TMWCRVMother 2",
 "AQJXWV4BMother 1",
 "4B3MGA6EPack Map",
