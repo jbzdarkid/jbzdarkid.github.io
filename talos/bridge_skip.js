@@ -1,5 +1,89 @@
 "use strict";
 
+window.addEventListener("load", () => {
+  var e1_pieces = [];
+  e1_pieces[0] = new Piece('S', loc(3, 1, NORTH),  loc(0, 0, NORTH));
+  e1_pieces[1] = new Piece('O', loc(3, 0, EAST),   loc(2, 2, EAST));
+  e1_pieces[2] = new Piece('L', loc(3, 1, NORTH),  loc(0, 0, NORTH));
+  e1_pieces[3] = new Piece('O', loc(2, 0, EAST),   loc(3, 2, EAST));
+  e1_pieces[4] = new Piece('S', loc(3, 1, NORTH),  loc(0, 0, NORTH));
+  e1_pieces[5] = new Piece('L', loc(3, 1, WEST),   loc(1, -1, WEST));
+  e1_pieces[6] = new Piece('L', loc(3, 1, WEST),   loc(0, 0, NORTH));
+  e1_pieces[7] = new Piece('L', loc(3, 1, NORTH),  loc(1, 1, EAST));
+  var target = loc(-8, -1, NORTH);
+
+  var solutions = solve_bridge(e1_pieces.slice(0, 3), NORTH, target);
+  // solve_bridge(e1_pieces.slice(3, 6), NORTH, loc(-7, 2,  NORTH));
+  // solve_bridge(e1_pieces.slice(6, 8), NORTH, loc(-5, -1, NORTH));
+
+  console.debug(solutions);
+
+  solutions.sort((a, b) => {
+    if (a.exit.x < b.exit.x) return -1;
+    if (a.exit.x > b.exit.x) return 1;
+    if (a.exit.y < b.exit.y) return -1;
+    if (a.exit.y > b.exit.y) return 1;
+
+    return 0;
+  });
+  
+  draw_ux(solutions, target);
+});
+
+function draw_ux(solutions, target) {
+  var bounds = [50, 50, 50, 50];
+  for (var i = 0; i < solutions.length; i++) {
+    var s = solutions[i];
+    bounds[0] = Math.min(bounds[0], s.exit.x);
+    bounds[1] = Math.max(bounds[1], s.exit.x);
+    bounds[2] = Math.min(bounds[2], s.exit.y);
+    bounds[3] = Math.max(bounds[3], s.exit.y);
+    console.info(`Solution ${i} reached location (${s.exit.x}, ${s.exit.y}) with pattern: ${s.name}`);
+  }
+  var fudge = 1;
+  bounds[0] -= fudge;
+  bounds[1] += fudge;
+  bounds[2] -= fudge;
+  bounds[3] += fudge;
+  console.info("Bounds", bounds);
+
+  var table = document.getElementById('table');
+  table.cellspacing = '0px'
+  for (var x = bounds[0]; x < bounds[1]; x++) {
+    var row = document.createElement('tr');
+    row.style = 'height: 25px';
+    table.appendChild(row);
+    for (var y = bounds[2]; y < bounds[3]; y++) {
+      var cell = document.createElement('td');
+      cell.style = 'width: 25px; text-align: center; font-size: 1em';
+      row.appendChild(cell);
+      
+      var matching_solutions = [];
+      var any_solution_broken = false;
+      for (var solution of solutions) {
+        if (solution.exit.x == x && solution.exit.y == y) {
+          matching_solutions.push(solution);
+          if (solution.name.includes('!')) any_solution_broken = true;
+        }
+      }
+      if (matching_solutions.length > 0) {
+        if (x == 50 - target.x && y == 50 - target.y) cell.style.backgroundColor = 'blue';
+        else if (x == 50 && y == 50)        cell.style.backgroundColor = 'gray';
+        else if (any_solution_broken)       cell.style.backgroundColor = 'red';
+        else                                cell.style.backgroundColor = 'green';
+
+        cell.style.cursor = 'pointer';
+        cell.innerText = matching_solutions.length;
+        ((matching_solutions) => {
+          cell.addEventListener('pointerdown', () => {
+            console.info(matching_solutions);
+          });
+        })(matching_solutions);
+      }
+    }
+  }
+}
+
 //**** Global variables and related functions ****//
 function print_grid(grid, error, p) {
   var grid_bounds = [0, 0, 100, 100];
@@ -60,38 +144,6 @@ function print_grid(grid, error, p) {
   output += "+";
   return output;
 }
-
-window.addEventListener("load", () => {
-  var e1_pieces = [];
-  e1_pieces[0] = new Piece('S', loc(3, 1, NORTH),  loc(0, 0, NORTH));
-  e1_pieces[1] = new Piece('O', loc(3, 0, EAST),   loc(2, 2, EAST));
-  e1_pieces[2] = new Piece('L', loc(3, 1, NORTH),  loc(0, 0, NORTH));
-  e1_pieces[3] = new Piece('O', loc(2, 0, EAST),   loc(3, 2, EAST));
-  e1_pieces[4] = new Piece('S', loc(3, 1, NORTH),  loc(0, 0, NORTH));
-  e1_pieces[5] = new Piece('L', loc(3, 1, WEST),   loc(1, -1, WEST));
-  e1_pieces[6] = new Piece('L', loc(3, 1, WEST),   loc(0, 0, NORTH));
-  e1_pieces[7] = new Piece('L', loc(3, 1, NORTH),  loc(1, 1, EAST));
-
-  var solutions = solve_bridge(e1_pieces.slice(0, 3), NORTH, loc(-8, -1, NORTH));
-  // solve_bridge(e1_pieces.slice(3, 6), NORTH, loc(-7, 2,  NORTH));
-  // solve_bridge(e1_pieces.slice(6, 8), NORTH, loc(-5, -1, NORTH));
-
-  console.debug(solutions);
-
-  solutions.sort((a, b) => {
-    if (a.exit.x < b.exit.x) return -1;
-    if (a.exit.x > b.exit.x) return 1;
-    if (a.exit.y < b.exit.y) return -1;
-    if (a.exit.y > b.exit.y) return 1;
-
-    return 0;
-  });
-
-  for (var i = 0; i < solutions.length; i++) {
-    var s = solutions[i];
-    console.info(`Solution ${i} reached location (${s.exit.x}, ${s.exit.y}) with pattern: ${s.name}`);
-  }
-})
 
 //**** Helper classes ****//
 const NORTH = 0;
