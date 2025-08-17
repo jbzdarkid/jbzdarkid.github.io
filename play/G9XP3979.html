@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/2000/xhtml">
+  <head>
+    <meta property="og:title" content="Tetris 2"/>
+    <meta property="og:description" content="Witness Puzzle G9XP3979"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Witness Puzzles"/>
+    <meta property="og:image" content="https://witnesspuzzles.com/images/G9XP3979.png"/>
+    <meta name="robots" content="noindex, nofollow, nosnippet"/>
+    <link rel="stylesheet" type="text/css" href="../data/style.css" id="stylesheet">
+    <link rel="icon" type="image/png" href="../data/favicon.png">
+    <script type="text/javascript" src="../engine/utilities.js"></script>
+    <script type="text/javascript" src="../engine/svg.js"></script>
+    <script async type="text/javascript" src="../engine/polyominos.js"></script>
+    <script async type="text/javascript" src="../engine/puzzle.js"></script>
+    <script async type="text/javascript" src="../engine/validate.js"></script>
+    <script async type="text/javascript" src="../engine/custom_mechanics.js"></script>
+    <script async type="text/javascript" src="../engine/display2.js"></script>
+    <script async type="text/javascript" src="../engine/trace2.js"></script>
+    <title>Tetris 2</title>
+  </head>
+  <body>
+    <script>loadHeader("Tetris 2")</script>
+    <div style="display: flex; justify-content: center; align-items: center">
+      <svg id="puzzle" style="pointer-events: auto"></svg>
+    </div>
+  </body>
+  <script>
+    window.onload = function() {
+      <!-- 8c0d04090302e7ff6f6757c8c251ffd26601b5becb9fecf257f9aa315cbd5282fae44cb3aac66fb0039a8a3ca87bc61c894346fb3e72c303c903e946c39d294cb49fac078e9d53ad1a3f2fe4b4a318faa95c07158c519b25a2e05b246ed32f7d1d7e6e0c7b831309a234dc2c3e21690a3b6b6a37f9f51e -->
+      var puzzle = Puzzle.deserialize("{\"grid\":[[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"start\":null,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"start\":true}],[{\"type\":\"line\",\"line\":0,\"dir\":null,\"gap\":1,\"dot\":null,\"start\":null,\"end\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":null,\"start\":null,\"end\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":null,\"start\":null,\"end\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":96,\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":612,\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"ylop\",\"color\":\"blue\",\"polyshape\":544,\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":null,\"start\":null,\"end\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":null,\"start\":null,\"end\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"start\":false,\"end\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":null,\"start\":null,\"end\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"poly\",\"color\":\"yellow\",\"polyshape\":96,\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":null,\"start\":null,\"end\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null,\"end\":\"top\"},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}]],\"largezero\":162,\"width\":9,\"height\":9,\"pillar\":false,\"settings\":{\"NEGATIONS_CANCEL_NEGATIONS\":true,\"SHAPELESS_ZERO_POLY\":false,\"PRECISE_POLYOMINOS\":true,\"FLASH_FOR_ERRORS\":true,\"FAT_STARTPOINTS\":false,\"CUSTOM_MECHANICS\":false},\"name\":\"Tetris 2\",\"autoSolved\":true,\"startPoint\":{\"x\":0,\"y\":8},\"hasNegations\":false,\"hasPolyominos\":true}")
+      draw(puzzle)
+    }
+  </script>
+</html>
