@@ -3,6 +3,7 @@ namespace(function() {
 var activeParams = {'id':'', 'color':'black', 'polyshape':71}
 window.puzzle = null
 var dragging = null
+window.sigmaMechanics = window.location.pathname.endsWith('editor_sigma.html')
 
 function readPuzzleList() {
   try {
@@ -41,6 +42,9 @@ function readPuzzle() {
     console.log('Reading puzzle', puzzleList[0])
     var serialized = window.localStorage.getItem(puzzleList[0])
     puzzle = Puzzle.deserialize(serialized)
+    if (localStorage.customMechanics != 'true' && !sigmaMechanics && puzzle.settings.CUSTOM_MECHANICS) {
+      throw new Error('Puzzle contains custom mechanics but custom mechanics are not enabled on this page.')
+    }
     reloadPuzzle()
   } catch (e) {
     console.error(e)
@@ -301,6 +305,12 @@ window.createEmptyPuzzle = function() {
   } else {
     newPuzzle.name = 'Unnamed ' + style + ' Puzzle'
   }
+
+  if (window.sigmaMechanics) {
+    puzzle.settings.SHAPELESS_ZERO_POLY = true
+    puzzle.settings.PRECISE_POLYOMINOS = false
+  }
+
   writeNewPuzzle(newPuzzle)
 }
 
@@ -492,7 +502,7 @@ function createAnchor() {
   anchor.style.background = 'black'
   anchor.style.top = 0
   anchor.style.zIndex = 2 // Position in front of the header bar
-  
+
   return anchor
 }
 
@@ -862,7 +872,7 @@ function drawSymbolButtons() {
       }
       drawPuzzle()
     } else if (button.id == 'arrow') {
-      if (localStorage.customMechanics != 'true') {
+      if (localStorage.customMechanics != 'true' && !window.sigmaMechanics) {
         button.style.display = 'none'
         continue
       }
@@ -897,7 +907,7 @@ function drawSymbolButtons() {
       }
     }
     while (button.firstChild) button.removeChild(button.firstChild)
-    var svg = window.drawSymbol(params, localStorage.customMechanics == 'true')
+    var svg = window.drawSymbol(params, localStorage.customMechanics == 'true' || window.sigmaMechanics)
     button.appendChild(svg)
 
     if (['poly', 'rpoly', 'ylop', 'rylop'].includes(button.id)) {

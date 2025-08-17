@@ -131,11 +131,11 @@ window.validate = function(puzzle, quick) {
       puzzleData.invalidElements = puzzleData.invalidElements.concat(regionData.invalidElements)
       puzzleData.invalidElements = puzzleData.invalidElements.concat(regionData.veryInvalidElements)
     }
+
     // When using custom mechanics, we have to handle negations slightly differently.
     // Negations need to be applied after all regions are validated, so that we can evaluate negations for
     // all regions simultaneously. This is because certain custom mechanics are cross-region.
-
-    // ...
+    // ... I guess this is working. Not sure why I wrote this comment.
 
   } else {
     for (var region of regions) {
