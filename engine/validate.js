@@ -61,6 +61,13 @@ window.validateUserData = function(puzzle, path) {
   }
   if (!puzzleHasStart) throw Error('Puzzle does not have a startpoint')
   if (!puzzleHasEnd) throw Error('Puzzle does not have an endpoint')
+
+  var expectedSettings = new Puzzle(0, 0).settings
+  for (var setting in expectedSettings) {
+    if (puzzle[setting] != null && puzzle[setting] !== expectedSettings[setting]) {
+      throw Error('Puzzle has a nonstandard value for setting: ' + setting)
+    }
+  }
 }
 // Determines if the current grid state is solvable. Modifies the puzzle element with:
 // valid: Whether or not the puzzle is valid
