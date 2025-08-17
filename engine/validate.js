@@ -64,7 +64,7 @@ window.validateUserData = function(puzzle, path) {
 
   var expectedSettings = new Puzzle(0, 0).settings
   for (var setting in expectedSettings) {
-    if (puzzle[setting] != null && puzzle[setting] !== expectedSettings[setting]) {
+    if (puzzle.settings[setting] != null && puzzle.settings[setting] !== expectedSettings[setting]) {
       throw Error('Puzzle has a nonstandard value for setting: ' + setting)
     }
   }
