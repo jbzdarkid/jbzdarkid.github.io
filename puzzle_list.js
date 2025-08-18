@@ -1,4 +1,5 @@
 window.puzzleList = [
+"6XM96E23Stargazer A1",
 "KETL9XGXStargazer Intro 2",
 "EVNLLPZAStargazer Intro 1",
 "WX6MUVP4Sixth Colored Dot Puzzle",
