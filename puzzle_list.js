@@ -1,4 +1,5 @@
 window.puzzleList = [
+"AG5WQLGEaA a aA quari",
 "DF5RE6DM4x4 Maze Overlay",
 "PGUF6AERUnnamed Puzzle",
 "PPTXN22JSix Tile Sanity #1",
