@@ -1,4 +1,5 @@
 window.puzzleList = [
+"PPTXN22JSix Tile Sanity #1",
 "W27E4ZRQUnnamed Rotational Symmetry Puzzle",
 "AQJQZRCTUnnamed Puzzle",
 "GS2ZAHNMUnnamed Puzzle",
