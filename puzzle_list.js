@@ -1,4 +1,5 @@
 window.puzzleList = [
+"C4ZK5PS94 Quadrants (Only 1 solution)",
 "X43MPGGCUnnamed Puzzle",
 "ZJNV5FSHUnnamed Rotational Symmetry Puzzle",
 "6VRY2MM4Unnamed Horizontal Symmetry Puzzle",
