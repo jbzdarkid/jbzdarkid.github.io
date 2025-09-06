@@ -1,4 +1,5 @@
 window.puzzleList = [
+"GZL2LM9GUnnamed Puzzle",
 "YP32NDUDUnnamed Puzzle",
 "C4ZK5PS94 Quadrants (Only 1 solution)",
 "X43MPGGCUnnamed Puzzle",
