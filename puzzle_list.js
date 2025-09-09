@@ -1,4 +1,5 @@
 window.puzzleList = [
+"HTYTCV38Unnamed Rotational Symmetry Puzzle",
 "HHFLHXLJUnnamed Rotational Symmetry Puzzle",
 "MFAFWRHDUnnamed Rotational Symmetry Puzzle",
 "U8QGEQ5QUnnamed Horizontal Symmetry Puzzle",
