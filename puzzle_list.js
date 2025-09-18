@@ -1,4 +1,5 @@
 window.puzzleList = [
+"VENZCFW6Windmill door",
 "GPFBKQPJKeep Symmetry",
 "8SS7DX96Keep polyomio",
 "USMWUH5BKeep squares",
