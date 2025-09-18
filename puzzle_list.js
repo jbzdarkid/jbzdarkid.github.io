@@ -1,4 +1,5 @@
 window.puzzleList = [
+"T5WXM3SQQuarry gate 1",
 "K98T5VULBehind tutorial gate 2",
 "58EQEKVHBehind tutorial gate 1",
 "XR58464JTutorial 3",
