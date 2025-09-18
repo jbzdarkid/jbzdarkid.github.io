@@ -1,4 +1,5 @@
 window.puzzleList = [
+"USMWUH5BKeep squares",
 "GVW3Y6Q2Keep dots",
 "N7RAY5R7Tutorial bridge 1",
 "JLJS4TRDQuarry gate 2",
