@@ -1,4 +1,5 @@
 window.puzzleList = [
+"GPFBKQPJKeep Symmetry",
 "8SS7DX96Keep polyomio",
 "USMWUH5BKeep squares",
 "GVW3Y6Q2Keep dots",
