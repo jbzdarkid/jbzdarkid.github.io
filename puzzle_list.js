@@ -1,4 +1,5 @@
 window.puzzleList = [
+"7SDPTR6RUnnamed Puzzle",
 "R9W2WK4MStargazer A2",
 "DGNMT2KAStargazer E1",
 "3ALH6ZYLDon't Cutoff (Remix)",
