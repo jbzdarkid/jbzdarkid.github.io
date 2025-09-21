@@ -1,4 +1,5 @@
 window.puzzleList = [
+"96KBZ57NUnnamed Puzzle",
 "MQ9PUMZWDot 2",
 "AUE6CP7LDot",
 "SKGUF2WXUnnamed Vertical Symmetry Puzzle",
