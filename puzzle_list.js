@@ -1,4 +1,5 @@
 window.puzzleList = [
+"VWT438MTNinth Tetris Puzzle Puzzle",
 "44E6JTYFUnnamed Puzzle",
 "8BUUNTHCUnnamed Pillar Puzzle",
 "QD59G3YZUnnamed Rotational Symmetry Puzzle",
