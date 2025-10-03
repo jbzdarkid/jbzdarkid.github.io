@@ -1,4 +1,5 @@
 window.puzzleList = [
+"DSK2JCRCStargazer Final",
 "VC4CEM3AStargazer E2",
 "BX3MXBEMStargazer D2",
 "JFUJTP6YStargazer C2",
