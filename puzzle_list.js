@@ -1,9 +1,9 @@
 window.puzzleList = [
+"MQ9KSBZNRandom Puzzle",
 "8VSEXPK5Stranger South",
 "Z7H8QQEDStranger West",
 "FM24YPP8Stranger North",
 "FPM82VRTStranger East",
-"MQ9KSBZNRandom Puzzle",
 "5KYYF7MBUnnamed Puzzle",
 "6N8XU2PUUnnamed Horizontal Symmetry Puzzle",
 "WTNJTXDHUnnamed Horizontal Symmetry Puzzle",
