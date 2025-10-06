@@ -1,4 +1,5 @@
 window.puzzleList = [
+"KAAHMF8HBetter Entrance To Secret Puzzles",
 "EJYP9HMKgamer tag",
 "VG32U39FTwo Way Switch",
 "D22WFYEAUnnamed Puzzle",
