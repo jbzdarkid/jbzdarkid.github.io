@@ -1,4 +1,5 @@
 window.puzzleList = [
+"53VPY2R3Unnamed Puzzle",
 "XW93FBUYUnnamed Puzzle",
 "QHEUWZD2Double Puzzle (4x3)",
 "RW4S7DSARandomizer symmetry from reddit",
