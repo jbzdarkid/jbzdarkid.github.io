@@ -1,4 +1,5 @@
 window.puzzleList = [
+"BFGNH3MKDorito punch-geon (1w",
 "F2ERL7KJchaos chaos (1w)",
 "2KJCPYU8Unnamed Rotational Symmetry Puzzle",
 "UC7GCAK8The Unknown",
