@@ -1,4 +1,5 @@
 window.puzzleList = [
+"2KJCPYU8Unnamed Rotational Symmetry Puzzle",
 "UC7GCAK8The Unknown",
 "94ERJRAKHexagon force (1w)",
 "N2XH7ZRJHexagon force (1w)",
