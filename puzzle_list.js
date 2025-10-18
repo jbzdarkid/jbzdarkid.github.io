@@ -1,4 +1,5 @@
 window.puzzleList = [
+"94ERJRAKHexagon force (1w)",
 "N2XH7ZRJHexagon force (1w)",
 "K25TXY83Hexagon force (1w)",
 "KULSDRKJUnnamed Puzzle",
