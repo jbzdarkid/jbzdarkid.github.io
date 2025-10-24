@@ -1,4 +1,5 @@
 window.puzzleList = [
+"RHLUGZ3GSquareception - 3 starts 3 solutions",
 "77E7BXY9Squareception (SIMPLIFIED 10 SOLUTIONS)",
 "6KEJ9P7CSquareception (SIMPLIFIED 10 SOLUTIONS)",
 "RGBH3D4FSquareception (SIMPLIFIED 10 SOLUTIONS)",
