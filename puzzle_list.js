@@ -1,4 +1,5 @@
 window.puzzleList = [
+"RGBH3D4FSquareception (SIMPLIFIED 10 SOLUTIONS)",
 "5AKXTAKQHSP blocks",
 "KG3WFWPNSquareception (W1H)",
 "WNC8MNFDTriangle Trouble (WPOTD1)",
