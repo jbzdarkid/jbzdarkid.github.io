@@ -1,4 +1,5 @@
 window.puzzleList = [
+"WNC8MNFDTriangle Trouble (WPOTD1)",
 "73QKDE8TPillar's Pillars #1",
 "QFS36UAPtrolley problem",
 "5L54T55Ubig pillar",
