@@ -1,4 +1,5 @@
 window.puzzleList = [
+"R7P2T62Laaaa",
 "D2VQ6NYWUnnamed Puzzle",
 "4RGFHFEXSquareception - 3 starts 3 solutions",
 "RHLUGZ3GSquareception - 3 starts 3 solutions",
