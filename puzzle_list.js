@@ -1,4 +1,5 @@
 window.puzzleList = [
+"SJJ7K886Color Agony (2 solutions)",
 "EYP2LK9NEnder 01",
 "2HTSKSAA4 puzzles",
 "5LP9T8WNSquares cant help you now (WPOTD 4)",
