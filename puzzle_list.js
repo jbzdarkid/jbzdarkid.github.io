@@ -1,4 +1,5 @@
 window.puzzleList = [
+"H2R8S5Z8difficultest puzzle",
 "SJJ7K886Color Agony (2 solutions)",
 "EYP2LK9NEnder 01",
 "2HTSKSAA4 puzzles",
