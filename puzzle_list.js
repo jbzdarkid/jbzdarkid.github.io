@@ -1,4 +1,5 @@
 window.puzzleList = [
+"KLRQQFWSDo you remember? (WPOTD7)",
 "MM2N6BW4tc20251030-3",
 "K768CJUZtc20251030-2 \"444\"",
 "L7DHX8H8tc20251030",
