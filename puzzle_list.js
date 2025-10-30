@@ -1,4 +1,5 @@
 window.puzzleList = [
+"K768CJUZtc20251030-2 \"444\"",
 "L7DHX8H8tc20251030",
 "ASZEV4BQDubble trubble",
 "432JPU7Ctc20251029-2",
