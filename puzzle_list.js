@@ -1,4 +1,5 @@
 window.puzzleList = [
+"8ZZKX6WKWPOTD8",
 "N53DNWF7simple lockscreen",
 "WHCVY2HRUnnamed Pillar (Two Lines) Puzzle",
 "KLRQQFWSDo you remember? (WPOTD7)",
