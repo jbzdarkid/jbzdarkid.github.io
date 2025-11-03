@@ -1,4 +1,5 @@
 window.puzzleList = [
+"834XJ8RAHow (WPOTD10)",
 "UBTJ8QY7Is Two Information 2 much?",
 "GSWL4H9Xshut up (WPOTD9)",
 "8ZZKX6WKWPOTD8",
