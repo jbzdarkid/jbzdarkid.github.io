@@ -1,4 +1,5 @@
 window.puzzleList = [
+"2KFZHSWNYello (WPOTD11)",
 "UDBYBWAEblock",
 "E5J79FA6Jack of all trades (WPOTD11)",
 "NQEKLWS2Unnamed Rotational Symmetry Puzzle",
