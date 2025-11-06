@@ -1,4 +1,5 @@
 window.puzzleList = [
+"M4YL2BHPgrid 1",
 "TQ4QYDJBPillar Pandemonium (Expert 3085171)",
 "2KFZHSWNYello (WPOTD11)",
 "UDBYBWAEblock",
