@@ -1,4 +1,5 @@
 window.puzzleList = [
+"LKU8VS47Cursed as hell (WPOTD14)",
 "QVEZBF66Unnamed Puzzle",
 "2ZKN5WG3Shapes that dont shape (WPOTD13)",
 "M4YL2BHPgrid 1",
