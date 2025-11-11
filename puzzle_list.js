@@ -1,4 +1,5 @@
 window.puzzleList = [
+"BF5M9TYXWhipped into shape (WPOTD18)",
 "XDBCQPZQTwo very different Solutions (WPOTD16)",
 "M9633N5TCursed as hell but i fixed it (WPOTD15)",
 "SXNMM8UAtc20251109-2",
