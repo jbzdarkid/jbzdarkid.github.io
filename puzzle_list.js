@@ -1,4 +1,5 @@
 window.puzzleList = [
+"GUK28VS6it's 2 am right now",
 "ZWLTZGHPSomething Stupid",
 "CRFYELS8It mirrors itself (WPOTD19)",
 "EVWSZZDMUnnamed Puzzle",
