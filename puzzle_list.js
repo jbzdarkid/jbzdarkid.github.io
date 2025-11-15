@@ -1,4 +1,5 @@
 window.puzzleList = [
+"EFFD95MBUnnamed Puzzle",
 "EPJGR6C9Tiny Loading Screen",
 "LCDB5XUATiny Spiral",
 "TH33435SThe Website Logo",
