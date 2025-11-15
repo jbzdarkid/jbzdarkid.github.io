@@ -1,4 +1,5 @@
 window.puzzleList = [
+"484ELP3Hwindmill",
 "KDLZEEN7windmill",
 "KEH67L6GThe Website Logo",
 "ZTCNQJ9TDouble Staircase",
