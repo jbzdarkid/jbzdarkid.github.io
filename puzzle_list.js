@@ -1,4 +1,5 @@
 window.puzzleList = [
+"4PKCMBEMThe Ultimate Inverse Puzzle",
 "V738FKU6Cool Puzzle",
 "UHP3CNCJUnnamed Puzzle",
 "AMTVV87Ffull combo (WPOTD21)",
