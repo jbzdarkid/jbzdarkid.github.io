@@ -1,4 +1,5 @@
 window.puzzleList = [
+"T4HZ6PL7it's easy!!!",
 "82C6SVVABlue Button",
 "7H7MUSLPSimpler than it looks (WPOTD22)",
 "7G36G9TEUnnamed Rotational Symmetry Puzzle",
