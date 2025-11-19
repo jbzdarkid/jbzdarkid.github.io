@@ -1,4 +1,5 @@
 window.puzzleList = [
+"K4RVXXXLDid not steal minis idea nope (WPOTD23)",
 "T4HZ6PL7it's easy!!!",
 "82C6SVVABlue Button",
 "7H7MUSLPSimpler than it looks (WPOTD22)",
