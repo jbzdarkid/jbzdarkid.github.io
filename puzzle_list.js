@@ -1,5 +1,5 @@
 window.puzzleList = [
-"SAQYV8HXit's easy!!! - 1",
+"SAQYV8HXit's easy!!!   1",
 "AVS49JUVGuiding lines",
 "H8ZACBV3where do i even begin",
 "K4RVXXXLDid not steal minis idea nope (WPOTD23)",
