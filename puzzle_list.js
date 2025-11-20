@@ -1,4 +1,5 @@
 window.puzzleList = [
+"G6WX9E4KUnnamed Puzzle",
 "RBYY77C8symmetry in cancels",
 "SAQYV8HXit's easy!!!   1",
 "AVS49JUVGuiding lines",
