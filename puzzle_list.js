@@ -1,4 +1,5 @@
 window.puzzleList = [
+"4M5DNYHNtude",
 "AEGFPSHQBridge",
 "RLZSD3A2it's easy!!! 2",
 "ZZPCS4VGThe night sky (WPOTD24)",
