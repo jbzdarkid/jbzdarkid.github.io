@@ -1,5 +1,5 @@
 window.puzzleList = [
-"ZKTV4Z76it's easy!!! 3",
+"ZKTV4Z76it's easy!!! 4",
 "G4SXR7J8sea of orange",
 "WX7LM2QNit's easy!!! 3",
 "P72B4S82it's easy!!! 3",
