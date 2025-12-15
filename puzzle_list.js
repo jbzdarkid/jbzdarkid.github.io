@@ -1,4 +1,5 @@
 window.puzzleList = [
+"DRF5WPJ2Swamp Rotating Platform",
 "YJG8FS9Vtc20251214",
 "WZWCYLS3Inner H0r1zontal lines",
 "F5HX5AJ7Big Boy",
