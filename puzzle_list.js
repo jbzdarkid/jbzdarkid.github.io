@@ -1,4 +1,5 @@
 window.puzzleList = [
+"RS5TN7MUThinky Dailies",
 "LX93C2MFtc20251217",
 "BUBBDS7MUnnamed Puzzle",
 "JSFDPHMJUnnamed Pillar (Two Lines) Puzzle",
