@@ -1,4 +1,5 @@
 window.puzzleList = [
+"LX93C2MFtc20251217",
 "BUBBDS7MUnnamed Puzzle",
 "JSFDPHMJUnnamed Pillar (Two Lines) Puzzle",
 "DRF5WPJ2Swamp Rotating Platform",
