@@ -1,4 +1,5 @@
 window.puzzleList = [
+"7LR99SHRUnnamed Puzzle",
 "RZ9LWW63Unnamed Puzzle",
 "YJEZ2V6VKeep Laser Maze",
 "67LT6KRF4 rules, 1 elimination(1 solution)",
