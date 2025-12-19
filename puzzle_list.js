@@ -1,4 +1,5 @@
 window.puzzleList = [
+"DCGGFHMQ4 Quarters (ONLY 1 SOLUTION)",
 "LKS8AY6HUnnamed Puzzle",
 "R72DA9LLYIPPE",
 "HRQELEHXUnnamed Vertical Symmetry Puzzle",
