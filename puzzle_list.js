@@ -1,4 +1,5 @@
 window.puzzleList = [
+"BMACXGVRSuper Squares(Egnore all in green)",
 "YBSDCZX7Trolley Problem",
 "LT8H735WTrolley Problem",
 "7QSKRWC5Trolley Problem",
