@@ -1,4 +1,5 @@
 window.puzzleList = [
+"9ADAZD6HSuper Dots",
 "BMACXGVRSuper Squares(Egnore all in green)",
 "YBSDCZX7Trolley Problem",
 "LT8H735WTrolley Problem",
