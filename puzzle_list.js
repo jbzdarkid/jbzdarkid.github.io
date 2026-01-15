@@ -1,4 +1,5 @@
 window.puzzleList = [
+"KXVPHSKZSuper Blocks(Egnore all in green)",
 "E3JJPARXGate",
 "VB3XP4PGUnnamed Puzzle",
 "U8G9RYRGSuper Blocks(Egnore all in green)",
