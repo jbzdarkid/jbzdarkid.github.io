@@ -1,4 +1,5 @@
 window.puzzleList = [
+"RE4LSUGCUnnamed Puzzle",
 "YH4PW2WPThe Return of The Dot(Egnore all in green)",
 "DCTM4LWGthe puzzle before this puzzle is a mistake",
 "KXVPHSKZSuper Blocks(Egnore all in green)",
