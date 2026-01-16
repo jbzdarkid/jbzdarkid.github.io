@@ -1,4 +1,5 @@
 window.puzzleList = [
+"DCTM4LWGthe puzzle before this puzzle is a mistake",
 "KXVPHSKZSuper Blocks(Egnore all in green)",
 "E3JJPARXGate",
 "VB3XP4PGUnnamed Puzzle",
