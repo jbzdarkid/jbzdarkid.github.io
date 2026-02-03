@@ -1,4 +1,5 @@
 window.puzzleList = [
+"2BEXP9TFSymmetric Swamp",
 "HQK6UR431 way random puzzle",
 "JAKH55K81v1 puzzle",
 "WB7LL7RUdots",
