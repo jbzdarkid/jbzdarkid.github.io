@@ -1,4 +1,5 @@
 window.puzzleList = [
+"HU9WNU4Ptreehouse 4panels",
 "N29NNGXSThe upside down L",
 "K3SVKA9Rdouble and double",
 "XPPLVDGMUnnamed Puzzle",
