@@ -1,4 +1,5 @@
 window.puzzleList = [
+"EPB2LTCMDifficulty Spike",
 "5PZLGYRLPanel a7",
 "VJ628Q9QPanel a6",
 "QMXULDL5Panel a5",
