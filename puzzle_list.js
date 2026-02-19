@@ -1,4 +1,5 @@
 window.puzzleList = [
+"APYJJAUPYurizotto diff 02",
 "UUUMS9T8Yurizotto diff 01",
 "QLZRPYZSinvisible border",
 "YWUYZFWMshenanigans are afoot",
