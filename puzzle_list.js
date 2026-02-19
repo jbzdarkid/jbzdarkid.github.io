@@ -1,4 +1,5 @@
 window.puzzleList = [
+"45PD5SMAGlass factory 1-3",
 "APYJJAUPYurizotto diff 02",
 "UUUMS9T8Yurizotto diff 01",
 "QLZRPYZSinvisible border",
