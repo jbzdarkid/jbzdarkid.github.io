@@ -1,6 +1,6 @@
 window.puzzleList = [
+"XKQDAVNLTrolley Problem",
 "KAQ34L6STrolley Problem",
-"XKQDAVNLUnnamed Puzzle",
 "43UBBD2SUnnamed Puzzle",
 "4R9XYVLQUnnamed Puzzle",
 "6GHPB4UNUnnamed Rotational Symmetry Puzzle",
