@@ -1,6 +1,6 @@
 window.puzzleList = [
-"BC342R5XYup",
 "7LX5RYA5Mystery Maze",
+"BC342R5XYup",
 "BQJGUFM7triple",
 "UMU3G5NMNL260303",
 "6ZVF4ZPQConsider this!",
