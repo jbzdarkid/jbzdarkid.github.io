@@ -1,4 +1,5 @@
 window.puzzleList = [
+"CB2EQNZHThe Return (T51)",
 "HQPYX3FRThick",
 "EVSSFQH3Thick",
 "DRLTD7EYUnnamed Puzzle",
