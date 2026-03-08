@@ -23,7 +23,8 @@ function onSubmit(e) {
     'method': 'post',
     'payload': payload,
     'headers': headers,
-  }
+    'muteHttpExceptions': true,
+}
   var response = UrlFetchApp.fetch('https://api.github.com/repos/jbzdarkid/jbzdarkid.github.io/actions/workflows/67527847/dispatches', options);
   console.info('Response', response.getResponseCode(), response.getContentText())
 }
