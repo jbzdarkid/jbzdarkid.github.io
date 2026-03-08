@@ -1,4 +1,5 @@
 window.puzzleList = [
+"GLPQYWPYScenic Route (T55)",
 "V2XJFPURL!? (T54)",
 "NYVG6M4YL! (T53)",
 "HKFFM7HWSpiky (T52)",
