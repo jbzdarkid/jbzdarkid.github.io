@@ -1,4 +1,5 @@
 window.puzzleList = [
+"7PXNJYYDeasy choise",
 "28WXXYBXsorry that's not normal that's eliminators",
 "AJ74EL4Phard",
 "KWTG8E33NORMAL 559306747",
