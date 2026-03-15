@@ -1,4 +1,5 @@
 window.puzzleList = [
+"VBVPQDG9For Jack",
 "Z72PN4C5For Jack",
 "7PXNJYYDeasy choise",
 "28WXXYBXsorry that's not normal that's eliminators",
