@@ -1,4 +1,5 @@
 window.puzzleList = [
+"P299Z7NGonly threes one",
 "YGA6BP9Conly twos three",
 "3KSCFBNAonly twos two",
 "MMWKYEAKonly twos one",
