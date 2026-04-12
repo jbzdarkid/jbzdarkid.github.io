@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/2000/xhtml">
+  <head>
+    <meta property="og:title" content="Memory Game"/>
+    <meta property="og:description" content="Witness Puzzle T9NSRCGA"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Witness Puzzles"/>
+    <meta property="og:image" content="https://witnesspuzzles.com/images/T9NSRCGA.png"/>
+    <meta name="robots" content="noindex, nofollow, nosnippet"/>
+    <link rel="stylesheet" type="text/css" href="../data/style.css" id="stylesheet">
+    <link rel="icon" type="image/png" href="../data/favicon.png">
+    <script type="text/javascript" src="../engine/utilities.js"></script>
+    <script type="text/javascript" src="../engine/svg.js"></script>
+    <script async type="text/javascript" src="../engine/polyominos.js"></script>
+    <script async type="text/javascript" src="../engine/puzzle.js"></script>
+    <script async type="text/javascript" src="../engine/validate.js"></script>
+    <script async type="text/javascript" src="../engine/custom_mechanics.js"></script>
+    <script async type="text/javascript" src="../engine/display2.js"></script>
+    <script async type="text/javascript" src="../engine/trace2.js"></script>
+    <title>Memory Game</title>
+  </head>
+  <body>
+    <script>loadHeader("Memory Game")</script>
+    <div style="display: flex; justify-content: center; align-items: center">
+      <svg id="puzzle" style="pointer-events: auto"></svg>
+    </div>
+  </body>
+  <script>
+    window.onload = function() {
+      <!-- 8c0d0409030ae8c12c0165998bbeffd2660134f9b9598ad4affd0ae89fa28cf18cdbeb623ec5ba5bcd8b5c482132fe6ecc4f94ef8c2ae8209677a1999ffa81632fffdb63fd583ba9893665606dac0d25eea485067a38bb3b7a5dc07d67086a63a108583b61848af833286f396fb991f0a6338d1c5846d3 -->
+      var puzzle = Puzzle.deserialize("{\"grid\":[[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"start\":true,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"nonce\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}],[{\"type\":\"line\",\"line\":0,\"end\":\"right\",\"dir\":null,\"dot\":4,\"gap\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null},{\"type\":\"line\",\"line\":0,\"dir\":null}]],\"largezero\":81,\"width\":9,\"height\":9,\"pillar\":false,\"settings\":{\"NEGATIONS_CANCEL_NEGATIONS\":true,\"SHAPELESS_ZERO_POLY\":false,\"PRECISE_POLYOMINOS\":true,\"FLASH_FOR_ERRORS\":true,\"FAT_STARTPOINTS\":false,\"CUSTOM_MECHANICS\":false},\"name\":\"Memory Game\",\"autoSolved\":true,\"startPoint\":{\"x\":0,\"y\":8},\"hasNegations\":false,\"hasPolyominos\":false}")
+      draw(puzzle)
+    }
+  </script>
+</html>
