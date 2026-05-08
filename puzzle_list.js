@@ -1,4 +1,5 @@
 window.puzzleList = [
+"CBZH6VPGThe circle!(please ignore all in green)",
 "DBKB93WCCopper Coin",
 "AW6NLP9NNigh Sky",
 "VCB8R6R8Household",
