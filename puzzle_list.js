@@ -1,4 +1,5 @@
 window.puzzleList = [
+"DBKB93WCCopper Coin",
 "AW6NLP9NNigh Sky",
 "VCB8R6R8Household",
 "HXXPTFGVSwampy Boots Trap",
