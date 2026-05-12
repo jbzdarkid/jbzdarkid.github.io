@@ -1,4 +1,5 @@
 window.puzzleList = [
+"SEHZ7578Tetrapods",
 "QK6XSZVNTetrapods",
 "TZZMV2AAone solution",
 "T7FGGLNFUnnamed Puzzle",
