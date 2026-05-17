@@ -360,6 +360,7 @@ window.drawPathNoUI = function(puzzle, path) {
   var y = path[0].y
   var cell = puzzle.getCell(x, y)
   if (cell == null || cell.start !== true) throw Error('Path does not begin with a startpoint: ' + JSON.stringify(cell))
+  puzzle.startPoint = {'x':x, 'y':y} // Note down the chosen startpoint for validation
 
   for (var i=1; i<path.length; i++) {
     var cell = puzzle.getCell(x, y)
@@ -390,6 +391,7 @@ window.drawPathNoUI = function(puzzle, path) {
 
   var cell = puzzle.getCell(x, y)
   if (cell == null || cell.end == null) throw Error('Path does not end at an endpoint: ' + JSON.stringify(cell))
+  puzzle.endPoint = {'x':x, 'y':y} // Note down the chosen endpoint for validation
 }
 
 // Uses trace2 to draw the path on the grid, logs a graphical representation of the solution,
@@ -466,6 +468,7 @@ window.drawPath = function(puzzle, path, target='puzzle') {
   }
   var cell = puzzle.getCell(x, y)
   if (cell == null || cell.end == null) throw Error('Path does not end at an endpoint: ' + JSON.stringify(cell))
+  puzzle.endPoint = {'x':x, 'y':y} // Note down the chosen endpoint for validation
 
   var rows = '   |'
   for (var x=0; x<puzzle.width; x++) {
