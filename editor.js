@@ -759,7 +759,7 @@ function onElementClicked(event, x, y) {
         puzzle.grid[i][j].end = validDirs[0]
         if (puzzle.symmetry != null) {
           var sym = puzzle.getSymmetricalPos(i, j)
-          puzzle.grid[sym.x][sym.y] = validDirs[0]
+          puzzle.updateCell2(sym.x, sym.y, 'end', validDirs[0])
         }
       }
     }
