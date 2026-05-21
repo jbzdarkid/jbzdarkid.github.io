@@ -1,4 +1,5 @@
 window.puzzleList = [
+"V2EMAK7DBweh",
 "MLNCALKLSimple but only one solution",
 "AU24ML9YConsider Partitioning",
 "XWA4EJFKThe Jewel B",
