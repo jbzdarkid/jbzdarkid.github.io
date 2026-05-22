@@ -1,4 +1,5 @@
 window.puzzleList = [
+"ZYS89A8RTetris Symmetry 2",
 "4YQN2LXUTetris Symmetry 1",
 "UCVGYW7ETetris Symmetry 1",
 "KMFJG9D8Unnamed Puzzle",
