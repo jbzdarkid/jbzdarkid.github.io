@@ -1,4 +1,5 @@
 window.puzzleList = [
+"LUBKBTDBOkay, But one is hollow",
 "TXBKHSGADangerous Tunnel",
 "AXJS3KJ8Tetris Symmetry 2",
 "ZYS89A8RTetris Symmetry 2",
