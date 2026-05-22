@@ -1,4 +1,5 @@
 window.puzzleList = [
+"KMFJG9D8Unnamed Puzzle",
 "7GY5BQZWsame way",
 "V2EMAK7DBweh",
 "MLNCALKLSimple but only one solution",
