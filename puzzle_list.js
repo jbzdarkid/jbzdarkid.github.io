@@ -1,5 +1,5 @@
 window.puzzleList = [
-"GSCVNCPBUnnamed Puzzle",
+"GSCVNCPBEASY LOL TETRONIMO PUZZLE FOR MY NOOB FRIEND",
 "NNJQ6VUAConnecting Bridge #1",
 "MASTLDEDUnnamed Horizontal Symmetry Puzzle",
 "R6E9CB3JEqual #2",
