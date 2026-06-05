@@ -1,4 +1,5 @@
 window.puzzleList = [
+"6CQCFCQ5Unnamed Pillar (Two Lines) Puzzle",
 "SBZHPMJSReddit 1tv94ng",
 "C86LHFGNUnnamed Puzzle",
 "9E9MRLN9Unnamed Pillar Puzzle",
