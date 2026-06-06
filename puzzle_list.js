@@ -1,4 +1,5 @@
 window.puzzleList = [
+"CV23AC7AUnnamed Horizontal Symmetry Puzzle",
 "5PRDJDSZLa mujer del pollo",
 "V3B6W9LGCMYK",
 "6CQCFCQ5Unnamed Pillar (Two Lines) Puzzle",
