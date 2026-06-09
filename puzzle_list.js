@@ -1,4 +1,5 @@
 window.puzzleList = [
+"QQYLFRG2The Board",
 "VTSATCK6Unnamed Puzzle",
 "JJNA7AF7opening move",
 "SUXUKTX5Divide",
