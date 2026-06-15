@@ -1,4 +1,5 @@
 window.puzzleList = [
+"9XTFAR5KUnnamed Puzzle",
 "HSW8EXEUnot simple",
 "H7U644XBWitness Randomizer Preview Image #9",
 "63N3433VWitness Randomizer Preview Image #8",
