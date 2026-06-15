@@ -1,4 +1,5 @@
 window.puzzleList = [
+"63N3433VWitness Randomizer Preview Image #8",
 "43AGHJAVWitness Randomizer Preview Image #7",
 "JZ6E54MLWitness Randomizer Preview Image #3",
 "V39QU6KTUnnamed Pillar Puzzle",
