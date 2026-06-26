@@ -1,4 +1,5 @@
 window.puzzleList = [
+"SY99TKTZ60 solution puzzle (good for counting)",
 "SQNRX8R3Unnamed Puzzle",
 "UTKNZCNCUnnamed Rotational Symmetry Puzzle",
 "8M88SBJW18",
