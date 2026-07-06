@@ -1,4 +1,5 @@
 window.puzzleList = [
+"9X798F92keypad(better)",
 "SBFEMYC9keypad",
 "3LCGKK6PBeautiful Forts",
 "N5YGTXTSUnnamed Puzzle",
