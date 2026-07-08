@@ -1,4 +1,5 @@
 window.puzzleList = [
+"GMA4Q5FKignore all not in top right corner.",
 "KHG2UKLZignore all in green. and any symbol not top right",
 "KE243L3Aignore all in green.",
 "HCLKZXGNignore all in green.",
