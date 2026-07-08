@@ -244,7 +244,7 @@ function solveLoop(x, y, numEndpoints, earlyExitData) {
 
   if (cell.end != null) {
     path.push(PATH_NONE)
-    puzzle.endPoint = {'x': x, 'y': y}
+    puzzle.endPoint = {'x': puzzle._mod(x), 'y': y}
     var puzzleData = window.validate(puzzle, true)
     if (puzzleData.valid()) solutionPaths.push(path.slice())
     path.pop()
@@ -391,7 +391,7 @@ window.drawPathNoUI = function(puzzle, path) {
 
   var cell = puzzle.getCell(x, y)
   if (cell == null || cell.end == null) throw Error('Path does not end at an endpoint: ' + JSON.stringify(cell))
-  puzzle.endPoint = {'x':x, 'y':y} // Note down the chosen endpoint for validation
+  puzzle.endPoint = {'x':puzzle._mod(x), 'y':y} // Note down the chosen endpoint for validation
 }
 
 // Uses trace2 to draw the path on the grid, logs a graphical representation of the solution,
@@ -468,7 +468,7 @@ window.drawPath = function(puzzle, path, target='puzzle') {
   }
   var cell = puzzle.getCell(x, y)
   if (cell == null || cell.end == null) throw Error('Path does not end at an endpoint: ' + JSON.stringify(cell))
-  puzzle.endPoint = {'x':x, 'y':y} // Note down the chosen endpoint for validation
+  puzzle.endPoint = {'x':puzzle._mod(x), 'y':y} // Note down the chosen endpoint for validation
 
   var rows = '   |'
   for (var x=0; x<puzzle.width; x++) {
