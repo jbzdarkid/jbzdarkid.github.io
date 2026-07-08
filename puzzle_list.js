@@ -1,4 +1,8 @@
 window.puzzleList = [
+"KHG2UKLZignore all in green. and any symbol not top right",
+"KE243L3Aignore all in green.",
+"HCLKZXGNignore all in green.",
+"C3VC2ZEVignore all in green.",
 "FN3H5GDDignore all in green. ignore the invis dots.",
 "P6VQBH9Lignore all in green. ignore the invis dots.",
 "BCPQEZNFignore all in green. ignore the invis dots.",
