@@ -1,4 +1,5 @@
 window.puzzleList = [
+"BCPQEZNFignore all in green. ignore the invis dots.",
 "S2SCQGJZUnnamed Puzzle",
 "ED6XFDJCUnnamed Puzzle",
 "77AG2JZKUnnamed Puzzle",
