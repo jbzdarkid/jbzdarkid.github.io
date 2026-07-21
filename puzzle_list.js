@@ -1,4 +1,5 @@
 window.puzzleList = [
+"N7WQRKPNdouble eraser looks different here",
 "NXK2R3M9Pancake",
 "LHAAAB5HPancake",
 "2C6C569RUnnamed Rotational Symmetry Puzzle",
