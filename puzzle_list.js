@@ -1,4 +1,5 @@
 window.puzzleList = [
+"E4AUUQPPUnnamed Puzzle",
 "QNUSMP43Unnamed Puzzle",
 "KQFJWZMTUnnamed Puzzle",
 "J5DSHZAKUnnamed Puzzle",
