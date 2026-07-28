@@ -1,4 +1,5 @@
 window.puzzleList = [
+"EREVX5CNtringles of doom and death",
 "6K5W3GGPWe're back, chat! (WPOTD25)",
 "GGX9SVKRUnnamed Rotational Symmetry Puzzle",
 "354M8E8UUnnamed Rotational Symmetry Puzzle",
