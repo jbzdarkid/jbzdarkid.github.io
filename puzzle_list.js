@@ -1,4 +1,5 @@
 window.puzzleList = [
+"G5ZMQ5HAThis hurts to look at... (WPOTD26)",
 "BYEJ8LT5Lattice",
 "EREVX5CNtringles of doom and death",
 "6K5W3GGPWe're back, chat! (WPOTD25)",
