@@ -1,4 +1,5 @@
 window.puzzleList = [
+"5YNXKDURgreedy tetris 3",
 "UNS8VTR8greedy tetris 2",
 "6C4LBGQJFACT",
 "F3HQNK2ZThe Witness Puzzle 10th Anniversary Puzzle",
