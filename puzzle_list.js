@@ -1,4 +1,5 @@
 window.puzzleList = [
+"6C4LBGQJFACT",
 "F3HQNK2ZThe Witness Puzzle 10th Anniversary Puzzle",
 "46YMV33P6X6",
 "FKH5WM6MUnnamed Rotational Symmetry Puzzle",
