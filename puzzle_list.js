@@ -1,4 +1,5 @@
 window.puzzleList = [
+"MMRU6DB5Quarry puzzles be like (WPOTD27)",
 "CESNPRBEgreedy tetris 1",
 "5YNXKDURgreedy tetris 3",
 "UNS8VTR8greedy tetris 2",
