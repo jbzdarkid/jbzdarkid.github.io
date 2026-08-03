@@ -1,4 +1,5 @@
 window.puzzleList = [
+"9RSQNCZUUnnamed Pillar (R Symmetry) Puzzle",
 "56CCSH9UUnnamed Pillar (V Symmetry) Puzzle",
 "UVYG5BFAMenger Sponge but not exactly",
 "HFWSDFD9Unnamed Rotational Symmetry Puzzle",
