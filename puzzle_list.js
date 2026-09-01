@@ -1,4 +1,5 @@
 window.puzzleList = [
+"46W83KCPA STREAMER STRUGGLES AT THIS PILLAR",
 "DRFE22WWUnnamed Puzzle",
 "NMVDTJQFLargest Segment",
 "WTQLYS3TTrolley problem",
