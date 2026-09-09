@@ -1,4 +1,5 @@
 window.puzzleList = [
+"SYSRQGPZFloy0",
 "KCVEHFP2Floy1",
 "NS2ATYCLUnnamed Puzzle",
 "NMG5HU7F(Electro) lvl 1",
