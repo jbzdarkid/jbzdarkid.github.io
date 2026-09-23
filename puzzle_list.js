@@ -1,4 +1,5 @@
 window.puzzleList = [
+"EUT5HR6Dstuck in the escape room",
 "KA42F73Ustuck in the escape room",
 "8SCBAVMAUnnamed Puzzle",
 "W2KDKVFFUnnamed Puzzle",
