@@ -1,4 +1,5 @@
 window.puzzleList = [
+"LSWVMWPHUnnamed Pillar (R Symmetry) Puzzle",
 "7EXRT2LBa joke",
 "7A6S9WUZhard? ps. easy",
 "8F4Z8YYFchicky bricky",
