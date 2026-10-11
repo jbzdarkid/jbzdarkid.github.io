@@ -1,9 +1,9 @@
 window.puzzleList = [
+"6DTT9TJ6tributary column",
 "YVTJJRJDUnnamed Puzzle",
 "6NB2LYC5Unnamed Puzzle",
 "KT5KASQXUnnamed Puzzle",
 "NGEN69PUtributary column",
-"6DTT9TJ6tributary column",
 "P88W9E3JUnnamed Rotational Symmetry Puzzle",
 "6W8RMM34Unnamed Puzzle",
 "WQ8SSK6UUnnamed Puzzle",
