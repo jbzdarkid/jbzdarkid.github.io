@@ -1,4 +1,5 @@
 window.puzzleList = [
+"ZMKEWMH2little suffer",
 "ZWRKDNDCstadility",
 "BE2REA93SIMILAR SUFFER",
 "CF7ATFM5BLOCKED",
